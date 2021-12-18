@@ -1,6 +1,6 @@
 import sqlite3
 
-conn = sqlite3.connect('./data/passwords.db')
+conn = sqlite3.connect('./data/passwords.sqlite3')
 conn.execute("""
     CREATE TABLE IF NOT EXISTS users(
         id   INT    PRIMARY KEY,
@@ -28,7 +28,7 @@ def get(id:int) -> str:
     if data:
         return data[0]
     else:
-        return False
+        return ""
 
 def set(id:int,hash:str) -> None:
     with conn:
