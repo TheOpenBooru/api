@@ -2,13 +2,17 @@ import os
 import time
 import jwt
 import logging
+import password_strength as ps
 from passlib.hash import argon2
+from password_strength.policy import PasswordPolicy
 
-from . import AuthError, BadTokenError,_database as db
+from . import LoginFailureError, BadTokenError,_database as db
 
 hashPassword = lambda password: argon2.using(rounds=4).hash(password)
 verifyPassword = lambda password, hash: argon2.verify(password, hash)
-isPasswordInvalid = lambda password: password == 'password' or len(password) < 8
+
+policy = PasswordPolicy.from_names(strength=0.4)
+isPasswordInvalid = policy.test
 
 def create(id:int,password:str):
     if db.get(id):
@@ -26,7 +30,7 @@ def login(id:int,password:str,*,data:dict={},expiration:int=6604800) -> str:
     elif not isinstance(data,dict):
         raise TypeError("Payload is not a dict")
     elif not verifyPassword(password,hash):
-        raise AuthError("Invalid Password or Username")
+        raise LoginFailureError("Invalid Password or Username")
     
     payload = {
         "user":id,
@@ -36,7 +40,7 @@ def login(id:int,password:str,*,data:dict={},expiration:int=6604800) -> str:
     token = jwt.encode(payload,os.getenv('JWT_SECRET'))
     return token
 
-def decode(token:str) -> dict:
+def verify(token:str) -> dict:
     try:
         header = jwt.get_unverified_header(token)
         data = jwt.decode(
@@ -59,7 +63,7 @@ def update(id:int,old_password:str,new_password:str):
     elif isPasswordInvalid(new_password):
         raise ValueError("Password Does Not Meet Requirements")
     elif not verifyPassword(old_password,old_hash):
-        raise AuthError("Old Password is Incorrect")
+        raise LoginFailureError("Old Password is Incorrect")
     else:
         newHash = hashPassword(new_password)
         db.set(id,newHash)

@@ -1,15 +1,19 @@
-class AuthError(Exception):
+class LoginFailureError(Exception):
+    """Login 
+    """
     pass
 
 class BadTokenError(Exception):
+    """[summary]
+    """
     pass
 
 def create(id:int,password:str):
     """Create a new user sign-in
 
     Args:
-        id (int): [description]
-        password (str): [description]
+        id: The ID of the user
+        password: 
 
     Raises:
         KeyError: User ID already exists
@@ -21,28 +25,31 @@ def login(id:int,password:str,*,data:dict={},expiration:int=6604800) -> str:
     """Login and Generate a JWT
 
     Args:
-        id (int): User's ID
-        password (str): The User's Passowrd
-        data (dict): The data to encode into the JWT
+        id: User's ID
+        password: The User's Passowrd
+        
+        data: The data to encode into the JWT
+        expiration: 
     
     Raises:
         KeyError: Non-Existant User ID
-        AuthError: Invalid Password or Username
+        LoginFailureError: Invalid Password or Username
         TypeError: Payload is not a dict
 
     Returns:
-        jwt (str): Returns the JSON Web Token
+        JWT: Returns the JSON Web Token
     """
     ...
 
-def decode(token:str) -> dict:
-    """
-    Returns:
-        Data (dict) | False: False if Token is Valid, otherwise the Token's Data
-
+def verify(token:str) -> dict:
+    """Validate and Get Data from a JWT
+    
     Raises:
         KeyError: User has been deleted
         BadTokenError: Invalid Token
+    
+    Returns:
+        Data: Returns The Token's Data
     """
     ...
 
@@ -57,7 +64,7 @@ def update(id:int,old_password:str,new_password:str):
     Raises:
         KeyError: Non-Existant User ID
         ValueError: Password Does Not Meet Requirements
-        AuthError: Old Password is Incorrect
+        LoginFailureError: Old Password is Incorrect
     """
     ...
 
@@ -71,6 +78,6 @@ def delete(id:int):
     ...
 
 
-from ._crypto import create,login,decode,update
+from ._crypto import create,login,verify,update
 from ._database import delete
-from . import endpoint as _
+# from . import endpoint as _
