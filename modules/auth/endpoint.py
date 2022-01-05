@@ -12,10 +12,9 @@ LOGIN_FAILURE = lambda:fastapi.Response({
     },404)
 
 
-@app.get("/auth/login")
 def login(email:str,password:str):
     try:
-        user = database._user.search(email=email)
+        user = database.User.search()
     except KeyError:
         return LOGIN_FAILURE()
     else:
@@ -25,7 +24,6 @@ def login(email:str,password:str):
         else:
             return LOGIN_FAILURE()
 
-@app.get("/auth/register")
 def register(name:str,email:str,password:str):
     try:
         user = User.get()
