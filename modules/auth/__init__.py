@@ -1,12 +1,8 @@
 class LoginFailureError(Exception):
-    """Login 
-    """
-    pass
+    "Login Credentials were Invalid"
 
 class BadTokenError(Exception):
-    """[summary]
-    """
-    pass
+    "The Token was Invalid, could be Corrupt, Invalid, Expired"
 
 def create(id:int,password:str):
     """Create a new user sign-in
