@@ -64,7 +64,7 @@ def get(**kwargs) -> dict:
     
     query = "MATCH (n:User)"
     query += _combine_kwargs(LOOKUP,kwargs) 
-    query += DATA_QUERY
+    query += _DATA_QUERY
 
     data = _db_run(query,**kwargs)
     if data:
@@ -82,7 +82,7 @@ def search(limit:int=10,**kwargs) -> list[dict]:
     
     query = "MATCH (u:User)"
     query += _combine_kwargs(LOOKUP,kwargs) 
-    query += DATA_QUERY + "LIMIT $limit"
+    query += _DATA_QUERY + "LIMIT $limit"
     return _db_run(query,limit=limit,**kwargs)
 
 def set(id:int,**kwargs):
