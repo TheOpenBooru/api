@@ -1,8 +1,9 @@
 import os
 from typing import Any
-from .. import db_run,isUnique,isValid
+from .. import _db_run,Validate
+from .. import isUnique as _isUnique
 
-def combine_kwargs(table:dict[str,list],values:dict[str,Any]) -> str:
+def _combine_kwargs(table:dict[str,list],values:dict[str,Any]) -> str:
     query = ""
     for key,value in values.items():
         if key not in table:
@@ -15,7 +16,4 @@ def combine_kwargs(table:dict[str,list],values:dict[str,Any]) -> str:
     return query
 
 
-from .image import Image
-from .tag import Tag
-from .post import Post
-from .user import User
+from . import Tag,Image,User,Post,Comment
