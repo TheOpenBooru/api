@@ -1,15 +1,26 @@
+# Core
 wheel
-
-passlib~=1.7.4
-argon2-cffi
-
-neo4j>=4.4.0
-boto3
-
-jwt>=1.3.1
-numpy
+requests
 python-dotenv
-pillow
 
+# Endpoints
 fastapi
 uvicorn[standard]
+pydantic
+slowapi
+
+# Database
+boto3
+cachetools
+
+# Image
+neo4j>=4.4.0
+numpy
+pillow
+
+# Auth
+cryptography
+pyjwt[crypto]
+passlib>=1.7.4
+argon2-cffi
+password-strength
