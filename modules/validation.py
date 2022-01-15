@@ -6,7 +6,7 @@ class Validate:
     @staticmethod
     def username(name:str) -> bool:
         VALID_CHARS = string.ascii_letters + string.digits + '_'
-        if not(3 < len(name)  < 32):
+        if not(3 < len(name) <= 32):
             return False # Unacceptable Length
         elif sum([x not in VALID_CHARS for x in name]):
             return False # Unacceptable Characters
