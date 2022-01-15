@@ -3,38 +3,50 @@ import sqlite3
 conn = sqlite3.connect('./data/passwords.sqlite3')
 conn.execute("""
     CREATE TABLE IF NOT EXISTS users(
-        id   INT    PRIMARY KEY,
-        hash STRING
+        id      INT    PRIMARY KEY,
+        hash    STRING,
+        secret  STRING
     );""")
 
 
-def create(id:int,hash:str) -> None:
-    if get(id):
-        raise KeyError("Duplicate ID Creation")
+def create(id:int,hash:str):
+    try:
+        get(id)
+    except KeyError:
+        pass
     else:
-        with conn:
-            conn.execute(
-                "INSERT INTO users VALUES(?,?)",
-                (id,hash)
-            )
+        raise KeyError("User ID already exists")
+    
+    with conn:
+        conn.execute(
+            "INSERT INTO users VALUES(?,?,?)",
+            (id,hash,None)
+        )
 
-def get(id:int) -> str:
+def get(id:int) -> tuple[str,str]:
     with conn:
         cur = conn.execute(
-            "SELECT hash FROM users WHERE id=?",
+            "SELECT hash,secret FROM users WHERE id=?",
             (id,)
         )
     data = cur.fetchone()
     if data:
-        return data[0]
+        return data
     else:
-        return ""
+        raise KeyError("User with that ID doesn't exist")
 
-def set(id:int,hash:str) -> None:
+def set_hash(id:int,hash:str):
     with conn:
         conn.execute(
             "UPDATE users SET hash=? WHERE id=?",
             (hash,id)
+        )
+
+def set_2fa(id:int,secret:str | None):
+    with conn:
+        conn.execute(
+            "UPDATE users SET secret=? WHERE id=?",
+            (secret,id)
         )
 
 def delete(id:int) -> None:
@@ -43,3 +55,7 @@ def delete(id:int) -> None:
             "DELETE FROM users WHERE id = ?",
             (id,)
         )
+
+def clear() -> None:
+    with conn:
+        conn.execute("DELETE FROM users")
