@@ -22,26 +22,10 @@ class Validate:
 
     @staticmethod
     def md5(md5:str) -> bool:
-        # Taken From https://regexpattern.com/md5-hash/
-        REGEX = r"^([a-f\d]{32}|[A-F\d]{32})$"
-        valid = bool(re.search(REGEX,md5))
-        return valid
+        REGEX = r"^([0-9a-f]{32}|[A-F0-9]{32})$"
+        return bool(re.match(REGEX,md5))
 
     @staticmethod
-    def sha1(md5:str) -> bool:
-        raise NotImplementedError
-
-class test_Validation(unittest.TestCase):
-    def test_Emails(self):
-        INVALID = [
-            "@example.com",
-            "test@example"
-            ]
-        VALID = [
-            "david@example.com",
-            "llllll@example.com"
-            ]
-        for invalid in INVALID:
-            self.assertFalse(Validate.email(invalid),invalid)
-        for valid in VALID:
-            self.assertTrue(Validate.email(valid),valid)
+    def sha1(sha:str) -> bool:
+        REGEX = r"^([0-9a-f]{40}|[A-F0-9]{40})$"
+        return bool(re.match(REGEX,sha))
