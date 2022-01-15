@@ -1,7 +1,7 @@
 import os
-import random
-import string
-from .. import User,Image,Post,Tag,clear
+from modules.database import clear
+from modules.database.objects import Image,User,Post,Tag
+
 
 os.environ["DEPLOYMENT"] = "TESTING"
 
