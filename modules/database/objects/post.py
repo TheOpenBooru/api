@@ -121,6 +121,7 @@ def get(id:int=None,md5:str=None) -> Post:
 def search(limit:int=32,order:str='created_at',
             tags:list[str]=None,sources:list[str]=None,
             types:list[str]=None,sound:bool=None,
+            post_ids:list[int]=None,
             creator_names:list[str]=None,creator_ids:list[int]=None,
             before:int=None,after:int=None,
             views_less:int=None,views_more:int=None,
@@ -147,7 +148,7 @@ def search(limit:int=32,order:str='created_at',
         query += "MATCH (n)-[:Tagged]->(tag) WHERE tag.name IN $tags"
         kwargs |= {'tags':tags}
     if types != None:
-        query += "WHERE n.type = $types"
+        query += "WHERE n.type IN $types"
         kwargs |= {'types':types}
     if sound != None:
         query += "WHERE n.sound = $sound"
@@ -155,6 +156,10 @@ def search(limit:int=32,order:str='created_at',
     if sources != None:
         query += "WHERE n.source IN $sources"
         kwargs |= {'sources':sources}
+    
+    if post_ids != None:
+        query += "WHERE ID(n) IN $post_ids"
+        kwargs |= {'post_ids':post_ids}
     
     if creator_names != None:
         query += "MATCH (n)-[:Created]->(u:User) WHERE u.name IN $creator_names"
