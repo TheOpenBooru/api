@@ -45,7 +45,7 @@ def send_mail(to:str,subject:str,email_template:str,**kwargs) -> None:
         session.login(_sender_email,_sender_pass)
         session.sendmail(_sender_email, to, message.as_string())
 
-with open('./data/password_reset.html') as f:
+with open('./data/emails/password_reset.html') as f:
     PASSWORD_TEMPLATE = f.read()
 def password_reset(to:str,name:str,link:str):
     """Sends a password reset email to the given email address
