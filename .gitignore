@@ -230,3 +230,5 @@ cython_debug/
 !.vscode/*.code-snippets
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,flask
+.vscode/settings.json
+data/passwords.sqlite3
