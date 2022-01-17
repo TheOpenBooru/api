@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from . import _db_run,_combine_kwargs,_isUnique,Validate
 
 _DATA_QUERY = """
@@ -10,29 +11,42 @@ _DATA_QUERY = """
         n.mimetype as mimetype
 """
 
-def create(url:str,md5:str,height:int,width:int,mimetype:str) -> int:
+@dataclass(frozen=True)
+class Image:
+    id:int
+    url:str
+    md5:str
+    height:int
+    width:int
+    mimetype:str
+
+
+def create(url:str,md5:str,height:int,width:int,mimetype:str) -> Image:
     """Create a Image object
 
     Raises:
-    - ValueError
-    - KeyError
+    - ValueError: Property is not valid
+    - KeyError: Image with that MD5 or URL already exists
     """
+    if not Validate.url(url):
+        raise ValueError ("URL is not a valid md5")
     if not Validate.md5(md5):
-        raise ValueError ("MD% is not a valid md5")
-    query = _db_run("""
-        CREATE (n:Image {
+        raise ValueError ("MD5 is not a valid md5")
+    if not _isUnique.image(md5,url):
+        raise KeyError("Image with that MD5 or URL already exists")
+    query = """CREATE (n:Image {
             url:$url,
             md5:$md5,
             height:$height,
             width:$width,
-            mimetype:$mime
-        })
-        RETURN ID(n)
-        """,
-        url=url,md5=md5,height=height,width=width,mime=mimetype
+            mimetype:$mimetype
+        })"""
+    query += _DATA_QUERY
+    data = _db_run(
+        query,
+        url=url,md5=md5,height=height,width=width,mimetype=mimetype
     )
-    
-    return query[0]['ID(n)']
+    return Image(**data[0])
 
 def get(**kwargs):
     """Get an image from a property
@@ -61,7 +75,7 @@ def get(**kwargs):
     
     if not data:
         raise KeyError("No Image Found with that property")
-    return data[0]
+    return Image(**data[0])
 
 def set(id:int,**kwargs):
     """Set the values of an image object
@@ -88,7 +102,7 @@ def set(id:int,**kwargs):
     query = "MATCH (n:Image) WHERE ID(n) = $id"
     query += _combine_kwargs(LOOKUP,kwargs)
     query += _DATA_QUERY
-    
+
     _db_run(query,id=id,**kwargs)
 
 def delete(id:int):

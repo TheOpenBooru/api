@@ -1,5 +1,6 @@
 from . import _db_run,_combine_kwargs
 from cachetools import cached,TTLCache
+from dataclasses import dataclass
 
 _DATA_QUERY = """
     MATCH (n:Tag)-[:Tagged]->(p:Post)
@@ -10,29 +11,40 @@ _DATA_QUERY = """
         COUNT(n) as count
 """
 
-def create(name:str,namespace:str):
-    _db_run("""
+@dataclass(frozen=True)
+class Tag:
+    created_at:int
+    name:str
+    namespace:str
+    count:int
+
+def create(name:str,namespace:str) -> Tag:
+    query = """
         CREATE (t:Tag {
             created_at:timestamp(),
             name:$name,
             namespace:$namespace
         })
-        """,
+        """
+    query += _DATA_QUERY
+    data = _db_run(
+        query,
         name=name,namespace=namespace
     )
+    return Tag(**data[0])
 
 
-def get(name:str) -> dict:
+def get(name:str) -> Tag:
     query = "MATCH (t:Tag) WHERE t.name = $name" + _DATA_QUERY
     data = _db_run(query,name=name)
     
     if not data:
         raise KeyError("Tag with that Name could not be found")
     else:
-        return data[0]
+        return Tag(**data[0])
 
 
-def search(limit:int=32,order:str='count',**kwargs) -> list[dict]:
+def search(limit:int=32,order:str='count',**kwargs) -> list[Tag]:
     """Search for tags based on the keyword arguments
     
     Args:
@@ -52,10 +64,10 @@ def search(limit:int=32,order:str='count',**kwargs) -> list[dict]:
         'name':'n.name',
     }
     LOOKUP = {
-        "name_regex": [str,"WHERE n.name ~= $name_regex"],
-        "namespace" : [str,"WHERE n.namespace = $namespace"],
-        "before"    : [int,"WHERE n.created_at < $before"],
-        "after"     : [int,"WHERE n.created_at > $after"],
+        "name_regex": "WHERE n.name ~= $name_regex",
+        "namespace" : "WHERE n.namespace = $namespace",
+        "before"    : "WHERE n.created_at < $before",
+        "after"     : "WHERE n.created_at > $after",
     }
     
     if order not in ORDERS:
@@ -65,7 +77,8 @@ def search(limit:int=32,order:str='count',**kwargs) -> list[dict]:
     query += _combine_kwargs(LOOKUP,kwargs)
     query += _DATA_QUERY + f"ORDER BY {ORDERS[order]}" + "LIMIT $limit"
     
-    return _db_run(query,limit=limit,**kwargs)
+    data = _db_run(query,limit=limit,**kwargs)
+    return [Tag(**x) for x in data]
 
 
 def set(name:str,**kwargs):
@@ -80,8 +93,8 @@ def set(name:str,**kwargs):
         TypeError:  Invalid kwarg type
     """
     LOOKUP = {
-        "name"      : [str,"SET n.name = $name"],
-        "namespace" : [str,"SET n.namespace = $namespace"],
+        "name"      : "SET n.name = $name",
+        "namespace" : "SET n.namespace = $namespace",
     }
     
     query = "MATCH (n:Tag) WHERE n.name = $name"
