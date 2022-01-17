@@ -42,7 +42,7 @@ def set_hash(id:int,hash:str):
             (hash,id)
         )
 
-def set_2fa(id:int,secret:str | None):
+def set_2fa(id:int,secret:str):
     with conn:
         conn.execute(
             "UPDATE users SET secret=? WHERE id=?",
