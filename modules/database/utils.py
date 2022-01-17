@@ -32,17 +32,9 @@ class isUnique:
         return not bool(result)
 
     @staticmethod
-    def image_md5(md5:str) -> bool:
+    def image(md5:str,url:str) -> bool:
         result = _db_run(
-                "MATCH (n:Image {md5:$hash}) RETURN n",
-                hash=md5
-            )
-        return not bool(result)
-    
-    @staticmethod
-    def image_url(url:str) -> bool:
-        result = _db_run(
-                "MATCH (n:Image {url:$url}) RETURN n",
-                url=url
+                "MATCH (n:Image {md5:$hash,url:$url}) RETURN n",
+                hash=md5,url=url
             )
         return not bool(result)
