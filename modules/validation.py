@@ -14,11 +14,14 @@ class Validate:
             return True
 
     @staticmethod
+    def url(email:str) -> bool:
+        REGEX = r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"
+        return bool(re.match(REGEX,email))
+
+    @staticmethod
     def email(email:str) -> bool:
-        # Taken From https://emailregex.com/
         REGEX = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
-        vaid = bool(re.search(REGEX,email))
-        return vaid
+        return bool(re.match(REGEX,email))
 
     @staticmethod
     def md5(md5:str) -> bool:
