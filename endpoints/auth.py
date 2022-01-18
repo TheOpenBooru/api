@@ -11,7 +11,7 @@ router = APIRouter()
 @router.get('/captcha_sitekey')
 # @app.state.limiter.limit("5/minute")
 def get_sitekey() -> str:
-    return captcha.SITEKEY
+    return captcha.sitekey()
 
 @router.post('/signup')
 # @app.state.limiter.limt("2/minute")
