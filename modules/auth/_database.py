@@ -1,4 +1,5 @@
 import sqlite3
+from typing import Union
 
 conn = sqlite3.connect('./data/passwords.sqlite3')
 conn.execute("""
@@ -42,7 +43,7 @@ def set_hash(id:int,hash:str):
             (hash,id)
         )
 
-def set_2fa(id:int,secret:str):
+def set_2fa(id:int,secret:Union[str,None]):
     with conn:
         conn.execute(
             "UPDATE users SET secret=? WHERE id=?",
