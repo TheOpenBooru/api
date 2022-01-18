@@ -1,7 +1,9 @@
 from . import _database
-
 from passlib.hash import argon2 as _argon2
 from password_strength import PasswordPolicy as _Policy
+
+class NoPasswordSavedError(Exception):
+    "The user has no password saved"
 
 def _hashPassword(password:str) -> str:
     return _argon2.using(rounds=4).hash(password)
@@ -9,22 +11,14 @@ def _hashPassword(password:str) -> str:
 def _verifyPassword(password:str,hash:str) -> bool:
     return _argon2.verify(password, hash)
 
-
-class NoPasswordSavedError(Exception):
-    "The user has no password saved"
-
 _policy = _Policy.from_names(strength=0.4,length=8)
-
 def isPasswordInvalid(password:str) -> bool:
     MIN_PASSWORD_LENGTH = 8
     MAX_PASSWORD_LENGTH = 128
-    if len(password) > MAX_PASSWORD_LENGTH:
-        return True
-    elif len(password) < MIN_PASSWORD_LENGTH:
-        return True
-    elif _policy.test(password) == False:
-        return True
-    return False
+    return (
+        len(password) > MAX_PASSWORD_LENGTH or
+        len(password) < MIN_PASSWORD_LENGTH or
+        _policy.test(password) == False)
 
 def create(id:int,password:str):
     """Create a new user sign-in
