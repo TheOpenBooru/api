@@ -15,7 +15,7 @@ class Validate:
 
     @staticmethod
     def url(email:str) -> bool:
-        REGEX = r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"
+        REGEX = r"(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?"
         return bool(re.match(REGEX,email))
 
     @staticmethod
