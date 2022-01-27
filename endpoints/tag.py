@@ -1,4 +1,4 @@
-from ..modules.database import tag
+from modules.database import tag
 from fastapi import APIRouter
 
 router = APIRouter()
