@@ -27,7 +27,6 @@ def create(id:int,password:str):
         KeyError: User already exists
         ValueError: Password Does Not Meet Requirements
     """
-    ...
     if isPasswordInvalid(password):
         raise ValueError("Password Does Not Meet Requirements")
     hash = _hashPassword(password)
