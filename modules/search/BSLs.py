@@ -1,5 +1,5 @@
 import regex
-from .types import SearchParameters
+from . import SearchParameters
 
 defaults = SearchParameters()
 

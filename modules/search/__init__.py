@@ -1,2 +1,2 @@
 from .BSLs import parseBSLs
-from .types import SearchParameters
+from .search import SearchParameters
