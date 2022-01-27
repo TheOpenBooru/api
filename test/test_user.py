@@ -31,22 +31,24 @@ class test_Sign_In_With_Correct_Passwrord(unittest.TestCase):
         self.assertTrue(user.login(1,VALID_PASSWORD))
 
 class test_Prevent_Sign_In_With_Wrong_Password(unittest.TestCase):
+    def setUp(self) -> None:
+        user.create(1,VALID_PASSWORD)
     def tearDown(self) -> None:
         user.clear()
-    def test_a(self):
-        user.create(1,VALID_PASSWORD+'i')
-        self.assertFalse(user.login(1,VALID_PASSWORD+'1'))
+    def test_invalid_password(self):
+        self.assertFalse(user.login(1,VALID_PASSWORD+"_"))
+    def test_empty_password(self):
+        self.assertFalse(user.login(1,""))
 
-class test_Password_Update_Changes_Password(unittest.TestCase):
+class test_Password_Updte_Changes_Password(unittest.TestCase):
     def tearDown(self) -> None:
         user.clear()
     def test_Changing_P(self):
-        Pass_a = VALID_PASSWORD
-        Pass_b = VALID_PASSWORD+'a'
-        user.create(1,Pass_a)
-        user.change_password(1,Pass_b)
-        self.assertFalse(user.login(1,Pass_a))
-        self.assertTrue(user.login(1,Pass_b))
+        CHANGED_PASSWORD = VALID_PASSWORD+'a'
+        user.create(1,VALID_PASSWORD)
+        user.change_password(1,CHANGED_PASSWORD)
+        self.assertFalse(user.login(1,VALID_PASSWORD))
+        self.assertTrue(user.login(1,CHANGED_PASSWORD))
 
 class test_Password_Change_Failed(unittest.TestCase):
     def tearDown(self) -> None:

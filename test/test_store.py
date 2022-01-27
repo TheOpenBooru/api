@@ -67,10 +67,9 @@ class test_Stored_Data_Shouldnt_Be_Changed(unittest.TestCase):
         self.assertEqual(store.get('example_key'), self.data)
 
 class test_Data_Should_Be_Deletable(unittest.TestCase):
+    data = b'Example Data'
     def setUp(self):
-        store.put('example_key', data)
-        ...
+        store.put('example_key', self.data)
     def test_Data_Is_Same(self):
-        data = b'Example\r\nData \n'
-        store.put('example_key', data)
-        self.assertEqual(store.get('example_key'), data)
+        store.delete('example_key')
+        self.assertRaises(FileNotFoundError,store.get,'example_key')
