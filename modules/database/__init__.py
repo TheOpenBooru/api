@@ -4,8 +4,8 @@ import neo4j as _neo
 
 try:
     _driver:_neo.BoltDriver =_neo.GraphDatabase.driver(
-        os.getenv('NEO_URI'),
-        auth=(os.getenv('NEO_USER'),os.getenv('NEO_PASS')),
+        "bolt://localhost:7687",
+        auth=("neo4j","password"),
         connection_acquisition_timeout=5,
         connection_timeout=3
         ) # type: ignore

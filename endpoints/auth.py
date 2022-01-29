@@ -1,4 +1,3 @@
-from . import app
 import logging
 from typing import Any
 from fastapi import Request,Query,APIRouter

@@ -2,6 +2,7 @@
 wheel
 requests
 python-dotenv
+regex
 
 # Endpoints
 fastapi
