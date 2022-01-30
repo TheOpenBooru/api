@@ -4,7 +4,7 @@ import os
 import time
 import json
 
-_SECRET = os.environ['JWT_SECRET']
+_SECRET = os.environ.get('JWT_SECRET',default='pepper')
 
 class BadTokenError(Exception):
     "The Token was Invalid, could be Corrupt, Invalid, Expired"
