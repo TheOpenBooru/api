@@ -3,7 +3,7 @@ import jwt as _jwt
 import os
 import time
 import json
-
+ 
 _SECRET = os.environ.get('JWT_SECRET',default='pepper')
 
 class BadTokenError(Exception):
@@ -41,7 +41,7 @@ def decode(token:str) -> dict:
         header = _jwt.get_unverified_header(token)
         data = _jwt.decode(
             token,
-            key=os.getenv('JWT_SECRET'),
+            key=_SECRET,
             algorithms=[header['alg']]
         )
     except Exception:
