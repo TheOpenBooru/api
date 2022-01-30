@@ -11,9 +11,7 @@ pydantic
 slowapi
 
 # Database
-boto3
 cachetools
-neo4j>=4.4.0
 
 # Image
 numpy
