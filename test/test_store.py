@@ -70,6 +70,6 @@ class test_Data_Should_Be_Deletable(unittest.TestCase):
     data = b'Example Data'
     def setUp(self):
         store.put('example_key', self.data)
-    def test_Data_Is_Same(self):
+    def test_Deleting_Key(self):
         store.delete('example_key')
         self.assertRaises(FileNotFoundError,store.get,'example_key')
