@@ -1,6 +1,6 @@
 import unittest
 import string
-from modules import Validate
+from modules import validation
 
 class test_Username(unittest.TestCase):
     def test_valid_usernames(self):
@@ -11,7 +11,7 @@ class test_Username(unittest.TestCase):
             'f'*32 # Max Length
             ]
         for valid in VALID:
-            self.assertTrue(Validate.username(valid),valid)
+            self.assertTrue(validation.username(valid),valid)
     
     def test_invalid_usernames(self):
         INVALID = [
@@ -24,7 +24,7 @@ class test_Username(unittest.TestCase):
         INVALID.remove('examplename'+'_') # Only valid punctuation
         
         for invalid in INVALID:
-            self.assertFalse(Validate.username(invalid),invalid)
+            self.assertFalse(validation.username(invalid),invalid)
 
 
 class test_URL(unittest.TestCase):
@@ -38,7 +38,7 @@ class test_URL(unittest.TestCase):
             "https://www.example.com?a=2", # Parameter
             ]
         for valid in VALID:
-            self.assertTrue(Validate.url(valid),valid)
+            self.assertTrue(validation.url(valid),valid)
     
     def test_valid_urls(self):
         INVALID = [
@@ -51,7 +51,7 @@ class test_URL(unittest.TestCase):
             "example.com", # No Protocol
             ]
         for invalid in INVALID:
-            self.assertFalse(Validate.url(invalid),invalid)
+            self.assertFalse(validation.url(invalid),invalid)
 
 
 class test_Email(unittest.TestCase):
@@ -61,7 +61,7 @@ class test_Email(unittest.TestCase):
             "test@example"
             ]
         for invalid in INVALID:
-            self.assertFalse(Validate.email(invalid),invalid)
+            self.assertFalse(validation.email(invalid),invalid)
         
     def test_valid_emails(self):
         VALID = [
@@ -69,7 +69,7 @@ class test_Email(unittest.TestCase):
             "llllll@example.com"
             ]
         for valid in VALID:
-            self.assertTrue(Validate.email(valid),valid)
+            self.assertTrue(validation.email(valid),valid)
 
 
 class test_MD5(unittest.TestCase):
@@ -81,7 +81,7 @@ class test_MD5(unittest.TestCase):
             "c3499C2729730a7F807EdB8676A92DCB", # Mixed case
             ]
         for invalid in INVALID:
-            self.assertFalse(Validate.md5(invalid),invalid)
+            self.assertFalse(validation.md5(invalid),invalid)
     
     def test_valid_hashes(self):
         VALID = [
@@ -89,23 +89,25 @@ class test_MD5(unittest.TestCase):
             "C3499C2729730A7F807EFB8676A92DCB",
             ]
         for valid in VALID:
-            self.assertTrue(Validate.md5(valid),valid)
+            self.assertTrue(validation.md5(valid),valid)
 
 
-class test_SHA(unittest.TestCase):
+class test_SHA256(unittest.TestCase):
     def test_invalid_hashes(self):
         INVALID = [
-            'f6949a8c7d5b90b4a698660bbfb9431503fbb9955' # Too Long
-            'f6949a8c7d5b90b4a698660bbfb9431503fbb99' # Too Short
-            'f6949a8c7d5b90b4a698660bbfb9431503fbb99G' # Wrong Char
-            'f6949a8c7d5b90b4a698660bbfb9431503fbB99' # Mixed Case
+            # Too Long
+                '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a085' 
+            # Too Short
+                '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a0' 
+            # Wrong Char
+                '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a0G'
             ]
         for invalid in INVALID:
-            self.assertFalse(Validate.sha1(invalid),invalid)
+            self.assertFalse(validation.sha256(invalid),invalid)
 
     def test_valid_hashes(self):
         VALID = [
-            'f6949a8c7d5b90b4a698660bbfb9431503fbb995'
+            '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a0'
             ]
         for valid in VALID:
-            self.assertTrue(Validate.sha1(valid),valid)
+            self.assertTrue(validation.sha256(valid),valid)

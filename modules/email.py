@@ -1,4 +1,4 @@
-from . import Validate
+from modules import validation
 import os
 import smtplib
 from email.mime.multipart import MIMEMultipart as _MIMEMultipart
@@ -11,7 +11,7 @@ _sender_pass:str = os.getenv('SMTP_PASS') # type: ignore
 _smtp_server:tuple[str,int] = os.getenv('SMTP_SERVER'), os.getenv('SMTP_PORT') # type: ignore
 _jinja_env = _jinja2.Environment(loader=_jinja2.BaseLoader())
 
-def send_mail(to:str,subject:str,email_template:str,**kwargs) -> None:
+def send_mail(to:str,subject:str,email_template:str,**kwargs):
     """Send an email using the given template and arguments.
 
     Args:
@@ -24,7 +24,7 @@ def send_mail(to:str,subject:str,email_template:str,**kwargs) -> None:
         ValueError: The to email address is not valid
         ValueError: The subject is too long, longer than 78 characters
     """
-    if not Validate.email(to):
+    if not validation.email(to):
         raise ValueError('The to email address is not valid')
     if len(subject) > 78:
         raise ValueError('The subject is to long')
