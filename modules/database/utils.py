@@ -1,40 +1,21 @@
-import os
-from . import _driver
-
-def _db_run(query,**kwargs):
-    with _driver.session() as session:
-        return session.write_transaction(
-            lambda tx: tx.run(query,**kwargs).data()
-        )
+from . import objects as _objects
 
 def clear():
-    "Clears the database, requires env DEPLOYMENT set to 'TESTING'"
-    if os.getenv("DEPLOYMENT") == "TESTING":
-        _db_run("MATCH (n) DETACH DELETE n")
-    else:
-        raise Exception("Attempted to clear database in production")
+    _objects.Post._posts = {}
+    _objects.User._users = {}
+    _objects.Tag._tags = {}
+    _objects.Image._images = {}
+
 
 class isUnique:
     @staticmethod
     def user_name(name:str) -> bool:
-        result = _db_run(
-                "MATCH (n:User {name:$name}) RETURN n",
-                name=name
-            )
-        return not bool(result)
+        raise NotImplementedError
 
     @staticmethod
     def user_email(email:str) -> bool:
-        result = _db_run(
-                "MATCH (n:User {email:$email}) RETURN n",
-                email=email
-            )
-        return not bool(result)
+        raise NotImplementedError
 
     @staticmethod
     def image(md5:str,url:str) -> bool:
-        result = _db_run(
-                "MATCH (n:Image {md5:$hash,url:$url}) RETURN n",
-                hash=md5,url=url
-            )
-        return not bool(result)
+        raise NotImplementedError

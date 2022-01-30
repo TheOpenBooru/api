@@ -1,19 +1,6 @@
 version: "3.3"
 services:
-  neo4j:
-    image: "neo4j:latest"
-    volumes:
-      - "./data/neo4j:/data"
-      - "./data/neo4j/logs:/logs"
-      - "./data/neo4j/conf:/conf"
-      - "./data/neo4j/plugins:/plugins"
-      - "./data/neo4j/import:/var/lib/neo4j/import"
-    environment:
-      NEO4J_AUTH: "neo4j/password"
-      NEO4J_dbms_default_listen_address: "localhost"
   web:
     build: .
     ports:
       - "57255:57255"
-    depends_on:
-      - neo4j
