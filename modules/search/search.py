@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from endpoints.types import Post
 
 @dataclass(frozen=True)
 class SearchParameters:
@@ -8,3 +9,5 @@ class SearchParameters:
     sort: str = "created"
     isAscending: bool = False
 
+def searchPosts(params:SearchParameters) -> list[Post]:
+    ...
