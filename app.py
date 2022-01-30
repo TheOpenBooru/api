@@ -21,4 +21,4 @@ app.include_router(tag.router,prefix="/tag")
 app.include_router(tag.router,prefix="/images")
 
 if __name__ == "__main__":
-    uvicorn.run("app:app",host=os.getenv('HOSTNAME'), port=os.getenv('PORT'),debug=True)
+    uvicorn.run("app:app",host=os.getenv('HOSTNAME'), port=int(os.getenv('PORT')),debug=True)
