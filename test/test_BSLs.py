@@ -67,8 +67,8 @@ class test_Duplicate_Limit_Tags_Should_Use_Last_Occuring_One(unittest.TestCase):
         self.assertEqual(parseBSLs("limit:10 limit:12"), 12)
 
 
-class test_BSLs(unittest.TestCase):
-    def test_a(self):
+class test_Sort_Should_Correctly_Parse_Sort_Type(unittest.TestCase):
+    def test_Regular_Sort_Type(self):
         self.assertEqual(parseBSLs("sort:id").sort, "id")
         self.assertEqual(parseBSLs("sort:name").sort, "name")
         self.assertEqual(parseBSLs("sort:created").sort, "created")
@@ -89,7 +89,7 @@ class test_Sort_Order_Should_Be_Set_Correctly(unittest.TestCase):
 
 
 class test_Sort_Should_Not_Be_Parsed_With_Invalid_Value(unittest.TestCase):
-    def test_c(self):
+    def test_Invalid_Value(self):
         assertDoesntParse("sort:")
         assertDoesntParse("sort:-")
         assertDoesntParse("sort:_")
@@ -97,8 +97,9 @@ class test_Sort_Should_Not_Be_Parsed_With_Invalid_Value(unittest.TestCase):
 
 
 class test_Sort_Order_With_Order_as_Value_Shouldnt_Be_Parsed(unittest.TestCase):
-    assertDoesntParse("sort:asc")
-    assertDoesntParse("sort:desc")
+    def test_Bad_Sort(self):
+        assertDoesntParse("sort:asc")
+        assertDoesntParse("sort:desc")
 
 
 class test_Sort_Invalid_Prefix_Shouldnt_Be_Parsed(unittest.TestCase):

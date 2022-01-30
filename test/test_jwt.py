@@ -14,7 +14,7 @@ import time
 import unittest
 
 
-class test_Tokens_are_strings(unittest.TestCase):
+class test_Tokens_Are_Strings(unittest.TestCase):
     def test_Tokens_Are_Strings(self):
         token = jwt.create(0)
         self.assertIsInstance(token, str)
