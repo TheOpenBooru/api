@@ -63,7 +63,6 @@ class test_Stored_Data_Shouldnt_Be_Changed(unittest.TestCase):
     def tearDown(self):
         store.delete('example_key')
     def test_Data_Is_Same(self):
-        store.put('example_key', self.data)
         self.assertEqual(store.get('example_key'), self.data)
 
 class test_Data_Should_Be_Deletable(unittest.TestCase):
