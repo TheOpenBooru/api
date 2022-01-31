@@ -78,7 +78,6 @@ class test_MD5(unittest.TestCase):
             "c3499C2729730a7F807EdB8676A92DC", # Too Short
             "c3499C2729730a7F807EdB8676A92DCDD", # Too Long
             "c3499C2729730a7F807EdB8676A92DCG", # Wrong Char
-            "c3499C2729730a7F807EdB8676A92DCB", # Mixed case
             ]
         for invalid in INVALID:
             self.assertFalse(validation.md5(invalid),invalid)
@@ -96,18 +95,18 @@ class test_SHA256(unittest.TestCase):
     def test_invalid_hashes(self):
         INVALID = [
             # Too Long
-                '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a085' 
+                'd04b98f48e8f8bcc15c6ae5ac050801cd6dcfd428fb5f9e65c4e16e7807340faa'
             # Too Short
-                '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a0' 
+                'd04b98f48e8f8bcc15c6ae5ac050801cd6dcfd428fb5f9e65c4e16e7807340f'
             # Wrong Char
-                '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a0G'
+                'd04b98f48e8f8bcc15c6ae5ac050801cd6dcfd428fb5f9e65c4e16e7807340fG'
             ]
         for invalid in INVALID:
             self.assertFalse(validation.sha256(invalid),invalid)
 
     def test_valid_hashes(self):
         VALID = [
-            '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a0'
+            'd04b98f48e8f8bcc15c6ae5ac050801cd6dcfd428fb5f9e65c4e16e7807340fa'
             ]
         for valid in VALID:
             self.assertTrue(validation.sha256(valid),valid)

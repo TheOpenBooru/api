@@ -28,9 +28,9 @@ def email(email:str) -> bool:
     return bool(re.match(REGEX,email))
     
 def md5(md5:str) -> bool:
-    REGEX = r"^([0-9a-fA-F]{32}$"
+    REGEX = r"^[0-9a-fA-F]{32}$"
     return bool(re.match(REGEX,md5))
 
 def sha256(sha:str) -> bool:
-    REGEX = r"^([0-9a-fA-F]{64}$"
+    REGEX = r"^[0-9a-fA-F]{64}$"
     return bool(re.match(REGEX,sha))
