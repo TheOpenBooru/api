@@ -1,3 +1,4 @@
+from modules import settings
 import os
 from pathlib import Path
 
@@ -26,7 +27,9 @@ def get(key:str) -> bytes:
 
 def url(key:str) -> str:
     get(key)
-    return f"http://{os.getenv('HOSTNAME')}:{os.getenv('PORT')}/files/{key}"
+    hostname = settings.get('settings.site.hostname')
+    port = settings.get('settings.site.port')
+    return f"http://{hostname}:{port}/files/{key}"
 
 
 def delete(key:str):

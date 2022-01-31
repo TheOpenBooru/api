@@ -1,37 +1,34 @@
-from . import _database
+from modules import settings
 import jwt as _jwt
 import os
 import time
 import json
- 
-_SECRET = os.environ.get('JWT_SECRET',default='pepper')
+
 
 class BadTokenError(Exception):
     "The Token was Invalid, could be Corrupt, Invalid, Expired"
 
-def create(id:int,data:dict={},expiration:int=6604800) -> str:
-    """Create a JWT
-
-    Raises:
+def create(id:int,data:dict={},expiration:int=None) -> str:
+    """Raises:
         TypeError: Data cannot be saved as JSON
     """
     try:
         json.dumps(data)
     except Exception:
         raise TypeError("Data cannot be saved as JSON")
-    
+
+    if expiration == None:
+        expiration = settings.get('settings.jwt.expiration')
+    data |= {'exp':time.time() + expiration} # type: ignore
     data |= {'user_id':id}
-    data |= {'exp':time.time() + expiration}
     return _jwt.encode(
         data,
-        _SECRET,
+        settings.get('config.jwt_secret'),
         algorithm="HS256"
     )
 
 def decode(token:str) -> dict:
-    """Validate and Get Data from a JWT
-    
-    Raises:
+    """Raises:
         BadTokenError: Malformed or Invalid Token
     
     Returns:
@@ -41,7 +38,7 @@ def decode(token:str) -> dict:
         header = _jwt.get_unverified_header(token)
         data = _jwt.decode(
             token,
-            key=_SECRET,
+            key=settings.get('config.jwt_secret'),
             algorithms=[header['alg']]
         )
     except Exception:

@@ -1,6 +1,7 @@
 import os
 import uvicorn
 from fastapi import FastAPI as _FastAPI
+from modules import settings
 from endpoints import post,tag,file
 
 import dotenv
@@ -21,4 +22,9 @@ app.include_router(tag.router,prefix="/tag")
 app.include_router(tag.router,prefix="/images")
 
 if __name__ == "__main__":
-    uvicorn.run("app:app",host=os.getenv('HOSTNAME'), port=int(os.getenv('PORT')),debug=True)
+    uvicorn.run(
+        "app:app",
+        host=settings.get('settings.site.hostname'),
+        port=settings.get('settings.site.port'),
+        debug=True
+    )

@@ -1,13 +1,14 @@
+from modules import settings
 import os
 import logging
 import requests
 
-def sitekey():
-    return str(os.getenv("HCAPTCHA_SITE_KEY"))
+def sitekey() -> str:
+    return settings.get('config.hcaptcha.sitekey')
 
 def verify(response:str) -> bool:
     r = requests.post("https://hcaptcha.com/siteverify", data={
-        "secret": os.getenv("HCAPTCHA_SECRET"),
+        "secret": settings.get('config.hcaptcha.secret'),
         "response": response
     })
     if r.ok:

@@ -1,7 +1,6 @@
+from modules import settings
 import pyotp
 import re
-import secrets
-import string
 from . import _database
 
 class No2FAEnabled(Exception):
@@ -23,9 +22,7 @@ def generate_url(secret:str,user:str,issuer:str) -> str:
     return topt.provisioning_uri(name=user,issuer_name=issuer)
 
 def update(id:int,secret:str):
-    """Updates the 2DA on a User
-
-    Raises:
+    """Raises:
         KeyError: User with that ID doesn't exist
         ValueError: OTP is invalid
     """
@@ -44,7 +41,8 @@ def verify(id:int,otp:str) -> bool:
     _database.get(id)
     secret = _get_secret(id)
     totp = pyotp.TOTP(secret)
-    return totp.verify(otp,valid_window=1)
+    valid_window = settings.get('settings.otp.valid_window')
+    return totp.verify(otp,valid_window=valid_window)
 
 def remove(id:int):
     """Removes the 2FA from a User

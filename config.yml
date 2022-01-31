@@ -1,0 +1,41 @@
+config:
+  password_pepper: ""
+  jwt_secret: ""
+  hcaptcha:
+    sitekey: ""
+    secret: ""
+  smtp:
+    email: ""
+    password: ""
+    hostname: ""
+    port: 0
+
+settings:
+  deployment: TESTING
+  site:
+    name: Open Booru
+    hostname: 0.0.0.0
+    port: 57255
+  jwt:
+    expiration: 86400 # Token Expiration time in seconds
+  otp:
+    valid_window: 1 # The previous N OTP codes are valid
+  image:
+    thumbnail:
+      max_width: 250
+      max_height: 250
+    preview:
+      max_width: 1600
+      max_height: 1600
+
+testing:
+  value:
+    str: sample text
+    int: 64
+    float: 6.4
+    bool: false
+  type: 
+    str: ""
+    int: 0
+    float: 0.0
+    bool: true
