@@ -20,3 +20,14 @@ def encode(img:bytes,target:tuple[int,int] = None) -> bytes:
         ValueError: Invalid Image Data
     """
     raise NotImplementedError
+
+def getImageData(img:bytes) -> tuple[int,int,str]:
+    """Raises:
+        ValueError: Invalid Image Data
+
+    Returns:
+        int: Width
+        int: Height
+        str: Image Format
+    """
+    raise NotImplementedError
