@@ -13,9 +13,11 @@ def _get_secret(id:int) -> str:
     return user[1]
 
 def generate_secret():
+    "Generates a 2FA Secret"
     return pyotp.random_base32()
 
 def generate_url(secret:str,user:str,issuer:str) -> str:
+    "Generates a URL for Authenticator Apps"
     topt = pyotp.totp.TOTP(secret)
     return topt.provisioning_uri(name=user,issuer_name=issuer)
 
@@ -24,9 +26,9 @@ def update(id:int,secret:str):
         KeyError: User with that ID doesn't exist
         ValueError: OTP is invalid
     """
+    _database.get(id)
     if not re.match('/^[A-Z0-7]{32}$/',secret):
         raise ValueError("Invalid Secret")
-    _database.get(id)
     _database.set_2fa(id,secret)
 
 def verify(id:int,otp:str) -> bool:

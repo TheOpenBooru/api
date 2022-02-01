@@ -1,4 +1,4 @@
-import re
+import regex
 from . import SearchParameters
 
 defaults = SearchParameters()
@@ -19,16 +19,10 @@ def parseBSLs(query: str) -> SearchParameters:
 
 
 def _parseSort(query: str) -> tuple[str, bool]:
-    # match = re.match(r"(?<=(\s|^)sort:)[a-z]*(:(asc|desc))?(?=\s|$)", query)
-    # if match:
-    #     sort = match.string
-    #     match = re.match(rf"(?<=(\s|^)sort:{sort}:)(asc|desc)?(?=\s|$)", query)
-        
-    # else:
     return defaults.sort, defaults.isAscending
 
 def _parseLimit(query: str) -> int:
-    match = re.match(r"(?<=limit:)[1-9][0-9]*", query)
+    match = regex.match(r"(?<=limit:)[1-9][0-9]*", query)
     if match:
         return int(match.string)
     else:
@@ -36,16 +30,16 @@ def _parseLimit(query: str) -> int:
 
 
 def _parseIncludeTags(query: str) -> list[str]:
-    match = re.findall(r"(?<=^|\s)[a-z0-9_()]*(?=$|\s)", query)
+    match = regex.match(r"(?<=^|\s)[a-z0-9_()]*(?=$|\s)", query)
     if match:
-        return list(set(match))
+        return list(set(match.groups()))
     else:
         return defaults.include_tags
 
 
 def _parseExcludeTags(query: str) -> list[str]:
-    match = re.findall(r"(?<=(^|\s)-)[a-z_()0-9]*", query)
+    match = regex.match(r"(?<=(^|\s)-)[a-z_()0-9]*", query)
     if match:
-        return list(set(match))
+        return list(set(match.groups()))
     else:
-        return defaults.include_tags
+        return defaults.exclude_tags

@@ -1,5 +1,6 @@
 config:
   password_pepper: ""
+  jwt_secret: ""
   hcaptcha:
     sitekey: ""
     secret: ""
@@ -11,29 +12,21 @@ config:
 
 settings:
   deployment: TESTING
-  password:
-    min_length: 8
-    strength: 0.3 #
   site:
     name: Open Booru
     hostname: 0.0.0.0
     port: 57255
   jwt:
-    jwt_secret: "./data/jwt.prev" # Used to sign JWT, ensure it's long and secure
     expiration: 86400 # Token Expiration time in seconds
   otp:
     valid_window: 1 # The previous N OTP codes are valid
-  posts:
-    required_aprroval: true
+  image:
     thumbnail:
-      quality: 85 # 1-100
-      max_dimensions: [250,250] # Max dimensions for downscaling
+      max_width: 250
+      max_height: 250
     preview:
-      quality: 95
-      max_dimensions: [1600,1600]
-    full:
-      quality: 100
-      max_dimensions: [4000,4000]
+      max_width: 1600
+      max_height: 1600
 
 testing:
   value:
@@ -41,10 +34,8 @@ testing:
     int: 64
     float: 6.4
     bool: false
-    array: [1,2,3]
   type: 
     str: ""
     int: 0
     float: 0.0
     bool: true
-    array: []

@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from modules import types
 
 @dataclass()
 class User:
@@ -19,36 +18,14 @@ class User:
     blocked:list[int]
     upvotes:list[int]
     downvotes:list[int]
-    def to_profile(self) -> types.Profile:
-        return types.Profile(
-            id=self.id,created_at=self.created_at,
-            level=self.level,name=self.name,
-            description=self.description,
-            posts=self.posts,comments=self.comments,
-            email=self.email,settings=self.settings,
-            history=self.history,
-            favourites=self.favourites,
-            blocked=self.blocked
-        )
-    def to_user(self) -> types.User:
-        return types.User(
-            id=self.id,created_at=self.created_at,
-            level=self.level,name=self.name,
-            description=self.description,
-            posts=self.posts,comments=self.comments
-        )
 
 @dataclass()
 class Image:
+    id:int
     url:str
     height:int
     width:int
     mimetype:str
-    def to_pydantic(self) -> types.Image:
-        return types.Image(
-            uri=self.url,mimetype=self.mimetype,
-            height=self.height,width=self.width
-        )
 
 @dataclass()
 class Tag:
@@ -56,11 +33,6 @@ class Tag:
     created_at:int
     namespace:str
     count:int
-    def to_pydantic(self) -> types.Tag:
-        return types.Tag(
-            name=self.name,created_at=self.created_at,
-            namespace=self.namespace,count=self.count
-        )
 
 @dataclass()
 class Post:
@@ -79,36 +51,18 @@ class Post:
     upvotes:int
     downvotes:int
     
-    full:Image
-    preview:Image
-    thumbnail:Image
+    full:int
+    preview:int
+    thumbnail:int
     
     tags:list[str]
     comments:list[int]
-    def to_pydantic(self) -> types.Post:
-        return types.Post(
-            id=self.id,created_at=self.created_at,
-            creator=self.creator,source=self.source,
-            md5=self.md5,sha256=self.sha256,
-            type=self.type,sound=self.sound,
-            rating=self.rating,language=self.language,
-            downvotes=self.downvotes,upvotes=self.upvotes,
-            full=self.full.to_pydantic(),
-            preview=self.preview.to_pydantic(),
-            thumbnail=self.thumbnail.to_pydantic(),
-            views=self.views,tags=self.tags,comments=self.comments
-            )
 
 
+@dataclass()
 class Comment:
     id:int
     created_at:int
     creator:int
     text:str
     post:int
-    def to_pydantic(self) -> types.Comment:
-        return types.Comment(
-            id=self.id,created_at=self.created_at,
-            creator=self.creator,text=self.text,
-            post=self.post
-            )

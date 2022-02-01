@@ -4,6 +4,7 @@ def clear():
     _objects.Post._posts = {}
     _objects.User._users = {}
     _objects.Tag._tags = {}
+    _objects.Image._images = {}
 
 
 class isUnique:

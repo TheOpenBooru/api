@@ -12,6 +12,7 @@ class User(BaseModel):
     comments:list[int]
 
 class Image(BaseModel):
+    id:int
     uri:str
     height:int
     width:int
@@ -59,7 +60,8 @@ class Comment(BaseModel):
     created_at:int
     creator:int
     text:str
-    post:int
+    post:int|None = None
+    report:int|None = None
 
 class Report(BaseModel):
     id:int

@@ -233,4 +233,3 @@ cython_debug/
 .vscode/settings.json
 data/passwords.sqlite3
 data/neo4j*
-data/password.db

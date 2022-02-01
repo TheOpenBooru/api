@@ -1,17 +1,9 @@
 from modules import settings
 import jwt as _jwt
-from pathlib import Path
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives.asymmetric import rsa
+import os
 import time
 import json
 
-_PRIVATE_KEY = rsa.generate_private_key(
-    public_exponent=65537,
-    key_size=4096,
-    backend=default_backend()
-)
-_PUBLIC_KEY = _PRIVATE_KEY.public_key()
 
 class BadTokenError(Exception):
     "The Token was Invalid, could be Corrupt, Invalid, Expired"
@@ -31,8 +23,8 @@ def create(id:int,data:dict={},expiration:int=None) -> str:
     data |= {'user_id':id}
     return _jwt.encode(
         data,
-        _PRIVATE_KEY,
-        algorithm="RS256"
+        settings.get('config.jwt_secret'),
+        algorithm="HS256"
     )
 
 def decode(token:str) -> dict:
@@ -46,9 +38,10 @@ def decode(token:str) -> dict:
         header = _jwt.get_unverified_header(token)
         data = _jwt.decode(
             token,
-            _PUBLIC_KEY,
-            algorithms=[header['RS256']]
+            key=settings.get('config.jwt_secret'),
+            algorithms=[header['alg']]
         )
     except Exception:
         raise BadTokenError("Malformed or Invalid Token")
+    
     return data

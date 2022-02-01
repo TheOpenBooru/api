@@ -2,4 +2,4 @@ import os
 import enum
 
 from . import types,utils
-from .objects import User, Post, Tag
+from .objects import Image, User, Post, Tag

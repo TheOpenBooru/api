@@ -1,2 +1,2 @@
-from .search import SearchParameters,searchPosts
+from .search import SearchParameters
 from .BSLs import parseBSLs
