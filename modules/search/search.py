@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
-from endpoints.types import Post
+from modules import types
+from modules.database import Post
 
 @dataclass(frozen=True)
 class SearchParameters:
@@ -9,5 +10,6 @@ class SearchParameters:
     sort: str = "created"
     isAscending: bool = False
 
-def searchPosts(params:SearchParameters) -> list[Post]:
-    ...
+def searchPosts(params:SearchParameters) -> list[types.Post]:
+    posts = Post.search(params.limit,params.sort,params.isAscending)
+    return [post.to_pydantic() for post in posts]
