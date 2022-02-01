@@ -7,6 +7,7 @@ class test_Settings_Preserve_Correct_Value(unittest.TestCase):
         self.assertEqual(settings.get('testing.value.int'),64)
         self.assertEqual(settings.get('testing.value.float'),6.4)
         self.assertEqual(settings.get('testing.value.bool'),False)
+        self.assertEqual(settings.get('testing.value.array'),[1,2,3])
 
 class test_Getting_Settings_Preserve_Types(unittest.TestCase):
     def test_a(self):
@@ -14,6 +15,7 @@ class test_Getting_Settings_Preserve_Types(unittest.TestCase):
         self.assertIsInstance(settings.get('testing.type.int'),int)
         self.assertIsInstance(settings.get('testing.type.float'),float)
         self.assertIsInstance(settings.get('testing.type.bool'),bool)
+        self.assertIsInstance(settings.get('testing.type.array'),list)
 
 class test_Raise_Error_On_Non_Ending_Setting(unittest.TestCase):
     def test_a(self):

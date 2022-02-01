@@ -31,7 +31,7 @@ class test_To_Address_Validated_Correctly(unittest.TestCase):
         for EMAIL in Valid_Email_Addresses:
             email.send_mail(EMAIL,'subject','password_reset.html',link='https://www.example.com')
 
-class test_Subject_Length(unittest.TestCase):
+class test_Email_Wont_Accept_Abnormal_Subject_Length(unittest.TestCase):
     def test_Error_Raised_On_Too_Long_Address(self):
         subject = 'f'*79
         self.assertRaises(ValueError, email.send_mail,'test@example.com',subject,'password_reset.html',link='https://www.example.com')
