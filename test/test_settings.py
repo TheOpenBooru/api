@@ -17,9 +17,9 @@ class test_Getting_Settings_Preserve_Types(unittest.TestCase):
         self.assertIsInstance(settings.get('testing.type.bool'),bool)
         self.assertIsInstance(settings.get('testing.type.array'),list)
 
-class test_Raise_Error_On_Non_Ending_Setting(unittest.TestCase):
+class test_Should_Allow_Non_Terminating_Settings(unittest.TestCase):
     def test_a(self):
-        self.assertRaises(KeyError, settings.get, 'testing.value')
+        self.assertIsInstance(settings.get('testing.value'),dict)
 
 class test_Raise_Error_On_Invalid_Setting(unittest.TestCase):
     def test_a(self):

@@ -8,10 +8,10 @@ def get(setting:str) -> Any:
     - KeyError: Invalid Setting Name
     """
     with open('./config.yml') as f:
-        settings = yaml.full_load(f)
+        config = yaml.full_load(f)
     for key in setting.split('.'):
-        settings = settings.get(key,{})
-    if type(settings) == dict:
-        raise KeyError(f'Invalid Setting: {setting}')
-    else:
-        return settings
+        try:
+            config = config[key]
+        except:
+            raise KeyError(f'Invalid Setting: {setting}')
+    return config
