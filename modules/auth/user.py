@@ -1,4 +1,5 @@
 from . import _database
+from modules import settings
 from passlib.hash import argon2 as _argon2
 from password_strength import PasswordPolicy as _Policy
 
@@ -11,14 +12,12 @@ def _hashPassword(password:str) -> str:
 def _verifyPassword(password:str,hash:str) -> bool:
     return _argon2.verify(password, hash)
 
-_policy = _Policy.from_names(strength=0.4,length=8)
 def isPasswordInvalid(password:str) -> bool:
     MIN_PASSWORD_LENGTH = 8
     MAX_PASSWORD_LENGTH = 128
     return (
         len(password) > MAX_PASSWORD_LENGTH or
-        len(password) < MIN_PASSWORD_LENGTH or
-        _policy.test(password) == False)
+        len(password) < MIN_PASSWORD_LENGTH)
 
 def create(id:int,password:str):
     """Create a new user sign-in
