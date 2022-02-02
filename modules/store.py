@@ -1,37 +1,39 @@
 from modules import settings
-import os
+import hashlib 
 from pathlib import Path
 
 
-def put(key:str,data:bytes):
+def _gen_store_path(key:str) -> Path:
+    return Path(f"./data/files/{key}")
+
+def put(data:bytes) -> str:
     """Raises:
-        FileExistsError: A file with that key already exists
+        TypeError: Data wasn't bytes
+    
+    Returns:
+        Key: ID for the data store
     """
-    path = Path(f"./data/files/{key}")
-    if path.exists():
-        raise FileExistsError("Key already exists")
+    if type(data) != bytes:
+        raise TypeError("Data wasn't bytes")
+    
+    key = hashlib.sha3_256(data).hexdigest()
+    path = _gen_store_path(key)
     with open(path,'wb') as f:
         f.write(data)
+    return key
 
 
 def get(key:str) -> bytes:
     """Raises:
-        FileNotFoundError: Key does not exist
+        KeyError: Key doesn't exist
     """
-    path = Path(f"./data/files/{key}")
+    path = _gen_store_path(key)
     if not path.exists():
         raise FileNotFoundError("Key doesn't exist")
     with open(path,'rb') as f:
         return f.read()
 
 
-def url(key:str) -> str:
-    get(key)
-    hostname = settings.get('settings.site.hostname')
-    port = settings.get('settings.site.port')
-    return f"http://{hostname}:{port}/files/{key}"
-
-
 def delete(key:str):
-    path = Path(f"./data/files/{key}")
+    path = _gen_store_path(key)
     path.unlink(missing_ok=True)
