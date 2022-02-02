@@ -1,25 +1,22 @@
-from ..types import Post
-from . import Image
+from ..types import Post,Image
 import time
 
 _posts = {}
 
 def create(
     creator:int,
-    fullID:int,prevID:int,thumbID:int,
+    full:Image,preview:Image,thumbnail:Image,
     md5:str,sha256:str,
-    language:str,source:str,rating:str,
     type:str,sound:bool
     ) -> int:
     post = Post(
-        id=len(_posts),
-        creator=creator,
+        id=len(_posts),creator=creator,
         created_at=int(time.time()),
         md5=[md5],sha256=[sha256],
-        language=language,source=source,rating=rating,
+        full=full,preview=preview,thumbnail=thumbnail,
         type=type,sound=sound,
         views=0,upvotes=0,downvotes=0,
-        full=Image.get(id=fullID),preview=Image.get(id=prevID),thumbnail=Image.get(id=thumbID),
+        language="",source="",rating="",
         tags=[],comments=[]
     )
     _posts[post.id] = post
@@ -30,11 +27,26 @@ def get(id:int) -> Post:
     return _posts[id]
 
 
-def search(limit:int=64,order:str='created_at') -> list[Post]:
+def search(limit:int=64,order:str='created_at',isAscending:bool=False,
+           hasTags:list[str]=[],excludeTags:list[str]=[]) -> list[Post]:
     """Raises:
         ValueError: Invalid Ordering
     """
-    return _posts[:100]
+    posts:list[Post] = list(_posts.values())
+    posts[0].tags
+    def filterTags(post:Post) -> bool:
+        for tag in hasTags:
+            if tag not in post.tags:
+                return False
+        for tag in excludeTags:
+            if tag in post.tags:
+                return False
+        return True
+    posts = list(filter(filterTags,posts))
+    if isAscending:
+        posts.reverse()
+    posts.sort(key=lambda post: getattr(post,order))
+    return posts[:limit]
 
 
 def set(id:int,source:str=None,rating:str=None,tags:list[str]=None):
