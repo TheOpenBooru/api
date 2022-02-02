@@ -3,8 +3,8 @@ from pydantic import BaseModel, Field
 from typing import Optional
 
 class User(BaseModel):
-    id:int = Field(..., description="User's id",)
-    created_at:int
+    id:int = Field(...)
+    created_at:int = Field(...,description="Unix timestamp")
     level:str
     name:str
     description:str
@@ -12,7 +12,6 @@ class User(BaseModel):
     comments:list[int]
 
 class Image(BaseModel):
-    id:int
     uri:str
     height:int
     width:int
@@ -60,8 +59,7 @@ class Comment(BaseModel):
     created_at:int
     creator:int
     text:str
-    post:int|None = None
-    report:int|None = None
+    post:int
 
 class Report(BaseModel):
     id:int
