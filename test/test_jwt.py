@@ -30,14 +30,14 @@ class test_Data_From_Tokens_Should_Be_Unchanged(unittest.TestCase):
     def test_Token_Stores_Data(self):
         data = {'a':'100','b':200,'c':0.201,'4':True}
         token = jwt.create(123456,data=data)
-        _,storedData = jwt.decode(token)
-        self.assertEqual(storedData,data)
+        tokenData = jwt.decode(token)
+        self.assertEqual(tokenData.data,data)
 
 class test_UserID_From_Tokens_Should_Be_Unchanged(unittest.TestCase):
     def test_Token_Stores_User_ID(self):
         token = jwt.create(12038)
-        userID,_ = jwt.decode(token)
-        self.assertEquals(userID,12038)
+        tokenData = jwt.decode(token)
+        self.assertEquals(tokenData.userID,12038)
 
 class test_Shouldnt_Accept_Reserved_Keys(unittest.TestCase):
     def test_User_ID(self):
