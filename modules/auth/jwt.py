@@ -1,54 +1,54 @@
 from modules import settings
 import jwt as _jwt
-from pathlib import Path
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.asymmetric import rsa
 import time
 import json
 
 _PRIVATE_KEY = rsa.generate_private_key(
-    public_exponent=65537,
-    key_size=4096,
-    backend=default_backend()
+    public_exponent=65537, key_size=4096, backend=default_backend()
 )
 _PUBLIC_KEY = _PRIVATE_KEY.public_key()
+
 
 class BadTokenError(Exception):
     "The Token was Invalid, could be Corrupt, Invalid, Expired"
 
-def create(id:int,data:dict={},expiration:int=None) -> str:
+
+def create(id: int, data: dict = {}, expiration: int = None) -> str:
     """Raises:
-        TypeError: Data cannot be saved as JSON
+    ValueError: Data cannot contain the reserved field
     """
-    try:
-        json.dumps(data)
-    except Exception:
-        raise TypeError("Data cannot be saved as JSON")
+    if "exp" in data:
+        raise ValueError(f"Data cannot contain a rerved field: 'exp'")
+    if "_user_id" in data:
+        raise ValueError(f"Data cannot contain a rerved field: '_user_id'")
 
     if expiration == None:
-        expiration = settings.get('settings.jwt.expiration')
-    data |= {'exp':time.time() + expiration} # type: ignore
-    data |= {'user_id':id}
-    return _jwt.encode(
-        data,
-        _PRIVATE_KEY,
-        algorithm="RS256"
-    )
+        expiration = settings.get("settings.jwt.expiration")
 
-def decode(token:str) -> dict:
+    data = dict(data) # Prevent data mutation applying outside function
+    data |= {
+        "exp": time.time() + expiration,
+        "_user_id": id
+    }
+    return _jwt.encode(data, _PRIVATE_KEY, algorithm="RS256")
+
+
+def decode(token: str) -> tuple[int, dict]:
     """Raises:
         BadTokenError: Malformed or Invalid Token
-    
+
     Returns:
-        dict: The Data from the Token with a user_id key
+        int: The User's ID
+        dict: The Data in the token
     """
     try:
-        header = _jwt.get_unverified_header(token)
-        data = _jwt.decode(
-            token,
-            _PUBLIC_KEY,
-            algorithms=['RS256']
-        )
+        data: dict = _jwt.decode(token, _PUBLIC_KEY, algorithms=["RS256"])
     except Exception:
         raise BadTokenError("Malformed or Invalid Token")
-    return data
+    else:
+        userID = data["_user_id"]
+        data.pop("_user_id")
+        data.pop("exp")
+        return userID, data

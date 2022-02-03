@@ -1,14 +1,11 @@
 """Requirements:
 - Tokens should be strings
-- Tokens should store the provided data
-- Decoded Tokens should be a dictionary
-- Decoded Tokens should contain the user_id
-- Tokens should overide any existing user_id field
-- Tokens should expire after selected duration
-- Expired Tokens should not be accepted
+- Data from Tokens should be unchanged
+- ID from Tokens should be unchanged
+- Raise error if data contains reserved field
+- Tokens should expire after a certain amount of time
+- Tokens with No Algorithm should not be accepted
 """
-
-
 from modules.auth import jwt
 import time
 import unittest
@@ -19,33 +16,38 @@ class test_Tokens_Are_Strings(unittest.TestCase):
         token = jwt.create(0)
         self.assertIsInstance(token, str)
 
-class test_Tokens_Expire_Correctly(unittest.TestCase):
-    def test_Token_Can_Expire(self):
-        token = jwt.create(0,expiration=0)
+class test_Tokens_Should_Expire(unittest.TestCase):
+    def test_Tokens_Expire(self):
+        token = jwt.create(0,expiration=1)
         time.sleep(2)
         self.assertRaises(jwt.BadTokenError,jwt.decode,token)
     
-    def test_Token_Shouldnt_Expire_Early(self):
+    def test_Token_Dont_Expire_Early(self):
         token = jwt.create(0,expiration=10)
         jwt.decode(token)
 
-class test_Tokens_Store_Data(unittest.TestCase):
+class test_Data_From_Tokens_Should_Be_Unchanged(unittest.TestCase):
     def test_Token_Stores_Data(self):
-        data = {'a':'100','b':200,'c':True}
-        token = jwt.create(1,data=data)
-        self.assertEquals(jwt.decode(token),data | {'user_id':1})
+        data = {'a':'100','b':200,'c':0.201,'4':True}
+        token = jwt.create(123456,data=data)
+        _,storedData = jwt.decode(token)
+        self.assertEqual(storedData,data)
 
-class test_Tokens_Store_User_ID(unittest.TestCase):
+class test_UserID_From_Tokens_Should_Be_Unchanged(unittest.TestCase):
     def test_Token_Stores_User_ID(self):
-        token = jwt.create(1)
-        self.assertEquals(jwt.decode(token)['user_id'],1)
-    
-    def test_Tokens_Overide_Data_User_ID(self):
-        data = {'user_id':4}
-        token = jwt.create(1,data=data)
-        self.assertEquals(jwt.decode(token)['user_id'],1)
+        token = jwt.create(12038)
+        userID,_ = jwt.decode(token)
+        self.assertEquals(userID,12038)
 
-class test_Tokens_Prevent_Invalid_Data(unittest.TestCase):
-    def test_Token_Store_Invalid_Data(self):
-        data = {'a':id}
-        self.assertRaises(TypeError,jwt.create,1,data=data)
+class test_Shouldnt_Accept_Reserved_Keys(unittest.TestCase):
+    def test_User_ID(self):
+        data = {'_user_id':4}
+        self.assertRaises(ValueError,jwt.create,0,data=data)
+    def test_Expiration(self):
+        data = {'exp':time.time() + 5}
+        self.assertRaises(ValueError,jwt.create,0,data=data)
+
+class test_None_Alogirthm_Should_Not_Be_Accepted(unittest.TestCase):
+    def test_None_Algorithm_Should_Not_Be_Accepted(self):
+        TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJub25lIn0.eyJhIjoxfQ."
+        self.assertRaises(jwt.BadTokenError,jwt.decode,TOKEN)
