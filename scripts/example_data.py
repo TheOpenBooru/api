@@ -63,7 +63,7 @@ def generate():
             post.sample_height,post.sample_width,
             mimetypes.guess_type(post.sample_url)[0]
             )
-        type = mimetypes.guess_type(post.sample_url)[0].split('/')[1]
+        type = mimetypes.guess_type(post.sample_url)[0].split('/')[0]
         postID = database.Post.create(
             post.creator_id,
             full,preview,sample,
@@ -73,6 +73,6 @@ def generate():
         database.Post.set(
             postID,
             source=post.source,
-            rating=post.rating,
+            rating='safe',
             tags=' '.split(post.tags),
             )
