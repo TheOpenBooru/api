@@ -1,6 +1,6 @@
-from modules import settings
-import pyotp
-import re
+from modules import settings as _settings
+import pyotp as _pyotp
+import re as _re
 from . import _database
 
 class No2FAEnabled(Exception):
@@ -13,10 +13,10 @@ def _get_secret(id:int) -> str:
     return user[1]
 
 def generate_secret():
-    return pyotp.random_base32()
+    return _pyotp.random_base32()
 
 def generate_url(secret:str,user:str,issuer:str) -> str:
-    topt = pyotp.totp.TOTP(secret)
+    topt = _pyotp.totp.TOTP(secret)
     return topt.provisioning_uri(name=user,issuer_name=issuer)
 
 def update(id:int,secret:str):
@@ -24,7 +24,7 @@ def update(id:int,secret:str):
         KeyError: User with that ID doesn't exist
         ValueError: OTP is invalid
     """
-    if not re.match('/^[A-Z0-7]{32}$/',secret):
+    if not _re.match('/^[A-Z0-7]{32}$/',secret):
         raise ValueError("Invalid Secret")
     _database.get(id)
     _database.set_2fa(id,secret)
@@ -38,8 +38,8 @@ def verify(id:int,otp:str) -> bool:
     """
     _database.get(id)
     secret = _get_secret(id)
-    totp = pyotp.TOTP(secret)
-    valid_window = settings.get('settings.otp.valid_window')
+    totp = _pyotp.TOTP(secret)
+    valid_window = _settings.get('settings.otp.valid_window')
     return totp.verify(otp,valid_window=valid_window)
 
 def remove(id:int):
