@@ -13,18 +13,21 @@ _PUBLIC_KEY = _PRIVATE_KEY.public_key()
 @_dataclass()
 class TokenData:
     userID: int
+    level:str
     data: dict
 
 class BadTokenError(Exception):
     "The Token was Invalid, could be Corrupt, Invalid, Expired"
 
 
-def create(id: int, data: dict = {}, expiration: int = None) -> str:
+def create(id:int, level:str, data:dict = {}, expiration:int = None) -> str:
     """Raises:
     - ValueError: Data cannot contain the reserved field
     """
     if "exp" in data:
         raise ValueError(f"Data cannot contain a rerved field: 'exp'")
+    if "_level" in data:
+        raise ValueError(f"Data cannot contain a rerved field: '_level'")
     if "_user_id" in data:
         raise ValueError(f"Data cannot contain a rerved field: '_user_id'")
 
@@ -34,7 +37,8 @@ def create(id: int, data: dict = {}, expiration: int = None) -> str:
     data = dict(data) # Prevent data mutation applying outside function
     data |= {
         "exp": _time.time() + expiration,
-        "_user_id": id
+        "_user_id": id,
+        "_level": level,
     }
     return _jwt.encode(data, _PRIVATE_KEY, algorithm="RS256")
 
@@ -48,7 +52,9 @@ def decode(token: str) -> TokenData:
     except Exception:
         raise BadTokenError("Malformed or Invalid Token")
     else:
-        userID = data["_user_id"]
+        user_id = data["_user_id"]
+        level = data["_level"]
         data.pop("_user_id")
+        data.pop("_level")
         data.pop("exp")
-        return TokenData(userID, data)
+        return TokenData(user_id,level, data)
