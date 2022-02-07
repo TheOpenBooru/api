@@ -1,6 +1,18 @@
 version: "3.3"
 services:
+  redis:
+    image: "redis:latest"
+    command:
+      - redis-server
+      - --appendonly yes
+      - --save 60 1
+    expose:
+      - 6379
+    ports:
+      - 6379:6379
   web:
     build: .
     ports:
       - "57255:57255"
+    depends_on:
+      - redis
