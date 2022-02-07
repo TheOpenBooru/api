@@ -3,12 +3,15 @@ wheel
 requests
 python-dotenv
 regex
+bs4
+lxml
 
 # Endpoints
 fastapi
 uvicorn[standard]
 pydantic
-slowapi
+python-multipart
+fastapi-limiter 
 
 # Database
 cachetools
