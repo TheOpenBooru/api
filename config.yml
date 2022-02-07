@@ -20,16 +20,19 @@ settings:
   otp:
     valid_window: 1 # The previous N OTP codes are valid
   posts:
-    required_aprroval: true
-    thumbnail:
-      quality: 85 # 1-100
-      max_dimensions: [250,250] # Max dimensions for downscaling
-    preview:
-      quality: 95
-      max_dimensions: [1600,1600]
+    required_aprroval: true # Posts require moderator approval beofre being visible
     full:
-      quality: 100
-      max_dimensions: [4000,4000]
+      quality: 100 # Re-encoded webp quality (1-100)
+      max_width: 4000 # max width before downscaling
+      max_height: 4000 # max height before downscaling
+    preview:
+      quality: 90
+      max_width: 1600
+      max_height: 1600
+    thumbnail:
+      quality: 85
+      max_width: 250
+      max_height: 250
 
 testing:
   value:
