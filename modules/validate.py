@@ -1,55 +1,64 @@
 import re as _re
+import iso639 as _iso639
+
 import string as _string
 
 
 def username(name: str):
-    VALID_CHARS = _string.ascii_letters + _string.digits + "_"
-    if not (3 < len(name) <= 32):
-        raise ValueError("Unacceptable Length")
-    elif sum([x not in VALID_CHARS for x in name]):
-        raise ValueError("Unacceptable Characters")
+    REGEX = r"^[a-z0-9_]{4,32}$"
+    if _re.match(REGEX, name):
+        return True
+    else:
+        return False
 
 
-def tag(tag: str):
-    VALID_CHARS = _string.ascii_letters + _string.digits + "_()"
-    if 1 < len(tag) <= 64:
-        raise ValueError("Unacceptable Length")
-    elif sum([x not in VALID_CHARS for x in tag]):
-        raise ValueError("Unacceptable Characters")
+def tag(tag: str) -> bool:
+    REGEX = r"^[a-z0-9_()]{1,64}$"
+    if _re.match(REGEX, tag):
+        return True
+    else:
+        return False
 
 
 def rating(rating:str):
-    valid_ratings = {"safe","questionable","explicit"}
-    if rating not in valid_ratings:
-        raise  ValueError("Invalid Rating Code")
+    REGEX = r"(safe|questionable|explicit)"
+    if _re.match(REGEX, rating):
+        return True
+    else:
+        return False
 
 
 def language(country_code:str):
-    codes = ["eng","fra"]
-    if country_code not in codes:
-        raise ValueError("Invalid Language Code")
-
+    return _iso639.is_valid639_2(country_code)
 
 
 def url(url: str):
     REGEX = r"(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?"
-    if not _re.match(REGEX, url):
-        raise ValueError("Invalid URL")
+    if _re.match(REGEX, url):
+        return True
+    else:
+        return False
 
 
 def email(email: str):
     REGEX = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
-    if not _re.match(REGEX, email):
-        raise ValueError("Invalid Email")
+    if _re.match(REGEX, email):
+        return True
+    else:
+        return False
 
 
 def md5(md5: str):
     REGEX = r"^[0-9a-fA-F]{32}$"
-    if not _re.match(REGEX, md5):
-        raise ValueError("Invalid MD5")
+    if _re.match(REGEX, md5):
+        return True
+    else:
+        return False
 
 
 def sha256(sha: str):
     REGEX = r"^[0-9a-fA-F]{64}$"
-    if not _re.match(REGEX, sha):
-        raise ValueError("Invalid SHA256")
+    if _re.match(REGEX, sha):
+        return True
+    else:
+        return False
