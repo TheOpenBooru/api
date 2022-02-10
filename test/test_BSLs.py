@@ -24,7 +24,7 @@ class test_Limit_Intererets_Positive_Intergers_Correctly(unittest.TestCase):
 
     def test_Big_Number(self):
         x = 999999999999999999999999999999999999
-        self.assertEqual(parseBSLs(f"limit:{x}"), x)
+        self.assertEqual(parseBSLs(f"limit:{x}").limit, x)
 
 
 class test_Limit_Shouldnt_Parse_Non_Positive_Intergers(unittest.TestCase):
@@ -64,7 +64,7 @@ class test_Limit_Invalid_Should_be_Prefixed_with_Start_or_Whitespace(unittest.Te
 
 class test_Duplicate_Limit_Tags_Should_Use_Last_Occuring_One(unittest.TestCase):
     def test_Duplicate_Limit_Tags_Should_Use_Last_Occuring_One(self):
-        self.assertEqual(parseBSLs("limit:10 limit:12"), 12)
+        self.assertEqual(parseBSLs("limit:10 limit:12").limit, 12)
 
 
 class test_Sort_Should_Correctly_Parse_Sort_Type(unittest.TestCase):
@@ -80,12 +80,12 @@ class test_Sort_Order_Suffix_is_Optional(unittest.TestCase):
 
 
 class test_Sort_Order_Should_Be_Set_Correctly(unittest.TestCase):
-    def test_Sort_is_Optional(self):
-        self.assertTrue(parseBSLs("sort:id").isAscending == False)
+    def test_Default_Sort_is_Correct(self):
+        self.assertFalse(parseBSLs("sort:id").isAscending)
 
     def test_Expected_Sort_Direction(self):
-        self.assertTrue(parseBSLs("sort:id:desc").isAscending == False)
-        self.assertTrue(parseBSLs("sort:id:asc").isAscending == True)
+        self.assertTrue(parseBSLs("sort:id:asc").isAscending)
+        self.assertFalse(parseBSLs("sort:id:desc").isAscending)
 
 
 class test_Sort_Should_Not_Be_Parsed_With_Invalid_Value(unittest.TestCase):
