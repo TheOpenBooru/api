@@ -1,18 +1,16 @@
 version: "3.3"
 services:
-  redis:
-    image: "redis:latest"
-    command:
-      - redis-server
-      - --appendonly yes
-      - --save 60 1
-    expose:
-      - 6379
+  email:
+    build: namshi/smtp
+    environment:
+      - MAILNAME=openbooru.org
     ports:
-      - 6379:6379
+      - "25:25"
   web:
     build: .
     ports:
       - "57255:57255"
+    expose:
+      - 57255
     depends_on:
-      - redis
+      - email

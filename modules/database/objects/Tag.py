@@ -7,14 +7,16 @@ def create(name:str,namespace:str):
     tag = Tag(
         name=name,
         created_at=int(time.time()),
-        namespace=namespace,
-        count=0
+        namespace=namespace
     )
     _tags[name] = tag
 
 
 def get(name:str) -> Tag:
     return _tags[name]
+
+def exists(name:str) -> bool:
+    return name in _tags
 
 def search(limit:int=32,order:str='count',
            namespace:str=None,

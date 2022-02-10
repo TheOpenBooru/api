@@ -1,115 +1,97 @@
-from dataclasses import dataclass
-from modules import types
+from dataclasses import dataclass,field
+import logging
+from modules import schemas
 
-@dataclass()
-class User:
+class Default:
+    id:int
+    created_at:int
+    def to_pydantic(self):
+        raise NotImplementedError
+
+@dataclass
+class User(Default):
     id:int
     created_at:int
     level:str
     name:str
-    description:str
-    posts:list[int]
-    comments:list[int]
-
     email:str
-    settings:dict
+    bio:str = ""
+    settings:str = ""
+    posts:list[int] = field(default_factory=list)
+    comments:list[int] = field(default_factory=list)
     
-    history:list[int]
-    favourites:list[int]
-    blocked:list[int]
-    upvotes:list[int]
-    downvotes:list[int]
-    def to_profile(self) -> types.Profile:
-        return types.Profile(
-            id=self.id,created_at=self.created_at,
-            level=self.level,name=self.name,
-            description=self.description,
-            posts=self.posts,comments=self.comments,
-            email=self.email,settings=self.settings,
-            history=self.history,
-            favourites=self.favourites,
-            blocked=self.blocked
-        )
-    def to_user(self) -> types.User:
-        return types.User(
-            id=self.id,created_at=self.created_at,
-            level=self.level,name=self.name,
-            description=self.description,
-            posts=self.posts,comments=self.comments
-        )
+    history:list[int] = field(default_factory=list)
+    favourites:list[int] = field(default_factory=list)
+    blocked:list[int] = field(default_factory=list)
+    upvotes:list[int] = field(default_factory=list)
+    downvotes:list[int] = field(default_factory=list)
+    def to_pydantic(self) -> schemas.User:
+        return schemas.User.from_orm(self)
 
-@dataclass()
+
+@dataclass
 class Image:
     url:str
     height:int
     width:int
     mimetype:str
-    def to_pydantic(self) -> types.Image:
-        return types.Image(
-            uri=self.url,mimetype=self.mimetype,
+    def to_pydantic(self) -> schemas.Image:
+        return schemas.Image(
+            url=self.url,mimetype=self.mimetype,
             height=self.height,width=self.width
         )
 
-@dataclass(kw_only=False)
-class Tag:
+
+@dataclass
+class Tag(Default):
     name:str
     created_at:int
-    namespace:str
-    count:int
-    def to_pydantic(self) -> types.Tag:
-        return types.Tag(
-            name=self.name,created_at=self.created_at,
-            namespace=self.namespace,count=self.count
-        )
+    namespace:str='generic'
+    count:int=0
+    def to_pydantic(self) -> schemas.Tag:
+        return schemas.Tag.from_orm(self)
 
-@dataclass()
-class Post:
+
+@dataclass
+class Post(Default):
     id:int
     creator:int
     created_at:int
-    md5:list[str]
-    sha256:list[str]
-    language:str
-    source:str
-    rating:str
+    md5s:list[str] 
+    sha256s:list[str]
     type:str
     sound:bool
     
-    views:int
-    upvotes:int
-    downvotes:int
-    
     full:Image
-    preview:Image
-    thumbnail:Image
+    thumbnail:Image|None = None
+    preview:Image|None = None
     
-    tags:list[str]
-    comments:list[int]
-    def to_pydantic(self) -> types.Post:
-        return types.Post(
-            id=self.id,created_at=self.created_at,
-            creator=self.creator,source=self.source,
-            md5=self.md5,sha256=self.sha256,
-            type=self.type,sound=self.sound,
-            rating=self.rating,language=self.language,
-            downvotes=self.downvotes,upvotes=self.upvotes,
+    language:str|None = None
+    rating:str|None = None
+    source:None = None
+    
+    views:int = 0
+    upvotes:int = 0
+    downvotes:int = 0
+    
+    tags:list[str] = field(default_factory=list)
+    comments:list[int] = field(default_factory=list)
+    def to_pydantic(self) -> schemas.Post:
+        return schemas.Post(
+            id=self.id,
+            created_at=self.created_at,
+            sha256s=self.sha256s,md5s=self.md5s,
+            type=self.type,
+            sound=self.sound,
             full=self.full.to_pydantic(),
-            preview=self.preview.to_pydantic(),
-            thumbnail=self.thumbnail.to_pydantic(),
-            views=self.views,tags=self.tags,comments=self.comments
-            )
-
-
-@dataclass()
-class Comment:
-    id:int
-    created_at:int
-    creator:int
-    text:str
-    post:int
-    def to_pydantic(self) -> types.Comment:
-        return types.Comment(
-            id=self.id,created_at=self.created_at,
-            creator=self.creator,text=self.text,
-            post=self.post
-            )
+            thumbnail=self.thumbnail.to_pydantic() if self.thumbnail else None,
+            preview=self.preview.to_pydantic() if self.preview else None,
+            language=self.language,
+            age_rating=self.rating,
+            source=None,
+            views=self.views,
+            upvotes=self.upvotes,
+            downvotes=self.downvotes,
+            tags=self.tags,
+            comments=self.comments,
+        )

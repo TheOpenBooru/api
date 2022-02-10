@@ -2,51 +2,40 @@ from ..types import User
 import time
 import random
 
-_users:dict[int,User] = {}
+_users_store:dict[int,User] = {}
 
 
-def create(name:str,email:str) -> int:
-    id = random.randint(0,2**64)
-    _users[id] = User(
+def create(name:str,email:str) -> User:
+    id = len(_users_store) + 1
+    user = User(
         id=id,created_at=int(time.time()),
-        name=name,email=email,level="USER",
-        description='',settings={},
-        posts=[],comments=[],
-        history=[],favourites=[],blocked=[],
-        upvotes=[],downvotes=[],
+        name=name,email=email,
+        level="USER",
         )
-    return id
+    _users_store[id] = user
+    return user
 
 
-def get(id:int=None,name:str=None,email:str=None) -> User:
-    """Raises:
-        KeyError: No User with that ID
-        ValueError: Invalid
-    """
-    if id:
-        _filter = lambda x:x.id == id
-    elif name:
-        _filter = lambda x:x.name == name
-    elif email:
-        _filter = lambda x:x.email == email
-    else:
-        raise ValueError("No user specified")
-    
-    values = list(filter(_filter,list(_users.values())))
-    assert len(values) == 1
-    return values[0]
+def get(*,id:int=None,name:str=None) -> User | None:
+    for user in _users_store.values():
+        if ((id and user.id == id) or
+            (name and user.name == name)):
+            return user
+    return None
 
+def exists(id:int) -> bool:
+    return id in _users_store
 
 def search(limit:int=10,order:str='name',
            name_like:str=None,level:str=None,
            after:int=None,before:int=None,
+           name:str=None,email:str=None,
            ) -> list[User]:
     """Valid Orders:
-    - id
     - name
     - created_at
     """
-    values = list(_users.values())
+    values = list(_users_store.values())
     if name_like:
         values = list(filter(lambda x:name_like in x.name,values))
     if level:
@@ -62,26 +51,26 @@ def search(limit:int=10,order:str='name',
 def set(id:int,
         name:str=None,email:str=None,
         level:str=None,description:str=None,
-        settings:dict=None,
+        settings:str=None,
         ):
-    user = _users[id]
+    user = _users_store[id]
     user.name = name or user.name
     user.email = email or user.email
     user.level = level or user.level
-    user.description = description or user.description
-    user.settings = settings or user.settings
+    user.bio = description or ""
+    user.settings = settings or ""
 
 
 def delete(id:int):
-    _users.pop(id)
+    _users_store.pop(id)
 
 
 def view(id:int,post_id:int):
-    _users[id].history.append(post_id)
+    _users_store[id].history.append(post_id)
 
 
 def toggle_favourite(id:int,post_id:int):
-    user = _users[id]
+    user = _users_store[id]
     if post_id in user.favourites:
         user.favourites.remove(post_id)
     else:
@@ -89,7 +78,7 @@ def toggle_favourite(id:int,post_id:int):
 
 
 def toggle_block(id:int,post_id:int):
-    user = _users[id]
+    user = _users_store[id]
     if post_id in user.blocked:
         user.blocked.remove(post_id)
     else:
@@ -97,7 +86,7 @@ def toggle_block(id:int,post_id:int):
 
 
 def toggle_upvote(id:int,post_id:int):
-    user = _users[id]
+    user = _users_store[id]
     if post_id in user.upvotes:
         user.upvotes.remove(post_id)
     else:
@@ -105,7 +94,7 @@ def toggle_upvote(id:int,post_id:int):
 
 
 def toggle_downvote(id:int,post_id:int):
-    user = _users[id]
+    user = _users_store[id]
     if post_id in user.downvotes:
         user.downvotes.remove(post_id)
     else:

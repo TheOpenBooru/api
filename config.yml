@@ -4,10 +4,14 @@ config:
     sitekey: ""
     secret: ""
   smtp:
-    email: ""
-    password: ""
-    hostname: ""
-    port: 0
+    email: "theopenbooru@gmail.com"
+    password: "NYi01uzzyGQEOGzI1LXPAgGPtfHB0Ygp"
+    hostname: "localhost"
+    port: 587
+  emails:
+    support: support@openbooru.org
+    security: support@openbooru.org
+    dmca: support@openbooru.org
 
 settings:
   deployment: TESTING

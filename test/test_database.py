@@ -1,30 +1,37 @@
+"""Requirements:
+- User's create
+- User's data can be updated
+- 
+"""
 import os
+import time
 import unittest
-from modules import database
-from modules.database import Image, Post, Tag, User
+from modules.database import Post, Tag, User,types
 
-os.putenv('DEPLOYMENT', 'TESTING')
-
-class test_tag(unittest.TestCase):
-    ...
-    def test_a(self):
-        Tag.create('test_a','generic')
-
-class test_scenario_1(unittest.TestCase):
-    def setUp(self):
-        database.utils.clear()
+class test_Create_User_Should_Return_A_User_Object(unittest.TestCase):
+    user:types.User
     def tearDown(self):
-        database.utils.clear()
-    def test_a(self):
-        UserID = User.create('test_a','user@example.com')
-        ImageID = Image.create(
-            "https://i.imgur.com/a83JD94.jpeg",
-            550,1542,"image/jpeg")
-        PostID = Post.create(
-            UserID,
-            ImageID,ImageID,ImageID,
-            'f'*32,'f'*64,
-            'en','exmaple.com','safe',
-            'image',False
-            )
-        Post.get(PostID)
+        User.delete(self.user.id)
+    def test_create(self):
+        self.user = user = User.create('example_name','example@example.com')
+        self.assertIsInstance(user,types.User)
+        self.assertEqual(user.name, 'example_name')
+        self.assertEqual(user.email, 'example@example.com')
+
+
+class test_Getting_User_Should_Return_Valid_User(unittest.TestCase):
+    user:types.User
+    def tearDown(self):
+        User.delete(self.user.id)
+    def test_create(self):
+        userID = User.create('example_name','example@example.com').id
+        user = self.user = User.get(userID)
+        self.assertIsInstance(user,types.User)
+        self.assertEqual(user.name,'example_name')
+        self.assertEqual(user.email,'example@example.com')
+
+class test_Getting_User(unittest.TestCase):
+    def test_delete(self):
+        user = self.user = User.create('example_name','example@example.com')
+        User.delete(user.id)
+        self.assertRaises(KeyError,User.get,id=user.id)

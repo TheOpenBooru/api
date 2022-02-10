@@ -1,1 +1,1 @@
-from . import jwt,otp,user
+from .jwt import BadTokenError

@@ -1,68 +1,74 @@
-from modules import validation, settings
-import os
-import smtplib
+from modules import validate, settings
+import smtplib as _smtplib
 from email.mime.multipart import MIMEMultipart as _MIMEMultipart
 from email.mime.text import MIMEText as _MIMEText
 import jinja2 as _jinja2
 
+class SMTPConfig():
+    email = settings.get("config.smtp.email")
+    password = settings.get("config.smtp.password")
+    hostname = settings.get("config.smtp.hostname")
+    port = settings.get("config.smtp.port")
 
-_smtp_email: str = settings.get("config.smtp.email")
-_smtp_pass: str = settings.get("config.smtp.password")
-_smpt_hostname: str = settings.get("config.smtp.hostname")
-_smtp_port: int = settings.get("config.smtp.port")
-
-_jinja_env = _jinja2.Environment(loader=_jinja2.BaseLoader())
-
-
-def send_mail(to: str, subject: str, email_template: str, **kwargs):
-    """Send an email using the given template and arguments.
-
-    Args:
-        to: The target recipient
-        subject: The email's subject
-        email_template: the email template filename
-        **kwargs: passed to jinja to render template
-
-    Raises:
-        ValueError: The to email address is not valid
-        ValueError: The subject is too long, longer than 78 characters
+def send(to:str,subject:str,jinja_template:str,**kwargs):
+    """Raises:
+    - ValueError("Invalid Target Address")
+    - ValueError("Subject is over 78 characters")
     """
-    if not validation.email(to):
-        raise ValueError("The to email address is not valid")
-    if len(subject) > 78:
-        raise ValueError("The subject is to long")
-    template = _jinja_env.from_string(email_template)
-    body = template.render(**kwargs)
+    config = SMTPConfig()
+    _verify_send_paramters(to, subject)
+    email_message = _render_template(jinja_template, **kwargs)
+    formatted_email = _construct_email(config.email, to, subject, email_message)
+    _send_email(config, to, formatted_email)
 
+def _verify_send_paramters(toEmail:str, subject:str):
+    if not validate.email(toEmail):
+        raise ValueError("Invalid Target Address")
+    if len(subject) > 78:
+        raise ValueError("Subject is over 78 characters")
+
+def _construct_email(fromEmail:str ,to:str, subject:str, body:str) -> str:
     message = _MIMEMultipart()
-    message["From"] = _smtp_email
+    message["From"] = fromEmail
     message["To"] = to
     message["Subject"] = subject
-
     message.attach(_MIMEText(body, "html"))
+    return message.as_string()
 
-    with smtplib.SMTP(_smpt_hostname, _smtp_port) as session:
-        session.connect()
+def _render_template(template, **kwargs:dict) -> str:
+    _jinja_env = _jinja2.Environment(loader=_jinja2.BaseLoader())
+    template = _jinja_env.from_string(template)
+    body = template.render(**kwargs)
+    return body
+
+def _send_email(config:SMTPConfig,toEmail:str,message:str):
+    with _smtplib.SMTP(config.hostname, config.port) as session:
         session.starttls()
-        session.login(_smtp_email, _smtp_pass)
-        session.sendmail(_smtp_email, to, message.as_string())
+        session.login(config.email, config.password)
+        session.sendmail(config.email, toEmail, message)
 
 
-def password_reset(to: str, name: str, link: str):
-    """Sends a password reset email to the given email address
-
-    Args:
-        to (str): The recipient's email address
-        name (str): The user's name
-        link (str): Reset Password Link
-
-    Raises:
-        ValueError: The to email address is not valid
+def send_password_reset(to: str, name: str, reset_link: str):
+    """Raises:
+        ValueError: The destination email address is not valid
     """
     sitename = settings.get("settings.site.name")
     subject = f"{sitename}: Password Reset"
-    send_mail(to, subject, PASSWORD_TEMPLATE, link=link, name=name)
+    with open("./data/emails/password_reset.html") as f:
+        PASSWORD_RESET_TEMPLATE = f.read()
+    send(to,subject,PASSWORD_RESET_TEMPLATE,
+        link=reset_link,name=name
+    )
 
+def send_email_verification(to:str, name:str, verification_link:str):
+    """Raises:
+        ValueError: The destination email address is not valid
+    """
+    sitename = settings.get("settings.site.name")
+    subject = f"{sitename}: Verify Email"
+    with open("./data/emails/email_verification.html") as f:
+        EMAIL_VERIFICATION_TEMPLATE = f.read()
+    send(to,subject,EMAIL_VERIFICATION_TEMPLATE,
+        link=verification_link,name=name
+    )
 
-with open("./data/emails/password_reset.html") as f:
-    PASSWORD_TEMPLATE = f.read()

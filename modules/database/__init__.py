@@ -1,5 +1,3 @@
-import os
-import enum
-
-from . import types,utils
-from .objects import User, Post, Tag
+from . import types
+from .objects import Post,Tag,User
+from .utils import clear,isUnique

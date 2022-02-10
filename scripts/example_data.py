@@ -1,11 +1,14 @@
+import bs4
+import json
 import requests
 import mimetypes
-import bs4
+from pathlib import Path
 from dataclasses import dataclass
-from modules import database
+from modules import validate
+from modules.database import User,Post,Tag,types
 
 @dataclass
-class Post:
+class SafeBooruPost:
     id: int
     creator_id: int
     md5: str
@@ -34,45 +37,62 @@ class Post:
     score:str
     status:str
 
-def generate():
+
+cache_path = Path("./data/example_data.json")
+def _load_data_to_json():
     r = requests.get("https://safebooru.org/index.php?page=dapi&s=post&q=index",
                 params={
-                    "limit":4000,
-                    "tags":["rating:safe"]
+                    "limit":2000,
+                    "tags":["rating:safe sort:score"]
                     })
     xml = bs4.BeautifulSoup(r.text,'lxml')
-    posts = list(xml.find('posts').children)
-    print(f"Using {len(posts)} Posts")
-    for x in posts:
+    xmlPosts = list(xml.find('posts').children)
+    posts = []
+    for x in xmlPosts:
         try:
-            post = Post(**x.attrs)
+            posts.append(dict(**x.attrs))
         except:
             continue
-        full = database.types.Image(
-            post.file_url,
-            post.height,post.width,
-            mimetypes.guess_type(post.file_url)[0]
-            )
-        preview = database.types.Image(
-            post.preview_url,
-            post.preview_height,post.preview_width,
-            mimetypes.guess_type(post.preview_url)[0]
-            )
-        sample = database.types.Image(
-            post.sample_url,
-            post.sample_height,post.sample_width,
-            mimetypes.guess_type(post.sample_url)[0]
-            )
+    
+    with open(cache_path, "w") as f:
+        json.dump(posts,f)
+
+def generate():
+    createdUsers = set()
+    if not cache_path.exists():
+        _load_data_to_json()
+    
+    with open(cache_path) as f:
+        posts = json.load(f)
+        
+    for x in posts:
+        post = SafeBooruPost(**x)
+        creatorID = post.creator_id
+        if creatorID not in createdUsers:
+            createdUsers.add(creatorID)
+            user:types.User = User.create(str(creatorID),f"{creatorID}@example.com")
+        else:
+            user:types.User = User.get(name=str(creatorID))
+        full = types.Image(post.file_url,post.height,post.width,'image/jpeg')
+        preview = types.Image(post.sample_url,post.sample_height,post.sample_width,'image/jpeg')
+        thumbnail = types.Image(post.preview_url,post.preview_height,post.preview_width,mimetype='image/jpeg')
         type = mimetypes.guess_type(post.sample_url)[0].split('/')[0]
-        postID = database.Post.create(
-            post.creator_id,
-            full,preview,sample,
-            post.md5,post.md5*2,
-            type,False
+        if Post.get(md5=post.md5):
+            return
+        newPost = Post.create(
+            creator=user.id,md5=post.md5,
+            type=type,sound=False,
+            full=full
             )
-        database.Post.set(
-            postID,
-            source=post.source,
-            rating='safe',
-            tags=' '.split(post.tags),
-            )
+        newPost.thumbnail = thumbnail
+        newPost.preview = preview
+        for tag in newPost.tags:
+            if not Tag.get(name=tag):
+                try:
+                    validate.tag(tag)
+                except ValueError:
+                    continue
+                else:
+                    Tag.create(name=tag,namespace='generic')
+        newPost.tags = post.tags.split(' ')
+        Post.update(newPost.id,newPost)

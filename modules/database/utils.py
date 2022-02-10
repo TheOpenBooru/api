@@ -1,8 +1,8 @@
 from . import objects as _objects
 
 def clear():
-    _objects.Post._posts = {}
-    _objects.User._users = {}
+    _objects.Post._posts_store = {}
+    _objects.User._users_store = {}
     _objects.Tag._tags = {}
 
 
