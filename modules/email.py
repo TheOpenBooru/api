@@ -16,12 +16,12 @@ def send(to:str,subject:str,jinja_template:str,**kwargs):
     - ValueError("Subject is over 78 characters")
     """
     config = SMTPConfig()
-    _VerifyEmailParamters(to, subject)
+    _VerifyEmailParameters(to, subject)
     email_message = _RenderJinjaTemplate(jinja_template, **kwargs)
     formatted_email = _ConstructEmail(config.email, to, subject, email_message)
     _SendEmail(config, to, formatted_email)
 
-def _VerifyEmailParamters(toEmail:str, subject:str):
+def _VerifyEmailParameters(toEmail:str, subject:str):
     if not validate.email(toEmail):
         raise ValueError("Invalid Target Address")
     if len(subject) > 78:
