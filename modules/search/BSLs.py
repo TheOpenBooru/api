@@ -1,5 +1,5 @@
-import re
-import logging
+import re as _re
+import logging as _logging
 from . import SearchParameters
 
 defaults = SearchParameters()
@@ -13,9 +13,10 @@ def parseBSLs(query: str) -> SearchParameters:
     for tag in query.split(' '):
         limit = _parseLimit(tag) or limit
         sort,order = _parseSort(tag) or (sort,order)
-        if _parseIncludeTags(tag):
+        if _isIncludeTag(tag):
             includes.append(tag)
-        if _parseExcludeTags(tag):
+        if _isExcludeTag(tag):
+            tag = tag[1:] # Remove the -
             excludes.append(tag)
     config = SearchParameters(
         limit=limit,
@@ -24,7 +25,7 @@ def parseBSLs(query: str) -> SearchParameters:
         include_tags=includes,
         exclude_tags=excludes,
     )
-    logging.debug(f"Parsed BSLs: '{query}' to {str(config)}")
+    _logging.debug(f"Parsed BSLs: '{query}' to {config}")
     return config
 
 
@@ -32,16 +33,15 @@ def _parseSort(query: str) -> tuple[str, bool]|None:
     return defaults.sort, defaults.isAscending
 
 def _parseLimit(query: str) -> int|None:
-    match = re.match('^limit:[0-9]+$',query)
+    match = _re.match('^limit:[0-9]+$',query)
     if match:
-        return int(match.string[6:])
+        limitInterger = match.string[6:]
+        return int(limitInterger)
 
-def _parseIncludeTags(query: str) -> str|None:
-    match = re.match(r'^(?<![-:])\b[a-z0-9_()]+\b(?!:)$',query)
-    if match:
-        return match.string
+def _isIncludeTag(query: str) -> bool:
+    match = _re.match(r'^(?<![-:])\b[a-z0-9_()]+\b(?!:)$',query)
+    return bool(match)
 
-def _parseExcludeTags(query: str) -> str|None:
-    match = re.match(r'^(?<=-)[a-z0-9_()]+(?!:)$',query)
-    if match:
-        return match.string
+def _isExcludeTag(query: str) -> bool:
+    match = _re.match(r'^(?<=-)[a-z0-9_()]+(?!:)$',query)
+    return bool(match)
