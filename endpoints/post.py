@@ -19,7 +19,7 @@ async def get_post(id:int):
 @router.patch('/post', tags=['User'])
 async def edit_post(id:int,new_post_version:schemas.Post,token:TokenData=Depends(parse_token)):
     if token.level == "ADMIN":
-        Post.update(id=id,**new_post_version.dict())
+        Post.update(id,new_post_version)
         return Response(status_code=status.HTTP_202_ACCEPTED)
     else:
         return Response(status_code=status.HTTP_401_UNAUTHORIZED,content="Not High Enough Level")
