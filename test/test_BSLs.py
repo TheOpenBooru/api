@@ -123,7 +123,9 @@ class test_Parses_Regular_Tags_Correctly(unittest.TestCase):
 
     def test_exclude(self):
         searchParams = parseBSLs("-foo -bar")
-        self.assertEqual(searchParams.exclude_tags, ["foo", "bar"])
+        expected = {"foo", "bar"}
+        actual = set(searchParams.exclude_tags)
+        self.assertSetEqual(expected, actual)
 
     def test_regular_and_exclude(self):
         searchParams = parseBSLs("foo -bar")
@@ -134,7 +136,9 @@ class test_Parses_Regular_Tags_Correctly(unittest.TestCase):
 class test_Parses_Multiple_Tags(unittest.TestCase):
     def test_regular(self):
         searchParams = parseBSLs("foo bar foo2 bar2")
-        self.assertEqual(searchParams.include_tags, ["foo", "bar", "foo2", "bar2"])
+        expected = {"foo", "bar", "foo2", "bar2"}
+        actual = set(searchParams.include_tags)
+        self.assertSetEqual(expected, actual)
 
 
 class test_Duplicate_Tags_Should_be_Combined(unittest.TestCase):
@@ -145,6 +149,6 @@ class test_Duplicate_Tags_Should_be_Combined(unittest.TestCase):
 
     def test_include_tags(self):
         searchParams = parseBSLs("-foo bar bar")
-        self.assertEqual(searchParams.include_tags, ["bar"])
         self.assertEqual(searchParams.exclude_tags, ["foo"])
+        self.assertEqual(searchParams.include_tags, ["bar"])
 
