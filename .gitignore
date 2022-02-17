@@ -234,3 +234,4 @@ cython_debug/
 data/passwords.sqlite3
 data/neo4j*
 .vscode/launch.json
+data/example_data.json
