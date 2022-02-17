@@ -39,7 +39,7 @@ def _process_from_config(image:Image,config:dict) -> Image:
     target = Dimensions(config['width'],config['height'])
     quality = config['quality']
     res = calculate_downscale(image.resolution,target)
-    output_image = encode(image,res,quality)
+    output_image = process(image,res,quality)
     return output_image
 
 
@@ -56,7 +56,7 @@ def calculate_downscale(resolution:Dimensions,target:Dimensions) -> Dimensions:
     return output
 
 
-def encode(image:Image,resolution:Dimensions,quality:int=95):
+def process(image:Image,resolution:Dimensions,quality:int=95):
     pil_img = _bytes_to_pillow(image.data)
     pil_img = pil_img.resize(resolution.to_tuple(),PILImage.LANCZOS)
     image_bytes = pil_img.tobytes('raw')
