@@ -7,6 +7,8 @@ class Default:
     created_at:int
     def to_pydantic(self):
         raise NotImplementedError
+    def from_pydantic(self):
+        raise NotImplementedError
 
 @dataclass
 class User(Default):
@@ -63,7 +65,7 @@ class Post(Default):
     sound:bool
     
     full:Image
-    thumbnail:Image|None = None
+    thumbnail:Image
     preview:Image|None = None
     
     language:str|None = None
@@ -84,7 +86,7 @@ class Post(Default):
             type=self.type,
             sound=self.sound,
             full=self.full.to_pydantic(),
-            thumbnail=self.thumbnail.to_pydantic() if self.thumbnail else None,
+            thumbnail=self.thumbnail.to_pydantic(),
             preview=self.preview.to_pydantic() if self.preview else None,
             language=self.language,
             age_rating=self.rating,

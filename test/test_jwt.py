@@ -6,7 +6,7 @@
 - Tokens should expire after a certain amount of time
 - Tokens with No Algorithm should not be accepted
 """
-from modules.auth import jwt
+from modules import jwt
 import time
 import unittest
 

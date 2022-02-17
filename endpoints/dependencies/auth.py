@@ -1,4 +1,4 @@
-from modules.auth import jwt
+from modules import jwt
 from fastapi import Header,APIRouter,Request, Response,status
 
 router = APIRouter()
