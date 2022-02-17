@@ -1,72 +1,71 @@
 from modules import settings
-from dataclasses import dataclass
-import io
-import numpy as np
-from PIL import Image as PILImage
-import cv2
 
-@dataclass(frozen=True)
-class Image:
-    data:bytes
-    format:str
+import io
+from dataclasses import dataclass
+from PIL import Image as PILImage
+
+@dataclass
+class Dimensions:
     width:int
     height:int
+    def to_tuple(self) -> tuple[int,int]:
+        return self.width,self.height
 
-def generateImageEncodings(img:Image) -> tuple[Image,Image,Image]:
-    """Generate downscaled versions of an image
 
-    Args:
-    - img (Image): The Image Data
+class Image:
+    width:int
+    height:int
+    data:bytes
+    _pillow:PILImage.Image
+    def __init__(self,data:bytes):
+        self._pillow = pil_image =  _bytes_to_pillow(data)
+        buf = io.BytesIO()
+        pil_image.save(buf,format='WEBP',lossless=True)
+        self.data = buf.read()
+        self.resolution = Dimensions(pil_image.width,pil_image.height)
 
-    Returns:
-    - Full Image (Image)
-    - Preview Image (Image)
-    - Thumbnail Image (Image)
-    """
-    config = settings.get('settings.posts')
-    
-    fullImage = encode(
-        img,(config['full']['max_width'],config['full']['max_height']),
-        config['full']['quality'],
+
+def generateThumbnail(image:Image) -> Image:
+    config = settings.get('settings.posts.thumbnail')
+    return _process_from_config(image,config)
+
+
+def generatePreview(image:Image) -> Image:
+    config = settings.get('settings.posts.preview')
+    return _process_from_config(image,config)
+
+
+def _process_from_config(image:Image,config:dict) -> Image:
+    target = Dimensions(config['width'],config['height'])
+    quality = config['quality']
+    res = calculate_downscale(image.resolution,target)
+    output_image = encode(image,res,quality)
+    return output_image
+
+
+def calculate_downscale(resolution:Dimensions,target:Dimensions) -> Dimensions:
+    output = Dimensions(resolution.width,resolution.height)
+    possible_factors = (
+        1.0,
+        output.width / target.width,
+        output.height / target.height
     )
-    previewImage = encode(
-        img,(config['preview']['max_width'],config['preview']['max_height']),
-        config['preview']['quality'],
-    )
-    thumbnailImage = encode(
-        img,(config['thumbnail']['max_width'],config['thumbnail']['max_height']),
-        config['thumbnail']['quality']
-    )
-    return fullImage,previewImage,thumbnailImage
-
-def calculateDownscale(dimensions:tuple[int,int],target:tuple[int,int]) -> tuple[int,int]:
-    ...
+    factor = max(possible_factors)
+    output.width = int(output.width // factor)
+    output.height = int(output.height // factor)
+    return output
 
 
-def encode(input:Image,target:tuple[int,int],quality:int=100) -> Image:
-    """Raises:
-    - ValueError: Invalid Image Data
-    - ValueError: Could not parse image
-    """
-    buf = io.BytesIO(input.data)
-    pillowImage = PILImage.open(buf).convert('RGBA')
-    pillowImage = pillowImage.resize(target,PILImage.ANTIALIAS)
-    
-    numpyImage = np.array(pillowImage)
-    suc, imageBuffer = cv2.imencode(".webp",numpyImage, [cv2.IMWRITE_WEBP_QUALITY, quality])
-    if not suc:
-        raise ValueError("Could not parse image")
-    data = imageBuffer.tobytes()
-    finalImage = Image(data,'webp',*target)
+def encode(image:Image,resolution:Dimensions,quality:int=95):
+    pil_img = _bytes_to_pillow(image.data)
+    pil_img = pil_img.resize(resolution.to_tuple(),PILImage.LANCZOS)
+    image_bytes = pil_img.tobytes('raw')
+    finalImage = Image(image_bytes)
     return finalImage
 
-def getImageData(filename:str,img:bytes) -> Image:
-    """Raises:
-    - ValueError: Invalid Image Data
 
-    Returns:
-        int: Width
-        int: Height
-        str: Image Format
-    """
-    raise NotImplementedError
+def _bytes_to_pillow(data:bytes) -> PILImage.Image:
+    image_buf = io.BytesIO(data)
+    pil_image = PILImage.open(image_buf)
+    pil_image.verify()
+    return pil_image
