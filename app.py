@@ -5,14 +5,13 @@ from endpoints.dependencies import auth
 
 import logging
 import uvicorn
-from fastapi import FastAPI as _FastAPI
-from fastapi.responses import RedirectResponse
+from fastapi import FastAPI,responses
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 
 logging.basicConfig(level=logging.DEBUG)
 
-app = _FastAPI(
+app = FastAPI(
     version="Alpha",
     docs_url='/docs',
     openapi_tags=[
@@ -33,9 +32,10 @@ app.add_exception_handler(auth.jwt.BadTokenError,auth.bad_token_exception_handle
 
 @app.get('/',tags=["Unprivileged"])
 def docs_redirect():
-    return RedirectResponse('/docs')
-app.include_router(post.router,prefix="/posts",tags=["Post"])
-app.include_router(tag.router,prefix="/tags",tags=["Tag"])
+    return responses.RedirectResponse('/docs')
+
+app.include_router(post.router)
+app.include_router(tag.router)
 
 if __name__ == "__main__":
     example_data.generate()
