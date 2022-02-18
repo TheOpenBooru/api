@@ -1,2 +1,3 @@
 from fastapi import APIRouter
-router = APIRouter()
+router = APIRouter(prefix='/posts')
+from . import all,get
