@@ -23,6 +23,8 @@ settings:
     expiration: 86400 # Token Expiration time in seconds
   otp:
     valid_window: 1 # The previous N OTP codes are valid
+  search:
+    max_limit: 100 # Max number of results per search
   posts:
     required_aprroval: true # Posts require moderator approval beofre being visible
     full:

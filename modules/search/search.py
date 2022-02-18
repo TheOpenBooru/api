@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from modules import schemas
+from modules import schemas,settings
 from modules.database import Post
 
 @dataclass()
@@ -11,8 +11,10 @@ class SearchParameters:
     isAscending: bool = False
 
 def searchPosts(params:SearchParameters) -> list[schemas.Post]:
+    max_limit = settings.get('settings.search.max_limit')
+    limit = min(params.limit,max_limit)
     posts = Post.search(
-        limit=params.limit,
+        limit=limit,
         order=params.sort,
         isAscending=params.isAscending,
         hasTags=params.include_tags,
