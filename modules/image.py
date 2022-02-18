@@ -1,6 +1,6 @@
 from modules import settings
-
 import io
+import hashlib
 from dataclasses import dataclass
 from PIL import Image as PILImage
 
@@ -16,13 +16,18 @@ class Image:
     width:int
     height:int
     data:bytes
+    md5:str
+    sha3_256:str
     _pillow:PILImage.Image
     def __init__(self,data:bytes):
-        self._pillow = pil_image =  _bytes_to_pillow(data)
+        self._pillow = pil_image = _bytes_to_pillow(data)
+        self.resolution = Dimensions(pil_image.width,pil_image.height)
+        
         buf = io.BytesIO()
         pil_image.save(buf,format='WEBP',lossless=True)
         self.data = buf.read()
-        self.resolution = Dimensions(pil_image.width,pil_image.height)
+        self.md5 = hashlib.md5(self.data).hexdigest()
+        self.sha3_256 = hashlib.sha3_256(self.data).hexdigest()
 
 
 def generateThumbnail(image:Image) -> Image:
