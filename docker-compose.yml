@@ -1,11 +1,5 @@
 version: "3.3"
 services:
-  email:
-    build: namshi/smtp
-    environment:
-      - MAILNAME=openbooru.org
-    ports:
-      - "25:25"
   web:
     build: .
     ports:
