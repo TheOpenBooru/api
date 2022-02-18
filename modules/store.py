@@ -7,7 +7,7 @@ def _gen_store_path(key: str) -> Path:
     return Path(f"./data/files/{key}")
 
 
-def put(data: bytes) -> str:
+def put(data: bytes,suffix:str = "") -> str:
     """Raises:
         TypeError: Data wasn't bytes
 
@@ -18,6 +18,7 @@ def put(data: bytes) -> str:
         raise TypeError("Data wasn't bytes")
 
     key = hashlib.sha3_256(data).hexdigest()
+    key += suffix
     path = _gen_store_path(key)
     with open(path, "wb") as f:
         f.write(data)
@@ -36,7 +37,8 @@ def get(key: str) -> bytes:
 
 
 def url(key: str) -> str:
-    ...
+    hostname = settings.get("settings.site.hostname")
+    return f"{hostname}/image/get/{key}"
 
 
 def delete(key: str):
