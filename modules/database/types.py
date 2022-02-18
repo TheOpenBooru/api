@@ -65,7 +65,7 @@ class Post(Default):
     sound:bool
     
     full:Image
-    thumbnail:Image
+    thumbnail:Image|None = None
     preview:Image|None = None
     
     language:str|None = None
