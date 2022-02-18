@@ -3,7 +3,7 @@ from modules import jwt,schemas,database
 from endpoints.dependencies.auth import parse_token
 from fastapi import Response,Depends,status
 
-@router.delete("/post", tags=['Moderator'])
+@router.delete("/post/{id}", tags=['Moderator'])
 async def delete_post(id:int ,token:jwt.TokenData=Depends(parse_token)):
     if token.level == "ADMIN":
         database.Post.delete(id)

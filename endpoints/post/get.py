@@ -3,7 +3,7 @@ from modules import schemas,database
 from fastapi import Response,status
 
 
-@router.get("/post",response_model=schemas.Post, tags=["Unprivileged"])
+@router.get("/post/{id}",response_model=schemas.Post, tags=["Unprivileged"])
 async def get_post(id:int):
     post = database.Post.get(id=id)
     if post:
