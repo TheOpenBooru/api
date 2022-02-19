@@ -1,4 +1,4 @@
-from ..types import Tag
+from modules.schemas import Tag
 import time
 
 _tags = dict()
@@ -17,7 +17,7 @@ def get(name:str) -> Tag:
 
 def search(limit:int=32,order:str='count',
            namespace:str=None,
-           before:int=None,after:int=None,
+           after:int=None,before:int=None,
            ) -> list[Tag]:
     """Raises:
         ValueError: Invalid order

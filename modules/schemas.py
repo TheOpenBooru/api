@@ -48,26 +48,32 @@ class Comment(BaseModel):
     post: int = Field(..., description="The Post ID the Comment is on")
 
 
-class User(BaseModel):
+class User_Public(BaseModel):
     id: int = Field(..., description="The User's ID")
     created_at: int = Field(..., description="Unix timestamp for when the User was created")
 
     name: str = Field(..., description="The User's Name")
     bio: str = Field("", description="The User's Biography for their profile")
-    level: str = Field(..., description="The User's Level")
+    level: str = Field("USER", description="The User's Level")
     posts: list[int] = Field(default_factory=list, description="IDs of Posts made by the user")
     comments: list[int] = Field(default_factory=list, description="IDs of Comments made by the user")
 
-    email: Optional[str] = Field(None, description="The User's Email Address")
-    settings: Optional[str] = Field(None, description="The User's Email Address")
-    history: Optional[list[int]] = Field(None, description="IDs of recently viewed posts")
-    favourites: Optional[list[int]] = Field(None, description="IDs of posts the user has favourited")
-    blocked: Optional[list[int]] = Field(None, description="IDs of posts the user has blocked")
+class User(User_Public):
+    email: str = Field(..., description="The User's Email Address")
+    settings: str = Field("", description="The User's Email Address")
+    
+    history: list[int] = Field(default_factory=list, description="IDs of recently viewed posts")
+    favourites: list[int] = Field(default_factory=list, description="IDs of posts the user has favourited")
+    blocked: list[int] = Field(default_factory=list, description="IDs of posts the user has blocked")
+
+    upvotes: list[int] = Field(default_factory=list, description="IDs of posts the user has upvoted")
+    downvotes: list[int] = Field(default_factory=list, description="IDs of posts the user has downvoted")
 
 
 class Post(BaseModel):
     id: int = Field(..., description="The Post's ID")
     created_at: int = Field(..., description="The Unix timestamp for when the Post was created")
+    creator: int = Field(..., description="The User ID of the Post Creator")
 
     md5s: list[str] = Field(..., description="The Post's MD5 hashes")
     sha256s: list[str] = Field(..., description="The Post's SHA3-256 hashes")

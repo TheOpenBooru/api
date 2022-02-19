@@ -7,6 +7,6 @@ from fastapi import Response,status
 async def get_post(id:int):
     post = database.Post.get(id=id)
     if post:
-        return post.to_pydantic()
+        return post
     else:
         return Response(status_code=status.HTTP_404_NOT_FOUND)

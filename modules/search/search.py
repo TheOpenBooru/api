@@ -20,4 +20,4 @@ def searchPosts(params:SearchParameters) -> list[schemas.Post]:
         hasTags=params.include_tags,
         excludeTags=params.exclude_tags,
     )
-    return [post.to_pydantic() for post in posts]
+    return posts

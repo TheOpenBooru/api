@@ -1,5 +1,5 @@
 from modules import validate
-from ..types import Post
+from modules.schemas import Post
 from . import User
 import time
 
@@ -7,6 +7,7 @@ _posts_store:dict[int,Post] = {}
 
 def _verify_post(post:Post):
     # Valdiate hashes
+    [validate.tag(x) for x in post.tags]
     [validate.md5(x) for x in post.md5s]
     [validate.sha256(x) for x in post.sha256s]
     # Validate Image URLs
@@ -15,7 +16,7 @@ def _verify_post(post:Post):
     validate.url(post.thumbnail.url) if post.thumbnail else None
     
     validate.language(post.language) if post.language else None
-    validate.rating(post.rating) if post.rating else None
+    validate.rating(post.age_rating) if post.age_rating else None
     if int(time.time() + 1) < post.created_at:
         raise ValueError("Created in the future")
     if post.type not in {'image','gif','video'}:
@@ -23,9 +24,11 @@ def _verify_post(post:Post):
     if not User.exists(post.creator):
         raise ValueError("Invalid User ID")
 
+def get_new_id() -> int:
+    return len(_posts_store) + 1
+
 def create(post:Post):
     _verify_post(post)
-    post.id = len(_posts_store) + 1
     _posts_store[post.id] = post
 
 

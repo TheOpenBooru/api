@@ -1,19 +1,14 @@
-from ..types import User
-import time
-import random
+from modules.schemas import User
 
 _users_store:dict[int,User] = {}
 
 
-def create(name:str,email:str) -> User:
-    id = len(_users_store) + 1
-    user = User(
-        id=id,created_at=int(time.time()),
-        name=name,email=email,
-        level="USER",
-        )
-    _users_store[id] = user
-    return user
+def get_new_id() -> int:
+    return len(_users_store) + 1
+
+
+def create(user:User):
+    _users_store[user.id] = user
 
 
 def get(*,id:int=None,name:str=None) -> User | None:
@@ -27,75 +22,65 @@ def exists(id:int) -> bool:
     return id in _users_store
 
 def search(limit:int=10,order:str='name',
-           name_like:str=None,level:str=None,
-           after:int=None,before:int=None,
-           name:str=None,email:str=None,
+           name:str=None,name_like:str=None,
+           level:str=None
            ) -> list[User]:
     """Valid Orders:
     - name
     - created_at
     """
+    def _filter(user:User):
+        return (
+            (name and name == user.name) or 
+            (name_like and name_like in user.name) or 
+            (level and level == user.level)
+        )
+    
     values = list(_users_store.values())
-    if name_like:
-        values = list(filter(lambda x:name_like in x.name,values))
-    if level:
-        values = list(filter(lambda x:x.level == level,values))
-    if after:
-        values = list(filter(lambda x:x.created_at > after,values))
-    if before:
-        values = list(filter(lambda x:x.created_at < before,values))
-    values = sorted(values,key=lambda x:x.__getattribute__(order))
-    return values
+    values = list(filter(_filter,values))
+    values.sort(key=lambda x:getattr(x,order))
+    return values[:limit]
 
 
-def set(id:int,
-        name:str=None,email:str=None,
-        level:str=None,description:str=None,
-        settings:str=None,
-        ):
-    user = _users_store[id]
-    user.name = name or user.name
-    user.email = email or user.email
-    user.level = level or user.level
-    user.bio = description or ""
-    user.settings = settings or ""
+def set(id:int,user:User):
+    _users_store[id] = user
 
 
 def delete(id:int):
     _users_store.pop(id)
 
 
-def view(id:int,post_id:int):
-    _users_store[id].history.append(post_id)
+def view(id:int,postID:int):
+    _users_store[id].history.append(postID)
 
 
-def toggle_favourite(id:int,post_id:int):
+def toggle_favourite(id:int,postID:int):
     user = _users_store[id]
-    if post_id in user.favourites:
-        user.favourites.remove(post_id)
+    if postID in user.favourites:
+        user.favourites.remove(postID)
     else:
-        user.favourites.append(post_id)
+        user.favourites.append(postID)
 
 
-def toggle_block(id:int,post_id:int):
+def toggle_block(id:int,postID:int):
     user = _users_store[id]
-    if post_id in user.blocked:
-        user.blocked.remove(post_id)
+    if postID in user.blocked:
+        user.blocked.remove(postID)
     else:
-        user.blocked.append(post_id)
+        user.blocked.append(postID)
 
 
-def toggle_upvote(id:int,post_id:int):
+def toggle_upvote(id:int,postID:int):
     user = _users_store[id]
-    if post_id in user.upvotes:
-        user.upvotes.remove(post_id)
+    if postID in user.upvotes:
+        user.upvotes.remove(postID)
     else:
-        user.upvotes.append(post_id)
+        user.upvotes.append(postID)
 
 
-def toggle_downvote(id:int,post_id:int):
+def toggle_downvote(id:int,postID:int):
     user = _users_store[id]
-    if post_id in user.downvotes:
-        user.downvotes.remove(post_id)
+    if postID in user.downvotes:
+        user.downvotes.remove(postID)
     else:
-        user.downvotes.append(post_id)
+        user.downvotes.append(postID)
