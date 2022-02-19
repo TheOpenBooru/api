@@ -1,43 +1,51 @@
+import os
 from modules import settings
 import io
 import hashlib
 from dataclasses import dataclass
 from PIL import Image as PILImage
 
-@dataclass
+@dataclass(frozen=True)
 class Dimensions:
     width:int
     height:int
     def to_tuple(self) -> tuple[int,int]:
         return self.width,self.height
 
+@dataclass(frozen=True)
 class Image:
-    width:int
-    height:int
     data:bytes
-    pillow:PILImage.Image
-    def __init__(self,data:bytes,format:str):
-        buf = io.BytesIO(data)
-        self.pillow = pil_img = PILImage.open(buf,formats=[format])
-        self.resolution = Dimensions(pil_img.width,pil_img.height)
-        
-        buf = io.BytesIO()
-        pil_img.save(buf,format='WEBP',lossless=True)
-        self.data = buf.read()
+    extention:str
+    resolution:Dimensions
+    pil_img:PILImage.Image
+
+
+def file_to_image(file:io.BytesIO | io.BufferedReader) -> Image:
+    data = file.read()
+    file.seek(0)
+    pil_img = PILImage.open(file)
+    filename,extention = os.path.splitext(file.name)
+    res = Dimensions(pil_img.width,pil_img.height)
+    return Image(
+        data = data,
+        extention = extention,
+        resolution = res,
+        pil_img = pil_img,
+        )
 
 
 def generateThumbnail(image:Image) -> Image:
     config = settings.get('settings.posts.thumbnail')
-    return _process_from_config(image,config)
+    return _process_using_config(image,config)
 
 
 def generatePreview(image:Image) -> Image:
     config = settings.get('settings.posts.preview')
-    return _process_from_config(image,config)
+    return _process_using_config(image,config)
 
 
-def _process_from_config(image:Image,config:dict) -> Image:
-    target = Dimensions(config['width'],config['height'])
+def _process_using_config(image:Image,config:dict) -> Image:
+    target = Dimensions(config['max_width'],config['max_width'])
     quality = config['quality']
     res = calculate_downscale(image.resolution,target)
     output_image = process(image,res,quality)
@@ -45,21 +53,30 @@ def _process_from_config(image:Image,config:dict) -> Image:
 
 
 def calculate_downscale(resolution:Dimensions,target:Dimensions) -> Dimensions:
-    output = Dimensions(resolution.width,resolution.height)
     possible_factors = (
         1.0,
-        output.width / target.width,
-        output.height / target.height
+        resolution.width / target.width,
+        resolution.height / target.height
     )
-    factor = max(possible_factors)
-    output.width = int(output.width // factor)
-    output.height = int(output.height // factor)
-    return output
+    limiting_factor = max(possible_factors)
+    output_width = int(resolution.width / limiting_factor)
+    output_height = int(resolution.height / limiting_factor)
+    return Dimensions(output_width,output_height)
 
 
-def process(image:Image,resolution:Dimensions,quality:int=95):
-    pil_img = image.pillow
+def process(image:Image,resolution:Dimensions,quality:int) -> Image:
+    pil_img = image.pil_img
     pil_img = pil_img.resize(resolution.to_tuple(),PILImage.LANCZOS)
-    image_bytes = pil_img.tobytes('raw')
-    finalImage = Image(image_bytes,'webp')
-    return finalImage
+    buf = io.BytesIO()
+    pil_img.save(buf,format='WEBP',quality=quality)
+    return Image(
+        data = buf.read(),
+        extention='.webp',
+        resolution = (resolution),
+        pil_img = pil_img
+        )
+
+def _pillow_to_webp_data(pillow_img:PILImage.Image) -> bytes:
+    buf = io.BytesIO()
+    pillow_img.save(buf,format='WEBP',lossless=True)
+    return buf.read()
