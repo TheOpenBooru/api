@@ -37,8 +37,8 @@ def docs_redirect():
 app.include_router(post.router)
 app.include_router(tag.router)
 
+example_data.generate()
 if __name__ == "__main__":
-    example_data.generate()
     uvicorn.run(
         "app:app",
         host=settings.get('settings.site.hostname'),
