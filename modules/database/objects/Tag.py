@@ -3,20 +3,17 @@ import time
 
 _tags = dict()
 
-def create(name:str,namespace:str):
+def _create_default_tag(name:str):
     tag = Tag(
-        name=name,
-        created_at=int(time.time()),
-        namespace=namespace
-    )
+        created_at=int(time.time()),count=0,
+        name=name,namespace='generic',
+        )
     _tags[name] = tag
 
-
 def get(name:str) -> Tag:
+    if name not in _tags:
+        _create_default_tag(name)
     return _tags[name]
-
-def exists(name:str) -> bool:
-    return name in _tags
 
 def search(limit:int=32,order:str='count',
            namespace:str=None,

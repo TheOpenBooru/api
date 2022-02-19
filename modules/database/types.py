@@ -56,7 +56,7 @@ class Tag(Default):
 
 @dataclass
 class Post(Default):
-    id:int
+    id:int|None
     creator:int
     created_at:int
     md5s:list[str] 
@@ -86,7 +86,7 @@ class Post(Default):
             type=self.type,
             sound=self.sound,
             full=self.full.to_pydantic(),
-            thumbnail=self.thumbnail.to_pydantic(),
+            thumbnail=self.thumbnail.to_pydantic() if self.thumbnail else None,
             preview=self.preview.to_pydantic() if self.preview else None,
             language=self.language,
             age_rating=self.rating,

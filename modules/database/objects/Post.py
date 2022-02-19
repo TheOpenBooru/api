@@ -1,10 +1,7 @@
-import logging
 from modules import validate
-from ..types import Image,Post
+from ..types import Post
 from . import User
-from dataclasses import dataclass
 import time
-import random
 
 _posts_store:dict[int,Post] = {}
 
@@ -26,18 +23,10 @@ def _verify_post(post:Post):
     if not User.exists(post.creator):
         raise ValueError("Invalid User ID")
 
-def create(creator:int,md5:str,type:str,sound:bool,full:Image) -> Post:
-    id = len(_posts_store) + 1
-    post = Post(
-        id=id,creator=creator,
-        created_at=int(time.time()),
-        type=type,sound=sound,
-        md5s=[md5],sha256s=[],
-        full=full
-        )
+def create(post:Post):
     _verify_post(post)
+    post.id = len(_posts_store) + 1
     _posts_store[post.id] = post
-    return post
 
 
 def get(*,id:int=None,md5:str=None,sha256:str=None) -> Post | None:
@@ -72,12 +61,12 @@ def search(limit:int=64,order:str='created_at',isAscending:bool=False,
     excludeTags = excludeTags or []
     
     def filterTags(post:Post) -> bool:
-        for tag in hasTags:
-            if tag not in post.tags:
-                return False
-        for tag in excludeTags:
-            if tag in post.tags:
-                return False
+        if hasTags:
+            for tag in hasTags:
+                return tag in post.tags
+        if excludeTags:
+            for tag in excludeTags:
+                return tag not in post.tags
         return True
     
     posts:list[Post] = list(_posts_store.values())
