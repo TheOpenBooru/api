@@ -1,0 +1,26 @@
+[
+    {
+        "name":"Unprivileged",
+        "description":"All Endpoints Accessible to Anybody"
+    },
+    {
+        "name":"User",
+        "description":"All Endpoints Accessible to Users"
+    },
+    {
+        "name":"Admin",
+        "description":"All Endpoints Accessible to Admins"
+    },
+    {
+        "name":"User",
+        "description":"User Releated Endpoints"
+    },
+    {
+        "name":"User",
+        "description":"User Releated Endpoints"
+    },
+    {
+        "name":"Post",
+        "description":"Post Related Endpoints"
+    }
+]

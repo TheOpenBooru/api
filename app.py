@@ -3,6 +3,7 @@ from modules import settings
 from endpoints import post,tag
 from endpoints.dependencies import auth
 
+import json
 import logging
 import uvicorn
 from fastapi import FastAPI,responses
@@ -11,14 +12,13 @@ from fastapi.middleware.gzip import GZipMiddleware
 
 logging.basicConfig(level=logging.DEBUG)
 
+with open('./data/tag_descriptions.json') as f:
+    tag_descriptions = json.load(f)
+
 app = FastAPI(
     version="Alpha",
     docs_url='/docs',
-    openapi_tags=[
-        {
-            "name":"Unprivileged",
-            "description":"These endpoints can be accessed without an account"}
-        ]
+    openapi_tags=tag_descriptions
     )
 
 app.add_middleware(CORSMiddleware,
