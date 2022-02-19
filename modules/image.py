@@ -11,23 +11,19 @@ class Dimensions:
     def to_tuple(self) -> tuple[int,int]:
         return self.width,self.height
 
-
 class Image:
     width:int
     height:int
     data:bytes
-    md5:str
-    sha3_256:str
-    _pillow:PILImage.Image
-    def __init__(self,data:bytes):
-        self._pillow = pil_image = _bytes_to_pillow(data)
-        self.resolution = Dimensions(pil_image.width,pil_image.height)
+    pillow:PILImage.Image
+    def __init__(self,data:bytes,format:str):
+        buf = io.BytesIO(data)
+        self.pillow = pil_img = PILImage.open(buf,formats=[format])
+        self.resolution = Dimensions(pil_img.width,pil_img.height)
         
         buf = io.BytesIO()
-        pil_image.save(buf,format='WEBP',lossless=True)
+        pil_img.save(buf,format='WEBP',lossless=True)
         self.data = buf.read()
-        self.md5 = hashlib.md5(self.data).hexdigest()
-        self.sha3_256 = hashlib.sha3_256(self.data).hexdigest()
 
 
 def generateThumbnail(image:Image) -> Image:
@@ -62,15 +58,8 @@ def calculate_downscale(resolution:Dimensions,target:Dimensions) -> Dimensions:
 
 
 def process(image:Image,resolution:Dimensions,quality:int=95):
-    pil_img = _bytes_to_pillow(image.data)
+    pil_img = image.pillow
     pil_img = pil_img.resize(resolution.to_tuple(),PILImage.LANCZOS)
     image_bytes = pil_img.tobytes('raw')
-    finalImage = Image(image_bytes)
+    finalImage = Image(image_bytes,'webp')
     return finalImage
-
-
-def _bytes_to_pillow(data:bytes) -> PILImage.Image:
-    image_buf = io.BytesIO(data)
-    pil_image = PILImage.open(image_buf)
-    pil_image.verify()
-    return pil_image
