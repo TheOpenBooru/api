@@ -1,4 +1,5 @@
 import pydantic
+import time
 from pydantic import BaseModel, Field,AnyHttpUrl,FileUrl
 from typing import Any, Optional
 
@@ -28,21 +29,21 @@ class Author(BaseModel):
 
 
 class Source(BaseModel):
+    created_at: float = Field(default_factory=time.time, description="The Unix Timestamp for when the post was originally created")
     author: Author = Field(..., description="The Author of the source")
-    created_at: str = Field(..., description="The Unix Timestamp for when the source was created")
     url: pydantic.AnyHttpUrl = Field(..., description="Source of the image")
 
 
 class Tag(BaseModel):
+    created_at: float = Field(default_factory=time.time, description="The Unix Timestamp for the First Usage of the tag")
     name: str = Field(...,description="The Tag Name")
     namespace: str = Field(..., description="The Tag Namespace")
-    created_at: int = Field(..., description="The Unix Timestamp for the First Usage of the tag")
     count: Optional[int] = Field(None, description="The number of times the tag has been used")
 
 
 class Comment(BaseModel):
     id: int = Field(..., description="The Comment's ID")
-    created_at: int = Field(..., description="The Unix timestamp for when the Comment was created")
+    created_at: float = Field(default_factory=time.time, description="The Unix timestamp for when the Comment was created")
     creator: int = Field(..., description="The User ID of the Comment Creator")
     text: str = Field(..., description="The Comment's text")
     post: int = Field(..., description="The Post ID the Comment is on")
@@ -50,7 +51,7 @@ class Comment(BaseModel):
 
 class User_Public(BaseModel):
     id: int = Field(..., description="The User's ID")
-    created_at: int = Field(..., description="Unix timestamp for when the User was created")
+    created_at: float = Field(default_factory=time.time, description="Unix timestamp for when the User was created")
 
     name: str = Field(..., description="The User's Name")
     bio: str = Field("", description="The User's Biography for their profile")
@@ -72,7 +73,7 @@ class User(User_Public):
 
 class Post(BaseModel):
     id: int = Field(..., description="The Post's ID")
-    created_at: int = Field(..., description="The Unix timestamp for when the Post was created")
+    created_at: float = Field(default_factory=time.time, description="The Unix timestamp for when the Post was created")
     creator: int = Field(..., description="The User ID of the Post Creator")
 
     md5s: list[str] = Field(..., description="The Post's MD5 hashes")
