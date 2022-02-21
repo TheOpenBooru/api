@@ -1,6 +1,5 @@
 config:
-  password_pepper: "" 
-  
+  password_pepper: ""
   hcaptcha:
     sitekey: ""
     secret: ""
