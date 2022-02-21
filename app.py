@@ -1,6 +1,6 @@
 from scripts import example_data
 from modules import settings
-from endpoints import post,tag
+from endpoints import post,tag,image
 from endpoints.dependencies import auth
 
 import json
@@ -30,6 +30,7 @@ app.add_exception_handler(auth.jwt.BadTokenError,auth.bad_token_exception_handle
 def docs_redirect():
     return responses.RedirectResponse('/docs')
 
+app.include_router(image.router)
 app.include_router(post.router)
 app.include_router(tag.router)
 
