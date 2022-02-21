@@ -5,6 +5,7 @@ python-dotenv
 regex
 bs4
 lxml
+iso639
 
 # Endpoints
 fastapi
