@@ -3,7 +3,7 @@ from modules.schemas import User
 _users_store:dict[int,User] = {}
 
 
-def get_new_id() -> int:
+def get_unused_id() -> int:
     return len(_users_store) + 1
 
 

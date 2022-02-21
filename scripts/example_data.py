@@ -63,7 +63,7 @@ createdUsers = {}
 def _get_user_id(post:SafeBooruPost):
     creatorID = post.creator_id
     if creatorID not in createdUsers:
-        userID = User.get_new_id()
+        userID = User.get_unused_id()
         user = schemas.User(
             id=userID,created_at=int(time.time()),
             name=f"User: {userID}",
@@ -96,7 +96,7 @@ def construct_post(post:SafeBooruPost) -> schemas.Post:
     tags = post.tags.split(' ')
     tags = tags[1:-1] # remove first and last empty tags
     return schemas.Post(
-        id=Post.get_new_id(),creator=usedID,
+        id=Post.get_unused_id(),creator=usedID,
         created_at=int(time.time()),
         full=full,preview=preview,thumbnail=thumbnail,
         md5s=[post.md5],sha256s=[],

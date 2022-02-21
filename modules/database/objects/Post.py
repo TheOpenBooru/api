@@ -24,7 +24,7 @@ def _verify_post(post:Post):
     if not User.exists(post.creator):
         raise ValueError("Invalid User ID")
 
-def get_new_id() -> int:
+def get_unused_id() -> int:
     return len(_posts_store) + 1
 
 def create(post:Post):
