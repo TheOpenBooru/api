@@ -12,6 +12,7 @@ from fastapi.middleware.gzip import GZipMiddleware
 logging.basicConfig(level=logging.DEBUG)
 
 app = FastAPI(
+    title="Open Booru",
     version="Alpha",
     docs_url='/docs',
     )
@@ -23,7 +24,7 @@ app.add_middleware(CORSMiddleware,
 app.add_middleware(GZipMiddleware)
 
 
-@app.get('/')
+@app.get('/',tags=['Docs'])
 def docs_redirect():
     return responses.RedirectResponse('/docs')
 
