@@ -1,8 +1,7 @@
 from . import router
-from modules import schemas,database,jwt
-from endpoints.dependencies.auth import parse_token
-from fastapi import Response,Depends,status
+from modules import schemas
+from fastapi import Response,status
 
 @router.patch('/post/{id}')
-async def edit_post(id:int,new_post_version:schemas.Post,token:jwt.TokenData=Depends(parse_token)):
+async def edit_post(id:int,new_post_version:schemas.Post):
     return Response(status_code=status.HTTP_501_NOT_IMPLEMENTED)

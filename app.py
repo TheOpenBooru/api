@@ -1,7 +1,6 @@
 from scripts import example_data
 from modules import settings
 from endpoints import post,tag,image
-from endpoints.dependencies import auth
 
 import json
 import logging
@@ -23,8 +22,6 @@ app.add_middleware(CORSMiddleware,
 )
 app.add_middleware(GZipMiddleware)
 
-
-app.add_exception_handler(auth.jwt.BadTokenError,auth.bad_token_exception_handler)
 
 @app.get('/',tags=["Unprivileged"])
 def docs_redirect():
