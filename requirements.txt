@@ -1,8 +1,6 @@
 # Core
 wheel
 requests
-python-dotenv
-regex
 bs4
 lxml
 iso639
@@ -12,7 +10,6 @@ fastapi
 uvicorn[standard]
 pydantic
 python-multipart
-fastapi-limiter 
 
 # Database
 cachetools
