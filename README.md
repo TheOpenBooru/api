@@ -4,10 +4,10 @@
 
 ### Requirements
 
-linux (other platforms may work, but are untested)
-python >= 3.10
-
-hcaptcha
+- linux
+  - other platforms may work, but are untested
+- python >= 3.10
+- hcaptcha
 
 ### Instructions
 
