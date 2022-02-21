@@ -14,7 +14,7 @@ import unittest
 class test_Tokens_Are_Strings(unittest.TestCase):
     def test_Tokens_Are_Strings(self):
         token = jwt.create(0,"USER")
-        self.assertIsInstance(token, str)
+        assert isinstance(token,str)
 
 class test_Tokens_Should_Expire(unittest.TestCase):
     def test_Tokens_Expire(self):
@@ -31,19 +31,19 @@ class test_Data_From_Tokens_Should_Be_Unchanged(unittest.TestCase):
         data = {'a':'100','b':200,'c':0.201,'4':True}
         token = jwt.create(123456,"USER",data=data)
         tokenData = jwt.decode(token)
-        self.assertEqual(tokenData.data,data)
+        assert tokenData.data == data
 
 class test_UserID_From_Tokens_Should_Be_Unchanged(unittest.TestCase):
     def test_Token_Stores_User_ID(self):
         token = jwt.create(12038,"USER")
         tokenData = jwt.decode(token)
-        self.assertEquals(tokenData.userID,12038)
+        assert tokenData.userID == 12038
 
 class test_Level_From_Tokens_Should_Be_Unchanged(unittest.TestCase):
     def test_Token_Stores_User_ID(self):
         token = jwt.create(1,"USER")
         tokenData = jwt.decode(token)
-        self.assertEquals(tokenData.level,"USER")
+        assert tokenData.level == "USER"
 
 class test_Shouldnt_Accept_Reserved_Keys(unittest.TestCase):
     def test_User_ID(self):

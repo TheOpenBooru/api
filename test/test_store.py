@@ -21,26 +21,25 @@ def clear():
         f.unlink()
 
 class test_Put_Allows_Data_to_be_Stored(unittest.TestCase):
-    normalData = b'MR Foo Bar walked into a bar'
-    smallData = b''
-    largeData = random.randbytes(1024*1024)
     def test_a(self):
-        store.put(self.normalData)
-        store.put(self.smallData)
-        store.put(self.largeData)
-    def tearDown(self) -> None:
+        normal_data = b'MR Foo Bar walked into a bar'
+        empty_data = b''
+        large_data = random.randbytes(1024*1024)
+        
+        store.put(normal_data)
+        store.put(empty_data)
+        store.put(large_data)
         clear()
 
 class test_Put_Raises_TypeError_for_non_bytes_data(unittest.TestCase):
     def test_invalid_data(self):
         data = [
-            'foobar',
-            0,
-            Ellipsis,
+            'foobar', # string
+            0, # int
+            Ellipsis, # Python object
             ]
         for x in data:
             self.assertRaises(TypeError, store.put, x)
-    def tearDown(self) -> None:
         clear()
 
 class test_Keys_Should_Be_Unique(unittest.TestCase):
@@ -52,7 +51,6 @@ class test_Keys_Should_Be_Unique(unittest.TestCase):
             if key in keys:
                 self.fail("Key is not unique")
             keys.add(key)
-    def tearDown(self) -> None:
         clear()
 
 class test_Keys_Should_Be_Same_For_Duplicate_Data(unittest.TestCase):
@@ -60,15 +58,13 @@ class test_Keys_Should_Be_Same_For_Duplicate_Data(unittest.TestCase):
         data = b'example'
         key1 = store.put(data)
         key2 = store.put(data)
-        self.assertEquals(key1,key2)
-    def tearDown(self) -> None:
+        assert key1 == key2
         clear()
 
 class test_Keys_Should_Be_Strings(unittest.TestCase):
     def test_a(self):
         key = store.put(b'example')
-        self.assertIsInstance(key, str)
-    def tearDown(self) -> None:
+        assert isinstance(key,str)
         clear()
 
 class test_Data_is_Retrievable(unittest.TestCase):
@@ -79,8 +75,7 @@ class test_Data_is_Retrievable(unittest.TestCase):
         ]
         for x in Data:
             key = store.put(x)
-            self.assertEquals(store.get(key),x)
-    def tearDown(self):
+            assert store.get(key) == x
         clear()
 
 class test_NonExistant_Key_Should_Raise_FileNotFoundError(unittest.TestCase):
@@ -92,7 +87,6 @@ class test_Deleted_Data_Cant_Be_Obtained(unittest.TestCase):
         key = store.put(b'example')
         store.delete(key)
         self.assertRaises(FileNotFoundError,store.get,key)
-    def tearDown(self):
         clear()
 
 class test_Can_Delete_NonExistant_Keys(unittest.TestCase):

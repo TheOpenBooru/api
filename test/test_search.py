@@ -19,7 +19,7 @@ class test_Post_Search_Returns_Posts(unittest.TestCase):
         posts = searchPosts(params)
         self.assertIsInstance(posts,list)
         for post in posts:
-            self.assertIsInstance(post,schemas.Post)
+            assert isinstance(post,schemas.Post)
 
 
 class test_Post_Search_Respects_Limit_in_Settings(unittest.TestCase):

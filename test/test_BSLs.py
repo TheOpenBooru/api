@@ -10,21 +10,21 @@ def assertDoesntParse(query):
 
 class test_Parses_Empty_String_to_Defaults(unittest.TestCase):
     def test_Parses_Empty_String_to_Defaults(self):
-        self.assertEqual(parseBSLs(""), defaultConfig)
+        assert parseBSLs("") == defaultConfig
 
 
 class test_Limit_Intererets_Positive_Intergers_Correctly(unittest.TestCase):
     def test_Regular_Value(self):
-        self.assertEqual(parseBSLs("limit:10").limit, 10)
-        self.assertEqual(parseBSLs("limit:15").limit, 15)
-        self.assertEqual(parseBSLs("limit:33").limit, 33)
+        assert parseBSLs("limit:10").limit == 10
+        assert parseBSLs("limit:15").limit == 15
+        assert parseBSLs("limit:33").limit == 33
 
     def test_All_Digits(self):
-        self.assertEqual(parseBSLs("limit:1234567890").limit, 1234567890)
+        assert parseBSLs("limit:1234567890").limit == 1234567890
 
     def test_Big_Number(self):
         x = 999999999999999999999999999999999999
-        self.assertEqual(parseBSLs(f"limit:{x}").limit, x)
+        assert parseBSLs(f"limit:{x}").limit == x
 
 
 class test_Limit_Shouldnt_Parse_Non_Positive_Intergers(unittest.TestCase):
@@ -57,35 +57,35 @@ class test_Limit_Invalid_Prefix_Shouldnt_Be_Parsed(unittest.TestCase):
 
 class test_Limit_Invalid_Should_be_Prefixed_with_Start_or_Whitespace(unittest.TestCase):
     def test_Preceeding_WhiteSpace(self):
-        self.assertEqual(parseBSLs(" limit:10").limit, 10)
-        self.assertEqual(parseBSLs("\nlimit:10").limit, 10)
-        self.assertEqual(parseBSLs("\r\nlimit:10").limit, 10)
+        assert parseBSLs(" limit:10").limit == 10
+        assert parseBSLs("\nlimit:10").limit == 10
+        assert parseBSLs("\r\nlimit:10").limit == 10
 
 
 class test_Duplicate_Limit_Tags_Should_Use_Last_Occuring_One(unittest.TestCase):
     def test_Duplicate_Limit_Tags_Should_Use_Last_Occuring_One(self):
-        self.assertEqual(parseBSLs("limit:10 limit:12").limit, 12)
+        assert parseBSLs("limit:10 limit:12").limit == 12
 
 
 class test_Sort_Should_Correctly_Parse_Sort_Type(unittest.TestCase):
     def test_Regular_Sort_Type(self):
-        self.assertEqual(parseBSLs("sort:id").sort, "id")
-        self.assertEqual(parseBSLs("sort:name").sort, "name")
-        self.assertEqual(parseBSLs("sort:created").sort, "created")
+        assert parseBSLs("sort:id").sort == "id"
+        assert parseBSLs("sort:name").sort == "name"
+        assert parseBSLs("sort:created").sort == "created"
 
 
 class test_Sort_Order_Suffix_is_Optional(unittest.TestCase):
     def test_No_Suffix(self):
-        self.assertEqual(parseBSLs("sort:id").isAscending, False)
+        assert parseBSLs("sort:id").isAscending == False
 
 
 class test_Sort_Order_Should_Be_Set_Correctly(unittest.TestCase):
     def test_Default_Sort_is_Correct(self):
-        self.assertFalse(parseBSLs("sort:id").isAscending)
+        assert parseBSLs("sort:id").isAscending == False
 
     def test_Expected_Sort_Direction(self):
-        self.assertTrue(parseBSLs("sort:id:asc").isAscending)
-        self.assertFalse(parseBSLs("sort:id:desc").isAscending)
+        assert parseBSLs("sort:id:asc").isAscending == True
+        assert parseBSLs("sort:id:desc").isAscending == False
 
 
 class test_Sort_Should_Not_Be_Parsed_With_Invalid_Value(unittest.TestCase):
@@ -111,44 +111,39 @@ class test_Sort_Invalid_Prefix_Shouldnt_Be_Parsed(unittest.TestCase):
 
 class test_Sort_Invalid_Should_be_Prefixed_with_Start_or_Whitespace(unittest.TestCase):
     def test_Preceeding_WhiteSpace(self):
-        self.assertEqual(parseBSLs(" sort:example").sort, defaultConfig.sort)
-        self.assertEqual(parseBSLs("\nsort:example").sort, defaultConfig.sort)
-        self.assertEqual(parseBSLs("\r\nsort:example").sort, defaultConfig.sort)
+        assert parseBSLs(" sort:example").sort == defaultConfig.sort
+        assert parseBSLs("\nsort:example").sort == defaultConfig.sort
+        assert parseBSLs("\r\nsort:example").sort == defaultConfig.sort
 
 
 class test_Parses_Regular_Tags_Correctly(unittest.TestCase):
     def test_regular(self):
         searchParams = parseBSLs("foo ")
-        self.assertEqual(searchParams.include_tags, ["foo"])
+        assert searchParams.include_tags == ["foo"]
+    
+    def test_multiple(self):
+        searchParams = parseBSLs("foo bar beans eggs")
+        assert set(searchParams.include_tags) == {"foo", "bar", "beans", "eggs"}
 
     def test_exclude(self):
         searchParams = parseBSLs("-foo -bar")
-        expected = {"foo", "bar"}
-        actual = set(searchParams.exclude_tags)
-        self.assertSetEqual(expected, actual)
+        assert set(searchParams.exclude_tags) == {"foo", "bar"}
 
     def test_regular_and_exclude(self):
         searchParams = parseBSLs("foo -bar")
-        self.assertEqual(searchParams.include_tags, ["foo"])
-        self.assertEqual(searchParams.exclude_tags, ["bar"])
+        assert searchParams.include_tags == ["foo"]
+        assert searchParams.exclude_tags == ["bar"]
 
-
-class test_Parses_Multiple_Tags(unittest.TestCase):
-    def test_regular(self):
-        searchParams = parseBSLs("foo bar foo2 bar2")
-        expected = {"foo", "bar", "foo2", "bar2"}
-        actual = set(searchParams.include_tags)
-        self.assertSetEqual(expected, actual)
 
 
 class test_Duplicate_Tags_Should_be_Combined(unittest.TestCase):
     def test_exclude_tags(self):
         searchParams = parseBSLs("foo -bar -bar")
-        self.assertEqual(searchParams.include_tags, ["foo"])
-        self.assertEqual(searchParams.exclude_tags, ["bar"])
+        assert searchParams.include_tags == ["foo"]
+        assert searchParams.exclude_tags == ["bar"]
 
     def test_include_tags(self):
         searchParams = parseBSLs("-foo bar bar")
-        self.assertEqual(searchParams.exclude_tags, ["foo"])
-        self.assertEqual(searchParams.include_tags, ["bar"])
+        assert searchParams.exclude_tags == ["foo"]
+        assert searchParams.include_tags == ["bar"]
 

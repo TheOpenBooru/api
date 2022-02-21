@@ -16,72 +16,69 @@ import unittest
 import random
 
 VALID_PASSWORD = 'example_password_for_testing'
-generateRandomID = random.randint(0,1000000)
+getRandomID = lambda : random.randint(0,2**32)
+
 class test_Can_Create_Accounts(unittest.TestCase):
-    def tearDown(self) -> None:
-        user.clear()
     def test_a(self):
-        user.create(1,VALID_PASSWORD)
+        user.create(getRandomID(),VALID_PASSWORD)
 
 class test_Sign_In_With_Correct_Passwrord(unittest.TestCase):
-    def tearDown(self) -> None:
-        user.clear()
     def test_a(self):
-        user.create(1,VALID_PASSWORD)
-        self.assertTrue(user.login(1,VALID_PASSWORD))
+        id = getRandomID()
+        user.create(id,VALID_PASSWORD)
+        assert user.login(id,VALID_PASSWORD)
 
 class test_Prevent_Sign_In_With_Wrong_Password(unittest.TestCase):
-    def setUp(self) -> None:
-        user.create(1,VALID_PASSWORD)
-    def tearDown(self) -> None:
-        user.clear()
     def test_invalid_password(self):
-        self.assertFalse(user.login(1,VALID_PASSWORD+"_"))
-    def test_empty_password(self):
-        self.assertFalse(user.login(1,""))
+        id = getRandomID()
+        user.create(id,VALID_PASSWORD)
+        assert user.login(id,VALID_PASSWORD+"_") == False
+        assert user.login(id,"") == False
 
 class test_Password_Updte_Changes_Password(unittest.TestCase):
-    def tearDown(self) -> None:
-        user.clear()
     def test_Changing_P(self):
+        ORIGINAL_PASSWORD = VALID_PASSWORD
         CHANGED_PASSWORD = VALID_PASSWORD+'a'
-        user.create(1,VALID_PASSWORD)
-        user.change_password(1,CHANGED_PASSWORD)
-        self.assertFalse(user.login(1,VALID_PASSWORD))
-        self.assertTrue(user.login(1,CHANGED_PASSWORD))
+        id = getRandomID()
+        
+        user.create(id,ORIGINAL_PASSWORD)
+        user.change_password(id,CHANGED_PASSWORD)
+        
+        assert user.login(id,ORIGINAL_PASSWORD) == False
+        assert user.login(id,CHANGED_PASSWORD) == True
 
 class test_Password_Change_Failed(unittest.TestCase):
-    def tearDown(self) -> None:
-        user.clear()
     def test_Password_Isnt_Changed_On_Failure(self):
-        user.create(1,VALID_PASSWORD)
-        self.assertRaises(ValueError,user.change_password,1,'a')
-        self.assertTrue(user.login(1,VALID_PASSWORD))
-        self.assertFalse(user.login(1,'a'))
+        id = getRandomID()
+        user.create(id,VALID_PASSWORD)
+        
+        self.assertRaises(ValueError,user.change_password,id,'a')
+        assert user.login(id,VALID_PASSWORD) == True
+        assert user.login(id,'a') == False
 
 
 class test_User_Create_Rejects_Long_Passwords(unittest.TestCase):
-    def tearDown(self) -> None:
-        user.clear()
     def test_User_Create_Rejects_Long_Passwords(self):
-        self.assertRaises(ValueError,user.create,1,'f' * 129)
+        id = getRandomID()
+        password = 'f' * 129
+        self.assertRaises(ValueError,user.create,id,password)
 
 class test_Change_Password_Rejects_Long_Passwords(unittest.TestCase):
-    def tearDown(self) -> None:
-        user.clear()
     def test_Change_Password_Rejects_Long_Passwords(self):
-        user.create(1,VALID_PASSWORD)
-        self.assertRaises(ValueError,user.change_password,1,'f' * 129)
+        id = getRandomID()
+        user.create(id,VALID_PASSWORD)
+        password = 'f' * 129
+        self.assertRaises(ValueError,user.change_password,id,password)
 
 class test_Reject_Under_Passwords(unittest.TestCase):
-    def tearDown(self) -> None:
-        user.clear()
     def test_User_Create_Rejects_Short_Passwords(self):
-        self.assertRaises(ValueError,user.create,1,'f' * 7)
+        id = getRandomID()
+        password = 'f' * 7
+        self.assertRaises(ValueError,user.create,id,password)
 
 class test_Change_Password_Rejects_Short_Passwords(unittest.TestCase):
-    def tearDown(self) -> None:
-        user.clear()
     def test_Change_Password_Rejects_Short_Passwords(self):
-        user.create(1,VALID_PASSWORD)
-        self.assertRaises(ValueError,user.change_password,1,'f' * 7)
+        id = getRandomID()
+        password = 'f' * 7
+        user.create(id,VALID_PASSWORD)
+        self.assertRaises(ValueError,user.change_password,id,password)
