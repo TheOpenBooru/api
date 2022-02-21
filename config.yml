@@ -9,9 +9,9 @@ config:
     hostname: ""
     port: 
   emails:
-    support: 
-    security: 
-    dmca: 
+    support: support@example.com
+    security: security@example.com
+    dmca: dmca@example.com
 
 settings:
   deployment: TESTING
