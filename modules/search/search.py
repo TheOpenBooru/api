@@ -12,7 +12,9 @@ class SearchParameters:
 
 def searchPosts(params:SearchParameters) -> list[schemas.Post]:
     max_limit = settings.get('settings.search.max_limit')
-    limit = min(params.limit,max_limit)
+    limit = params.limit
+    limit = max(0,limit) # prevent negative limits
+    limit = min(max_limit,limit) # Prevent limits above maximum
     posts = Post.search(
         limit=limit,
         order=params.sort,
