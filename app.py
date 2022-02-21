@@ -12,13 +12,9 @@ from fastapi.middleware.gzip import GZipMiddleware
 
 logging.basicConfig(level=logging.DEBUG)
 
-with open('./data/tag_descriptions.json') as f:
-    tag_descriptions = json.load(f)
-
 app = FastAPI(
     version="Alpha",
     docs_url='/docs',
-    openapi_tags=tag_descriptions
     )
 
 app.add_middleware(CORSMiddleware,
