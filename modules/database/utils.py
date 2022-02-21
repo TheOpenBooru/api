@@ -1,9 +1,9 @@
-from . import objects as _objects
+from . import Post as _Post,Tag as _Tag,User as _User
 
 def clear():
-    _objects.Post._posts_store = {}
-    _objects.User._users_store = {}
-    _objects.Tag._tags = {}
+    _Post._posts_store = {}
+    _User._users_store = {}
+    _Tag._tags = {}
 
 
 class isUnique:
