@@ -62,9 +62,9 @@ class test_Limit_Invalid_Should_be_Prefixed_with_Start_or_Whitespace(unittest.Te
         assert parseBSLs("\r\nlimit:10").limit == 10
 
 
-class test_Duplicate_Limit_Tags_Should_Use_Last_Occuring_One(unittest.TestCase):
-    def test_Duplicate_Limit_Tags_Should_Use_Last_Occuring_One(self):
-        assert parseBSLs("limit:10 limit:12").limit == 12
+class test_Duplicate_Limit_Tags_Should_Use_First_Occuring_One(unittest.TestCase):
+    def test_Duplicate_Limit_Tags_Should_Use_First_Occuring_One(self):
+        assert parseBSLs("limit:15 limit:12").limit == 15
 
 
 class test_Sort_Should_Correctly_Parse_Sort_Type(unittest.TestCase):
@@ -138,12 +138,10 @@ class test_Parses_Regular_Tags_Correctly(unittest.TestCase):
 
 class test_Duplicate_Tags_Should_be_Combined(unittest.TestCase):
     def test_exclude_tags(self):
-        searchParams = parseBSLs("foo -bar -bar")
-        assert searchParams.include_tags == ["foo"]
+        searchParams = parseBSLs("-bar -bar")
         assert searchParams.exclude_tags == ["bar"]
 
     def test_include_tags(self):
-        searchParams = parseBSLs("-foo bar bar")
-        assert searchParams.exclude_tags == ["foo"]
+        searchParams = parseBSLs("bar bar")
         assert searchParams.include_tags == ["bar"]
 
