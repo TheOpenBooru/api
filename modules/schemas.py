@@ -54,7 +54,7 @@ class User_Public(BaseModel):
     created_at: float = Field(default_factory=time.time, description="Unix timestamp for when the User was created")
 
     name: str = Field(..., description="The User's Name")
-    bio: str = Field("", description="The User's Biography for their profile")
+    bio: str = Field(default_factory=str, description="The User's Biography for their profile")
     level: str = Field("USER", description="The User's Level")
     posts: list[int] = Field(default_factory=list, description="IDs of Posts made by the user")
     comments: list[int] = Field(default_factory=list, description="IDs of Comments made by the user")
@@ -79,18 +79,18 @@ class Post(BaseModel):
     md5s: list[str] = Field(..., description="The Post's MD5 hashes")
     sha256s: list[str] = Field(..., description="The Post's SHA3-256 hashes")
     type: str = Field(..., description="Format of the post",regex="^(image|gif|video)$")
-    sound: bool = Field(..., description="Does the post contain sound?")
+    sound: bool = Field(default_factory=bool, description="Does the post contain sound?")
     language: Optional[str] = Field(None, description="ISO 639-2 language code",regex="^[a-z]{3}$")
-    source: Optional[Source] = Field(None, description="Original Source of the Post")
     age_rating: Optional[str] = Field(None, description="Age rating of the post", regex="^(safe|questionable|explicit)$")
+    source: Optional[Source] = Field(None, description="Original Source of the Post")
 
     edit_history: list[None] = Field(default_factory=list, description="Version Control History of the Post")
     tags: list[str] = Field(default_factory=list, description="Tags on the post")
     comments: list[int] = Field(default_factory=list, description="Comments on the post")
 
-    views: int = Field(0, description="Number of views on the Post")
-    upvotes: int = Field(0, description="Number of upvotes on the Post")
-    downvotes: int = Field(0, description="Number of downvotes on the Post")
+    views: int = Field(default_factory=int, description="Number of views on the Post")
+    upvotes: int = Field(default_factory=int, description="Number of upvotes on the Post")
+    downvotes: int = Field(default_factory=int, description="Number of downvotes on the Post")
 
     full: Image = Field(..., description="The largest scale image for the Post")
     preview: Optional[Image] = Field(None, description="Medium-Scale Version for the image, for hi-res posts")
