@@ -23,7 +23,7 @@ app.add_middleware(CORSMiddleware,
 app.add_middleware(GZipMiddleware)
 
 
-@app.get('/',tags=["Unprivileged"])
+@app.get('/')
 def docs_redirect():
     return responses.RedirectResponse('/docs')
 
