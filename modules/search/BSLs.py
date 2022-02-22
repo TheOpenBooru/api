@@ -13,12 +13,20 @@ def parseBSLs(query: str) -> _SearchParameters:
     params.limit = _parseLimit(tags)
     params.include_tags = _getIncludeTag(tags)
     params.exclude_tags = _getExcludeTag(tags)
+    
     _logging.debug(f"Parsed BSLs: '{query}' to {params}")
     return params
 
 
 def _parseSort(tags: list[str]) -> tuple[str, bool]:
-    return defaults.sort, defaults.isAscending
+    sort = defaults.sort
+    isAscending = defaults.isAscending
+    for tag in tags:
+        sort_match = _re.match(r"^sort:[a-z]+$",tag)
+        if sort_match:
+            sort = sort_match.string[5:] # remove 'sort:'
+            break 
+    return sort, isAscending
 
 def _parseLimit(tags: list[str]) -> int:
     limit = defaults.limit
