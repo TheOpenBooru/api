@@ -36,7 +36,7 @@ example_data.generate()
 if __name__ == "__main__":
     uvicorn.run(
         "app:app",
-        host=settings.get('settings.site.hostname'),
+        host='0.0.0.0',
         port=settings.get('settings.site.port'),
         debug=True
     )
