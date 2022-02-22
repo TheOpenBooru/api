@@ -42,7 +42,7 @@ class test_Image_From_File(unittest.TestCase):
     def test_Extention_is_Preserved(self):
         with open('./data/images/test_Fractal.webp','rb') as f:
             img = image.file_to_image(f)
-        assert img.extention == '.webp'
+        assert img.format == 'WEBP', img.format
     
     def test_Original_Data_is_Preserved(self):
         with open('./data/images/test_Fractal.webp','rb') as f:
@@ -63,6 +63,7 @@ class test_Image_Processing(unittest.TestCase):
     def test_Process_Reduces_Image_Size(self):
         with open('./data/images/test_Fractal.webp','rb') as f:
             source_data = f.read()
+        with open('./data/images/test_Fractal.webp','rb') as f:
             img = image.file_to_image(f)
         processed_image = image.process(img,img.resolution,50)
         assert len(processed_image.data) < len(source_data)

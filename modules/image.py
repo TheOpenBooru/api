@@ -15,21 +15,20 @@ class Dimensions:
 @dataclass(frozen=True)
 class Image:
     data:bytes
-    extention:str
+    format:str
     resolution:Dimensions
     pil_img:PILImage.Image
 
 
 def file_to_image(file:io.BytesIO | io.BufferedReader) -> Image:
     data = file.read()
-    file.seek(0)
-    pil_img = PILImage.open(file)
-    filename,extention = os.path.splitext(file.name)
+    buf = io.BytesIO(data)
+    pil_img = PILImage.open(buf,formats=['png','webp','jpeg'])
     res = Dimensions(pil_img.width,pil_img.height)
     return Image(
         data = data,
-        extention = extention,
         resolution = res,
+        format = pil_img.format,
         pil_img = pil_img,
         )
 
@@ -70,8 +69,8 @@ def process(image:Image,resolution:Dimensions,quality:int) -> Image:
     buf = io.BytesIO()
     pil_img.save(buf,format='WEBP',quality=quality)
     return Image(
-        data = buf.read(),
-        extention='.webp',
+        data = buf.getvalue(),
+        format='WEBP',
         resolution = (resolution),
         pil_img = pil_img
         )
