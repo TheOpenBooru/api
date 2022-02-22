@@ -1,5 +1,7 @@
 # API
 
+The goals of Open Booru is to improve standardisation amongst boorus as well as seperating the GUI from the API so they can become application agnostic
+
 ## Deployment
 
 ### Requirements
