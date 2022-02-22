@@ -78,11 +78,7 @@ class test_Sort_Order_Suffix_is_Optional(unittest.TestCase):
     def test_No_Suffix(self):
         assert parseBSLs("sort:id").isAscending == False
 
-
 class test_Sort_Order_Should_Be_Set_Correctly(unittest.TestCase):
-    def test_Default_Sort_is_Correct(self):
-        assert parseBSLs("sort:id").isAscending == False
-
     def test_Expected_Sort_Direction(self):
         assert parseBSLs("sort:id:asc").isAscending == True
         assert parseBSLs("sort:id:desc").isAscending == False
