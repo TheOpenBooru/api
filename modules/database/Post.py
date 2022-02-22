@@ -17,7 +17,7 @@ def _verify_post(post:Post):
     
     validate.language(post.language) if post.language else None
     validate.rating(post.age_rating) if post.age_rating else None
-    if int(time.time() + 1) < post.created_at:
+    if post.created_at > time.time():
         raise ValueError("Created in the future")
     if post.type not in {'image','gif','video'}:
         raise ValueError("Invalid post type")
