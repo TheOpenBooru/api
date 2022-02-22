@@ -80,9 +80,9 @@ class Post(BaseModel):
     sha256s: list[str] = Field(..., description="The Post's SHA3-256 hashes")
     type: str = Field(..., description="Format of the post",regex="^(image|gif|video)$")
     sound: bool = Field(default_factory=bool, description="Does the post contain sound?")
-    language: Optional[str] = Field(None, description="ISO 639-2 language code",regex="^[a-z]{3}$")
-    age_rating: Optional[str] = Field(None, description="Age rating of the post", regex="^(safe|questionable|explicit)$")
-    source: Optional[Source] = Field(None, description="Original Source of the Post")
+    language: Optional[str]   = Field(default_factory=lambda:None, description="ISO 639-2 language code",regex="^[a-z]{3}$")
+    age_rating: Optional[str] = Field(default_factory=lambda:None, description="Age rating of the post", regex="^(safe|questionable|explicit)$")
+    source: Optional[Source]  = Field(default_factory=lambda:None, description="Original Source of the Post")
 
     edit_history: list[None] = Field(default_factory=list, description="Version Control History of the Post")
     tags: list[str] = Field(default_factory=list, description="Tags on the post")
