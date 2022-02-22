@@ -38,7 +38,8 @@ def get(key: str) -> bytes:
 
 def url(key: str) -> str:
     hostname = settings.get("settings.site.hostname")
-    return f"{hostname}/image/get/{key}"
+    port = settings.get("settings.site.port")
+    return f"http://{hostname}:{port}/image/get/{key}"
 
 
 def delete(key: str):
