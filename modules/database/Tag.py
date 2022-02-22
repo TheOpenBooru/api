@@ -3,16 +3,10 @@ import time
 
 _tags = dict()
 
-def _create_default_tag(name:str):
-    tag = Tag(
-        created_at=int(time.time()),count=0,
-        name=name,namespace='generic',
-        )
-    _tags[name] = tag
+def create(tag:Tag):
+    _tags[tag.name] = tag
 
 def get(name:str) -> Tag:
-    if name not in _tags:
-        _create_default_tag(name)
     return _tags[name]
 
 def search(limit:int=32,order:str='count',
@@ -28,11 +22,13 @@ def search(limit:int=32,order:str='count',
     }
     
     def _filter(tag:Tag):
-        return not (
-            (namespace and tag.namespace != namespace) or
-            (before and tag.created_at > before) or 
-            (after and tag.created_at < after)
-            )
+        if namespace and tag.namespace != namespace:
+            return False
+        if before and tag.created_at > before:
+            return False
+        if after and tag.created_at < after:
+            return False
+        return True
     
     returnTags = list(filter(_filter,list(_tags.values())))
     returnTags.sort(key=ORDERS[order])
