@@ -22,10 +22,14 @@ def _parseSort(tags: list[str]) -> tuple[str, bool]:
     sort = defaults.sort
     isAscending = defaults.isAscending
     for tag in tags:
-        sort_match = _re.match(r"^sort:[a-z]+$",tag)
-        if sort_match:
-            sort = sort_match.string[5:] # remove 'sort:'
-            break 
+        if tag.startswith('sort:'):
+            sections = tag.split(':')
+            if sections[1].isalpha():
+                sort = sections[1]
+                if len(sections) == 3:
+                    order = sections[2]
+                    isAscending = order == 'asc'
+            break
     return sort, isAscending
 
 def _parseLimit(tags: list[str]) -> int:

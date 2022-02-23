@@ -5,7 +5,8 @@ defaultConfig = SearchParameters()
 
 
 def assertDoesntParse(query):
-    assert parseBSLs(query) == defaultConfig, query
+    params = parseBSLs(query)
+    assert params == defaultConfig, f"{query}: {params}"
 
 
 class test_Parses_Empty_String_to_Defaults(unittest.TestCase):
@@ -82,6 +83,8 @@ class test_Sort_Order_Should_Be_Set_Correctly(unittest.TestCase):
     def test_Expected_Sort_Direction(self):
         assert parseBSLs("sort:id:asc").isAscending == True
         assert parseBSLs("sort:id:desc").isAscending == False
+    def test_Invalid_Sort_Direction(self):
+        assert parseBSLs("sort:id:example").isAscending == defaultConfig.isAscending
 
 
 class test_Sort_Should_Not_Be_Parsed_With_Invalid_Value(unittest.TestCase):
@@ -90,12 +93,6 @@ class test_Sort_Should_Not_Be_Parsed_With_Invalid_Value(unittest.TestCase):
         assertDoesntParse("sort:-")
         assertDoesntParse("sort:_")
         assertDoesntParse("sort:0")
-
-
-class test_Sort_Order_With_Order_as_Value_Shouldnt_Be_Parsed(unittest.TestCase):
-    def test_Bad_Sort(self):
-        assertDoesntParse("sort:asc")
-        assertDoesntParse("sort:desc")
 
 
 class test_Sort_Invalid_Prefix_Shouldnt_Be_Parsed(unittest.TestCase):
@@ -107,9 +104,9 @@ class test_Sort_Invalid_Prefix_Shouldnt_Be_Parsed(unittest.TestCase):
 
 class test_Sort_Invalid_Should_be_Prefixed_with_Start_or_Whitespace(unittest.TestCase):
     def test_Preceeding_WhiteSpace(self):
-        assert parseBSLs(" sort:example").sort == defaultConfig.sort
-        assert parseBSLs("\nsort:example").sort == defaultConfig.sort
-        assert parseBSLs("\r\nsort:example").sort == defaultConfig.sort
+        assert parseBSLs(" sort:example").sort == "example"
+        assert parseBSLs("\nsort:example").sort == "example"
+        assert parseBSLs("\r\nsort:example").sort == "example"
 
 
 class test_Parses_Regular_Tags_Correctly(unittest.TestCase):
