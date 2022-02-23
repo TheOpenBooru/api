@@ -33,7 +33,7 @@ async def create_post(image_file:UploadFile):
 
     postID = database.Post.get_unused_id()
     post = Post(
-        id=postID,creator=1,
+        id=postID,uploader=1,
         sound=False,type='image',
         full=full,preview=preview,thumbnail=thumbnail,
         md5s=md5s,sha256s=sha3_256s,
@@ -42,7 +42,7 @@ async def create_post(image_file:UploadFile):
         database.Post.create(post)
         return Response(status_code=status.HTTP_201_CREATED)
     except ValueError as e:
-        return Response(str(e),status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(str(e),status_code=status.HTTP_400_BAD_REQUEST)
 
 async def process_image(img:image.Image) -> schemas.Image:
     key = store.put(img.data,suffix=".webp")

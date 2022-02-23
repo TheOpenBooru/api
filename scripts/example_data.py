@@ -43,8 +43,8 @@ cache_path = Path("./data/example_data.json")
 def _load_data_to_json():
     r = requests.get("https://safebooru.org/index.php?page=dapi&s=post&q=index",
                 params={
-                    "limit":2000,
-                    "tags":["rating:safe"]
+                    "limit":100,
+                    "tags":["rating:safe -video -gif"],
                     })
     xml = bs4.BeautifulSoup(r.text,'lxml')
     xmlPosts = list(xml.find('posts').children)
@@ -58,21 +58,6 @@ def _load_data_to_json():
     with open(cache_path, "w") as f:
         json.dump(posts,f)
 
-
-createdUsers = {}
-def _get_user_id(post:SafeBooruPost):
-    creatorID = post.creator_id
-    if creatorID not in createdUsers:
-        userID = User.get_unused_id()
-        user = schemas.User(
-            id=userID,created_at=int(time.time()),
-            name=f"User: {userID}",
-            email=f"",bio="",
-            level="",settings=""
-            )
-        User.create(user)
-        createdUsers[creatorID] = user.id
-    return createdUsers[creatorID]
 
 def construct_post(post:SafeBooruPost) -> schemas.Post:
     full =  schemas.Image(
@@ -92,19 +77,13 @@ def construct_post(post:SafeBooruPost) -> schemas.Post:
         mimetype='image/jpeg'
     )
     type = mimetypes.guess_type(post.sample_url)[0].split('/')[0]
-    usedID = _get_user_id(post)
     tags = post.tags.split(' ')
     tags = tags[1:-1] # remove first and last empty tags
     return schemas.Post(
-        id=Post.get_unused_id(),creator=usedID,
-        created_at=int(time.time()),
+        id=Post.get_unused_id(),uploader=0,
         full=full,preview=preview,thumbnail=thumbnail,
-        md5s=[post.md5],sha256s=[],
-        tags=tags,
-        type=type,sound=False,
+        md5s=[post.md5],tags=tags,type=type,
         language='eng',age_rating='safe',
-        source=None,
-        views=0,downvotes=0,upvotes=0
     )
 
 def generate():
@@ -117,6 +96,6 @@ def generate():
     for x in posts:
         raw_post = SafeBooruPost(**x)
         if Post.get(md5=raw_post.md5):
-            return
+            continue
         post = construct_post(raw_post)
         Post.create(post)

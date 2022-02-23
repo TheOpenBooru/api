@@ -7,22 +7,33 @@ _posts_store:dict[int,Post] = {}
 
 def _verify_post(post:Post):
     # Valdiate hashes
-    [validate.tag(x) for x in post.tags]
-    [validate.md5(x) for x in post.md5s]
-    [validate.sha256(x) for x in post.sha256s]
+    for md5 in post.md5s:
+        validate.md5(md5)
+        if get(md5=md5):
+            raise ValueError("Duplicate MD5")
+    for sha in post.sha256s:
+        validate.md5(sha)
+        if get(sha256=sha):
+            raise ValueError("Duplicate SHA")
+    
+    
     # Validate Image URLs
     validate.url(post.full.url)
     validate.url(post.preview.url) if post.preview else None
     validate.url(post.thumbnail.url) if post.thumbnail else None
     
+    [validate.tag(x) for x in post.tags]
     validate.language(post.language) if post.language else None
     validate.rating(post.age_rating) if post.age_rating else None
     if post.created_at > time.time():
         raise ValueError("Created in the future")
     if post.type not in {'image','gif','video'}:
         raise ValueError("Invalid post type")
-    if not User.exists(post.creator):
-        raise ValueError("Invalid User ID")
+
+    # User's are not implemented
+    # if not User.exists(post.uploader):
+    #     raise ValueError("Invalid User ID")
+
 
 def get_unused_id() -> int:
     return len(_posts_store) + 1
@@ -78,3 +89,6 @@ def search(limit:int=64,order:str='created_at',isAscending:bool=False,
         posts.reverse()
     posts.sort(key=lambda post: getattr(post,order))
     return posts[:limit]
+
+def increment_view(id:int):
+    _posts_store[id].views += 1
