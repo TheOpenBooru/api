@@ -65,9 +65,6 @@ class User(User_Public):
 
 
 class Post(BaseModel):
-    class Config:
-        validate_assignment = True
-    
     id: int = Field(..., description="The Post's ID")
     created_at: float = Field(default_factory=time.time, description="The Unix timestamp for when the Post was created")
     uploader: int = Field(..., description="The User ID of the Post Creator")
