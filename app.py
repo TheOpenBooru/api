@@ -9,8 +9,6 @@ from fastapi import FastAPI,responses
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 
-logging.basicConfig(level=logging.DEBUG)
-
 app = FastAPI(
     title="Open Booru",
     version="Alpha",
