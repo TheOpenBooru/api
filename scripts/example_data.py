@@ -43,7 +43,7 @@ cache_path = Path("./data/example_data.json")
 def _load_data_to_json():
     r = requests.get("https://safebooru.org/index.php?page=dapi&s=post&q=index",
                 params={
-                    "limit":100,
+                    "limit":2000,
                     "tags":["rating:safe -video -gif"],
                     })
     xml = bs4.BeautifulSoup(r.text,'lxml')
