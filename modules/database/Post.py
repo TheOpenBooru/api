@@ -1,9 +1,10 @@
+import random
 from modules import validate
 from modules.schemas import Post
 from . import User
 import time
 
-_posts_store:dict[int,Post] = {}
+_posts_store:dict[int,Post|None] = {}
 
 def _verify_post(post:Post):
     # Valdiate hashes
@@ -38,6 +39,7 @@ def _verify_post(post:Post):
 def get_unused_id() -> int:
     return len(_posts_store) + 1
 
+
 def create(post:Post):
     _verify_post(post)
     _posts_store[post.id] = post
@@ -45,6 +47,8 @@ def create(post:Post):
 
 def get(*,id:int=None,md5:str=None,sha256:str=None) -> Post | None:
     for post in _posts_store.values():
+        if post == None:
+            continue
         if ((id and post.id == id) or
             (md5 and md5 in post.md5s ) or
             (sha256 and sha256 in post.sha256s)):
@@ -58,13 +62,6 @@ def update(id:int,new_version:Post):
     if id not in _posts_store:
         raise KeyError("Post not found")
     _posts_store[id] = new_version
-
-
-def delete(id:int):
-    try:
-        _posts_store.pop(id)
-    except Exception:
-        pass # Allow deleteion of non-existant posts
 
 def search(limit:int=64,order:str='created_at',isAscending:bool=False,
            hasTags:list[str]=None,excludeTags:list[str]=None) -> list[Post]:
@@ -83,12 +80,26 @@ def search(limit:int=64,order:str='created_at',isAscending:bool=False,
                 return tag not in post.tags
         return True
     
-    posts:list[Post] = list(_posts_store.values())
+    post_values = list(_posts_store.values())
+    posts:list[Post] = [x for x in post_values if x != None]
     posts = list(filter(filterTags,posts))
     if isAscending:
         posts.reverse()
     posts.sort(key=lambda post: getattr(post,order))
     return posts[:limit]
 
+
+def delete(id:int):
+    try:
+        _posts_store[id] = None
+    except Exception:
+        pass # Allow deleteion of non-existant posts
+
+def clear():
+    _posts_store.clear()
+
+
 def increment_view(id:int):
-    _posts_store[id].views += 1
+    if id in _posts_store and _posts_store[id] != None:
+        _posts_store[id].views += 1
+
