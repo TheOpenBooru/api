@@ -30,7 +30,7 @@ app.include_router(image.router)
 app.include_router(post.router)
 app.include_router(tag.router)
 
-example_data.generate()
+example_data.generate(200)
 if __name__ == "__main__":
     uvicorn.run(
         "app:app",

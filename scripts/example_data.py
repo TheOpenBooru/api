@@ -40,7 +40,7 @@ class SafeBooruPost:
 
 
 cache_path = Path("./data/example_data.json")
-def _load_data_to_json():
+def _generate_example_data():
     r = requests.get("https://safebooru.org/index.php?page=dapi&s=post&q=index",
                 params={
                     "limit":2000,
@@ -86,13 +86,14 @@ def construct_post(post:SafeBooruPost) -> schemas.Post:
         language='eng',age_rating='safe',
     )
 
-def generate():
+def generate(limit:int=2000):
     if not cache_path.exists():
-        _load_data_to_json()
+        _generate_example_data()
     
     with open(cache_path) as f:
         posts = json.load(f)
     
+    posts = posts[:limit]
     for x in posts:
         raw_post = SafeBooruPost(**x)
         if Post.get(md5=raw_post.md5):
