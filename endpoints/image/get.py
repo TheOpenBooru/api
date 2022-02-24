@@ -6,7 +6,7 @@ from fastapi import responses, status
 def get_image(key:str):
     try:
         data = store.get(key)
-    except KeyError:
+    except FileNotFoundError:
         return responses.Response(status_code=status.HTTP_404_NOT_FOUND)
     else:
         return responses.Response(data)
