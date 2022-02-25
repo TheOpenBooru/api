@@ -1,14 +1,10 @@
-from modules import settings
+from modules import settings as _settings
+import secrets as _secrets
 import time as _time
 import jwt as _jwt
-from cryptography.hazmat.backends import default_backend as _default_backend
-from cryptography.hazmat.primitives.asymmetric import rsa as _rsa
 from dataclasses import dataclass as _dataclass
 
-_PRIVATE_KEY = _rsa.generate_private_key(
-    public_exponent=65537, key_size=4096, backend=_default_backend()
-)
-_PUBLIC_KEY = _PRIVATE_KEY.public_key()
+_SECRET_KEY = _secrets.token_hex(64)
 
 @_dataclass()
 class TokenData:
@@ -31,16 +27,16 @@ def create(id:int, level:str, data:dict = {}, expiration:int = None) -> str:
     if "_user_id" in data:
         raise ValueError(f"Data cannot contain a rerved field: '_user_id'")
 
-    if expiration == None:
-        expiration = settings.get("settings.jwt.expiration")
+    if  expiration == None:
+        expiration = _settings.get("settings.jwt.expiration")
 
-    data = dict(data) # Prevent data mutation applying outside function
+    data = data.copy() # Prevent mutating data outside function
     data |= {
-        "exp": _time.time() + expiration,
+        "exp": _time.time() + expiration, # type: ignore
         "_user_id": id,
         "_level": level,
     }
-    return _jwt.encode(data, _PRIVATE_KEY, algorithm="RS256")
+    return _jwt.encode(data, _SECRET_KEY, algorithm="HS256")
 
 
 def decode(token: str) -> TokenData:
@@ -48,7 +44,7 @@ def decode(token: str) -> TokenData:
     - BadTokenError: Malformed or Invalid Token
     """
     try:
-        data: dict = _jwt.decode(token, _PUBLIC_KEY, algorithms=["RS256"])
+        data: dict = _jwt.decode(token, _SECRET_KEY, algorithms=["HS256"])
     except Exception:
         raise BadTokenError("Malformed or Invalid Token")
     else:
