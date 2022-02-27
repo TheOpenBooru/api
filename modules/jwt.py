@@ -9,33 +9,28 @@ _SECRET_KEY = _secrets.token_hex(64)
 @_dataclass()
 class TokenData:
     userID: int
-    level:str
     data: dict
 
 class BadTokenError(Exception):
     "The Token was Invalid, could be Corrupt, Invalid, Expired"
 
-
-def create(id:int, level:str, data:dict = {}, expiration:int = None) -> str:
+def create(id:int, additional_data:dict = {}, expiration:int = None) -> str:
     """Raises:
     - ValueError: Data cannot contain the reserved field
     """
-    if "exp" in data:
+    if "exp" in additional_data:
         raise ValueError(f"Data cannot contain a rerved field: 'exp'")
-    if "_level" in data:
-        raise ValueError(f"Data cannot contain a rerved field: '_level'")
-    if "_user_id" in data:
+    if "_user_id" in additional_data:
         raise ValueError(f"Data cannot contain a rerved field: '_user_id'")
 
     if  expiration == None:
         expiration = _settings.get("settings.jwt.expiration")
 
-    data = data.copy() # Prevent mutating data outside function
-    data |= {
+    data = {
         "exp": _time.time() + expiration, # type: ignore
-        "_user_id": id,
-        "_level": level,
+        "_user_id": id
     }
+    data |= additional_data
     return _jwt.encode(data, _SECRET_KEY, algorithm="HS256")
 
 
@@ -49,8 +44,6 @@ def decode(token: str) -> TokenData:
         raise BadTokenError("Malformed or Invalid Token")
     else:
         user_id = data["_user_id"]
-        level = data["_level"]
         data.pop("_user_id")
-        data.pop("_level")
         data.pop("exp")
-        return TokenData(user_id,level, data)
+        return TokenData(user_id, data)
