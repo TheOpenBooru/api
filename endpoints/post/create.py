@@ -9,7 +9,7 @@ from fastapi import Response,status,UploadFile
 @router.post("/create")
 async def create_post(image_file:UploadFile):
     try:
-        post = _construct_post(image_file)
+        post = await _construct_post(image_file)
         database.Post.create(post)
         return Response(status_code=status.HTTP_201_CREATED)
     except ValueError as e:
