@@ -110,7 +110,7 @@ class test_Create_Preview(unittest.TestCase):
 
 class test_Create_Full(unittest.TestCase):
     def test_Full_Is_Correct_Resolution(self):
-        with open('./data/images/test_Fractal.webp','rb') as f:
+        with open('./data/images/test_Large.webp','rb') as f:
             img = image.file_to_image(f)
         Preview = image.generateFull(img)
         config = settings.get('settings.posts.full')
