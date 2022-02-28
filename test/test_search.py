@@ -4,8 +4,7 @@ from scripts import example_data
 import unittest
 
 
-example_data.generate()
-
+example_data.generate(100)
 class test_Post_Searching_For_No_Tags_Returns_All_posts(unittest.TestCase):
     def test_a(self):
         params = SearchParameters()
