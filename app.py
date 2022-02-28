@@ -1,9 +1,7 @@
 from scripts import example_data
 from modules import settings
-from endpoints import post,tag,image
+from endpoints import router
 
-import json
-import logging
 import uvicorn
 from fastapi import FastAPI,responses
 from fastapi.middleware.cors import CORSMiddleware
@@ -13,7 +11,7 @@ app = FastAPI(
     title="Open Booru",
     version="Alpha",
     docs_url='/docs',
-    )
+)
 
 app.add_middleware(CORSMiddleware,
     allow_origins=["*"],allow_credentials=True,
@@ -26,11 +24,9 @@ app.add_middleware(GZipMiddleware)
 def docs_redirect():
     return responses.RedirectResponse('/docs')
 
-app.include_router(image.router)
-app.include_router(post.router)
-app.include_router(tag.router)
+app.include_router(router)
 
-example_data.generate(200)
+example_data.generate(50)
 if __name__ == "__main__":
     uvicorn.run(
         "app:app",
