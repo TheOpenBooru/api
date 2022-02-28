@@ -24,20 +24,20 @@ async def _construct_post(image_file:UploadFile) -> schemas.Post:
         sha3 = hashlib.sha3_256(data).hexdigest()
         sha3_256s.append(sha3)
     
-    image_data:bytes = await image_file.read() # type:ignore
-    process_file_hashes(image_data)
+    original_image = image.file_to_image(image_file.file)
+    process_file_hashes(original_image.data)
     
-    full_image = image.file_to_image(image_file.file)
-    full = await _process_image(full_image)
+    full_image = image.generateFull(original_image)
     process_file_hashes(full_image.data)
+    full = await _process_image(full_image)
     
-    preview_image = image.generatePreview(full_image)
-    preview = await _process_image(preview_image)
+    preview_image = image.generatePreview(original_image)
     process_file_hashes(preview_image.data)
+    preview = await _process_image(preview_image)
     
-    thumbnail_image = image.generateThumbnail(full_image)
-    thumbnail = await _process_image(thumbnail_image)
+    thumbnail_image = image.generateThumbnail(original_image)
     process_file_hashes(thumbnail_image.data)
+    thumbnail = await _process_image(thumbnail_image)
 
     postID = database.Post.get_unused_id()
     return Post(

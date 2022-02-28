@@ -21,16 +21,28 @@ class Image:
 
 
 def file_to_image(file:io.BytesIO | io.BufferedReader) -> Image:
+    """Raises:
+        ValueError: Could not Load Image
+    """
     data = file.read()
     buf = io.BytesIO(data)
-    pil_img = PILImage.open(buf,formats=['png','webp','jpeg'])
+    try:
+        pil_img = PILImage.open(buf,formats=['png','webp','jpeg'])
+    except:
+        raise ValueError("Could not Load Image")
+    
     res = Dimensions(pil_img.width,pil_img.height)
     return Image(
         data = data,
         resolution = res,
         format = pil_img.format,
         pil_img = pil_img,
-        )
+    )
+
+
+def generateFull(image:Image) -> Image:
+    config = settings.get('settings.posts.full')
+    return _process_using_config(image,config)
 
 
 def generateThumbnail(image:Image) -> Image:

@@ -106,3 +106,23 @@ class test_Create_Preview(unittest.TestCase):
         preview = image.generatePreview(img)
         assert preview.resolution.height == 5
         assert preview.resolution.width == 5
+
+
+class test_Create_Full(unittest.TestCase):
+    def test_Full_Is_Correct_Resolution(self):
+        with open('./data/images/test_Fractal.webp','rb') as f:
+            img = image.file_to_image(f)
+        Preview = image.generateFull(img)
+        config = settings.get('settings.posts.full')
+        height = config['max_height']
+        width = config['max_width']
+        res = Preview.resolution
+        error_msg = f"{res.width}x{res.height}"
+        assert res.width == width or res.height == height, error_msg
+    
+    def test_Small_Image_doesnt_Change_Size(self):
+        with open('./data/images/test_Small.webp','rb') as f:
+            img = image.file_to_image(f)
+        preview = image.generateFull(img)
+        assert preview.resolution.height == 5
+        assert preview.resolution.width == 5
