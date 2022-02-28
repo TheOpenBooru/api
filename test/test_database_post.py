@@ -64,7 +64,7 @@ class test_Get_Unused_ID(unittest.TestCase):
     
     def test_is_Unique_when_deleted_and_Re_Added(self):
         IDs = set()
-        for _ in range(1000):
+        for _ in range(1_000):
             id = Post.get_unused_id()
             assert id not in IDs, f"ID {id} is not unique"
             
@@ -86,9 +86,18 @@ class test_Get_Unused_ID(unittest.TestCase):
 
 
 class test_Create(unittest.TestCase):
-    post = generate_post()
-    Post.create(post)
-    assert post == Post.get(id=post.id)
+    def test_a(self):
+        post = generate_post()
+        Post.create(post)
+        assert post == Post.get(id=post.id)
+
+class test_Edit(unittest.TestCase):
+    def test_a(self):
+        post = generate_post()
+        Post.create(post)
+        post.age_rating = "safe"
+        Post.update(post.id,post)
+        assert post == Post.get(id=post.id)
 
 class test_Delete(unittest.TestCase):
     def test_allows_non_existant_ID(self):

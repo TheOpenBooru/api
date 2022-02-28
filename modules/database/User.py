@@ -3,13 +3,13 @@ from modules.schemas import User
 _users_store:dict[int,User] = {}
 
 
-def get_unused_id() -> int:
-    return len(_users_store) + 1
 
 
 def create(user:User):
     _users_store[user.id] = user
 
+def get_unused_id() -> int:
+    return len(_users_store) + 1
 
 def get(*,id:int=None,name:str=None) -> User | None:
     for user in _users_store.values():
@@ -49,6 +49,8 @@ def set(id:int,user:User):
 def delete(id:int):
     _users_store.pop(id)
 
+def clear():
+    _users_store.clear()
 
 def view(id:int,postID:int):
     _users_store[id].history.append(postID)
