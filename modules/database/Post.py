@@ -31,7 +31,7 @@ def _verify_post(post:Post):
     if post.type not in {'image','gif','video'}:
         raise ValueError("Invalid post type")
 
-    # User's are not implemented
+    # !User's are not implemented
     # if not User.exists(post.uploader):
     #     raise ValueError("Invalid User ID")
 
@@ -87,8 +87,6 @@ def search(limit:int=64,order:str='created_at',isAscending:bool=False,
         key=lambda post: getattr(post,order,0),
         reverse=not isAscending
     )
-    # if not isAscending:
-    #     posts.reverse()
     return posts[:limit]
 
 
