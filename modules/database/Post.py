@@ -83,9 +83,12 @@ def search(limit:int=64,order:str='created_at',isAscending:bool=False,
     post_values = list(_posts_store.values())
     posts:list[Post] = [x for x in post_values if x != None]
     posts = list(filter(filterTags,posts))
-    if isAscending:
-        posts.reverse()
-    posts.sort(key=lambda post: getattr(post,order))
+    posts.sort(
+        key=lambda post: getattr(post,order,0),
+        reverse=not isAscending
+    )
+    # if not isAscending:
+    #     posts.reverse()
     return posts[:limit]
 
 
@@ -94,6 +97,11 @@ def delete(id:int):
         _posts_store[id] = None
     except Exception:
         pass # Allow deleteion of non-existant posts
+
+
+def all() -> list[Post]:
+    valid_posts = [x for x in _posts_store.values() if x != None]
+    return valid_posts
 
 def clear():
     _posts_store.clear()
