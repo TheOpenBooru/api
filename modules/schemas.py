@@ -25,13 +25,14 @@ class Author(BaseModel):
     name: str = Field(..., description="The Author's Name")
     avatar: Image = Field(..., description="The Author's Avatar")
     aliases: list[str] = Field(default_factory=list, description="Other Names for the Author")
-    user_id: int = Field(..., description="The ID of the Account Bound to the Author")
+    user_account: int = Field(..., description="The ID of the Account Bound to the Author")
+
 
 class Tag(BaseModel):
     created_at: float = Field(default_factory=time.time, description="The Unix Timestamp for the First Usage of the tag")
     name: str = Field(...,description="The Tag Name")
     namespace: str = Field(..., description="The Tag Namespace")
-    count: Optional[int] = Field(None, description="The number of times the tag has been used")
+    count: int = Field(default_factory=int, description="The number of times the tag has been used")
 
 
 class Comment(BaseModel):
@@ -47,22 +48,17 @@ class User_Public(BaseModel):
     created_at: float = Field(default_factory=time.time, description="Unix timestamp for when the User was created")
 
     name: str = Field(..., description="The User's Name")
-    bio: str = Field(default_factory=str, description="The User's Biography for their profile")
     level: str = Field(default_factory=lambda:"USER", description="The User's Level")
     posts: list[int] = Field(default_factory=list, description="IDs of Posts made by the user")
     comments: list[int] = Field(default_factory=list, description="IDs of Comments made by the user")
 
 class User(User_Public):
     email: str = Field(..., description="The User's Email Address")
-    settings: str = Field(default_factory=str, description="The User's Email Address")
+    settings: str = Field(default_factory=str, description="The User's Settings")
     
-    history: list[int] = Field(default_factory=list, description="IDs of recently viewed posts")
-    favourites: list[int] = Field(default_factory=list, description="IDs of posts the user has favourited")
-    blocked: list[int] = Field(default_factory=list, description="IDs of posts the user has blocked")
-
     upvotes: list[int] = Field(default_factory=list, description="IDs of posts the user has upvoted")
     downvotes: list[int] = Field(default_factory=list, description="IDs of posts the user has downvoted")
-
+    history: list[int] = Field(default_factory=list, description="IDs of recently viewed posts")
 
 class Post(BaseModel):
     id: int = Field(..., description="The Post's ID")
