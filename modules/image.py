@@ -57,9 +57,11 @@ def generatePreview(image:Image) -> Image:
 
 def _process_using_config(image:Image,config:dict) -> Image:
     quality = config['quality']
+    isLossless = config['lossless']
     target_res = Dimensions(config['max_width'],config['max_width'])
+    
     output_res = calculate_downscale(image.resolution,target_res)
-    output_image = process(image,output_res,quality)
+    output_image = process(image,output_res,quality,isLossless)
     return output_image
 
 
@@ -75,11 +77,18 @@ def calculate_downscale(resolution:Dimensions,target:Dimensions) -> Dimensions:
     return Dimensions(output_width,output_height)
 
 
-def process(image:Image,resolution:Dimensions,quality:int) -> Image:
+def process(image:Image,resolution:Dimensions,quality:int,lossless:bool=False) -> Image:
     pil_img = image.pil_img
     pil_img = pil_img.resize(resolution.to_tuple(),PILImage.LANCZOS)
     buf = io.BytesIO()
-    pil_img.save(buf,format='WEBP',quality=quality)
+    
+    pil_img.save(
+        buf,
+        format=image.format,
+        quality=quality,
+        lossless=lossless,
+    )
+    
     return Image(
         data = buf.getvalue(),
         format='WEBP',

@@ -17,7 +17,7 @@ settings:
   deployment: TESTING
   site:
     name: Open Booru
-    hostname: 0.0.0.0
+    hostname: localhost
     port: 57255
   jwt:
     expiration: 86400 # Token Expiration time in seconds
@@ -28,14 +28,17 @@ settings:
   posts:
     required_aprroval: true # Posts require moderator approval beofre being visible
     full:
-      quality: 100 # Re-encoded webp quality (1-100)
+      lossless: true # Should webp be lossless
+      quality: 100 # Re-encoded webp quality (1-100/lossless)
       max_width: 4000 # max width before downscaling
       max_height: 4000 # max height before downscaling
     preview:
+      lossless: false
       quality: 90
       max_width: 1600
       max_height: 1600
     thumbnail:
+      lossless: false
       quality: 85
       max_width: 250
       max_height: 250
