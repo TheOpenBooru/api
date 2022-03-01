@@ -3,7 +3,7 @@ from typing import Any
 from cachetools import cached, TTLCache
 
 
-@cached(cache=TTLCache(maxsize=2048, ttl=30))
+@cached(cache=TTLCache(maxsize=2048, ttl=60))
 def get(setting: str) -> Any:
     """Raises:
     - KeyError: Invalid Setting Name
