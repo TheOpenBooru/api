@@ -35,31 +35,33 @@ class EmailAccount:
         """Raises:
             ValueError: The destination email address is not valid
         """
-        sitename = settings.get("settings.site.name")
-        subject = f"{sitename}: Password Reset"
         with open("./data/emails/password_reset.html") as f:
             password_reset_template = f.read()
-            self.send_email(
-                to=targetAddress,
-                subject=subject,
-                jinja_template=password_reset_template,
-                link=reset_link,
-                name=name
-            )
+        
+        subject = f"{self.sitename}: Password Reset"
+        self.send_email(
+            to=targetAddress,
+            subject=subject,
+            jinja_template=password_reset_template,
+            sitename=self.sitename,
+            link=reset_link,
+            name=name
+        )
     
     def send_email_verification(self, targetAddress:str,name:str,verification_link:str):
         """Raises:
             ValueError: The destination email address is not valid
         """
-        
-        subject = f"{self.sitename}: Verify Email"
         with open("./data/emails/email_verification.html") as f:
             verification_email_template = f.read()
+        
+        subject = f"{self.sitename}: Verify Email"
         self.send_email(
             to=targetAddress,
             subject=subject,
             jinja_template=verification_email_template,
             link=verification_link,
+            sitename=self.sitename,
             name=name
         )
     
@@ -82,6 +84,3 @@ class EmailAccount:
         template = _jinja_env.from_string(template_string)
         body = template.render(**kwargs)
         return body
-
-
-

@@ -56,20 +56,20 @@ def generatePreview(image:Image) -> Image:
 
 
 def _process_using_config(image:Image,config:dict) -> Image:
-    target = Dimensions(config['max_width'],config['max_width'])
     quality = config['quality']
-    res = calculate_downscale(image.resolution,target)
-    output_image = process(image,res,quality)
+    target_res = Dimensions(config['max_width'],config['max_width'])
+    output_res = calculate_downscale(image.resolution,target_res)
+    output_image = process(image,output_res,quality)
     return output_image
 
 
 def calculate_downscale(resolution:Dimensions,target:Dimensions) -> Dimensions:
-    possible_factors = (
+    downscale_factors = (
         1.0,
         resolution.width / target.width,
         resolution.height / target.height
     )
-    limiting_factor = max(possible_factors)
+    limiting_factor = max(downscale_factors)
     output_width = int(resolution.width / limiting_factor)
     output_height = int(resolution.height / limiting_factor)
     return Dimensions(output_width,output_height)

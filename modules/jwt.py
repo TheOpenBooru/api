@@ -42,8 +42,8 @@ def decode(token: str) -> TokenData:
         data: dict = _jwt.decode(token, _SECRET_KEY, algorithms=["HS256"])
     except Exception:
         raise BadTokenError("Malformed or Invalid Token")
-    else:
-        user_id = data["_user_id"]
-        data.pop("_user_id")
-        data.pop("exp")
-        return TokenData(user_id, data)
+    
+    user_id = data["_user_id"]
+    data.pop("_user_id")
+    data.pop("exp")
+    return TokenData(user_id, data)
