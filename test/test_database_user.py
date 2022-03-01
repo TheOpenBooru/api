@@ -14,7 +14,7 @@ create:
         - Rating
         - Language
 update:
-    - The post becomes the new version
+    - The user becomes the new version
 search:
     - Orders Correctly
     - Appends at limit
@@ -43,7 +43,7 @@ class test_Get_Unused_ID(unittest.TestCase):
         id = User.get_unused_id()
         User.get(id=id)
 
-class test_Delete_is_ (unittest.TestCase):
+class test_Delete(unittest.TestCase):
     def tearDown(self):
         User.clear()
     
@@ -53,4 +53,3 @@ class test_Delete_is_ (unittest.TestCase):
             assert User.get(id=id) == None
             user = create_user(id)
             User.create(user)
-        
