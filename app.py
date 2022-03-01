@@ -32,5 +32,7 @@ if __name__ == "__main__":
         "app:app",
         host='0.0.0.0',
         port=settings.get('settings.site.port'),
-        debug=True
+        debug=True,
+        # ssl_keyfile="./data/key.pem", 
+        # ssl_certfile="./data/cert.pem",
     )
