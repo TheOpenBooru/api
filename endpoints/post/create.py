@@ -41,8 +41,7 @@ async def _construct_post(image_file:UploadFile) -> schemas.Post:
 
     postID = database.Post.get_unused_id()
     return Post(
-        id=postID,uploader=1,
-        sound=False,type='image',
+        id=postID,uploader=1,type='image',
         full=full,preview=preview,thumbnail=thumbnail,
         md5s=md5s,sha256s=sha3_256s,
     )
