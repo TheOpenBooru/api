@@ -12,7 +12,7 @@ async def create_post(image_file:UploadFile):
     try:
         post = await constructor.generate_post(image_file)
     except ValueError as e:
-        reason = constructor.error_message or "Unknown"
+        reason = constructor.error_message or str(e)
         return Response(reason,status_code=status.HTTP_400_BAD_REQUEST)
     try:
         database.Post.create(post)
@@ -26,7 +26,7 @@ GenericFile = encoding.ImageFile | encoding.AnimationFile | encoding.VideoFile
 GenericSchema = schemas.Image | schemas.Video | schemas.Animation
 
 class PostConstructor:
-    error_message:str
+    error_message:str = ""
     md5s:list[str]
     sha3_256s:list[str]
     def __init__(self):
