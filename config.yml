@@ -27,6 +27,16 @@ settings:
     max_limit: 100 # Max number of results per search
   posts:
     required_aprroval: true # Posts require moderator approval beofre being visible
+
+encoding:
+  video:
+    ffmpeg_args:
+      format: webp
+      vcodec: libvpx
+      acodec: libvorbis
+      srf: 24
+    preview_duration: 5 # How long to preview the video
+  image:
     full:
       lossless: true # Should webp be lossless
       quality: 100 # Re-encoded webp quality (1-100/lossless)
@@ -39,9 +49,11 @@ settings:
       max_height: 1600
     thumbnail:
       lossless: false
-      quality: 85
+      quality: 80
       max_width: 250
       max_height: 250
+
+
 
 testing:
   value:

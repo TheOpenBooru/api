@@ -238,3 +238,4 @@ data/example_data.json
 data/files/*
 data/cert.pem
 data/key.pem
+ffprobe.json
