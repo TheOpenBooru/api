@@ -2,10 +2,18 @@ import yaml
 from typing import Any
 from cachetools import cached, TTLCache
 
-@cached(cache=TTLCache(maxsize=1, ttl=10))
+_last_valid_config:dict = {}
+@cached(cache=TTLCache(maxsize=1, ttl=5))
 def _load_config() -> dict:
-    with open("./config.yml") as f:
-        config = yaml.full_load(f)
+    global _last_valid_config
+    try:
+        with open("./config.yml") as f:
+            config = yaml.full_load(f)
+    except Exception:
+        config = _last_valid_config
+    else:
+        _last_valid_config = config
+    
     return config
 
 
