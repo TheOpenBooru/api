@@ -11,7 +11,7 @@ class Post:
             assert validate.md5(md5)
             assert not bool(Post.get(md5=md5))
         for sha in post.sha256s:
-            assert validate.md5(sha)
+            assert validate.sha256(sha)
             assert not bool(Post.get(sha256=sha))
         
         
