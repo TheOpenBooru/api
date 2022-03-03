@@ -28,7 +28,7 @@ def _verify_post(post:Post):
     validate.rating(post.age_rating) if post.age_rating else None
     if post.created_at > time.time():
         raise ValueError("Created in the future")
-    if post.type not in {'image','gif','video'}:
+    if post.type not in {'image','animation','video'}:
         raise ValueError("Invalid post type")
 
     # !User's are not implemented
@@ -42,6 +42,8 @@ def get_unused_id() -> int:
 
 def create(post:Post):
     _verify_post(post)
+    if post.id in _posts_store:
+        raise KeyError("Post already exists")
     _posts_store[post.id] = post
 
 

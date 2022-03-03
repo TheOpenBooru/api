@@ -14,15 +14,25 @@ async def create_post(image_file:UploadFile):
     except ValueError as e:
         reason = constructor.error_message or "Unknown"
         return Response(reason,status_code=status.HTTP_400_BAD_REQUEST)
-    database.Post.create(post)
-    return Response(status_code=status.HTTP_201_CREATED)
+    try:
+        database.Post.create(post)
+    except ValueError:
+        return Response("Post already exists",status_code=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(status_code=status.HTTP_201_CREATED)
+        
 
 GenericFile = encoding.ImageFile | encoding.AnimationFile | encoding.VideoFile
 GenericSchema = schemas.Image | schemas.Video | schemas.Animation
+
 class PostConstructor:
     error_message:str
-    md5s:list[str] = []
-    sha3_256s:list[str] = []
+    md5s:list[str]
+    sha3_256s:list[str]
+    def __init__(self):
+        self.md5s = []
+        self.sha3_256s = []
+    
     async def generate_post(self,image_file:UploadFile) -> schemas.Post:
         data:bytes = await image_file.read() # type: ignore
         media_type = await encoding.generate_media(data,image_file.filename)
@@ -41,7 +51,7 @@ class PostConstructor:
 
         postID = database.Post.get_unused_id()
         return schemas.Post(
-            id=postID,uploader=1,type='image',
+            id=postID,uploader=1,type=media_type.type,
             full=full,preview=preview,thumbnail=thumbnail, # type: ignore
             md5s=self.md5s,sha256s=self.sha3_256s,
         )
@@ -52,10 +62,12 @@ class PostConstructor:
         self._generate_hashes(media)
         return self._generate_schema(media,store_url)
 
+
     def _store_file(self,type:str,media:GenericFile) -> str:
         ext:str = mimetypes.guess_extension(media.mimetype) # type: ignore
         key = store.put(media.data,prefix=type,suffix=ext)
         return store.url(key)
+
 
     def _generate_hashes(self,data:GenericFile) -> None:
         md5 = hashlib.md5(data.data).hexdigest()

@@ -7,6 +7,7 @@ from PIL import Image as PILImage
 
 @dataclass
 class Image(MediaBase):
+    type="image"
     PIL:PILImage.Image
     dimensions:Dimensions
 

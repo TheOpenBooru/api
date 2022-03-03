@@ -8,14 +8,15 @@ import subprocess
 
 @dataclass
 class Video(MediaBase):
-    data:bytes
-    mimetype:str
-    width:int
-    height:int
-    hasAudio:bool
-    framerate:float
-    frame_count:int
-    duration:float
+    type="video"
+    _data:bytes
+    _mimetype:str
+    _width:int
+    _height:int
+    _hasAudio:bool
+    _framerate:float
+    _frame_count:int
+    _duration:float
 
     @classmethod
     async def from_bytes(cls, data):
@@ -45,17 +46,17 @@ class Video(MediaBase):
             .output('pipe:',**ffmpeg_params)
             .run()
         )
-        process.stdin.write(self.data)
+        process.stdin.write(self._data)
         data = process.stdout.read()
         return VideoFile(
             data=data,
             mimetype='video/mp4',
-            width=self.width,
-            height=self.height,
-            frame_count=self.frame_count,
-            framerate=self.framerate,
-            duration=self.duration,
-            hasAudio=self.hasAudio,
+            width=self._width,
+            height=self._height,
+            frame_count=self._frame_count,
+            framerate=self._framerate,
+            duration=self._duration,
+            hasAudio=self._hasAudio,
             )
 
     async def preview(self) -> VideoFile:

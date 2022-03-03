@@ -18,7 +18,7 @@ def put(data: bytes,suffix:str = "",prefix:str = "") -> str:
         raise TypeError("Data wasn't bytes")
 
     key = hashlib.sha3_256(data).hexdigest()
-    key = prefix + key + suffix
+    key = prefix + "_" + key + suffix
     path = _gen_store_path(key)
     with open(path, "wb") as f:
         f.write(data)

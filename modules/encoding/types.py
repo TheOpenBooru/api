@@ -41,6 +41,7 @@ class VideoFile(FileBase):
     hasAudio:bool
 
 class MediaBase:
+    type:str
     @classmethod
     async def from_bytes(cls,data:bytes) -> Self:
         ...

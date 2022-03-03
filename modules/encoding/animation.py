@@ -6,6 +6,7 @@ from PIL import Image as PILImage
 
 @dataclass
 class Animation(MediaBase):
+    type="animation"
     _PIL:PILImage.Image
     _height:int
     _width:int
