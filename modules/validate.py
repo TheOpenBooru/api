@@ -37,7 +37,7 @@ def language(country_code:str):
     return _iso639.is_valid639_2(country_code)
 
 
-URL_REGEX = r"^(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?$"
+URL_REGEX = r"^http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+$"
 def url(url: str):
     if _re.match(URL_REGEX, url):
         return True
