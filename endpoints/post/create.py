@@ -33,9 +33,9 @@ class PostConstructor:
         thumbnail_image = await media.thumbnail()
         
         full = await self._process_media("full",full_image)
-        thumbnail = await self._process_media("preview",thumbnail_image)
+        thumbnail = await self._process_media("thumbnail",thumbnail_image)
         if preview_image:
-            preview = await self._process_media("thumbnail",preview_image)
+            preview = await self._process_media("preview",preview_image)
         else:
             preview = None
 
@@ -54,7 +54,7 @@ class PostConstructor:
 
     def _store_file(self,type:str,media:GenericFile) -> str:
         ext:str = mimetypes.guess_extension(media.mimetype) # type: ignore
-        key = store.put(media.data,suffix=ext,prefix=type)
+        key = store.put(media.data,prefix=type,suffix=ext)
         return store.url(key)
 
     def _generate_hashes(self,data:GenericFile) -> None:
