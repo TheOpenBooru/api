@@ -21,8 +21,15 @@ def tag(tag: str) -> bool:
 
 
 def rating(rating:str):
-    REGEX = r"(safe|questionable|explicit)"
+    REGEX = r"^(safe|questionable|explicit)$"
     if _re.match(REGEX, rating):
+        return True
+    else:
+        return False
+
+def post_type(type:str):
+    REGEX = r"^(image|gif|video)$"
+    if _re.match(REGEX, type):
         return True
     else:
         return False
@@ -33,7 +40,7 @@ def language(country_code:str):
 
 
 def url(url: str):
-    REGEX = r"(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?"
+    REGEX = r"^(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?$"
     if _re.match(REGEX, url):
         return True
     else:
