@@ -12,6 +12,12 @@ class TestData:
     Landscape = "./data/test/image/Landscape.webp"
 
 
+class OutputLocation:
+    full = "./data/files/image_full.webp"
+    preview = "./data/files/image_preview.webp"
+    thumbnail = "./data/files/image_thumbnail.webp"
+
+
 def load_image(path) -> Image: 
     with open(path,'rb') as f:
         data = f.read()
@@ -19,35 +25,40 @@ def load_image(path) -> Image:
     return asyncio.run(coroutine)
 
 
-class test_Create_Thumbnail(unittest.TestCase):
-    thumbnail: ImageFile
+class test_Create_Full(unittest.TestCase):
+    full: ImageFile
     def setUp(self):
-        image = load_image(TestData.Complex)
-        self.thumbnail = asyncio.run(image.thumbnail())
+        image = load_image(TestData.Large)
+        self.full = asyncio.run(image.full())
+
+    def load_PIL(self):
+        buf = io.BytesIO(self.full.data)
+        return PILImage.open(buf,formats=None)
     
-    def test_Thumbnail_can_be_loaded(self): 
-        buf = io.BytesIO(self.thumbnail.data)
-        pil_img = PILImage.open(buf,formats=None)
-        pil_img.verify()
-        pil_img.save('./data/images/image_thumbnail.webp')
+    def test_Full_Is_Valid(self):
+        PIL = self.load_PIL()
+        PIL.verify()
     
+    def test_Full_Save_Example(self):
+        PIL = self.load_PIL()
+        PIL.save(OutputLocation.full)
     
-    def test_Thumbnail_Is_Correct_Resolution(self):
+    def test_Full_Is_Correct_Resolution(self):
         image = load_image(TestData.Landscape)
-        thumbnail = asyncio.run(image.thumbnail())
-        config = settings.get('encoding.image.thumbnail')
-        max_height = config['max_height']
-        max_width = config['max_width']
+        full = asyncio.run(image.full())
         
-        assert (thumbnail.width == max_width) or (thumbnail.height == max_height), "Image Thumbnail Height or Width is not correct"
+        config = settings.get('encoding.image.full')
+        max_height,max_width = config['max_height'],config['max_width']
+        
+        assert (full.width == max_width) or (full.height == max_height), "Image Full Height or Width is not correct"
     
     
     def test_Small_Image_Doesnt_Change_Size(self):
         small_image = load_image(TestData.Small)
-        thumbnail = asyncio.run(small_image.thumbnail())
+        full = asyncio.run(small_image.full())
         
-        assert thumbnail.height == 5, "Thumbnail Height increased"
-        assert thumbnail.width == 5, "Thumbnail Width increased"
+        assert full.height == 5, "Full Height increased"
+        assert full.width == 5, "Full Width increased"
 
 
 class test_Create_Preview(unittest.TestCase):
@@ -60,7 +71,7 @@ class test_Create_Preview(unittest.TestCase):
         buf = io.BytesIO(self.preview.data)
         pil_img = PILImage.open(buf,formats=None)
         pil_img.verify()
-        pil_img.save('./data/images/image_preview.webp')
+        pil_img.save(OutputLocation.preview)
     
     
     def test_Preview_Is_Correct_Resolution(self):
@@ -82,35 +93,32 @@ class test_Create_Preview(unittest.TestCase):
         assert preview.width == 5, "Preview Width increased"
 
 
-
-class test_Create_Full(unittest.TestCase):
-    full: ImageFile
+class test_Create_Thumbnail(unittest.TestCase):
+    thumbnail: ImageFile
     def setUp(self):
-        image = load_image(TestData.Large)
-        self.full = asyncio.run(image.full())
-    
-    def test_Full_can_be_loaded(self):
         image = load_image(TestData.Complex)
-        self.full = asyncio.run(image.full())
-        buf = io.BytesIO(self.full.data)
+        self.thumbnail = asyncio.run(image.thumbnail())
+    
+    def test_Thumbnail_can_be_loaded(self): 
+        buf = io.BytesIO(self.thumbnail.data)
         pil_img = PILImage.open(buf,formats=None)
         pil_img.verify()
-        pil_img.save('./data/images/image_full.webp')
+        pil_img.save(OutputLocation.thumbnail)
     
     
-    def test_Full_Is_Correct_Resolution(self):
+    def test_Thumbnail_Is_Correct_Resolution(self):
         image = load_image(TestData.Landscape)
-        full = asyncio.run(image.full())
+        thumbnail = asyncio.run(image.thumbnail())
+        config = settings.get('encoding.image.thumbnail')
+        max_height = config['max_height']
+        max_width = config['max_width']
         
-        config = settings.get('encoding.image.full')
-        max_height,max_width = config['max_height'],config['max_width']
-        
-        assert (full.width == max_width) or (full.height == max_height), "Image Full Height or Width is not correct"
+        assert (thumbnail.width == max_width) or (thumbnail.height == max_height), "Image Thumbnail Height or Width is not correct"
     
     
     def test_Small_Image_Doesnt_Change_Size(self):
         small_image = load_image(TestData.Small)
-        full = asyncio.run(small_image.full())
+        thumbnail = asyncio.run(small_image.thumbnail())
         
-        assert full.height == 5, "Full Height increased"
-        assert full.width == 5, "Full Width increased"
+        assert thumbnail.height == 5, "Thumbnail Height increased"
+        assert thumbnail.width == 5, "Thumbnail Width increased"

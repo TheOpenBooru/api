@@ -7,9 +7,9 @@ from modules.encoding import generate_media,Animation,Image,Video,MediaBase
 
 class TestData:
     MP4_Video = './data/test/video/Sea.mp4'
-    WEBP_Animation = './data/test/animation/500x500-50ms.webp'
+    WEBP_Animation = './data/test/animation/500x500-50ms-12frames.webp'
     WEBP_Image = './data/test/image/5x5.webp'
-    GIF_Animation = './data/test/animation/500x500-50ms.gif'
+    GIF_Animation = './data/test/animation/500x500-50ms-12frames.gif'
     GIF_Image = './data/test/image/SingleFrame.gif'
 
 
