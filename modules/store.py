@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 def _gen_store_path(key: str) -> Path:
-    return Path(f"./data/files/{key}")
+    return Path("data","files",key)
 
 
 def put(data: bytes,suffix:str = "",prefix:str = "") -> str:
