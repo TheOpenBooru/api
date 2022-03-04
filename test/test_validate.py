@@ -44,6 +44,7 @@ class test_sha256(unittest.TestCase):
 class test_url(unittest.TestCase):
     def test_valid(self):
         valid = [
+            ("https://example", "No TLD"),
             ("https://www.example.com", "Normal"),
             ("https://long.amount.of.prefix.example.com", "Many prefixes"),
             ("https://example.com", "No Prefix"),
@@ -58,10 +59,7 @@ class test_url(unittest.TestCase):
         invalid = [
             ("https//example.com", "No semi-colon"),
             ("https:/example.com", "Single slash"),
-            ("https://.example.com", "No prefix but has dot"),
-            ("https://.com", "No Hostname, only TLD"),
-            ("https://example.", "No TLD with dot"),
-            ("https://example", "No TLD"),
+            ("https:/example.com//", "Double Slash"),
             ("example.com", "No Protocol"),
         ]
         for invalid,reason in invalid:
