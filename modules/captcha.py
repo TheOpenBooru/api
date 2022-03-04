@@ -9,7 +9,7 @@ def verify(captcha_response:str) -> bool:
     r = requests.post(
         "https://hcaptcha.com/siteverify",
         data={
-            "secret": get_sitekey(),
+            "secret": settings.get('config.hcaptcha.secret'),
             "response": captcha_response
         }
     )
