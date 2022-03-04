@@ -17,8 +17,9 @@ class Post:
         
         # Validate Image URLs
         assert validate.url(post.full.url)
-        assert validate.url(post.preview.url) if post.preview else None
-        assert validate.url(post.thumbnail.url) if post.thumbnail else None
+        assert validate.url(post.thumbnail.url)
+        if post.preview:
+            assert validate.url(post.preview.url)
         
         for tag in post.tags:
             validate.tag(tag)
