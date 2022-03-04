@@ -13,7 +13,7 @@ The goals of Open Booru is to improve standardisation amongst boorus as well as 
 
 ### Instructions
 
-Configure the config.yml, the config section contains the required settings.
+Edit the config.yml, the config section contains the required settings.
 
 ```bash
 # Create a virtualenv
@@ -23,5 +23,5 @@ python3.10 -m venv venv
 ./venv/bin/pip install -r requirements.txt
 
 # Start the app
-./venv/bin/python main.py
+./venv/bin/python app.py
 ```
