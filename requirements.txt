@@ -14,9 +14,10 @@ python-multipart
 # Database
 cachetools
 
-# Image
+# Encoding
 numpy
 pillow
+ffmpeg-python
 
 # Email
 jinja2
