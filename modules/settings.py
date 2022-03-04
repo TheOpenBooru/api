@@ -10,12 +10,10 @@ def _load_config() -> dict:
         with open("./config.yml") as f:
             config = yaml.full_load(f)
     except Exception:
-        config = _last_valid_config
         return _last_valid_config
     else:
         _last_valid_config = config
         return config
-    
 
 
 @cached(cache=TTLCache(maxsize=1024, ttl=5))
