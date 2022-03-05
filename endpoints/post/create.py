@@ -17,7 +17,7 @@ async def create_post(image_file:UploadFile):
     try:
         database.Post.create(post)
     except ValueError:
-        return Response("Post already exists",status_code=status.HTTP_400_BAD_REQUEST)
+        return Response("Post already exists",status_code=status.HTTP_409_CONFLICT)
     else:
         return Response(status_code=status.HTTP_201_CREATED)
         
