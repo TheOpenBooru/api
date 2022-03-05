@@ -36,7 +36,7 @@ encoding:
       enabled: false # Should video previews be generated
       duration: 5 # How long should the video preview be
     thumbnail:
-      timing_percent: 0 # Perent way through the video for the thumbnail to be taken
+      timing_percent: 10 # Perent way through the video for the thumbnail to be taken
   animation:
     ...
   image:
