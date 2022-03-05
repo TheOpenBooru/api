@@ -2,7 +2,7 @@ from time import time
 from pydantic import BaseModel, Field,AnyHttpUrl,FileUrl
 from typing import Optional
 
-from . import Image,Video
+from . import Image,Video,Animation
 
 LanugageField = Field(default_factory=None, description="ISO 639-2 language code",regex="^[a-z]{3}$")
 AgeRatingField = Field(default_factory=None, description="Age rating of the post", regex="^(safe|questionable|explicit)$")
@@ -25,8 +25,8 @@ class Post(BaseModel):
     created_at: float = Field(default_factory=time, description="The Unix timestamp for when the Post was created")
     uploader: int = Field(..., description="The User ID of the Post Creator")
 
-    full: Image|Video = Field(..., description="The full scale media for the Post")
-    preview: Optional[Image] = Field(..., description="A Medium Scale Version for the image, for hi-res posts")
+    full: Image|Video|Animation = Field(..., description="The full scale media for the Post")
+    preview: Optional[Image|Video] = Field(..., description="A Medium Scale Version for the image, for hi-res posts")
     thumbnail: Image = Field(..., description="The lowest scale version of the image, for thumbnails")
     md5s: list[str] = Field(default_factory=list, description="The Post's MD5 hashes")
     sha256s: list[str] = Field(default_factory=list, description="The Post's SHA3-256 hashes")
