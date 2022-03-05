@@ -18,6 +18,8 @@ cachetools
 numpy
 pillow
 ffmpeg-python
+python-magic-bin
+python-magic
 
 # Email
 jinja2
