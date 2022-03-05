@@ -39,6 +39,7 @@ Sadly, you must manually install ffmpeg.
 python3.10 -m venv venv
 
 # Install requirements
+.\venv\Scripts\pip.exe install python-magic-bin
 .\venv\Scripts\pip.exe install -r requirements.txt
 
 # Start the app
