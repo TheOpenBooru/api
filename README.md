@@ -8,7 +8,7 @@ Edit the config.yml, the config section contains the required settings.
 
 ### Requirements
 
-- linux
+- ubuntu
   - other platforms may work, but are untested
 - python >= 3.10
 - ffmpeg
