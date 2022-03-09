@@ -5,36 +5,6 @@ import time
 _posts_store:dict[int,schemas.Post|None] = {}
 class Post:
     @staticmethod
-    def _verify_post(post:schemas.Post):
-        # Valdiate hashes
-        for md5 in post.md5s:
-            assert validate.md5(md5)
-            assert not bool(Post.get(md5=md5))
-        for sha in post.sha256s:
-            assert validate.sha256(sha)
-            assert not bool(Post.get(sha256=sha))
-        
-        
-        # Validate Image URLs
-        assert validate.url(post.full.url)
-        assert validate.url(post.thumbnail.url)
-        if post.preview:
-            assert validate.url(post.preview.url)
-        
-        for tag in post.tags:
-            validate.tag(tag)
-        validate.language(post.language) if post.language else None
-        validate.rating(post.age_rating) if post.age_rating else None
-        
-        assert post.created_at < time.time(), "Created in the future"
-        assert validate.post_type(post.type), f"Invalid post type: {post.type}"
-
-        # !User's are not implemented
-        # if not User.exists(post.uploader):
-        #     raise ValueError("Invalid User ID")
-
-
-    @staticmethod
     def get_unused_id() -> int:
         return len(_posts_store) + 1
 
@@ -42,15 +12,12 @@ class Post:
     @staticmethod
     def create(post:schemas.Post):
         """Raises:
-        - ValueError: If the post is invalid
-        - KeyError: If the post is invalid
+        - KeyError: Post already exists
+        - ValueError: Invalid Post Data
         """
-        if post.id in _posts_store:
+        if not is_post_unique(post):
             raise KeyError("Post already exists")
-        
-        try:
-            Post._verify_post(post)
-        except AssertionError:
+        if not is_post_valid(post):
             raise ValueError("Invalid Post Data")
         
         _posts_store[post.id] = post
@@ -128,3 +95,42 @@ class Post:
         if id in _posts_store and _posts_store[id] != None:
             _posts_store[id].views += 1 # type: ignore
 
+
+def is_post_unique(post:schemas.Post) -> bool:
+    if Post.get(id=post.id):
+        return False
+    for md5 in post.md5s:
+        if Post.get(md5=md5) != None:
+            return False
+    for sha in post.sha256s:
+        if Post.get(sha256=sha) != None:
+            return False
+    return True
+
+
+def is_post_valid(post:schemas.Post) -> bool:
+    return True
+    # Valdiate hashes
+    for md5 in post.md5s:
+        assert validate.md5(md5)
+    for sha in post.sha256s:
+        assert validate.sha256(sha)
+    
+    
+    # Validate Image URLs
+    assert validate.url(post.full.url)
+    assert validate.url(post.thumbnail.url)
+    if post.preview:
+        assert validate.url(post.preview.url)
+    
+    for tag in post.tags:
+        validate.tag(tag)
+    validate.language(post.language) if post.language else None
+    validate.rating(post.age_rating) if post.age_rating else None
+    
+    assert post.created_at < time.time(), "Created in the future"
+    assert validate.post_type(post.type), f"Invalid post type: {post.type}"
+
+    # !User's are not implemented
+    # if not User.exists(post.uploader):
+    #     raise ValueError("Invalid User ID")
