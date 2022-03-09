@@ -12,45 +12,43 @@ class TestData:
     GIF_Animation = './data/test/animation/500x500-50ms-12frames.gif'
     GIF_Image = './data/test/image/SingleFrame.gif'
 
+def assertFormat(fp:str,type:type,message:str):
+    with open(fp,'rb') as f:
+        coroutine = generate_media(f.read(),fp)
+        media_class = asyncio.run(coroutine)
+    assert media_class == type, message
 
-class test_Detect_Format(unittest.TestCase):
-    def assertFormat(self,fp:str,type:type,message:str):
-        with open(fp,'rb') as f:
-            coroutine = generate_media(f.read(),fp)
-            media_class = asyncio.run(coroutine)
-        assert media_class == type, f"message: {media_class.__name__}"
-    
-    def test_webp_animation(self):
-        self.assertFormat(
-            TestData.WEBP_Animation,
-            Animation,
-            "WEBP Animation not recognised"
-        )
-    
-    def test_webp_picture(self):
-        self.assertFormat(
-            TestData.WEBP_Image,
-            Image,
-            "WEBP Picutre not recognised",
-        )
-    
-    def test_gif_animation(self):
-        self.assertFormat(
-            TestData.GIF_Animation,
-            Animation,
-            "GIF Animation not recognised",
-        )
-    
-    def test_gif_picture(self):
-        self.assertFormat(
-            TestData.GIF_Image,
-            Image,
-            "GIF Image not recognised",
-        )
-    
-    def test_mp4_video(self):
-        self.assertFormat(
-            TestData.MP4_Video,
-            Video,
-            "MP4 Video not recognised",
-        )
+def test_webp_animation():
+    assertFormat(
+        TestData.WEBP_Animation,
+        Animation,
+        "WEBP Animation not recognised"
+    )
+
+def test_webp_picture():
+    assertFormat(
+        TestData.WEBP_Image,
+        Image,
+        "WEBP Picutre not recognised",
+    )
+
+def test_gif_animation():
+    assertFormat(
+        TestData.GIF_Animation,
+        Animation,
+        "GIF Animation not recognised",
+    )
+
+def test_gif_picture():
+    assertFormat(
+        TestData.GIF_Image,
+        Image,
+        "GIF Image not recognised",
+    )
+
+def test_mp4_video():
+    assertFormat(
+        TestData.MP4_Video,
+        Video,
+        "MP4 Video not recognised",
+    )

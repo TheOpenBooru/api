@@ -26,7 +26,7 @@ delete:
 
 from modules.database import Post,User
 from modules import schemas
-import unittest
+import pytest
 
 
 example_user = schemas.User(
@@ -42,7 +42,7 @@ example_image = schemas.Image(
     mimetype='image/png'
 )
 
-def generate_post(id:int = None) -> schemas.Post:
+def generate_post(id:int|None = None) -> schemas.Post:
     if id is None:
         id = Post.get_unused_id()
     return schemas.Post(

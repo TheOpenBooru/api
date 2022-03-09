@@ -26,7 +26,7 @@ delete:
 
 from modules.database import User
 from modules import schemas
-import unittest
+import pytest
 
 def create_user(id:int):
     return schemas.User(
@@ -35,21 +35,6 @@ def create_user(id:int):
         email=f"{id}@example.com",
     )
 
-class test_Get_Unused_ID(unittest.TestCase):
-    def tearDown(self):
-        User.clear()
-    
-    def test_isnt_Used_By_User(self):
-        id = User.get_unused_id()
-        User.get(id=id)
-
-class test_Delete(unittest.TestCase):
-    def tearDown(self):
-        User.clear()
-    
-    def test_isnt_Used_By_User(self):
-        for _ in range(100):
-            id = User.get_unused_id()
-            assert User.get(id=id) == None
-            user = create_user(id)
-            User.create(user)
+def test_Unused_ID_is_unused(self):
+    id = User.get_unused_id()
+    User.get(id=id)

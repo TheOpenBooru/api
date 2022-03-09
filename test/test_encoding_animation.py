@@ -1,8 +1,8 @@
 from modules import settings
 from modules.encoding import Animation,AnimationFile,ImageFile
 import io
-import unittest
 import asyncio
+import pytest
 from PIL import Image as PILImage
 
 class TestData:
@@ -16,15 +16,18 @@ class OutputLocation:
 
 def load_animation(path) -> Animation: 
     with open(path,'rb') as f:
-        return asyncio.run(Animation.from_bytes(f.read()))
+        data = f.read()
+    coroutine = Animation.from_bytes(data)
+    return asyncio.run(coroutine)
 
 
-class test_Animations_Require_More_Than_One_Frame(unittest.TestCase):
-    def test_a(self):
-        with open(TestData.single_frame, "rb") as f:
-            data = f.read()
-        coroutine = Animation.from_bytes(data)
-        self.assertRaises(ValueError, asyncio.run, coroutine)
+def test_Animations_Require_More_Than_One_Frame():
+    with open(TestData.single_frame, "rb") as f:
+        data = f.read()
+    coroutine = Animation.from_bytes(data)
+    with pytest.raises(ValueError):
+        asyncio.run(coroutine)
+
 
 
 class test_Animation_Full(unittest.TestCase):
