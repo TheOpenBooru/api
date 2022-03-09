@@ -27,6 +27,11 @@ settings:
     max_limit: 100 # Max number of results per search
   posts:
     required_aprroval: true # Posts require moderator approval beofre being visible
+    valid_namespaces:
+      - artist
+      - copyright
+      - generic
+      - meta
 
 encoding:
   video:
