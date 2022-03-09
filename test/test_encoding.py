@@ -3,7 +3,7 @@
 
 import asyncio
 import unittest
-from modules.encoding import generate_media,Animation,Image,Video,MediaBase
+from modules.encoding import predict_media_type,Animation,Image,Video,BaseMedia
 
 class TestData:
     MP4_Video = './data/test/video/Sea.mp4'
@@ -16,7 +16,7 @@ class TestData:
 class test_Detect_Format(unittest.TestCase):
     def assertFormat(self,fp:str,type:type,message:str):
         with open(fp,'rb') as f:
-            coroutine = generate_media(f.read(),fp)
+            coroutine = predict_media_type(f.read(),fp)
             media_class = asyncio.run(coroutine)
         assert media_class == type, f"message: {media_class.__name__}"
     

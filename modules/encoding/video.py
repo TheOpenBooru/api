@@ -1,14 +1,16 @@
-from . import VideoFile,ImageFile,MediaBase,Image
+from datetime import datetime
+from . import VideoFile,ImageFile,BaseMedia,Image
 from modules import settings
 import os
+import time
 import random
-from magic import Magic
-import ffmpeg
 from typing import Any
 from dataclasses import dataclass
+import ffmpeg
+from magic import Magic
 
 @dataclass
-class Video(MediaBase):
+class Video(BaseMedia):
     type="video"
     _data:bytes
     _mimetype:str
@@ -65,10 +67,10 @@ def get_video_data(data:bytes) -> dict:
     metadata = {}
     metadata["_mimetype"] = get_mimetype(data)
     metadata["_hasAudio"] = has_audio(ffprobe_data)
+    metadata["_duration"] = get_duration(ffprobe_data,video_stream)
+    metadata["_frame_count"] = get_frame_count(video_stream)
     metadata["_width"] = int(video_stream['width'])
     metadata["_height"] = int(video_stream['height'])
-    metadata["_duration"] = float(video_stream['duration'])
-    metadata["_frame_count"] = int(video_stream['nb_frames'])
     metadata["_framerate"] = eval(video_stream['avg_frame_rate'])
     return metadata
 
@@ -100,3 +102,19 @@ def has_audio(ffprobe_data:dict) -> bool:
         if stream['codec_type'] == 'audio':
             return True
     return False
+
+def get_duration(ffprobe_data:dict,video_stream:dict) -> float:
+    if 'duration' in video_stream:
+        return float(video_stream['duration'])
+    elif video_stream['codec_name'] == 'vp8':
+        return float(ffprobe_data['duration'])
+    else:
+        raise ValueError("Unsupported video format")
+
+def get_frame_count(video_stream:dict) -> float:
+    if 'duration' in video_stream:
+        return float(video_stream['nb_frames'])
+    elif video_stream['codec_name'] == 'vp8':
+        raise NotImplementedError("VP8 does not support frame count")
+    else:
+        raise ValueError("Unsupported video format")

@@ -1,74 +1,89 @@
-from . import MediaBase,AnimationFile,ImageFile,Image
+import asyncio
+from . import BaseMedia,AnimationFile,ImageFile,Image
 import io
 from dataclasses import dataclass
 from typing_extensions import Self
 from PIL import Image as PILImage
 
 @dataclass
-class Animation(MediaBase):
+class Animation(BaseMedia):
     type="gif"
     _PIL:PILImage.Image
     _height:int
     _width:int
     _frame_count:int
+    _duration:float
     
     @classmethod
     async def from_bytes(cls,data:bytes) -> Self:
         """Raises:
         - ValueError: Could not Load Animation
+        - ValueError: Animation was too large
         - ValueError: Has Only 1 Frame
         """
+        PILImage.MAX_IMAGE_PIXELS = (5000*5000)*2
+        # x2 becasue actual max pixels is half
         buf = io.BytesIO(data)
         try:
-            # formats=None means attempt to load all formats
-            pil = PILImage.open(buf,formats=None)
+            # formats=None:attempt to load all formats
+            pillow = PILImage.open(buf,formats=None)
+        except PILImage.DecompressionBombError:
+            raise ValueError("Animation was too large")
         except Exception:
             raise ValueError("Could not Load Animation")
-        
-        if pil.n_frames == 1:
+        if pillow.n_frames == 1:
             raise ValueError("Has Only 1 Frame")
+        
+        frame_durations = _pillow_animation_durations(pillow)
+        duration = sum(frame_durations) / 1000
 
         return Animation(
-            _PIL=pil,
-            _height=pil.height,
-            _width=pil.width,
-            _frame_count=pil.n_frames,
+            _PIL=pillow,
+            _height=pillow.height,
+            _width=pillow.width,
+            _frame_count=pillow.n_frames,
+            _duration=duration,
         )
 
     async def full(self) -> AnimationFile:
-        buf = io.BytesIO()
-        frame_durations = self._get_animation_durations()
-        self._PIL.save(
-            buf,
-            'webp',
-            save_all=True, # save_all=True menas save as an animation
-            duration=frame_durations,
-            background=(0,0,0,0),
-        )
-
-        duration = sum(frame_durations) / 1000
+        data = await _pillow_animation_to_bytes(self._PIL)
         return AnimationFile(
-            data=buf.getvalue(),
-            mimetype='image/webp',
+            data=data,
+            mimetype='image/gif',
             height=self._height,
             width=self._width,
             frame_count=self._frame_count,
-            duration=duration,
+            duration=self._duration,
         )
 
-    def _get_animation_durations(self):
-        frame_durations = []
-        for x in range(self._PIL.n_frames):
-            self._PIL.seek(x)
-            frame = self._PIL.copy()
-            duration = frame.info['duration']
-            frame_durations.append(int(duration))
-        
-        return frame_durations
 
     async def preview(self) -> None:
         return None
-    
+
+
     async def thumbnail(self) -> ImageFile:
         img = Image.from_pillow(self._PIL)
         return await img.thumbnail()
+
+
+async def _pillow_animation_to_bytes(pillow:PILImage.Image) -> bytes:
+    buf = io.BytesIO()
+    frame_durations = _pillow_animation_durations(pillow)
+    pillow.save(
+        buf,
+        'WEBP',
+        save_all=True, #  save as an animation
+        transparency=0,
+        duration=frame_durations[0],
+        background=[0]*4,
+    )
+    return buf.getvalue()
+
+
+def _pillow_animation_durations(pillow:PILImage.Image) -> list:
+    frame_durations = []
+    for x in range(pillow.n_frames):
+        pillow.seek(x)
+        duration = int(pillow.info['duration'])
+        frame_durations.append(duration)
+    return frame_durations

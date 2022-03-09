@@ -1,19 +1,16 @@
-from . import MediaBase,Animation,Image,Video,Dimensions
+from . import BaseMedia,Animation,Image,Video,Dimensions
 from PIL import Image as PILImage
+
 import io
 import mimetypes
 mimetypes.add_type('image/webp', '.webp')
 mimetypes.add_type('image/apng', '.apng')
 
 
-async def generate_media(data:bytes,filename:str) -> type[MediaBase]:
+async def predict_media_type(data:bytes,filename:str) -> type[BaseMedia]:
     """Raises:
     - ValueError: Filetype not supported
     """
-    lookup = {
-        'image':Image,
-        'video':Video,
-    }
     mime:str = mimetypes.guess_type(filename)[0] # type: ignore
     type,subtype = mime.split('/')
 
@@ -22,13 +19,19 @@ async def generate_media(data:bytes,filename:str) -> type[MediaBase]:
             return Animation
         else:
             return Image
+    elif type == 'video':
+        return Video
+    elif type == 'image':
+        return Image
     else:
-        return lookup[type]
+        raise ValueError(f'Filetype not supported: {mime}')
+
 
 def _isAnimatedSequence(data:bytes) -> bool:
     buf = io.BytesIO(data)
     pil_img = PILImage.open(buf,formats=None)
     return pil_img.is_animated
+
 
 def calculate_downscale(resolution:Dimensions,target:Dimensions) -> Dimensions:
     downscale_factors = (

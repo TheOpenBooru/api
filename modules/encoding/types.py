@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing_extensions import Self
 
 
-class FileBase:
+class BaseFile:
     data:bytes
     mimetype:str
 
@@ -13,7 +13,7 @@ class Dimensions:
 
 
 @dataclass(frozen=True)
-class ImageFile(FileBase):
+class ImageFile(BaseFile):
     data:bytes
     mimetype:str
     height:int
@@ -21,7 +21,7 @@ class ImageFile(FileBase):
 
 
 @dataclass(frozen=True)
-class AnimationFile(FileBase):
+class AnimationFile(BaseFile):
     data:bytes
     mimetype:str
     height:int
@@ -30,7 +30,7 @@ class AnimationFile(FileBase):
     duration:float
 
 @dataclass(frozen=True)
-class VideoFile(FileBase):
+class VideoFile(BaseFile):
     data:bytes
     mimetype:str
     height:int
@@ -40,7 +40,7 @@ class VideoFile(FileBase):
     frame_count:int
     hasAudio:bool
 
-class MediaBase:
+class BaseMedia:
     type:str
     @classmethod
     async def from_bytes(cls,data:bytes) -> Self:

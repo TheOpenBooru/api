@@ -1,22 +1,22 @@
 from pydantic import BaseModel, Field,FileUrl
 
-class MediaBase(BaseModel):
+class BaseMedia(BaseModel):
     url: str = Field(..., description="The URI for the File")
     mimetype: str = Field(..., description="The MIME type for the File",regex="^[a-zA-Z0-9-_]+/[a-zA-Z0-9-_]+$")
     height: int = Field(..., description="The Media's Height in pixels")
     width: int = Field(..., description="The Media's Width in pixels")
 
-class Image(MediaBase):
+class Image(BaseMedia):
     type = "image"
 
 
-class Animation(MediaBase):
+class Animation(BaseMedia):
     type = "animation"
     duration: float = Field(..., description="The Video's Duration in framerate")
     frame_count: int = Field(..., description="The Video's Number of frames")
     duration:float = Field(..., description="The Video's Duration")
 
-class Video(MediaBase):
+class Video(BaseMedia):
     type = "video"
     has_sound: bool = Field(..., description="Does the video contain sound?")
     duration: float = Field(..., description="The Video's Duration in framerate")

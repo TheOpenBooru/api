@@ -1,4 +1,3 @@
-from scripts import example_data
 from modules import settings
 from endpoints import router
 
@@ -26,7 +25,6 @@ def docs_redirect():
 
 app.include_router(router)
 
-example_data.generate(50)
 if __name__ == "__main__":
     uvicorn.run(
         "app:app",

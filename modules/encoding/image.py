@@ -1,12 +1,13 @@
 from modules import settings
-from . import ImageFile,MediaBase,Dimensions
+from . import ImageFile,BaseMedia,Dimensions
 from dataclasses import dataclass
 from typing_extensions import Self
 import io
 from PIL import Image as PILImage
 
+
 @dataclass
-class Image(MediaBase):
+class Image(BaseMedia):
     type="image"
     PIL:PILImage.Image
     dimensions:Dimensions
@@ -21,26 +22,40 @@ class Image(MediaBase):
     
     @classmethod
     async def from_bytes(cls,data:bytes) -> Self:
+        """Raises:
+        - ValueError: Image is too big to process
+        - ValueError: Could not Load Image
+        """
+        PILImage.MAX_IMAGE_PIXELS = (5000*5000) * 2
+        # Prevent large images performance impact
+        # x2 because error is only raised on x2 max pixels
         buf = io.BytesIO(data)
         try:
             # formats=None means attempt to load all formats
             pil_img = PILImage.open(buf,formats=None)
-        except:
+        except PILImage.DecompressionBombError:
+            raise ValueError("Image is too big to process")
+        except Exception:
             raise ValueError("Could not Load Image")
-        return Image.from_pillow(pil_img)
+        else:
+            return Image.from_pillow(pil_img)
+
 
     async def full(self) -> ImageFile:
         config = settings.get('encoding.image.full')
         return self._process_using_config(config)
 
+
     async def preview(self) -> ImageFile:
         config = settings.get('encoding.image.preview')
         return self._process_using_config(config)
+
 
     async def thumbnail(self) -> ImageFile:
         config = settings.get('encoding.image.thumbnail')
         return self._process_using_config(config)
     
+
     def _process_using_config(self,config:dict) -> ImageFile:
         dimensions = Dimensions(config['max_width'],config['max_height'])
         return self._process(
@@ -48,6 +63,7 @@ class Image(MediaBase):
             config['quality'],
             config['lossless'],
         )
+
 
     def _process(self,target:Dimensions,quality:int,lossless:bool=False) -> ImageFile:
         output_buf = io.BytesIO()
