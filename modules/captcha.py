@@ -2,14 +2,16 @@ from modules import settings
 import requests
 import logging
 
+DEFAULT_SECRET = settings.get('config.hcaptcha.secret')
+
 def get_sitekey() -> str:
     return settings.get('config.hcaptcha.sitekey')
 
-def verify(captcha_response:str) -> bool:
+def verify(captcha_response:str,secret:str = DEFAULT_SECRET) -> bool:
     r = requests.post(
         "https://hcaptcha.com/siteverify",
         data={
-            "secret": settings.get('config.hcaptcha.secret'),
+            "secret": secret,
             "response": captcha_response
         }
     )
