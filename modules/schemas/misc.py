@@ -3,6 +3,11 @@ from pydantic import BaseModel, Field
 from . import Image
 
 
+class Status(BaseModel):
+    version: str = Field(..., description="The current API version")
+    status: bool = Field(..., description="Is the server up?")
+
+
 class Author(BaseModel):
     name: str = Field(..., description="The Author's Name")
     avatar: Image = Field(..., description="The Author's Avatar")
