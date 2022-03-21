@@ -6,5 +6,3 @@ services:
       - "57255:57255"
     expose:
       - 57255
-    depends_on:
-      - email
