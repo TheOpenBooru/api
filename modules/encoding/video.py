@@ -2,9 +2,10 @@ from . import BaseMedia,ImageFile,VideoFile,Image
 from .probe import VideoProbe
 from modules import settings
 import os
+import shutil
 import random
 import ffmpeg
-from functools import cache, cached_property
+from pathlib import Path
 
 class Video(BaseMedia):
     type = "video"
@@ -21,6 +22,9 @@ class Video(BaseMedia):
         with open(self._filepath,'wb') as f:
             f.write(self._data)
         self._probe = VideoProbe(self._filepath)
+        new_path = self._filepath
+        shutil.move(self._filepath,new_path)
+        self._filepath = new_path
         return self
 
 
@@ -59,7 +63,7 @@ class Video(BaseMedia):
         try:
             data,err = (
                 ffmpeg
-                .input('pipe:')
+                .input(self._filepath)
                 .output("pipe:",
                     # ss=str(frame_offset),
                     f='image2',vframes=1
@@ -67,7 +71,7 @@ class Video(BaseMedia):
                 .run(input=self._data,capture_stdout=True,capture_stderr=True)
             )
         except ffmpeg.Error as e:
-            raise ValueError(str(e))
+            raise ValueError(e.stderr)
         else:
             with Image(data) as img:
                 return img.thumbnail()
