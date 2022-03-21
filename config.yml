@@ -1,8 +1,8 @@
 config:
   password_pepper: ""
   hcaptcha:
-    sitekey: ""
-    secret: ""
+    sitekey: "541bc0ab-d125-4a49-86c7-3f2284e35a60"
+    secret: "0x7624CcacD1f2d2CFA3a64494b63AAed3EE4058Fa"
   smtp:
     email: ""
     password: ""
@@ -41,7 +41,7 @@ encoding:
       enabled: false # Should video previews be generated
       duration: 5 # How long should the video preview be
     thumbnail:
-      timing_percent: 10 # Perent way through the video for the thumbnail to be taken
+      offset_percent: 10 # Perent way through the video for the thumbnail to be taken
   animation:
     ...
   image:

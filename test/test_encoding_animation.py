@@ -5,17 +5,14 @@ import unittest
 import asyncio
 from PIL import Image as PILImage
  
-class TestData:
-    transparent = "./data/test/animation/241x300-50ms-128frames.gif"
-    single_frame = "data/test/image/SingleFrame.gif"
-
 class OutputLocation:
     full = "./data/files/animation_full.webp"
     thumbnail = "./data/files/animation_thumbnail.webp"
 
 def load_animation(path) -> Animation: 
     with open(path,'rb') as f:
-        return asyncio.run(Animation.from_bytes(f.read()))
+        data = f.read()
+    return Animation(data)
 
 def load_PIL_from_data(data) -> PILImage.Image:
     buf = io.BytesIO(data)
@@ -25,8 +22,7 @@ class test_Animations_Require_More_Than_One_Frame(unittest.TestCase):
     def test_a(self):
         with open(TestData.single_frame, "rb") as f:
             data = f.read()
-        coroutine = Animation.from_bytes(data)
-        self.assertRaises(ValueError, asyncio.run, coroutine)
+        self.assertRaises(ValueError, Animation(data))
 
 
 class test_Animations_Preserve_Transparency(unittest.TestCase):
@@ -35,7 +31,7 @@ class test_Animations_Preserve_Transparency(unittest.TestCase):
         self.animation = load_animation(TestData.transparent)
         self.full = asyncio.run(self.animation.full())
     
-    def test_a(self):
+    def test_Animations_Preserve_Transparency(self):
         PIL = load_PIL_from_data(self.full.data)
         for x in range(PIL.n_frames):
             PIL.seek(x)

@@ -1,29 +1,37 @@
 import io
+from pathlib import Path
 from modules import settings
 from modules.encoding import Image, ImageFile
 import unittest
 import asyncio
 from PIL import Image as PILImage
 
-class TestData:
-    Complex = "./data/test/image/Complex.webp"
-    Large = "./data/test/image/Large.webp"
-    Small = "./data/test/image/5x5.webp"
-    Landscape = "./data/test/image/Landscape.webp"
-
 
 class OutputLocation:
-    full = "./data/files/image_full.webp"
-    preview = "./data/files/image_preview.webp"
-    thumbnail = "./data/files/image_thumbnail.webp"
+    full = Path("./data/files/image_full.webp")
+    preview = Path("./data/files/image_preview.webp")
+    thumbnail = Path("./data/files/image_thumbnail.webp")
 
 
-def load_image(path) -> Image: 
+def load_image(path:str | Path) -> Image: 
     with open(path,'rb') as f:
         data = f.read()
-    coroutine = Image.from_bytes(data)
-    return asyncio.run(coroutine)
+    return Image(data)
 
+
+class test_Resolutions_are_Correct(unittest.TestCase):
+    ...
+
+class test_Landscape_is_Correct(unittest.TestCase):
+    full: ImageFile
+    def setUp(self):
+        image = load_image(TestData.Landscape)
+        self.full = asyncio.run(image.full())
+    
+    def test_Full_Is_Valid(self):
+        config = settings.get('encoding.image.full')
+        assert self.full.width == config['max_width'], "Landscape Width is not correct"
+        assert self.full.height == config['max_height'], "Landscape Height is not correct"
 
 class test_Create_Full(unittest.TestCase):
     full: ImageFile
@@ -43,22 +51,10 @@ class test_Create_Full(unittest.TestCase):
         PIL = self.load_PIL()
         PIL.save(OutputLocation.full)
     
-    def test_Full_Is_Correct_Resolution(self):
-        image = load_image(TestData.Landscape)
-        full = asyncio.run(image.full())
-        
-        config = settings.get('encoding.image.full')
-        max_height,max_width = config['max_height'],config['max_width']
-        
-        assert (full.width == max_width) or (full.height == max_height), "Image Full Height or Width is not correct"
-    
-    
     def test_Small_Image_Doesnt_Change_Size(self):
         small_image = load_image(TestData.Small)
         full = asyncio.run(small_image.full())
-        
-        assert full.height == 5, "Full Height increased"
-        assert full.width == 5, "Full Width increased"
+        assert full.height == 5 and full.width == 5, f"{full.height}x{full.width} is not 5x5"
 
 
 class test_Create_Preview(unittest.TestCase):

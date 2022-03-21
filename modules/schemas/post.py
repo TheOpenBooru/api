@@ -1,45 +1,42 @@
-from time import time
-from pydantic import BaseModel, Field,AnyHttpUrl,FileUrl
-from typing import Optional
-
+from . import fields
 from . import Image,Video,Animation
-
-LanugageField = Field(default_factory=None, description="ISO 639-2 language code",regex="^[a-z]{3}$")
-AgeRatingField = Field(default_factory=None, description="Age rating of the post", regex="^(safe|questionable|explicit)$")
-SourceField = Field(default_factory=None, description="Source of the image")
-TagsField = Field(default_factory=list, description="Tags on the post")
+from pydantic import BaseModel, Field, AnyHttpUrl
 
 
 class Post_Edit(BaseModel):
-    removed_tags: list[str] = TagsField
-    added_tags: list[str] = TagsField
-    from_language: Optional[str] = LanugageField
-    to_language: str = LanugageField
-    from_age_rating: Optional[str] = LanugageField
-    to_age_rating: str = LanugageField
-    from_source:Optional[AnyHttpUrl] = SourceField
-    to_source:Optional[AnyHttpUrl] = SourceField
+    removed_tags: list[str] = fields.Tags
+    added_tags: list[str] = fields.Tags
+    
+    from_language: str|None = fields.Lanugage
+    to_language: str = fields.Lanugage
+    
+    from_age_rating: str|None = fields.Age_Rating
+    to_age_rating: str = fields.Age_Rating
+    
+    from_source:AnyHttpUrl|None = fields.Source
+    to_source:AnyHttpUrl = fields.Source
 
 class Post(BaseModel):
-    id: int = Field(..., description="The Post's ID")
-    created_at: float = Field(default_factory=time, description="The Unix timestamp for when the Post was created")
-    uploader: int = Field(..., description="The User ID of the Post Creator")
+    id: int = fields.Item_ID
+    created_at: float = fields.Created_At
+    uploader: int = fields.User_ID
+    deleted: bool = Field(default=False, description="Whether the post has been deleted")
 
-    full: Image|Video|Animation = Field(..., description="The full scale media for the Post")
-    preview: Optional[Image|Video] = Field(..., description="A Medium Scale Version for the image, for hi-res posts")
-    thumbnail: Image = Field(..., description="The lowest scale version of the image, for thumbnails")
+    full: Image|Video|Animation = fields.Full_Image
+    preview: Image|Video|None = fields.Preview_Image
+    thumbnail: Image = fields.Thumbnail_Image
+    
     md5s: list[str] = Field(default_factory=list, description="The Post's MD5 hashes")
     sha256s: list[str] = Field(default_factory=list, description="The Post's SHA3-256 hashes")
-    type: str = Field(..., description="Format of the post",regex="^(image|gif|video)$")
+    type: str = fields.Post_Type
     
-    tags: list[str] = TagsField
-    language: Optional[str]   = LanugageField
-    age_rating: Optional[str] = AgeRatingField
-    source: Optional[AnyHttpUrl] = SourceField
+    language: str|None   = fields.Lanugage
+    age_rating: str|None = fields.Age_Rating
+    source: AnyHttpUrl|None = fields.Source
 
-    edit_history: list[Post_Edit] = Field(default_factory=list, description="Version Control History of the Post")
-    comments: list[int] = Field(default_factory=list, description="Comments on the post")
+    tags: list[str] = fields.Tags
+    comments: list[int] = fields.Comments
 
-    views: int = Field(default_factory=int, description="Number of views on the Post")
-    upvotes: int = Field(default_factory=int, description="Number of upvotes on the Post")
-    downvotes: int = Field(default_factory=int, description="Number of downvotes on the Post")
+    views: int = Field(default=0, description="Number of views on the Post")
+    upvotes: int = Field(default=0, description="Number of upvotes on the Post")
+    downvotes: int = Field(default=0, description="Number of downvotes on the Post")

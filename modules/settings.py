@@ -2,6 +2,7 @@ import yaml
 from typing import Any
 from cachetools import cached, TTLCache
 
+
 _last_valid_config:dict|None = None
 @cached(cache=TTLCache(maxsize=1, ttl=5))
 def _load_config() -> dict:
@@ -20,11 +21,14 @@ def _load_config() -> dict:
         return config
 
 
-@cached(cache=TTLCache(maxsize=1024, ttl=5))
+altered_settings = {}
 def get(setting: str) -> Any:
     """Raises:
     - KeyError: Invalid Setting Name
     """
+    if setting in altered_settings:
+        return altered_settings[setting]
+    
     config = _load_config()
     for key in setting.split("."):
         if key not in config:
@@ -32,3 +36,6 @@ def get(setting: str) -> Any:
         else:
             config = config[key]
     return config
+
+def set(settings:str, value:Any):
+    altered_settings[settings] = value

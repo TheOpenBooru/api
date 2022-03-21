@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing_extensions import Self
+from functools import cache, cached_property
 
 
 @dataclass(frozen=True)
@@ -8,13 +8,8 @@ class Dimensions:
     height:int
 
 
-class BaseFile:
-    data:bytes
-    mimetype:str
-
-
 @dataclass(frozen=True)
-class ImageFile(BaseFile):
+class ImageFile:
     data:bytes
     mimetype:str
     height:int
@@ -22,7 +17,7 @@ class ImageFile(BaseFile):
 
 
 @dataclass(frozen=True)
-class AnimationFile(BaseFile):
+class AnimationFile:
     data:bytes
     mimetype:str
     height:int
@@ -32,27 +27,47 @@ class AnimationFile(BaseFile):
 
 
 @dataclass(frozen=True)
-class VideoFile(BaseFile):
+class VideoFile:
     data:bytes
     mimetype:str
     height:int
     width:int
     duration:float
-    framerate:float
-    frame_count:int
+    framerate:str
     hasAudio:bool
 
+GenericFile = ImageFile | AnimationFile | VideoFile
 
 class BaseMedia:
     type:str
-    async def __init__(self,data:bytes):
+    def __init__(self,data:bytes):
+        """Raises:
+        - ValueError: Could not Parse Data
+        """
+
+    def __enter__(self):
         ...
 
-    async def full(self) -> ImageFile | AnimationFile | VideoFile:
+    def __exit__(self):
         ...
 
-    async def preview(self) -> ImageFile | VideoFile | None:
+    @cache
+    def full(self) -> GenericFile:
+        """Raises:
+        - FileNotFoundError: Didn't use with statement to create file
+        """
         ...
 
-    async def thumbnail(self) -> ImageFile:
+    @cache
+    def preview(self) -> GenericFile | None:
+        """Raises:
+        - FileNotFoundError: Didn't use with statement to create file
+        """
+        ...
+
+    @cache
+    def thumbnail(self) -> GenericFile:
+        """Raises:
+        - FileNotFoundError: Didn't use with statement to create file
+        """
         ...

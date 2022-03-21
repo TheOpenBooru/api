@@ -1,21 +1,20 @@
-import asyncio
-from . import BaseMedia,AnimationFile,ImageFile,Image
-import io
-from dataclasses import dataclass
 from typing_extensions import Self
+from . import BaseMedia,AnimationFile,ImageFile,Image
+from functools import cache, cached_property
+import io
 from PIL import Image as PILImage
 
-@dataclass
 class Animation(BaseMedia):
     type="gif"
+    _data:bytes
     _PIL:PILImage.Image
     _height:int
     _width:int
     _frame_count:int
     _duration:float
-    
-    @classmethod
-    async def from_bytes(cls,data:bytes) -> Self:
+
+
+    def __init__(self,data:bytes):
         """Raises:
         - ValueError: Could not Load Animation
         - ValueError: Animation was too large
@@ -37,16 +36,23 @@ class Animation(BaseMedia):
         frame_durations = _pillow_animation_durations(pillow)
         duration = sum(frame_durations) / 1000
 
-        return Animation(
-            _PIL=pillow,
-            _height=pillow.height,
-            _width=pillow.width,
-            _frame_count=pillow.n_frames,
-            _duration=duration,
-        )
+        self._data = data
+        self._PIL = pillow
+        self._height = pillow.height
+        self._width = pillow.width
+        self._frame_count = pillow.n_frames
+        self._duration = duration
 
-    async def full(self) -> AnimationFile:
-        data = await _pillow_animation_to_bytes(self._PIL)
+
+    def __enter__(self) -> Self:
+        return self
+
+    def __exit__(self, exception_type, exception_value, traceback):
+        ...
+
+
+    def full(self) -> AnimationFile:
+        data = _pillow_animation_to_bytes(self._PIL)
         return AnimationFile(
             data=data,
             mimetype='image/gif',
@@ -57,16 +63,18 @@ class Animation(BaseMedia):
         )
 
 
-    async def preview(self) -> None:
+
+    def preview(self) -> None:
         return None
 
 
-    async def thumbnail(self) -> ImageFile:
-        img = Image.from_pillow(self._PIL)
-        return await img.thumbnail()
 
+    def thumbnail(self) -> ImageFile:
+        img = Image(self._data)
+        thumbnail = img.thumbnail()
+        return thumbnail
 
-async def _pillow_animation_to_bytes(pillow:PILImage.Image) -> bytes:
+def _pillow_animation_to_bytes(pillow:PILImage.Image) -> bytes:
     buf = io.BytesIO()
     frame_durations = _pillow_animation_durations(pillow)
     pillow.save(
@@ -87,3 +95,8 @@ def _pillow_animation_durations(pillow:PILImage.Image) -> list:
         duration = int(pillow.info['duration'])
         frame_durations.append(duration)
     return frame_durations
+
+def isAnimatedSequence(data:bytes) -> bool:
+    buf = io.BytesIO(data)
+    pil_img = PILImage.open(buf,formats=None)
+    return pil_img.is_animated

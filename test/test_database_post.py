@@ -24,35 +24,25 @@ delete:
     - Allows deletion of non-existent entries
 """
 
-from modules.database import Post,User
+from modules.database import Post
 from modules import schemas
 import unittest
 
 
-example_user = schemas.User(
-    id=User.get_unused_id(),
-    name='test',
-    email="example@example.com",
-)
-User.create(example_user)
-
-example_image = schemas.Image(
-    url="https://example.com/image.png",
-    height=100,width=100,
-    mimetype='image/png'
-)
-
-def generate_post(id:int = None) -> schemas.Post:
+def generate_post(id:int|None = None) -> schemas.Post:
+    example_image = schemas.Image(
+        url="https://example.com/image.png",
+        height=100,width=100,
+        mimetype='image/png'
+    )
     if id is None:
         id = Post.get_unused_id()
     return schemas.Post(
-        id=id,uploader=example_user.id,
+        id=id,uploader=0,
         type="image",language="eng",
         thumbnail=example_image,
-        preview=example_image,
         full=example_image,
     )
-
 
 class test_Get_Unused_ID(unittest.TestCase):
     def tearDown(self):

@@ -1,8 +1,9 @@
-from pydantic import BaseModel, Field,FileUrl
+from pydantic import BaseModel, Field
+from . import fields
 
 class BaseMedia(BaseModel):
     url: str = Field(..., description="The URI for the File")
-    mimetype: str = Field(..., description="The MIME type for the File",regex="^[a-zA-Z0-9-_]+/[a-zA-Z0-9-_]+$")
+    mimetype: str = fields.Mimetype
     height: int = Field(..., description="The Media's Height in pixels")
     width: int = Field(..., description="The Media's Width in pixels")
 
@@ -20,5 +21,4 @@ class Video(BaseMedia):
     type = "video"
     has_sound: bool = Field(..., description="Does the video contain sound?")
     duration: float = Field(..., description="The Video's Duration in framerate")
-    frame_count: int = Field(..., description="The Video's Number of frames")
-    fps: float = Field(..., description="The Video's Framerate in frames per second")
+    fps: str = Field(..., description="The Video's Framerate in frames per second")

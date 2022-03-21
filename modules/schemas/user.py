@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field,AnyHttpUrl,FileUrl
 from typing import Optional
 from time import time
+from . import fields
 
 class User_Public(BaseModel):
     id: int = Field(..., description="The User's ID")

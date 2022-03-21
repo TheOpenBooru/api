@@ -14,7 +14,7 @@ class TokenData:
 class BadTokenError(Exception):
     "The Token was Invalid, could be Corrupt, Invalid, Expired"
 
-def create(id:int, additional_data:dict = {}, expiration:int = None) -> str:
+def create(id:int, additional_data:dict = {}, expiration:int|None = None) -> str:
     """Raises:
     - ValueError: Data cannot contain the reserved field
     """

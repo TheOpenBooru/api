@@ -1,0 +1,79 @@
+
+{
+    "video":{
+        "heavy":{
+            "file" : "./data/test/video/Heavy.mp4",
+            "width" : 1280,
+            "height" : 720,
+            "duration" : 13.83,
+            "framerate" : "24",
+            "mimetype" : "video/mp4",
+            "hasAudio" : true
+        },
+        "fire":{
+            "file" : "./data/test/video/Fire.webm",
+            "width" : 492,
+            "height" : 360,
+            "duration" : 10.00,
+            "framerate" : "25",
+            "mimetype" : "video/webm",
+            "hasAudio" : true
+        }
+    },
+    "animation":{
+        "Transparent":{
+            "file" : "./data/test/animation/ricardo.gif",
+            "width" : 241,
+            "height" : 300,
+            "duration" : 50,
+            "mimetype" : "image/gif"
+        },
+        "SingleFrame":{
+            "file" : "./data/test/animation/SingleFrame.gif",
+            "width" : 241,
+            "height" : 300,
+            "duration" : 50,
+            "mimetype" : "image/gif"
+        },
+        "FractalWEBP":{
+            "file" : "./data/test/image/fractal.webp",
+            "width" : 500,
+            "height" : 500,
+            "duration" : 50,
+            "mimetype" : "image/webp"
+        },
+        "FractalGIF":{
+            "file" : "./data/test/image/fractal.gif",
+            "width" : 500,
+            "height" : 500,
+            "duration" : 50,
+            "mimetype" : "image/gif"
+        }
+    },
+    "image":{
+        "Large":{
+            "file" : "./data/test/image/Massive.webp",
+            "width" : 10000,
+            "height" : 10000,
+            "mimetype" : "image/webp"
+        },
+        "Small":{
+            "file":"data/test/image/Small.webp",
+            "width" : 5,
+            "height" : 5,
+            "mimetype" : "image/webp"
+        },
+        "Complex":{
+            "file":"data/test/image/Complex.webp",
+            "width" : 2000,
+            "height" : 2000,
+            "mimetype" : "image/webp"
+        },
+        "Landscape":{
+            "file":"data/test/image/Landscape.webp",
+            "width" : 4800,
+            "height" : 2520,
+            "mimetype" : "image/webp"
+        }
+    }
+}
