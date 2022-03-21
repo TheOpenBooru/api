@@ -1,4 +1,5 @@
 from modules import posts,database
+from tqdm import tqdm
 from pathlib import Path
 
 IMPORT_DIR = Path("data/import")
@@ -13,7 +14,7 @@ async def import_files():
         else:
             data_files[file.stem] = file
 
-    for name in data_files.keys():
+    for name in tqdm(data_files.keys()):
         data_file = data_files[name]
         if name not in tag_files:
             tag_file = None
