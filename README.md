@@ -32,7 +32,7 @@ python3.10 -m venv venv
 
 ### Windows
 
-Sadly, you must manually install ffmpeg.
+You must manually install ffmpeg and it add it to the PATH
 
 ```powershell
 # Create a virtualenv
