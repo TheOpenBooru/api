@@ -1,4 +1,5 @@
 from functools import cached_property
+import warnings
 from magic import Magic
 import ffmpeg
 
@@ -68,7 +69,8 @@ class VideoProbe(Probe):
         if 'duration' in self._video_stream:
             return float(self._video_stream['nb_frames'])
         elif self._video_stream['codec_name'] == 'vp8':
-            raise NotImplementedError("VP8 does not support frame count")
+            warnings.warn("VP8 does not support frame count")
+            return 0.0
         else:
             raise ValueError("Unsupported video format")
 
