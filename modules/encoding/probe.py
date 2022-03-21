@@ -1,4 +1,5 @@
 from functools import cached_property
+import mimetypes
 import warnings
 from magic import Magic
 import ffmpeg
@@ -49,6 +50,14 @@ class VideoProbe(Probe):
         return magic.from_buffer(self.data)
 
     @cached_property
+    def extention(self) -> str:
+        ext = mimetypes.guess_extension(self.mimetype)
+        if ext != None:
+            return ext
+        else:
+            raise Exception("Couldn't Guess File Extention")
+
+    @cached_property
     def audio(self) -> bool:
         for stream in self.probe_data['streams']:
             if stream['codec_type'] == 'audio':
@@ -59,20 +68,17 @@ class VideoProbe(Probe):
     def duration(self) -> float:
         if 'duration' in self._video_stream:
             return float(self._video_stream['duration'])
-        elif self._video_stream['codec_name'] == 'vp8':
+        elif self._video_stream['codec_name'] in ['vp8','vp9']:
             return float(self.probe_data['format']['duration'])
         else:
             raise ValueError("Unsupported video format")
 
     @cached_property
     def frame_count(self) -> float:
-        if 'duration' in self._video_stream:
+        if 'nb_frames' in self._video_stream:
             return float(self._video_stream['nb_frames'])
-        elif self._video_stream['codec_name'] == 'vp8':
-            warnings.warn("VP8 does not support frame count")
-            return 0.0
         else:
-            raise ValueError("Unsupported video format")
+            return int (eval(self.framerate) * self.duration * 0.9)
 
 
 class ImageProbe(Probe):
