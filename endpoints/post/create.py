@@ -12,6 +12,6 @@ async def create_post(image_file:UploadFile):
     try:
         post = await posts.create(data,filename) # type: ignore
     except Exception as e:
-        return Response(str(e),status_code=status.HTTP_400_BAD_REQUEST)
+        return Response("General Failure",status_code=status.HTTP_400_BAD_REQUEST)
     else:
         return post
