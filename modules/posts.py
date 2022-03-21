@@ -4,10 +4,11 @@ from modules.encoding import GenericFile,GenericMedia
 import hashlib
 
 
-async def create(data:bytes,filename:str):
+async def create(data:bytes,filename:str) -> schemas.Post:
     generator = _PostSchemaGenerator(data,filename)
     schema = await generator.generate()
     database.Post.create(schema)
+    return schema
 
 
 class _PostSchemaGenerator:

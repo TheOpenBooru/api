@@ -5,7 +5,7 @@ import hashlib
 import mimetypes
 mimetypes.add_type('image/webp','.webp')
 
-@router.post("/create")
+@router.post("/create",response_model=schemas.Post,status_code=status.HTTP_201_CREATED)
 async def create_post(image_file:UploadFile):
     data = await image_file.read()
     filename = image_file.filename
