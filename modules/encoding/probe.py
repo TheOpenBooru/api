@@ -59,7 +59,7 @@ class VideoProbe(Probe):
         if 'duration' in self._video_stream:
             return float(self._video_stream['duration'])
         elif self._video_stream['codec_name'] == 'vp8':
-            return float(self.probe_data['duration'])
+            return float(self.probe_data['format']['duration'])
         else:
             raise ValueError("Unsupported video format")
 
