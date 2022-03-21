@@ -240,3 +240,4 @@ data/cert.pem
 data/key.pem
 ffprobe.json
 config.yml
+data/import/*

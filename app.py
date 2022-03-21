@@ -1,4 +1,4 @@
-from modules import settings
+from modules import settings,importer
 from endpoints import router
 
 import uvicorn
@@ -24,6 +24,11 @@ def docs_redirect():
     return responses.RedirectResponse('/docs')
 
 app.include_router(router)
+
+@app.on_event("startup")
+async def startup_event():
+    await importer.import_files()
+
 
 if __name__ == "__main__":
     uvicorn.run(
