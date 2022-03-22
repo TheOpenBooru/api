@@ -70,9 +70,9 @@ class Animation(BaseMedia):
 
 
     def thumbnail(self) -> ImageFile:
-        img = Image(self._data)
-        thumbnail = img.thumbnail()
-        return thumbnail
+        with Image(self._data) as img:
+            return img.thumbnail()
+
 
 def _pillow_animation_to_bytes(pillow:PILImage.Image) -> bytes:
     buf = io.BytesIO()
