@@ -9,8 +9,8 @@ async def get_post(id:int):
     post = database.Post.get(id=id)
     if post:
         database.Post.increment_view(id)
-        return responses.JSONResponse(
-            content=post,
+        return responses.Response(
+            content=post.json(),
             headers=CACHE_HEADER
         )
     else:
