@@ -1,6 +1,6 @@
 version: "3.3"
 services:
-  web:
+  open_booru_api:
     build: .
     ports:
       - "8443:8443"
