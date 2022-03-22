@@ -1,8 +1,8 @@
 config:
   password_pepper: ""
   hcaptcha:
-    sitekey: "541bc0ab-d125-4a49-86c7-3f2284e35a60"
-    secret: "0x7624CcacD1f2d2CFA3a64494b63AAed3EE4058Fa"
+    sitekey: ""
+    secret: ""
   smtp:
     email: ""
     password: ""
