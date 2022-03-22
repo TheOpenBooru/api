@@ -39,3 +39,6 @@ def get(setting: str) -> Any:
 
 def set(settings:str, value:Any):
     altered_settings[settings] = value
+
+def reset_to_default():
+    altered_settings.clear()

@@ -21,8 +21,23 @@ class test_Should_Allow_Non_Terminating_Settings(unittest.TestCase):
     def test_a(self):
         assert isinstance(settings.get('testing.value'),dict)
 
+
 class test_Raise_Error_On_Invalid_Setting(unittest.TestCase):
     def test_a(self):
         self.assertRaises(KeyError, settings.get, 'invalid')
         self.assertRaises(KeyError, settings.get, 'testing.invalid')
         self.assertRaises(KeyError, settings.get, 'testing.value.invalid')
+
+
+class test_Editted_Settings_Change_Value(unittest.TestCase):
+    def test_a(self):
+        a = settings.get('testing.type.array')
+        settings.set('testing.type.array',a+[1])
+        b = settings.get('testing.type.array')
+        assert a != b, "Settings did not update"
+        settings.reset_to_default()
+        c = settings.get('testing.type.array')
+        assert a == c, "Settings did not reset"
+    
+    def tearDown(self) -> None:
+        settings.reset_to_default()
