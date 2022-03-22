@@ -1,16 +1,19 @@
-# MP4: Video
-# WEBM: Video
-
+import json
 import asyncio
 import unittest
+from box import Box
 from modules.encoding import predict_media_type,Animation,Image,Video,BaseMedia
 
+with open('data/test/sample_data.json') as f:
+    _json = json.load(f)
+    test_data = Box(_json)
+
 class TestData:
-    MP4_Video = './data/test/video/Sea.mp4'
-    WEBP_Animation = './data/test/animation/500x500-50ms-12frames.webp'
-    WEBP_Image = './data/test/image/5x5.webp'
-    GIF_Animation = './data/test/animation/500x500-50ms-12frames.gif'
-    GIF_Image = './data/test/image/SingleFrame.gif'
+    MP4_Video = test_data.video.heavy.file
+    WEBP_Animation = test_data.animation.Transparent.file
+    WEBP_Image = test_data.image.Complex.file
+    GIF_Animation = test_data.animation.FractalGIF.file
+    GIF_Image = test_data.animation.SingleFrame.file
 
 
 class test_Detect_Format(unittest.TestCase):
