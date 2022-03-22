@@ -18,7 +18,7 @@ settings:
   site:
     name: Open Booru
     hostname: localhost
-    port: 57255
+    port: 8443
   jwt:
     expiration: 86400 # Token Expiration time in seconds
   otp:

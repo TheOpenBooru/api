@@ -3,6 +3,6 @@ services:
   web:
     build: .
     ports:
-      - "57255:57255"
+      - "8443:8443"
     expose:
-      - 57255
+      - 8443
