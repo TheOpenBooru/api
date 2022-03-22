@@ -36,14 +36,14 @@
             "mimetype" : "image/gif"
         },
         "FractalWEBP":{
-            "file" : "./data/test/image/fractal.webp",
+            "file" : "data/test/animation/fractal.gif",
             "width" : 500,
             "height" : 500,
             "duration" : 50,
             "mimetype" : "image/webp"
         },
         "FractalGIF":{
-            "file" : "./data/test/image/fractal.gif",
+            "file" : "./data/test/animation/fractal.gif",
             "width" : 500,
             "height" : 500,
             "duration" : 50,

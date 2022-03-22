@@ -1,18 +1,20 @@
 from modules import settings
 from modules.encoding import Animation,AnimationFile,ImageFile
 import io
+import json
+from box import Box
 import unittest
 import asyncio
 from PIL import Image as PILImage
  
+with open('data/test/sample_data.json') as f:
+    _json = json.load(f)
+    TestData = Box(_json['animation'])
+
+
 class OutputLocation:
     full = "./data/files/animation_full.webp"
     thumbnail = "./data/files/animation_thumbnail.webp"
-
-def load_animation(path) -> Animation: 
-    with open(path,'rb') as f:
-        data = f.read()
-    return Animation(data)
 
 def load_PIL_from_data(data) -> PILImage.Image:
     buf = io.BytesIO(data)
@@ -20,32 +22,32 @@ def load_PIL_from_data(data) -> PILImage.Image:
 
 class test_Animations_Require_More_Than_One_Frame(unittest.TestCase):
     def test_a(self):
-        with open(TestData.single_frame, "rb") as f:
+        with open(TestData.SingleFrame.file, "rb") as f:
             data = f.read()
-        self.assertRaises(ValueError, Animation(data))
+        self.assertRaises(ValueError, Animation, data)
 
 
 class test_Animations_Preserve_Transparency(unittest.TestCase):
     def setUp(self) -> None:
-        self.original_file = TestData.transparent
-        self.animation = load_animation(TestData.transparent)
-        self.full = asyncio.run(self.animation.full())
+        with open(TestData.Transparent.file,'rb') as f:
+            with Animation(f.read()) as anim:
+                self.full = anim.full()
     
     def test_Animations_Preserve_Transparency(self):
         PIL = load_PIL_from_data(self.full.data)
         for x in range(PIL.n_frames):
             PIL.seek(x)
-            MinMax_Channel_Values = PIL.getextrema()
-            _,_,_,(a_min,a_max) = MinMax_Channel_Values
-            assert a_min != 255, f"Frame {x} is not transparent"
+            MinMax_Colours = PIL.getextrema()
+            max_transparency = MinMax_Colours[3][0]
+            assert max_transparency != 255, f"Frame {x} is not transparent"
 
 
 class test_Animation_Full(unittest.TestCase):
     def setUp(self) -> None:
-        self.original_file = TestData.transparent
-        self.animation = load_animation(TestData.transparent)
-        coroutine = self.animation.full()
-        self.full = asyncio.run(coroutine)
+        self.original_file = TestData.Transparent.file
+        with open(TestData.Transparent.file,'rb') as f:
+            with Animation(f.read()) as anim:
+                self.full = anim.full()
 
     def test_Is_AnimationFile(self):
         assert isinstance(self.full,AnimationFile), "Did not generate a full version correctly"
@@ -66,8 +68,10 @@ class test_Animation_Full(unittest.TestCase):
 
 class test_Animation_Preview(unittest.TestCase):
     def setUp(self) -> None:
-        self.animation = load_animation(TestData.transparent)
-        self.preview = asyncio.run(self.animation.preview())
+        self.original_file = TestData.Transparent.file
+        with open(TestData.Transparent.file,'rb') as f:
+            with Animation(f.read()) as anim:
+                self.preview = anim.preview()
 
     def test_Preview_isnt_Generated(self):
         assert self.preview == None, "Generated a preview image"
@@ -75,9 +79,11 @@ class test_Animation_Preview(unittest.TestCase):
 
 class test_Animation_Thumbnail(unittest.TestCase):
     def setUp(self) -> None:
-        self.animation = load_animation(TestData.transparent)
-        self.thumbnail = asyncio.run(self.animation.thumbnail())
-        self.data = self.thumbnail.data
+        self.original_file = TestData.Transparent.file
+        with open(TestData.Transparent.file,'rb') as f:
+            with Animation(f.read()) as anim:
+                self.thumbnail = anim.thumbnail()
+                self.data = self.thumbnail.data
 
     def test_Thumbnail_is_ImageFile(self):
         assert isinstance(self.thumbnail,ImageFile), "Did not generate a thumbnail version correctly"
