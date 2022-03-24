@@ -1,4 +1,4 @@
-from .image import router
+from . import router
 from modules import schemas,store
 from fastapi import responses, status
 
