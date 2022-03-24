@@ -10,20 +10,6 @@ Email:str = _Field(
     ...,
     description="The Unix timestamp for when the Post was created",
 )
-Lanugage = _Field(
-    default=None,
-    description="ISO 639-2 language code",
-    regex="^[a-z]{3}$",
-)
-Age_Rating = _Field(
-    default=None,
-    description="Age rating of the post",
-    regex="^(safe|questionable|explicit)$",
-)
-Source = _Field(
-    default=None,
-    description="Source URL of the image",
-)
 Tags:list[str] = _Field(
     default_factory=list,
     description="Tags on the post",

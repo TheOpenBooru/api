@@ -4,17 +4,10 @@ from pydantic import BaseModel, Field, AnyHttpUrl
 
 
 class Post_Edit(BaseModel):
-    removed_tags: list[str] = fields.Tags
-    added_tags: list[str] = fields.Tags
-    
-    from_language: str|None = fields.Lanugage
-    to_language: str = fields.Lanugage
-    
-    from_age_rating: str|None = fields.Age_Rating
-    to_age_rating: str = fields.Age_Rating
-    
-    from_source:AnyHttpUrl|None = fields.Source
-    to_source:AnyHttpUrl = fields.Source
+    id: int = fields.Item_ID
+    created_at: float = fields.Created_At
+    editter: int = fields.User_ID
+    tags: list[str] = fields.Tags
 
 class Post(BaseModel):
     id: int = fields.Item_ID
@@ -28,12 +21,8 @@ class Post(BaseModel):
     
     md5s: list[str] = Field(default_factory=list, description="The Post's MD5 hashes")
     sha256s: list[str] = Field(default_factory=list, description="The Post's SHA3-256 hashes")
-    type: str = fields.Post_Type
+    media_type: str = fields.Post_Type
     
-    language: str|None   = fields.Lanugage
-    age_rating: str|None = fields.Age_Rating
-    source: AnyHttpUrl|None = fields.Source
-
     tags: list[str] = fields.Tags
     comments: list[int] = fields.Comments
 

@@ -39,7 +39,7 @@ def generate_post(id:int|None = None) -> schemas.Post:
         id = Post.get_unused_id()
     return schemas.Post(
         id=id,uploader=0,
-        type="image",language="eng",
+        media_type="image",
         thumbnail=example_image,
         full=example_image,
     )

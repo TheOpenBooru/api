@@ -37,7 +37,7 @@ class _PostSchemaGenerator:
             full=full_schema, # type: ignore
             preview=preview_schema, # type: ignore
             thumbnail=thumbnail_schema, # type: ignore
-            type=media_type.type,
+            media_type=media_type.type,
         )
 
     def process_file(self,file:encoding.GenericFile) -> schemas.Image:
@@ -55,8 +55,3 @@ class _PostSchemaGenerator:
         data = file.data
         self.md5s.append(hashlib.md5(data).hexdigest())
         self.sha3_256.append(hashlib.sha3_256(data).hexdigest())
-
-# Generate Schema
-    # Process Media
-    # Store Media
-# Insert into DB
