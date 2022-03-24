@@ -9,8 +9,7 @@ from PIL import Image as PILImage
 import io
 
 # Prevent large images performance impact
-# x2 because error is only raised on x2 max pixels
-PILImage.MAX_IMAGE_PIXELS = (5000*5000) * 2
+
 
 @dataclass
 class Image(BaseMedia):
@@ -20,13 +19,17 @@ class Image(BaseMedia):
 
 
     def __init__(self,data:bytes):
+        self._data = data
+
+    def __enter__(self) -> Self:
         """Raises:
         - ValueError: Image is too big to process
         - ValueError: Could not Load Image
         """
-        self._data = data
-
-    def __enter__(self) -> Self:
+        # Set max acceptable image size to prevent DOS
+        _config = settings.get('encoding.image.full')
+        PILImage.MAX_IMAGE_PIXELS = (_config['max_height'] * _config['max_width'])
+        
         buf = io.BytesIO(self._data)
         try:
             # formats=None means attempt to load all formats
@@ -35,7 +38,6 @@ class Image(BaseMedia):
             raise ValueError("Image is too big to process")
         except Exception as e:
             raise ValueError(str(e))
-        
         self._dimensions = Dimensions(pil_img.width,pil_img.height)
         self._PIL = pil_img
         return self

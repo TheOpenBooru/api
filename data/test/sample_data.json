@@ -51,7 +51,7 @@
         }
     },
     "image":{
-        "Large":{
+        "Massive":{
             "file" : "./data/test/image/Massive.webp",
             "width" : 10000,
             "height" : 10000,

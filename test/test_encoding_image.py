@@ -16,7 +16,7 @@ with open('data/test/sample_data.json') as f:
 
 class TestData:
     Small = box_data.Small.file
-    Large = box_data.Large.file
+    Massive = box_data.Massive.file
     Complex = box_data.Complex.file
     Landscape = box_data.Landscape.file
 
@@ -53,11 +53,18 @@ class test_Resolutions_are_Correct(unittest.TestCase):
             )
 
 
+class test_Images_Too_Large_Raise_Error(unittest.TestCase):
+    def test_Images_Too_Large_Raise_Error(self):
+        with open(TestData.Massive,'rb') as f:
+            data = f.read()
+        with self.assertRaises(ValueError):
+            with Image(data) as img:
+                pass
 
 class test_Create_Full(unittest.TestCase):
     full: ImageFile
     def setUp(self):
-        self.full = load_image(TestData.Large)[0]
+        self.full = load_image(TestData.Landscape)[0]
 
     def load_PIL(self):
         buf = io.BytesIO(self.full.data)
