@@ -19,10 +19,6 @@ settings:
     name: Open Booru
     hostname: localhost
     port: 8443
-  jwt:
-    expiration: 86400 # Token Expiration time in seconds
-  otp:
-    valid_window: 1 # The previous N OTP codes are valid
   search:
     max_limit: 100 # Max number of results per search
   posts:
@@ -32,6 +28,15 @@ settings:
       - copyright
       - generic
       - meta
+
+auth:
+  token_expiration: 86400 # Login Token Expiration time in seconds
+  password_requirements: # Use null to disable check
+    min_length: 8 # Maximum length of password
+    max_length: 128 # Maximum length of password
+    score: 3
+    # 1 is increibly vulnerable, 4 is very secure
+    # Based on https://github.com/dropbox/zxcvbn
 
 encoding:
   video:

@@ -24,7 +24,7 @@ def create(id:int, additional_data:dict = {}, expiration:int|None = None) -> str
         raise ValueError(f"Data cannot contain a rerved field: '_user_id'")
 
     if  expiration == None:
-        expiration = _settings.get("settings.jwt.expiration")
+        expiration = _settings.get("auth.token_expiration")
 
     data = {
         "exp": _time.time() + expiration, # type: ignore

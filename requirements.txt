@@ -29,5 +29,6 @@ cryptography
 pyotp
 pyjwt
 passlib[argon2]>=1.7.4
+zxcvbn
 argon2-cffi
 password-strength
