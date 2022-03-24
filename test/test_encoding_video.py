@@ -47,7 +47,6 @@ class test_Heavy(unittest.TestCase):
             f.write(self.thumbnail.data)
 
     def test_Thumbnail_is_generated_at_correct_point(self):
-        settings.get('')
         with open(OutputLocation.thumbnail,'wb') as f:
             f.write(self.thumbnail.data)
 
