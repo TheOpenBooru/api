@@ -19,7 +19,7 @@ app.add_middleware(CORSMiddleware,
 app.add_middleware(GZipMiddleware)
 
 
-@app.get('/',tags=['Docs'])
+@app.get('/',tags=["Misc"])
 def docs_redirect():
     return responses.RedirectResponse('/docs')
 
