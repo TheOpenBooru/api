@@ -4,6 +4,7 @@ requests
 bs4
 lxml
 iso639
+python-box
 tqdm
 
 # Endpoints
