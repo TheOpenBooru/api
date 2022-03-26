@@ -21,7 +21,7 @@ Comments = _Field(
     description="Comments on the post",
 )
 Post_Type:str = _Field(
-    ..., # Required
+    ...,
     description="Format of the post",
     regex="^(image|gif|video)$",
 )
@@ -29,18 +29,6 @@ Mimetype:str = _Field(
     ...,
     description="The MIME type for the File",
     regex="^[a-zA-Z0-9-_]+/[a-zA-Z0-9-_]+$",
-)
-Full_Image = _Field(
-    ..., # Required
-    description="The full scale media for the Post",
-)
-Preview_Image = _Field(
-    default=None,
-    description="A Medium Scale Version for the image, for hi-res posts",
-)
-Thumbnail_Image = _Field(
-    ..., # Required,
-    description="The lowest scale version of the image, for thumbnails",
 )
 Item_ID = _Field(
     ...,

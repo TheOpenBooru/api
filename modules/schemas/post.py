@@ -1,5 +1,5 @@
 from . import fields
-from . import Image,Video,Animation
+from . import Image,Video,Animation,GenericMedia
 from pydantic import BaseModel, Field, AnyHttpUrl
 
 
@@ -15,9 +15,9 @@ class Post(BaseModel):
     uploader: int = fields.User_ID
     deleted: bool = Field(default=False, description="Whether the post has been deleted")
 
-    full: Image|Video|Animation = fields.Full_Image
-    preview: Image|Video|None = fields.Preview_Image
-    thumbnail: Image = fields.Thumbnail_Image
+    full: GenericMedia = Field(..., description="The full scale media for the Post")
+    preview: GenericMedia|None = Field(None,description="A Medium Scale Version for the image, for hi-res posts")
+    thumbnail: Image = Field(..., description="The lowest scale version of the image, for thumbnails")
     
     md5s: list[str] = Field(default_factory=list, description="The Post's MD5 hashes")
     sha256s: list[str] = Field(default_factory=list, description="The Post's SHA3-256 hashes")
