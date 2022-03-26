@@ -16,7 +16,7 @@ class Post(BaseModel):
     deleted: bool = Field(default=False, description="Whether the post has been deleted")
 
     full: GenericMedia = Field(..., description="The full scale media for the Post")
-    preview: GenericMedia|None = Field(None,description="A Medium Scale Version for the image, for hi-res posts")
+    preview: GenericMedia|None = Field(default=None,description="A Medium Scale Version for the image, for hi-res posts")
     thumbnail: Image = Field(..., description="The lowest scale version of the image, for thumbnails")
     
     md5s: list[str] = Field(default_factory=list, description="The Post's MD5 hashes")
