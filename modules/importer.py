@@ -9,7 +9,7 @@ async def import_files():
     tag_files = {}
     data_files = {}
     for file in IMPORT_DIR.iterdir():
-        if file.name.endswith('.tags'):
+        if file.name.endswith('.txt'):
             tag_files[file.stem] = file
         else:
             data_files[file.stem] = file
@@ -42,6 +42,4 @@ async def import_file(data_file:Path,tag_file:Path|None):
 def normalise_tag(tag:str) -> str:
     tag = tag.strip('\n')
     tag = tag.replace(' ','_')
-    if ":" in tag:
-        tag = tag.split(":")[1]
     return tag
