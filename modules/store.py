@@ -27,9 +27,12 @@ def put(data: bytes,suffix:str = "",prefix:str = "") -> str:
 
 def get(key: str) -> bytes:
     """Raises:
+    KeyError: Path Traversal Detected
     KeyError: Key doesn't exist
     """
     path = STORE_PATH / key
+    if STORE_PATH != path.parent:
+        raise FileNotFoundError("Path Traversal Detected")
     if not path.exists():
         raise FileNotFoundError("Key doesn't exist")
     with open(path, "rb") as f:

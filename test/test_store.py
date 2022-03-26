@@ -1,16 +1,3 @@
-"""Requirements:
-- Data is storable via put
-- Put raises TypeError for non-bytes data
-- Keys should be strings
-- Keys should be the same for duplicate data
-- Keys should be unique among different data
-- Data should not be changed when stored
-- Get should raise a FileNotFoundError for a non-existent key
-- Data should be deletedable via delete
-- Non-Existant Keys Are Deletable
-- Deleted Data should not be retrievable
-"""
-
 from modules import store
 import unittest
 import random
@@ -78,9 +65,14 @@ class test_Data_is_Retrievable(unittest.TestCase):
             assert store.get(key) == x
         clear()
 
-class test_NonExistant_Key_Should_Raise_FileNotFoundError(unittest.TestCase):
+class test_Bad_Key_Should_Raise_Error(unittest.TestCase):
     def test_a(self):
         self.assertRaises(FileNotFoundError,store.get,'foobar')
+
+class test_Does_Not_Allow_Path_Traversal(unittest.TestCase):
+    def test_a(self):
+        path = '../../../../../../../../etc/fstab'
+        self.assertRaises(FileNotFoundError,store.get,path)
 
 class test_Deleted_Data_Cant_Be_Obtained(unittest.TestCase):
     def test_a(self):
