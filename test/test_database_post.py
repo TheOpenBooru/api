@@ -85,7 +85,7 @@ class test_Edit(unittest.TestCase):
     def test_a(self):
         post = generate_post()
         Post.create(post)
-        post.age_rating = "safe"
+        post.tags = ["rating:safe"]
         Post.update(post.id,post)
         assert post == Post.get(id=post.id)
 
