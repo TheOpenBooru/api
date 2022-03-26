@@ -2,7 +2,6 @@ from pydantic import BaseModel, Field
 from . import fields
 
 class BaseMedia(BaseModel):
-    type: str
     url: str = Field(..., description="The URI for the File")
     mimetype: str = fields.Mimetype
     height: int = Field(..., description="The Media's Height in pixels")
