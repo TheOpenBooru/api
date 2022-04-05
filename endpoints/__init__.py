@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 router = APIRouter()
-from . import image,post,tag,misc,auth
+from . import post,tag,misc,auth
 
 router.include_router(auth.router)
 router.include_router(post.router)
