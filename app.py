@@ -34,7 +34,7 @@ if __name__ == "__main__":
     uvicorn.run(
         "app:app",
         host='0.0.0.0',
-        port=settings.get('settings.site.port'),
+        port=settings.PORT,
         debug=True,
         # ssl_keyfile="./data/key.pem", 
         # ssl_certfile="./data/cert.pem",
