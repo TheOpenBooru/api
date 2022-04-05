@@ -31,10 +31,11 @@ class test_Animations_Preserve_Transparency(unittest.TestCase):
     def setUp(self) -> None:
         with open(TestData.Transparent.file,'rb') as f:
             with Animation(f.read()) as anim:
-                self.full = anim.full()
+                full = anim.full()
+            self.PIL = load_PIL_from_data(full.data)
     
     def test_Animations_Preserve_Transparency(self):
-        PIL = load_PIL_from_data(self.full.data)
+        PIL = self.PIL
         for x in range(PIL.n_frames):
             PIL.seek(x)
             MinMax_Colours = PIL.getextrema()
