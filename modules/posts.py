@@ -40,17 +40,48 @@ class _PostSchemaGenerator:
             media_type=media_type.type,
         )
 
-    def process_file(self,file:encoding.GenericFile) -> schemas.Image:
+    def process_file(self,file:encoding.GenericFile) -> schemas.GenericMedia:
         self._generate_hashes(file)
         ext = mimetypes.guess_extension(file.mimetype) or ""
         key = store.put(file.data,suffix=ext)
-        return schemas.Image(
-            url=store.url(key),
-            mimetype=file.mimetype,
-            height=file.height,
-            width=file.width
-        )
+        url = store.url(key)
+        schema = self._generate_schema(file,url)
+        return schema
+    
 
+    def _generate_schema(self,file:encoding.GenericFile,url:str) -> schemas.GenericMedia:
+        if isinstance(file,encoding.ImageFile):
+            return schemas.Image(
+                url=url,
+                mimetype=file.mimetype,
+                height=file.height,
+                width=file.width,
+                type="animation"
+            )
+        elif isinstance(file,encoding.AnimationFile):
+            return schemas.Animation(
+                url=url,
+                mimetype=file.mimetype,
+                height=file.height,
+                width=file.width,
+                duration=file.duration,
+                frame_count=file.frame_count,
+                type="animation"
+                )
+        elif isinstance(file,encoding.VideoFile):
+            return schemas.Video(
+                url=url,
+                mimetype=file.mimetype,
+                height=file.height,
+                width=file.width,
+                duration=file.duration,
+                fps=file.framerate,
+                has_sound=file.hasAudio,
+                type="video"
+                )
+        else:
+            raise TypeError("Unknown file type")
+    
     def _generate_hashes(self,file:encoding.GenericFile):
         data = file.data
         self.md5s.append(hashlib.md5(data).hexdigest())
