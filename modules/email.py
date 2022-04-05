@@ -9,7 +9,7 @@ class EmailAccount:
     password:str
     hostname:str
     port:int
-    sitename:str = settings.get("settings.site.name")
+    sitename:str = settings.SITE_NAME
     
     def __init__(self, email:str, password:str, hostname:str, port:int):
         self.email = email

@@ -2,10 +2,10 @@ from modules import settings
 import requests
 import logging
 
-DEFAULT_SECRET = settings.get('config.hcaptcha.secret')
+DEFAULT_SECRET = settings.HCAPTCHA_SECRET
 
 def get_sitekey() -> str:
-    return settings.get('config.hcaptcha.sitekey')
+    return settings.HCAPTCHA_SITEKEY
 
 def verify(captcha_response:str,secret:str = DEFAULT_SECRET) -> bool:
     r = requests.post(

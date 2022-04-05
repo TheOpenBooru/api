@@ -58,7 +58,7 @@ class Video(BaseMedia):
         """Raises:
         - FileNotFoundError: Didn't use `with` statement to create file
         """
-        offset_percentage = 0.01 * settings.get("encoding.video.thumbnail.offset_percent")
+        offset_percentage = 0.01 * settings.VIDEO_THUMBNAIL_OFFSET
         frame_offset = int(self._probe.frame_count * offset_percentage)
         try:
             data,err = (

@@ -94,10 +94,8 @@ class test_Create_Preview(unittest.TestCase):
     
     def test_Preview_Is_Correct_Resolution(self):
         preview = load_image(TestData.Landscape)[1]
-        
-        config = settings.get('encoding.image.preview')
-        max_height = config['max_height']
-        max_width = config['max_width']
+        max_height = settings.IMAGE_PREVIEW_HEIGHT
+        max_width = settings.IMAGE_PREVIEW_WIDTH
         
         assert (preview.width == max_width) or (preview.height == max_height), "Image Preview Height or Width is not correct"
     
@@ -123,9 +121,8 @@ class test_Create_Thumbnail(unittest.TestCase):
     
     def test_Thumbnail_Is_Correct_Resolution(self):
         thumbnail = load_image(TestData.Landscape)[1]
-        config = settings.get('encoding.image.thumbnail')
-        max_height = config['max_height']
-        max_width = config['max_width']
+        max_height = settings.THUMBNAIL_HEIGHT
+        max_width = settings.THUMBNAIL_WIDTH
         
         res_delta = thumbnail.width - max_width, thumbnail.height == max_height
         assert 0 in res_delta,f"Image Thumbnail Height or Width is not correct: {res_delta}"

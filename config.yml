@@ -1,4 +1,9 @@
 config:
+  deployment: TESTING
+  site:
+    name: Open Booru
+    hostname: "0.0.0.0"
+    port: 8443
   password_pepper: ""
   hcaptcha:
     sitekey: ""
@@ -13,70 +18,57 @@ config:
     security: security@example.com
     dmca: dmca@example.com
 
-settings:
-  deployment: TESTING
-  site:
-    name: Open Booru
-    hostname: localhost
-    port: 8443
-  search:
-    max_limit: 100 # Max number of results per search
-  posts:
-    required_aprroval: true # Posts require moderator approval beofre being visible
-    valid_namespaces:
-      - artist
-      - copyright
-      - generic
-      - meta
-
-auth:
-  token_expiration: 86400 # Login Token Expiration time in seconds
-  password_requirements: # Use null to disable check
-    min_length: 8 # Maximum length of password
-    max_length: 128 # Maximum length of password
-    score: 3
-    # 1 is increibly vulnerable, 4 is very secure
-    # Based on https://github.com/dropbox/zxcvbn
-
-encoding:
-  video:
-    full:
-      reencode: false # Should the video be re-encoded to reduce filesize
-    preview:
-      enabled: false # Should video previews be generated
-      duration: 5 # How long should the video preview be
-    thumbnail:
-      offset_percent: 10 # Perent way through the video for the thumbnail to be taken
-  animation:
-    ...
-  image:
-    full:
-      lossless: true # Should webp be lossless
-      quality: 100 # Re-encoded webp quality (1-100/lossless)
-      max_width: 4000 # max width before downscaling
-      max_height: 4000 # max height before downscaling
-    preview:
-      lossless: false
-      quality: 90
-      max_width: 1600
-      max_height: 1600
-    thumbnail:
-      lossless: false
-      quality: 80
-      max_width: 250
-      max_height: 250
 
 
-testing:
-  value:
-    str: sample text
-    int: 64
-    float: 6.4
-    bool: false
-    array: [1,2,3]
-  type: 
-    str: ""
-    int: 0
-    float: 0.0
-    bool: true
-    array: []
+search:
+  max_limit: 100 # Max number of results per search
+
+posts:
+  required_aprroval: true # Posts require moderator approval beofre being visible
+  valid_namespaces:
+    - artist
+    - copyright
+    - generic
+    - meta
+
+
+token_expiration: 86400 # Login Token Expiration time in seconds
+password_requirements: # Use null to disable check
+  min_length: 8 # Maximum length of password
+  max_length: 128 # Maximum length of password
+  score: 3
+  # 1 is increibly vulnerable, 4 is very secure
+  # Based on https://github.com/dropbox/zxcvbn
+
+thumbnail:
+  lossless: false
+  quality: 80
+  max_width: 250
+  max_height: 250
+
+image:
+  full:
+    lossless: true # Should webp be lossless
+    quality: 100 # Re-encoded webp quality (1-100/lossless)
+    max_width: 4000 # max width before downscaling
+    max_height: 4000 # max height before downscaling
+  preview:
+    lossless: false
+    quality: 90
+    max_width: 1600
+    max_height: 1600
+
+animation:
+  lossless: true
+  quality: 100
+  max_width: 4000
+  max_height: 4000
+
+video:
+  full:
+    reencode: false # Should the video be re-encoded to reduce filesize
+  preview:
+    enabled: false # Should video previews be generated
+    duration: 5 # How long should the video preview be
+  thumbnail_offset: 10 # Perentage through the video for the thumbnail screenshot to be taken
+

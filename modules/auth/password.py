@@ -10,11 +10,11 @@ class PasswordRequirements:
     score:float
 
 def get_password_requirements() -> PasswordRequirements:
-    config = settings.get('auth.password_requirements')
+    config = settings.PASSWORD_MIN_LENGTH
     return PasswordRequirements(
-        min_length=config['min_length'],
-        max_length=config['max_length'],
-        score=config['score'],
+        min_length=settings.PASSWORD_MIN_LENGTH,
+        max_length=settings.PASSWORD_MAX_LENGTH,
+        score=settings.PASSWORD_REQUIRED_SCORE,
     )
 
 def is_password_invalid(password:str):

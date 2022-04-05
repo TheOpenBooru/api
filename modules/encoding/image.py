@@ -27,8 +27,7 @@ class Image(BaseMedia):
         - ValueError: Could not Load Image
         """
         # Set max acceptable image size to prevent DOS
-        _config = settings.get('encoding.image.full')
-        PILImage.MAX_IMAGE_PIXELS = (_config['max_height'] * _config['max_width'])
+        PILImage.MAX_IMAGE_PIXELS = (settings.IMAGE_FULL_HEIGHT * settings.IMAGE_FULL_HEIGHT)
         
         buf = io.BytesIO(self._data)
         try:
@@ -47,19 +46,28 @@ class Image(BaseMedia):
 
 
     def full(self) -> ImageFile:
-        config = settings.get('encoding.image.full')
-        return self._process_using_config(config)
+        return self._process(
+            Dimensions(settings.IMAGE_FULL_WIDTH,settings.IMAGE_FULL_HEIGHT),
+            settings.IMAGE_FULL_QUALITY,
+            settings.IMAGE_FULL_LOSSLESS,
+        )
 
 
     def preview(self) -> ImageFile:
-        config = settings.get('encoding.image.preview')
-        return self._process_using_config(config)
+        return self._process(
+            Dimensions(settings.IMAGE_PREVIEW_WIDTH,settings.IMAGE_PREVIEW_HEIGHT),
+            settings.IMAGE_PREVIEW_QUALITY,
+            settings.IMAGE_PREVIEW_LOSSLESS,
+        )
 
 
     def thumbnail(self) -> ImageFile:
-        config = settings.get('encoding.image.thumbnail')
-        return self._process_using_config(config)
-    
+        return self._process(
+            Dimensions(settings.THUMBNAIL_WIDTH,settings.THUMBNAIL_HEIGHT),
+            settings.THUMBNAIL_QUALITY,
+            settings.THUMBNAIL_LOSSLESS,
+        )
+
 
     def _process_using_config(self,config:dict) -> ImageFile:
         dimensions = Dimensions(config['max_width'],config['max_height'])

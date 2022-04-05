@@ -11,7 +11,7 @@ class SearchParameters:
     isAscending: bool = False
 
 def searchPosts(params:SearchParameters) -> list[schemas.Post]:
-    max_limit = settings.get('settings.search.max_limit')
+    max_limit = settings.SEARCH_LIMIT
     limit = params.limit
     limit = max(0,limit) # prevent negative limits
     limit = min(max_limit,limit) # Prevent limits above maximum

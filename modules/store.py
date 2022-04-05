@@ -40,8 +40,8 @@ def get(key: str) -> bytes:
 
 
 def url(key: str) -> str:
-    hostname = settings.get("settings.site.hostname")
-    port = settings.get("settings.site.port")
+    hostname = settings.HOSTNAME
+    port = settings.PORT
     return f"http://{hostname}:{port}/image/{key}"
 
 

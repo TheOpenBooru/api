@@ -89,8 +89,8 @@ class test_Animation_Thumbnail(unittest.TestCase):
         assert isinstance(self.thumbnail,ImageFile), "Did not generate a thumbnail version correctly"
 
     def test_Thumbnail_Is_Correct_Resolution(self):
-        max_width = settings.get('encoding.image.thumbnail.max_height')
-        max_height = settings.get('encoding.image.thumbnail.max_width')
+        max_width = settings.THUMBNAIL_WIDTH
+        max_height = settings.THUMBNAIL_HEIGHT
         width,height = self.thumbnail.width, self.thumbnail.height
         assert (width == max_width) or (height == max_height), f"Thumbnail is not the correct resolution: {width}x{height}"
     
