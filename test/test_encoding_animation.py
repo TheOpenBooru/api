@@ -56,9 +56,9 @@ class test_Animation_Full(unittest.TestCase):
     def test_Full_Is_Valid(self):
         PIL = load_PIL_from_data(self.full.data)
         PIL.verify()
+        assert PIL.is_animated, "Did not save as animation"
     
     def test_Attributes_are_Correct(self):
-        PIL = PILImage.open(self.original_file)
         assert self.full.frame_count == 128, f"Number of frames is not correct: {self.full.frame_count}"
         assert self.full.duration == 6.4, f"File Duration is incorrect: {self.full.duration}"
     

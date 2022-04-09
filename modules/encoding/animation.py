@@ -33,7 +33,7 @@ class Animation(BaseMedia):
         if pillow.n_frames == 1:
             raise ValueError("Has Only 1 Frame")
         
-        frame_durations = _pillow_animation_durations(pillow)
+        frame_durations = _get_frame_durations(pillow)
         duration = sum(frame_durations) / 1000
 
         self._data = data
@@ -76,19 +76,19 @@ class Animation(BaseMedia):
 
 def _pillow_animation_to_bytes(pillow:PILImage.Image) -> bytes:
     buf = io.BytesIO()
-    frame_durations = _pillow_animation_durations(pillow)
+    frame_durations = _get_frame_durations(pillow)
     pillow.save(
         buf,
         'WEBP',
-        save_all=True, #  save as an animation
+        save_all=True, # Save as an animation
         transparency=0,
-        duration=frame_durations[0],
-        background=[0]*4,
+        duration=frame_durations,
+        background=(0,0,0,0),# RGBA
     )
     return buf.getvalue()
 
 
-def _pillow_animation_durations(pillow:PILImage.Image) -> list:
+def _get_frame_durations(pillow:PILImage.Image) -> list:
     frame_durations = []
     for x in range(pillow.n_frames):
         pillow.seek(x)
