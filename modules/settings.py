@@ -33,7 +33,17 @@ EMAIL_DMCA:str = get("config.emails.dmca")
 SMTP_EMAIL:str = get("config.smtp.email")
 SMTP_PASSWORD:str = get("config.smtp.password")
 SMTP_HOSTNAME:str = get("config.smtp.hostname")
-SMTP_PORT:str = get("config.smtp.port")
+
+EMAIL_SECURITY:str = get("config.emails.security")
+EMAIL_DMCA:str = get("config.emails.dmca")
+
+AWS_ID:str = get("config.aws.id")
+AWS_SECRET:str = get("config.aws.secret")
+AWS_REGION:str = get("config.aws.region")
+
+
+STORAGE_USE_AWS:bool = get("storage.use-aws")
+STORAGE_BUCKET:str = get("storage.bucket-name")
 
 SEARCH_LIMIT:int = get("search.max_limit")
 POSTS_REQUIRE_APRROVAL:bool = get("posts.required_aprroval")

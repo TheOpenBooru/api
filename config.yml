@@ -2,12 +2,16 @@ config:
   deployment: TESTING
   site:
     name: Open Booru
-    hostname: "0.0.0.0"
+    hostname: "slate"
     port: 8443
   password_pepper: ""
   hcaptcha:
     sitekey: ""
     secret: ""
+  aws:
+    id: ""
+    secret: ""
+    region: "eu-west-2"
   smtp:
     email: ""
     password: ""
@@ -31,6 +35,9 @@ posts:
     - generic
     - meta
 
+storage:
+  use-aws: false
+  bucket-name: "OpenBooru"
 
 token_expiration: 86400 # Login Token Expiration time in seconds
 password_requirements: # Use null to disable check
