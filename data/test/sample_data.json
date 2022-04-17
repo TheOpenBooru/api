@@ -71,8 +71,8 @@
         },
         "Landscape":{
             "file":"data/test/image/Landscape.webp",
-            "width" : 4800,
-            "height" : 2520,
+            "width" : 1600,
+            "height" : 840,
             "mimetype" : "image/webp"
         }
     }

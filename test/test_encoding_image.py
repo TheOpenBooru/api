@@ -64,7 +64,9 @@ class test_Images_Too_Large_Raise_Error(unittest.TestCase):
 class test_Create_Full(unittest.TestCase):
     full: ImageFile
     def setUp(self):
-        self.full = load_image(TestData.Landscape)[0]
+        with open(TestData.Landscape,'rb') as f:
+            with Image(f.read()) as img:
+                self.full = img.full()
 
     def load_PIL(self):
         buf = io.BytesIO(self.full.data)
@@ -83,7 +85,9 @@ class test_Create_Full(unittest.TestCase):
 class test_Create_Preview(unittest.TestCase):
     preview: ImageFile
     def setUp(self):
-        self.preview = load_image(TestData.Complex)[1]
+        with open(TestData.Complex,'rb') as f:
+            with Image(f.read()) as img:
+                self.preview = img.preview()
     
     def test_Preview_can_be_loaded(self): 
         buf = io.BytesIO(self.preview.data)
@@ -93,7 +97,7 @@ class test_Create_Preview(unittest.TestCase):
     
     
     def test_Preview_Is_Correct_Resolution(self):
-        preview = load_image(TestData.Landscape)[1]
+        preview = self.preview
         max_height = settings.IMAGE_PREVIEW_HEIGHT
         max_width = settings.IMAGE_PREVIEW_WIDTH
         
@@ -102,7 +106,6 @@ class test_Create_Preview(unittest.TestCase):
     
     def test_Small_Image_Doesnt_Change_Size(self):
         preview = load_image(TestData.Small)[1]
-        
         assert preview.height == 5, "Preview Height increased"
         assert preview.width == 5, "Preview Width increased"
 
@@ -110,7 +113,9 @@ class test_Create_Preview(unittest.TestCase):
 class test_Create_Thumbnail(unittest.TestCase):
     thumbnail: ImageFile
     def setUp(self):
-        self.thumbnail = load_image(TestData.Complex)[2]
+        with open(TestData.Complex,'rb') as f:
+            with Image(f.read()) as img:
+                self.thumbnail = img.thumbnail()
     
     def test_Thumbnail_can_be_loaded(self): 
         buf = io.BytesIO(self.thumbnail.data)
@@ -120,7 +125,7 @@ class test_Create_Thumbnail(unittest.TestCase):
     
     
     def test_Thumbnail_Is_Correct_Resolution(self):
-        thumbnail = load_image(TestData.Landscape)[1]
+        thumbnail = self.thumbnail
         max_height = settings.THUMBNAIL_HEIGHT
         max_width = settings.THUMBNAIL_WIDTH
         
@@ -129,7 +134,6 @@ class test_Create_Thumbnail(unittest.TestCase):
     
     
     def test_Small_Image_Doesnt_Change_Size(self):
-        thumbnail = load_image(TestData.Small)[1]
-        
-        assert thumbnail.height == 5, "Thumbnail Height increased"
-        assert thumbnail.width == 5, "Thumbnail Width increased"
+        thumbnail = load_image(TestData.Small)[2]
+        assert thumbnail.height == 5, f"{thumbnail.height}"
+        assert thumbnail.width == 5, f"{thumbnail.width}"
