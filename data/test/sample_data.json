@@ -7,8 +7,8 @@
             "height" : 720,
             "duration" : 13.83,
             "framerate" : "24",
-            "mimetype" : "video/mp4",
-            "hasAudio" : true
+            "hasAudio" : true,
+            "mimetype" : "video/mp4"
         },
         "fire":{
             "file" : "./data/test/video/Fire.webm",
@@ -16,8 +16,8 @@
             "height" : 360,
             "duration" : 10.00,
             "framerate" : "25",
-            "mimetype" : "video/webm",
-            "hasAudio" : true
+            "hasAudio" : true,
+            "mimetype" : "video/webm"
         }
     },
     "animation":{
@@ -25,28 +25,21 @@
             "file" : "./data/test/animation/ricardo.gif",
             "width" : 241,
             "height" : 300,
-            "duration" : 50,
+            "duration" : 6.40,
             "mimetype" : "image/gif"
         },
         "SingleFrame":{
             "file" : "./data/test/animation/SingleFrame.gif",
             "width" : 241,
             "height" : 300,
-            "duration" : 50,
+            "duration" : 0.05,
             "mimetype" : "image/gif"
-        },
-        "FractalWEBP":{
-            "file" : "data/test/animation/fractal.gif",
-            "width" : 500,
-            "height" : 500,
-            "duration" : 50,
-            "mimetype" : "image/webp"
         },
         "FractalGIF":{
             "file" : "./data/test/animation/fractal.gif",
             "width" : 500,
             "height" : 500,
-            "duration" : 50,
+            "duration" : 0.6,
             "mimetype" : "image/gif"
         }
     },
