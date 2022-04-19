@@ -66,12 +66,7 @@ class VideoProbe(Probe):
 
     @cached_property
     def duration(self) -> float:
-        if 'duration' in self._video_stream:
-            return float(self._video_stream['duration'])
-        elif self._video_stream['codec_name'] in ['vp8','vp9']:
-            return float(self.probe_data['format']['duration'])
-        else:
-            raise ValueError("Unsupported video format")
+        return self.probe_data['format']['duration']
 
     @cached_property
     def frame_count(self) -> float:
