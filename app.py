@@ -1,4 +1,4 @@
-from modules import settings,importer
+from modules import database, settings,importer
 from endpoints import router
 
 import uvicorn
@@ -27,7 +27,7 @@ app.include_router(router)
 
 @app.on_event("startup")
 async def startup_event():
-    await importer.import_files()
+    await importer.import_safebooru(10000)
 
 
 if __name__ == "__main__":
