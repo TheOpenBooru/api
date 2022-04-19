@@ -10,6 +10,6 @@ async def register(username: str, password: str):
     except KeyError:
         return Response("User already exists",status_code=status.HTTP_409_CONFLICT)
     except ValueError:
-        return Response("Bad Password",status_code=status.HTTP_400_BAD_REQUEST)
+        return Response("Invalid Password",status_code=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(status_code=status.HTTP_201_CREATED)
