@@ -10,8 +10,7 @@ class test_Tokens_Are_Strings(unittest.TestCase):
 
 class test_Tokens_Should_Expire(unittest.TestCase):
     def test_Tokens_Expire(self):
-        token = jwt.create(0,expiration=1)
-        time.sleep(2)
+        token = jwt.create(0,expiration=-1)
         self.assertRaises(jwt.BadTokenError,jwt.decode,token)
     
     def test_Token_Dont_Expire_Early(self):
