@@ -1,10 +1,8 @@
-import yaml
-from pydantic import BaseModel
+import yaml as _yaml
+from pydantic import BaseModel as _BaseModel
 
-with open("./data/permissions.yml") as f:
-    _permission_lookup = yaml.full_load(f)
 
-class Permissions(BaseModel):
+class Permissions(_BaseModel):
     canViewUsers:bool = False
     canSearchUsers:bool = False
     canEditUsers:bool = False
@@ -20,6 +18,9 @@ class Permissions(BaseModel):
     canViewComments:bool = False
     canDeleteComments:bool = False
 
+
+with open("./permissions.yml") as _f:
+    _permission_lookup = _yaml.full_load(_f)
 
 def permissions_from_level(level:str) -> Permissions:
     """Raises:
