@@ -1,8 +1,6 @@
 import mimetypes
-from modules import schemas,encoding,database,store,encoding
-from modules.encoding import GenericFile,GenericMedia
+from modules import schemas,encoding,database,encoding,store
 import hashlib
-
 
 async def create(data:bytes,filename:str) -> schemas.Post:
     generator = _PostSchemaGenerator(data,filename)
@@ -56,7 +54,7 @@ class _PostSchemaGenerator:
                 mimetype=file.mimetype,
                 height=file.height,
                 width=file.width,
-                type="animation"
+                type="image"
             )
         elif isinstance(file,encoding.AnimationFile):
             return schemas.Animation(
