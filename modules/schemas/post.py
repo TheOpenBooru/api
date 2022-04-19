@@ -1,6 +1,5 @@
-from . import fields
-from . import Image,Video,Animation,GenericMedia
-from pydantic import BaseModel, Field, AnyHttpUrl
+from . import fields,BaseModel,GenericMedia,Image
+from pydantic import Field
 
 
 class Post_Edit(BaseModel):
@@ -8,6 +7,15 @@ class Post_Edit(BaseModel):
     created_at: float = fields.Created_At
     editter: int = fields.User_ID
     tags: list[str] = fields.Tags
+
+class Post_Query(BaseModel):
+    sort: str = Field(default="created_at", description="How to sort the posts")
+    descending: str = Field(default=True, description="Should searhc be ordered descending")
+    index: int = Field(default=0, description="Offset from the start of the results")
+    limit: int = Field(default=64, description="Maximum number of results to return")
+    include_tags: list[str] = fields.Tags
+    exclude_tags: list[str] = fields.Tags
+
 
 class Post(BaseModel):
     id: int = fields.Item_ID
