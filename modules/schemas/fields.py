@@ -23,7 +23,7 @@ Comments = _Field(
 Post_Type:str = _Field(
     ...,
     description="Format of the post",
-    regex="^(image|gif|video)$",
+    regex="^(image|animation|video)$",
 )
 Mimetype:str = _Field(
     ...,
