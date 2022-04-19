@@ -4,10 +4,11 @@ from .password import is_password_invalid
 Users = {}
 
 def login(user_id:str,password:str):
-    return (
-        user_id in Users and
-        compare(password,Users[user_id])
-    )
+    if user_id not in Users:
+        return False
+    else:
+        hash = Users[user_id]
+        return compare(password, hash)
 
 def register(user_id:str,password:str):
     """Raises:
@@ -31,6 +32,9 @@ def change_password(user_id:str,password:str):
         raise ValueError(f"Password is invalid")
     else:
         Users[user_id] = hash(password)
+
+def exists(user_id:str):
+    return user_id in Users
 
 def delete(user_id:str):
     Users.pop(user_id,None)
