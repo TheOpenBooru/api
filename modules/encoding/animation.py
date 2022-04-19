@@ -5,7 +5,7 @@ import io
 from PIL import Image as PILImage
 
 class Animation(BaseMedia):
-    type="gif"
+    type="animation"
     _data:bytes
     _PIL:PILImage.Image
     _height:int
@@ -55,7 +55,7 @@ class Animation(BaseMedia):
         data = _pillow_animation_to_bytes(self._PIL)
         return AnimationFile(
             data=data,
-            mimetype='image/gif',
+            mimetype='image/webp',
             height=self._height,
             width=self._width,
             frame_count=self._frame_count,
