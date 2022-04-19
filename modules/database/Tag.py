@@ -25,10 +25,3 @@ def all() -> list[Tag]:
             tag_counts[tag] = count + 1
     all_tags = [get(x) for x in tag_counts]
     return all_tags
-
-def create_alias(name:str,alias:str):
-    ...
-
-def create_parent(parent:str,child:str):
-    ...
-

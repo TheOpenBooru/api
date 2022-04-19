@@ -1,2 +1,1 @@
-from .post import Post
-from . import Tag
+from . import Post,Tag,User
