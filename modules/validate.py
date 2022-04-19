@@ -10,7 +10,7 @@ def username(name: str):
     else:
         return False
 
-TAG_REGEX = r"^[a-z0-9_()]{1,64}$"
+TAG_REGEX = r"^[a-z0-9_():]{1,64}$"
 def tag(tag: str) -> bool:
     if _re.match(TAG_REGEX, tag):
         return True
