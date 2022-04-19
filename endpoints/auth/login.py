@@ -1,13 +1,12 @@
 from . import router
-from modules import auth,jwt,captcha
-from fastapi import Depends,HTTPException,Response,status
-import asyncio
+from modules import auth,jwt
+from fastapi import Response,status
 
 
 @router.post("/login")
 async def login(username:str,password:str):
-    logged_in = auth.login(username,password)
-    if not logged_in:
+    authorised = auth.login(username,password)
+    if not authorised:
         return Response(
             "Invalid username or password",
             status_code=status.HTTP_401_UNAUTHORIZED
