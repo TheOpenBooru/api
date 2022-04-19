@@ -2,9 +2,7 @@ from modules import settings
 import hashlib
 from pathlib import Path
 
-
 STORE_PATH = Path("data","files")
-
 
 def put(data: bytes,suffix:str = "",prefix:str = "") -> str:
     """Raises:
@@ -27,8 +25,8 @@ def put(data: bytes,suffix:str = "",prefix:str = "") -> str:
 
 def get(key: str) -> bytes:
     """Raises:
-    KeyError: Path Traversal Detected
-    KeyError: Key doesn't exist
+    FileNotFoundError: Path Traversal Detected
+    FileNotFoundError: Key doesn't exist
     """
     path = STORE_PATH / key
     if STORE_PATH != path.parent:
@@ -42,7 +40,12 @@ def get(key: str) -> bytes:
 def url(key: str) -> str:
     hostname = settings.HOSTNAME
     port = settings.PORT
-    return f"http://{hostname}:{port}/image/{key}"
+    if port == 80:
+        return f"http://{hostname}/image/{key}"
+    elif port == 443:
+        return f"https://{hostname}/image/{key}"
+    else:
+        return f"http://{hostname}:{port}/image/{key}"
 
 
 def delete(key: str):
