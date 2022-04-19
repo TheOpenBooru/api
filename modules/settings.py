@@ -45,7 +45,7 @@ AWS_REGION:str = get("config.aws.region")
 STORAGE_USE_AWS:bool = get("storage.use-aws")
 STORAGE_BUCKET:str = get("storage.bucket-name")
 
-SEARCH_LIMIT:int = get("search.max_limit")
+MAX_SEARCH_LIMIT:int = get("search.max_limit")
 POSTS_REQUIRE_APRROVAL:bool = get("posts.required_aprroval")
 VALID_TAG_NAMESPACES:list = get("posts.valid_namespaces")
 
