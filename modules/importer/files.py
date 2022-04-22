@@ -20,10 +20,12 @@ async def import_files():
             tag_file = None
         else:
             tag_file = tag_files[name]
+        
         try:
             await import_file(data_file,tag_file)
-        except Exception:
-            continue
+        except Exception as e:
+            print(f"Could not import {name}")
+            print(f"Reaseon: {e}")
 
 async def import_file(data_file:Path,tag_file:Path|None):
     if tag_file == None:
