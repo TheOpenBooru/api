@@ -59,13 +59,11 @@ class Video(BaseMedia):
         - FileNotFoundError: Didn't use `with` statement to create file
         """
         offset_percentage = 0.01 * settings.VIDEO_THUMBNAIL_OFFSET
-        frame_offset = int(self._probe.frame_count * offset_percentage)
         try:
             data,err = (
                 ffmpeg
                 .input(self._filepath)
                 .output("pipe:",
-                    # ss=str(frame_offset),
                     f='image2',vframes=1
                 )
                 .run(input=self._data,capture_stdout=True,capture_stderr=True)

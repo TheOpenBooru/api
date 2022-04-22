@@ -30,11 +30,11 @@ class VideoProbe(Probe):
     
     @cached_property
     def height(self) -> int:
-        return self._video_stream['height']
+        return int(self._video_stream['height'])
     
     @cached_property
     def width(self) -> int:
-        return self._video_stream['width']
+        return int(self._video_stream['width'])
 
     @cached_property
     def framerate(self) -> str:
@@ -66,14 +66,14 @@ class VideoProbe(Probe):
 
     @cached_property
     def duration(self) -> float:
-        return self.probe_data['format']['duration']
+        return float(self.probe_data['format']['duration'])
 
     @cached_property
-    def frame_count(self) -> float:
+    def frame_count(self) -> float|None:
         if 'nb_frames' in self._video_stream:
             return float(self._video_stream['nb_frames'])
         else:
-            return int (eval(self.framerate) * self.duration * 0.9)
+            return None
 
 
 class ImageProbe(Probe):
