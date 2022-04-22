@@ -1,3 +1,4 @@
+from pathlib import Path
 from modules import database, settings,importer
 from endpoints import router
 
@@ -30,12 +31,15 @@ async def startup_event():
     await importer.import_safebooru(10000)
 
 
+https_params = {}
+if Path("./data/key.pem").exists() and Path("./data/cert.pem").exists():
+    https_params["ssl_keyfile"] = "./data/key.pem"
+    https_params["ssl_certfile"] = "./data/cert.pem"
+
 if __name__ == "__main__":
     uvicorn.run(
         "app:app",
         host='0.0.0.0',
         port=settings.PORT,
-        debug=True,
-        # ssl_keyfile="./data/key.pem", 
-        # ssl_certfile="./data/cert.pem",
+        **https_params
     )
