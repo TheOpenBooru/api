@@ -1,0 +1,90 @@
+[
+    {
+        "test":"Sort is parsed correctly",
+        "query":"sort:name",
+        "output":{
+            "sort":"name"
+        }
+    },
+    {
+        "test":"Invalid Sort Orders aren't parsed",
+        "query":"sort:id:lmao",
+        "output":{}
+    },
+    {
+        "test":"Sort Order Descending is parsed",
+        "query":"sort:id:desc",
+        "output":{
+            "sort":"id",
+            "order":"desc"
+        }
+    },
+    {
+        "test":"Sort Order Ascending is parsed ",
+        "query":"sort:id:asc",
+        "output":{
+            "sort":"id",
+            "order":"asc"
+        }
+    },
+    {
+        "test":"Sort doesn't special characters",
+        "query":"sort:0",
+        "output":{}
+    },
+    {
+        "test":"Sort doesn't accept numbers",
+        "query":"sort:0",
+        "output":{}
+    },
+    {
+        "test":"Special characters are ignored",
+        "query":"\r\nsort:example",
+        "output":{
+            "sort":["example"]
+        }
+    },
+    {
+        "test":"Spacing is ignored",
+        "query":" foo ",
+        "output":{
+            "include_tags":["foo"]
+        }
+    },
+    {
+        "test":"Parses multiple tags correctly",
+        "query":"foo bar beans eggs",
+        "output":{
+            "include_tags":["foo", "bar", "beans", "eggs"]
+        }
+    },
+    {
+        "test":"Negative tags are parsed correctly",
+        "query":"-foo -bar",
+        "output":{
+            "exclude_tags":["foo", "bar"]
+        }
+    },
+    {
+        "test":"Positive and Negative Tags Combined",
+        "query":"foo -bar",
+        "output":{
+            "include_tags":["foo"],
+            "exclude_tags":["bar"]
+        }
+    },
+    {
+        "test":"Multiple Negative tags are combined",
+        "query":"-bar -bar",
+        "output":{
+            "exclude_tags":["bar"]
+        }
+    },
+    {
+        "test":"Multiple Postive tags are combined",
+        "query":"bar bar",
+        "output":{
+            "include_tags":["bar"]
+        }
+    }
+]

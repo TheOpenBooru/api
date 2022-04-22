@@ -28,7 +28,7 @@ app.include_router(router)
 
 @app.on_event("startup")
 async def startup_event():
-    await importer.import_safebooru(10000)
+    await importer.import_safebooru(1000)
 
 
 ssl_params = {}
