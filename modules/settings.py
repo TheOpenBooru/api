@@ -23,6 +23,9 @@ SITE_NAME:str = get("config.site.name")
 HOSTNAME:str = get("config.site.hostname")
 PORT:str = get("config.site.port")
 
+SSL_KEY_STORE:str = get("config.ssl.key")
+SSL_CERT_STORE:str = get("config.ssl.cert")
+
 HCAPTCHA_SITEKEY:str = get("config.hcaptcha.sitekey")
 HCAPTCHA_SECRET:str = get("config.hcaptcha.secret")
 
