@@ -1,8 +1,6 @@
-import asyncio
-
-from modules import posts
 from . import normalise_tag
-from modules import database
+from modules import database,posts
+from tqdm import tqdm
 from pathlib import Path
 
 IMPORT_DIR = Path("data/import")
@@ -16,7 +14,7 @@ async def import_files():
         else:
             data_files[file.stem] = file
 
-    for name in data_files.keys():
+    for name in tqdm(data_files.keys()):
         data_file = data_files[name]
         if name not in tag_files:
             tag_file = None
@@ -24,7 +22,7 @@ async def import_files():
             tag_file = tag_files[name]
         try:
             await import_file(data_file,tag_file)
-        except:
+        except Exception:
             continue
 
 async def import_file(data_file:Path,tag_file:Path|None):
