@@ -21,5 +21,5 @@ async def search_posts(
     searched_posts = await posts.search(query)
     return JSONResponse(
         content=jsonable_encoder(searched_posts),
-        headers={"Cache-Control": "max-age=60, private"},
+        headers={"Cache-Control": "max-age=60, public"},
     )
