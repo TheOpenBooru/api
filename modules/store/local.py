@@ -45,7 +45,7 @@ def url(key: str) -> str:
     elif port == 443:
         return f"https://{hostname}/image/{key}"
     else:
-        return f"http://{hostname}:{port}/image/{key}"
+        return f"https://{hostname}:{port}/image/{key}"
 
 
 def delete(key: str):
