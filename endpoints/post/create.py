@@ -7,6 +7,7 @@ mimetypes.add_type('image/webp','.webp')
 
 @router.post("/create",response_model=schemas.Post,status_code=status.HTTP_201_CREATED)
 async def create_post(image_file:UploadFile):
+    return Response(status_code=status.HTTP_401_UNAUTHORIZED)
     data = await image_file.read()
     filename = image_file.filename
     try:

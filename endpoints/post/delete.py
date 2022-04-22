@@ -4,6 +4,7 @@ from fastapi import Response,status
 
 @router.delete("/post/{id}")
 async def delete_post(id:int):
+    return Response(status_code=status.HTTP_401_UNAUTHORIZED)
     if database.Post.get(id=id) is None:
         return Response(status_code=status.HTTP_404_NOT_FOUND)
     else:
