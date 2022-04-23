@@ -20,7 +20,7 @@ if settings.STORAGE_S3_BUCKET not in bucket_names:
         CreateBucketConfiguration={"LocationConstraint": settings.AWS_REGION}
     )
 
-def put(data: bytes) -> str:
+def put(data: bytes,suffix:str="") -> str:
     """Raises:
     - TypeError: Data wasn't bytes
 
@@ -29,7 +29,7 @@ def put(data: bytes) -> str:
     if type(data) != bytes:
         raise TypeError("Data wasn't bytes")
     key = hashlib.sha3_256(data).hexdigest()
-
+    key += suffix
     buf = io.BytesIO(data)
     s3.upload_fileobj(
         buf, settings.STORAGE_S3_BUCKET,key,

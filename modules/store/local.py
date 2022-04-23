@@ -4,7 +4,7 @@ from pathlib import Path
 
 STORE_PATH = Path("data","files")
 
-def put(data: bytes,suffix:str = "",prefix:str = "") -> str:
+def put(data: bytes,suffix:str = "") -> str:
     """Raises:
         TypeError: Data wasn't bytes
 
@@ -14,6 +14,7 @@ def put(data: bytes,suffix:str = "",prefix:str = "") -> str:
     if type(data) != bytes:
         raise TypeError("Data wasn't bytes")
     key = hashlib.sha3_256(data).hexdigest()
+    key += suffix
     path = STORE_PATH / key
     with open(path, "wb") as f:
         f.write(data)
