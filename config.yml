@@ -39,7 +39,7 @@ posts:
     - meta
 
 storage:
-  method: "s3" # Valid methods: s3, local
+  method: "local" # Valid methods: s3, local
   s3:
     bucket-name: "openbooru" # Ensure name is valid
 
