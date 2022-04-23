@@ -4,23 +4,23 @@ import hashlib
 import boto3
 from boto3.resources import factory
 
-s3 = boto3.resource(
+s3 = boto3.client(
     's3',
-    region_name=settings.AWS_REGION,
     aws_access_key_id=settings.AWS_ID,
     aws_secret_access_key=settings.AWS_SECRET,
+    region_name=settings.AWS_REGION,
 )
-bucket = s3.Bucket(settings.STORAGE_BUCKET)
 
-try:
-    bucket.create(
-        ACL="public-read",
-        CreateBucketConfiguration={"LocationConstraint": settings.AWS_REGION},
+buckets = s3.list_buckets()
+bucket_names = [x['Name'] for x in buckets['Buckets']]
+if settings.STORAGE_BUCKET not in bucket_names:
+    s3.create_bucket(
+        Bucket=settings.STORAGE_BUCKET,
+        ACL='public-read',
+        CreateBucketConfiguration={"LocationConstraint": settings.AWS_REGION}
     )
-except Exception:
-    pass
 
-def put(data: bytes,suffix:str = "",prefix:str = "") -> str:
+def put(data: bytes) -> str:
     """Raises:
     - TypeError: Data wasn't bytes
 
@@ -28,12 +28,11 @@ def put(data: bytes,suffix:str = "",prefix:str = "") -> str:
     """
     if type(data) != bytes:
         raise TypeError("Data wasn't bytes")
-    hash = hashlib.sha3_256(data).hexdigest()
-    key = prefix + hash + suffix
+    key = hashlib.sha3_256(data).hexdigest()
 
     buf = io.BytesIO(data)
-    bucket.upload_fileobj(
-        buf, key,
+    s3.upload_fileobj(
+        buf, settings.STORAGE_BUCKET,key,
         ExtraArgs={"ACL":"public-read"}
     )
     return key
@@ -45,7 +44,7 @@ def get(key: str) -> bytes:
     """
     buf = io.BytesIO()
     try:
-        bucket.download_fileobj(key, buf)
+        s3.download_fileobj(settings.STORAGE_BUCKET, key, buf)
     except Exception:
         raise FileNotFoundError("Key doesn't exist")
     return buf.getvalue()
@@ -62,13 +61,9 @@ def url(key: str) -> str:
 
 def delete(key: str):
     try:
-        bucket.delete_objects(
-            Delete={
-                'Objects': [
-                    {'Key': key}
-                ],
-                'Quiet': True
-            }
+        s3.delete_object(
+            Bucket=settings.STORAGE_BUCKET,
+            Key=key,
         )
     except Exception:
         pass # Shouldn't error if key doesn't exist
