@@ -13,9 +13,9 @@ s3 = boto3.client(
 
 buckets = s3.list_buckets()
 bucket_names = [x['Name'] for x in buckets['Buckets']]
-if settings.STORAGE_BUCKET not in bucket_names:
+if settings.STORAGE_S3_BUCKET not in bucket_names:
     s3.create_bucket(
-        Bucket=settings.STORAGE_BUCKET,
+        Bucket=settings.STORAGE_S3_BUCKET,
         ACL='public-read',
         CreateBucketConfiguration={"LocationConstraint": settings.AWS_REGION}
     )
@@ -32,7 +32,7 @@ def put(data: bytes) -> str:
 
     buf = io.BytesIO(data)
     s3.upload_fileobj(
-        buf, settings.STORAGE_BUCKET,key,
+        buf, settings.STORAGE_S3_BUCKET,key,
         ExtraArgs={"ACL":"public-read"}
     )
     return key
@@ -44,7 +44,7 @@ def get(key: str) -> bytes:
     """
     buf = io.BytesIO()
     try:
-        s3.download_fileobj(settings.STORAGE_BUCKET, key, buf)
+        s3.download_fileobj(settings.STORAGE_S3_BUCKET, key, buf)
     except Exception:
         raise FileNotFoundError("Key doesn't exist")
     return buf.getvalue()
@@ -53,7 +53,7 @@ def get(key: str) -> bytes:
 def url(key: str) -> str:
     template = "https://{bucket}.s3.{region}.amazonaws.com/{key}"
     return template.format(
-        bucket=settings.STORAGE_BUCKET,
+        bucket=settings.STORAGE_S3_BUCKET,
         region=settings.AWS_REGION,
         key=key,
     )
@@ -62,7 +62,7 @@ def url(key: str) -> str:
 def delete(key: str):
     try:
         s3.delete_object(
-            Bucket=settings.STORAGE_BUCKET,
+            Bucket=settings.STORAGE_S3_BUCKET,
             Key=key,
         )
     except Exception:

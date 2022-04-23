@@ -39,8 +39,9 @@ posts:
     - meta
 
 storage:
-  use-aws: false
-  bucket-name: "openbooru" # Ensure name is valid
+  method: "s3" # Valid methods: s3, local
+  s3:
+    bucket-name: "openbooru" # Ensure name is valid
 
 token_expiration: 86400 # Login Token Expiration time in seconds
 password_requirements: # Use null to disable check

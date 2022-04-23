@@ -44,9 +44,8 @@ AWS_ID:str = get("config.aws.id")
 AWS_SECRET:str = get("config.aws.secret")
 AWS_REGION:str = get("config.aws.region")
 
-
-STORAGE_USE_AWS:bool = get("storage.use-aws")
-STORAGE_BUCKET:str = get("storage.bucket-name")
+STORAGE_METHOD:str = get("storage.method")
+STORAGE_S3_BUCKET:str = get("storage.bucket-name")
 
 MAX_SEARCH_LIMIT:int = get("search.max_limit")
 POSTS_REQUIRE_APRROVAL:bool = get("posts.required_aprroval")
