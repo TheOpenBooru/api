@@ -1,5 +1,5 @@
 from pathlib import Path
-from modules import database, settings,importer
+from modules import logging, settings, importer
 from endpoints import router
 
 import uvicorn
