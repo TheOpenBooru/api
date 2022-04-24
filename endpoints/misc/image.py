@@ -2,7 +2,7 @@ from .. import router
 from modules import store, settings
 from fastapi import Response, responses, status
 
-@router.get('/image/{key}',status_code=200,include_in_schema=False)
+@router.get('/image/{file}',status_code=200,include_in_schema=False)
 def get_image(file:str):
     CACHE_HEADER = {
         "Cache-Control": "max-age=31536000, public"
