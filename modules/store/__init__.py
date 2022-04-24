@@ -6,5 +6,3 @@ elif _settings.STORAGE_METHOD == "local":
     from .local import get,put,clear,delete,url
 else:
     raise ValueError(f"Invalid storage method: {_settings.STORAGE_METHOD}")
-
-from . import aws,local
