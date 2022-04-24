@@ -1,10 +1,9 @@
 import logging
 
-file_handler = logging.FileHandler('file.log')
-file_handler.setLevel(logging.DEBUG)
-file_handler.setFormatter(logging.Formatter('[%(asctime)s] %(levelname)s - %(message)s'))
 
 logging.basicConfig(
-    level=logging.INFO,
-    handlers=[file_handler]
+    filename='./data/log.txt',
+    filemode='a',
+    level=logging.DEBUG,
+    format='[%(asctime)s] %(levelname)s - %(message)s',
 )
