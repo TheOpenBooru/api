@@ -40,6 +40,8 @@ STORAGE_METHOD:str = get("storage.method")
 STORAGE_S3_BUCKET:str = get("storage.s3.bucket-name")
 
 MAX_SEARCH_LIMIT:int = get("search.max_limit")
+POST_IMPORT_LOCAL:int = get("posts.sources.local")
+POST_IMPORT_SAFEBOORU:int = get("posts.sources.safebooru")
 
 PASSWORD_PEPPER:int = get("config.password_pepper")
 DEFAULT_TOKEN_EXPIRATION:int = get("token_expiration")

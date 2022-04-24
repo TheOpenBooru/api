@@ -25,6 +25,11 @@ config:
 search:
   max_limit: 100 # Max number of results per search
 
+posts:
+  sources:
+    local: true # Import from local import directory
+    safebooru: true # Import test data from safebooru
+
 storage:
   method: "local" # Valid methods: s3, local
   s3:
