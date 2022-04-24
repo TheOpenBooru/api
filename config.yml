@@ -1,5 +1,4 @@
 config:
-  deployment: TESTING
   site:
     name: Open Booru
     hostname: "slate"
@@ -20,23 +19,11 @@ config:
     password: ""
     hostname: ""
     port: 
-  emails:
-    support: support@example.com
-    security: security@example.com
-    dmca: dmca@example.com
 
 
 
 search:
   max_limit: 100 # Max number of results per search
-
-posts:
-  required_aprroval: true # Posts require moderator approval beofre being visible
-  valid_namespaces:
-    - artist
-    - copyright
-    - generic
-    - meta
 
 storage:
   method: "local" # Valid methods: s3, local

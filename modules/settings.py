@@ -18,7 +18,6 @@ def get(setting: str) -> Any:
             config = config[key]
     return config
 
-DEPLOYMENT:str = get("config.deployment")
 SITE_NAME:str = get("config.site.name")
 HOSTNAME:str = get("config.site.hostname")
 PORT:str = get("config.site.port")
@@ -29,16 +28,9 @@ SSL_CERT_STORE:str = get("config.ssl.cert")
 HCAPTCHA_SITEKEY:str = get("config.hcaptcha.sitekey")
 HCAPTCHA_SECRET:str = get("config.hcaptcha.secret")
 
-EMAIL_SUPPORT:str = get("config.emails.support")
-EMAIL_SECURITY:str = get("config.emails.security")
-EMAIL_DMCA:str = get("config.emails.dmca")
-
 SMTP_EMAIL:str = get("config.smtp.email")
 SMTP_PASSWORD:str = get("config.smtp.password")
 SMTP_HOSTNAME:str = get("config.smtp.hostname")
-
-EMAIL_SECURITY:str = get("config.emails.security")
-EMAIL_DMCA:str = get("config.emails.dmca")
 
 AWS_ID:str = get("config.aws.id")
 AWS_SECRET:str = get("config.aws.secret")
@@ -48,8 +40,6 @@ STORAGE_METHOD:str = get("storage.method")
 STORAGE_S3_BUCKET:str = get("storage.s3.bucket-name")
 
 MAX_SEARCH_LIMIT:int = get("search.max_limit")
-POSTS_REQUIRE_APRROVAL:bool = get("posts.required_aprroval")
-VALID_TAG_NAMESPACES:list = get("posts.valid_namespaces")
 
 PASSWORD_PEPPER:int = get("config.password_pepper")
 DEFAULT_TOKEN_EXPIRATION:int = get("token_expiration")
