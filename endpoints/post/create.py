@@ -1,9 +1,6 @@
 from . import router
 from modules import schemas,posts
-from fastapi import Response,status,UploadFile 
-import hashlib
-import mimetypes
-mimetypes.add_type('image/webp','.webp')
+from fastapi import Response,status,UploadFile
 
 @router.post("/create",response_model=schemas.Post,status_code=status.HTTP_201_CREATED)
 async def create_post(image_file:UploadFile):
