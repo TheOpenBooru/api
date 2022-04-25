@@ -15,6 +15,7 @@ python-multipart
 
 # Database
 cachetools
+boto3
 
 # Encoding
 numpy
