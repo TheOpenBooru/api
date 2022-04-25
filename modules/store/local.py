@@ -53,4 +53,5 @@ def delete(key: str):
 
 def clear():
     for file in STORE_PATH.iterdir():
-        file.unlink()
+        if file.name != '.gitignore':
+            file.unlink()
