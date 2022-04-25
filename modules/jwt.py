@@ -14,24 +14,24 @@ class TokenData:
 class BadTokenError(Exception):
     "The Token was Invalid, could be Corrupt, Invalid, Expired"
 
-def create(id:int, additional_data:dict = {}, expiration:int|None = None) -> str:
+def create(id:int, additional_data:dict|None = None, expiration:int = _settings.DEFAULT_TOKEN_EXPIRATION) -> str:
     """Raises:
     - ValueError: Data cannot contain the reserved field
     """
-    if "exp" in additional_data:
-        raise ValueError(f"Data cannot contain a rerved field: 'exp'")
-    if "_user_id" in additional_data:
-        raise ValueError(f"Data cannot contain a rerved field: '_user_id'")
-
-    if  expiration == None:
-        expiration = _settings.DEFAULT_TOKEN_EXPIRATION
-
-    data = {
-        "exp": _time.time() + expiration, # type: ignore
-        "_user_id": id
+    payload = {
+        "_user_id": id,
+        "exp": _time.time() + expiration,
     }
-    data |= additional_data
-    return _jwt.encode(data, _SECRET_KEY, algorithm="HS256")
+
+    
+    if additional_data:
+        if "exp" in additional_data:
+            raise ValueError(f"Data cannot contain a rerved field: 'exp'")
+        if "_user_id" in additional_data:
+            raise ValueError(f"Data cannot contain a rerved field: '_user_id'")
+        payload |= additional_data
+    
+    return _jwt.encode(payload, _SECRET_KEY, algorithm="HS256")
 
 
 def decode(token: str) -> TokenData:
