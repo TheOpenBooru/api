@@ -1,3 +1,4 @@
+from modules import settings
 from modules.store import aws
 import unittest
 import random
@@ -5,7 +6,13 @@ import requests
 from pathlib import Path
 
 
-class test_Put_Allows_Data_to_be_Stored(unittest.TestCase):
+no_account = not (settings.AWS_ID and settings.AWS_SECRET)
+
+@unittest.skipIf(no_account, "No AWS credentials")
+class TestCase(unittest.TestCase):
+    ...
+
+class test_Put_Allows_Data_to_be_Stored(TestCase):
     def setUp(self):
         self.keys = set()
     def tearDown(self):
@@ -27,7 +34,7 @@ class test_Put_Allows_Data_to_be_Stored(unittest.TestCase):
         key = aws.put(large_data)
         self.keys.add(key)
 
-class test_Put_Raises_TypeError_for_Invalid_Data(unittest.TestCase):
+class test_Put_Raises_TypeError_for_Invalid_Data(TestCase):
     def test_string(self):
         self.assertRaises(TypeError, aws.put, "foobar")
     
@@ -37,7 +44,7 @@ class test_Put_Raises_TypeError_for_Invalid_Data(unittest.TestCase):
     def test_python_object(self):
         self.assertRaises(TypeError, aws.put, Ellipsis)
 
-class test_Keys_Should_Be_Unique(unittest.TestCase):
+class test_Keys_Should_Be_Unique(TestCase):
     def tearDown(self):
         for key in self.keys:
             aws.delete(key)
@@ -51,7 +58,7 @@ class test_Keys_Should_Be_Unique(unittest.TestCase):
                 self.fail("Key is not unique")
             self.keys.add(key)
 
-class test_Keys_Should_Be_Same_For_Duplicate_Data(unittest.TestCase):
+class test_Keys_Should_Be_Same_For_Duplicate_Data(TestCase):
     def tearDown(self):
         aws.delete(self.key1)
         aws.delete(self.key2)
@@ -62,7 +69,7 @@ class test_Keys_Should_Be_Same_For_Duplicate_Data(unittest.TestCase):
         self.key2 = aws.put(data)
         assert self.key1 == self.key2
 
-class test_Keys_Should_Be_Strings(unittest.TestCase):
+class test_Keys_Should_Be_Strings(TestCase):
     def tearDown(self):
         aws.delete(self.key)
     
@@ -70,7 +77,7 @@ class test_Keys_Should_Be_Strings(unittest.TestCase):
         self.key = aws.put(b'example')
         assert isinstance(self.key,str)
 
-class test_Data_is_Retrievable(unittest.TestCase):
+class test_Data_is_Retrievable(TestCase):
     def store_and_get(self, data):
         key = aws.put(data)
         assert aws.get(key) == data
@@ -82,16 +89,16 @@ class test_Data_is_Retrievable(unittest.TestCase):
     def test_special_characters(self):
         self.store_and_get(b'\r\f\n test')
 
-class test_Bad_Key_Should_Raise_Error(unittest.TestCase):
+class test_Bad_Key_Should_Raise_Error(TestCase):
     def test_a(self):
         self.assertRaises(FileNotFoundError,aws.get,'foobar')
 
-class test_Does_Not_Allow_Path_Traversal(unittest.TestCase):
+class test_Does_Not_Allow_Path_Traversal(TestCase):
     def test_a(self):
         path = '../../../../../../../../etc/fstab'
         self.assertRaises(FileNotFoundError,aws.get,path)
 
-class test_Files_can_be_Accessed_by_URL(unittest.TestCase):
+class test_Files_can_be_Accessed_by_URL(TestCase):
     def setUp(self):
         self.key = aws.put(b'example')
     def tearDown(self):
@@ -101,7 +108,7 @@ class test_Files_can_be_Accessed_by_URL(unittest.TestCase):
         url = aws.url(self.key)
         requests.get(url)
 
-class test_Deleted_Data_Cant_Be_Obtained(unittest.TestCase):
+class test_Deleted_Data_Cant_Be_Obtained(TestCase):
     def setUp(self):
         self.key = aws.put(b'example')
     def tearDown(self):
@@ -111,6 +118,6 @@ class test_Deleted_Data_Cant_Be_Obtained(unittest.TestCase):
         aws.delete(self.key)
         self.assertRaises(FileNotFoundError,aws.get,self.key)
 
-class test_Can_Delete_NonExistant_Keys(unittest.TestCase):
+class test_Can_Delete_NonExistant_Keys(TestCase):
     def test_a(self):
         aws.delete('foobar')

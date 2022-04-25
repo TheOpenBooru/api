@@ -11,14 +11,23 @@ s3 = boto3.client(
     region_name=settings.AWS_REGION,
 )
 
-buckets = s3.list_buckets()
-bucket_names = [x['Name'] for x in buckets['Buckets']]
-if settings.STORAGE_S3_BUCKET not in bucket_names:
-    s3.create_bucket(
-        Bucket=settings.STORAGE_S3_BUCKET,
-        ACL='public-read',
-        CreateBucketConfiguration={"LocationConstraint": settings.AWS_REGION}
-    )
+def _is_logged_in() -> bool:
+    try:
+        s3.list_buckets()
+    except Exception:
+        return False
+    else:
+        return True
+
+if _is_logged_in():
+    buckets = s3.list_buckets()
+    bucket_names = [x['Name'] for x in buckets['Buckets']]
+    if settings.STORAGE_S3_BUCKET not in bucket_names:
+        s3.create_bucket(
+            Bucket=settings.STORAGE_S3_BUCKET,
+            ACL='public-read',
+            CreateBucketConfiguration={"LocationConstraint": settings.AWS_REGION}
+        )
 
 def put(data: bytes,suffix:str="") -> str:
     """Raises:
