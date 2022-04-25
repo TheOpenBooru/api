@@ -14,15 +14,13 @@ app = FastAPI(
 )
 
 app.add_middleware(CORSMiddleware,
-    allow_origins=["*"],allow_credentials=True,
-    allow_methods=["*"],allow_headers=["*"],
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+    allow_credentials=True,
 )
 app.add_middleware(GZipMiddleware)
 
-
-@app.get('/',tags=["Misc"])
-def docs_redirect():
-    return responses.RedirectResponse('/docs')
 
 app.include_router(router)
 
@@ -32,6 +30,10 @@ async def startup_event():
         await importer.import_files()
     if settings.POST_IMPORT_SAFEBOORU:
         await importer.import_safebooru(1000)
+
+@app.get('/',tags=["Misc"])
+def docs_redirect():
+    return responses.RedirectResponse('/docs')
 
 
 ssl_params = {}
