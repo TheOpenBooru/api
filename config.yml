@@ -18,7 +18,7 @@ config:
     email: ""
     password: ""
     hostname: ""
-    port: 
+    port: 25
 
 
 email:
@@ -46,6 +46,39 @@ password_requirements: # Use null to disable check
   score: 3
   # 1 is increibly vulnerable, 4 is very secure
   # Based on https://github.com/dropbox/zxcvbn
+
+permissions:
+  annonymous:
+    - canViewPosts
+    - canSearchPosts
+
+  user:
+    - canViewUsers
+    - canSearchUsers
+    
+    - canCreatePosts
+    - canViewPosts
+    - canSearchPosts
+    - canEditPosts
+    
+    - canCreateComments
+    - canViewComments
+
+  admin:
+    - canViewUsers
+    - canSearchUsers
+    - canEditUsers
+    - canDeleteUsers
+    
+    - canCreatePosts
+    - canViewPosts
+    - canSearchPosts
+    - canEditPosts
+    - canDeletePosts
+    
+    - canCreateComments
+    - canViewComments
+    - canDeleteComments
 
 thumbnail:
   lossless: false
