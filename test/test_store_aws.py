@@ -1,14 +1,11 @@
-from modules import settings
 from modules.store import aws
 import unittest
 import random
 import requests
-from pathlib import Path
 
 
-no_account = not (settings.AWS_ID and settings.AWS_SECRET)
 
-@unittest.skipIf(no_account, "No AWS credentials")
+@unittest.skipIf(not aws.is_logged_in(), "Not logged into AWS")
 class TestCase(unittest.TestCase):
     ...
 

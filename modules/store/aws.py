@@ -11,7 +11,7 @@ s3 = boto3.client(
     region_name=settings.AWS_REGION,
 )
 
-def _is_logged_in() -> bool:
+def is_logged_in() -> bool:
     try:
         s3.list_buckets()
     except Exception:
@@ -19,7 +19,7 @@ def _is_logged_in() -> bool:
     else:
         return True
 
-if _is_logged_in():
+if is_logged_in():
     buckets = s3.list_buckets()
     bucket_names = [x['Name'] for x in buckets['Buckets']]
     if settings.STORAGE_S3_BUCKET not in bucket_names:
