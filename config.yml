@@ -21,6 +21,10 @@ config:
     port: 
 
 
+email:
+  template_paths:
+    email_verification: "./data/emails/email_verification.html"
+    password_reset: "./data/emails/password_reset.html"
 
 search:
   max_limit: 100 # Max number of results per search
