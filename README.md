@@ -47,3 +47,11 @@ python3.10 -m venv venv
 # Start the app
 .\venv\Scripts\python.exe app.py
 ```
+
+## Development
+
+To run tests use this command:
+
+```py
+./venv/bin/python -m unittest discover ./test -v -p  "test*.py"
+```
