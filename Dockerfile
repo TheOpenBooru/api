@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM python:3.10-buster
+FROM python:3.10-bullseye
 COPY . .
 RUN sudo apt install ffmpeg
 RUN pip install -r requirements.txt
