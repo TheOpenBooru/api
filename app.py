@@ -26,10 +26,10 @@ app.include_router(router)
 
 @app.on_event("startup")
 async def startup_event():
-    if settings.POST_IMPORT_LOCAL:
+    if settings.IMPORT_LOCAL_ENABLED:
         await importer.import_files()
-    if settings.POST_IMPORT_SAFEBOORU:
-        await importer.import_safebooru(1000)
+    if settings.IMPORT_GELBOORU_ENABLED:
+        await importer.import_gelbooru()
 
 @app.get('/',tags=["Misc"])
 def docs_redirect():

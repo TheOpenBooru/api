@@ -43,8 +43,11 @@ STORAGE_METHOD:str = get("storage.method")
 STORAGE_S3_BUCKET:str = get("storage.s3.bucket-name")
 
 MAX_SEARCH_LIMIT:int = get("search.max_limit")
-POST_IMPORT_LOCAL:int = get("posts.sources.local")
-POST_IMPORT_SAFEBOORU:int = get("posts.sources.safebooru")
+IMPORT_LOCAL_ENABLED:bool = get("posts.sources.local")
+IMPORT_GELBOORU_ENABLED:bool = get("posts.sources.gelbooru.enabled")
+IMPORT_GELBOORU_WEBSITE:str = get("posts.sources.gelbooru.website")
+IMPORT_GELBOORU_TAGS:list[str] = get("posts.sources.gelbooru.tags")
+IMPORT_GELBOORU_LIMIT:int = get("posts.sources.gelbooru.limit")
 
 PASSWORD_PEPPER:int = get("config.password_pepper")
 DEFAULT_TOKEN_EXPIRATION:int = get("token_expiration")

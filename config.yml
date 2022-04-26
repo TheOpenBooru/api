@@ -1,7 +1,7 @@
 config:
   site:
     name: Open Booru
-    hostname: "slate"
+    hostname: "localhost"
     port: 8443
   ssl:
     key: "./data/key.pem"
@@ -31,8 +31,12 @@ search:
 
 posts:
   sources:
-    local: true # Import from local import directory
-    safebooru: true # Import test data from safebooru
+    local: false # Import from local import directory
+    gelbooru: # Import data from any gelbooru 2.0 site
+      enabled: true
+      website: safebooru.org # Examples: safebooru.org, rule34.xxx
+      tags: ["sort:score"]
+      limit: 400
 
 storage:
   method: "local" # Valid methods: s3, local

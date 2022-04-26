@@ -11,4 +11,8 @@ def normalise_tag(tag:str) -> str:
     filter_func = lambda char:re.match(validate.TAG_REGEX,char)
     filtered_chars = list(filter(filter_func,tag_chars))
     tag = ''.join(filtered_chars)
-    return tag
+
+    if validate.tag(tag):
+        return tag
+    else:
+        return ""
