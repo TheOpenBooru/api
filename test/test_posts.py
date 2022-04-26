@@ -11,13 +11,13 @@ class test_Post_Create_has_Correct_Attributes(AsyncTestCase):
     def assert_attributes(self,post:schemas.Post,attrs:dict):
         assert post.full.width == attrs["width"],f'{post.full.width} != {attrs["width"]}'
         assert post.full.height == attrs["height"],f'{post.full.height} != {attrs["height"]}'
-        if "duration" in attrs:
-            self.assertAlmostEqual(post.full.duration,attrs["duration"],places=2)
-        if "framerate" in attrs:
-            self.assertEqual(post.full.fps,attrs["framerate"])
-        if "hasAudio" in attrs:
-            self.assertEqual(post.full.has_sound,attrs["hasAudio"])
-            assert post.full.has_sound == attrs["hasAudio"],attrs["hasAudio"] # type:ignore
+        if hasattr(post.full,"duration"):
+            self.assertAlmostEqual(post.full.duration,attrs["duration"],places=2) # type: ignore
+        if hasattr(post.full,"fps"):
+            self.assertEqual(post.full.fps,attrs["framerate"]) # type: ignore
+        if hasattr(post.full,"has_sound"):
+            self.assertEqual(post.full.has_sound,attrs["hasAudio"]) # type: ignore
+            assert post.full.has_sound == attrs["hasAudio"],attrs["hasAudio"] # type: ignore
 
     def load_testdata(self,attrs:dict) -> tuple[bytes,str]:
         filepath = attrs['file']
@@ -58,7 +58,7 @@ class test_Post_Create_has_Correct_Attributes(AsyncTestCase):
 
 class test_Post_Search(AsyncTestCase):
     async def asyncSetUp(self):
-        await importer.import_safebooru(1000)
+        await importer.import_gelbooru()
     
     async def test_limit_is_correct(self):
         query = schemas.Post_Query()
