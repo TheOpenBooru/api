@@ -1,40 +1,44 @@
 from .hash import hash,compare
+from . import database
 from .password import is_password_invalid
 
-Users = {}
-
-def login(user_id:str,password:str):
-    if user_id not in Users:
+def login(username:str,password:str):
+    user = database.get(username)
+    if user == None:
         return False
     else:
-        hash = Users[user_id]
+        hash = user.hash
         return compare(password, hash)
 
-def register(user_id:str,password:str):
+def register(username:str,password:str):
     """Raises:
     - KeyError: User already exists
     - ValueError: Password is invalid
     """
-    if user_id in Users:
+    if database.get(username) != None:
         raise KeyError('User already exists')
     elif is_password_invalid(password):
         raise ValueError('Password is invalid')
     else:
-        Users[user_id] = hash(password)
+        user = database.User(
+            username=username,
+            hash=hash(password)
+        )
+        database.create(user)
 
-def change_password(user_id:str,password:str):
+def change_password(username:str,password:str):
     """Raises:
     - KeyError: User does not exist
     - ValueError: Password is not valid"""
-    if user_id not in Users:
+    if database.get(username) == None:
         raise KeyError(f'User does not exist')
     elif is_password_invalid(password):
         raise ValueError(f"Password is invalid")
     else:
-        Users[user_id] = hash(password)
+        database.update_hash(username,hash(password))
 
-def exists(user_id:str):
-    return user_id in Users
+def exists(username:str):
+    return database.get(username) != None
 
-def delete(user_id:str):
-    Users.pop(user_id,None)
+def delete(username:str):
+    database.delete(username)
