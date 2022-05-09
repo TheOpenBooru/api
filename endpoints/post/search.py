@@ -6,17 +6,17 @@ from fastapi.encoders import jsonable_encoder
 
 @router.get("/search", response_model=list[schemas.Post])
 async def search_posts(
-    index:int = 0,
-    limit:int = settings.MAX_SEARCH_LIMIT,
-    sort:str = "created_at",
-    descending:bool = True,
-    include_tags = Query(default=[]),
-    exclude_tags = Query(default=[]),
-    created_after:float|None = None,
-    created_before:float|None = None,
-    md5:str|None = None,
-    sha256:str|None = None,
-    ):
+        index:int = 0,
+        limit:int = settings.MAX_SEARCH_LIMIT,
+        sort:str = "created_at",
+        descending:bool = True,
+        include_tags = Query(default=[]),
+        exclude_tags = Query(default=[]),
+        created_after:float|None = None,
+        created_before:float|None = None,
+        md5:str|None = None,
+        sha256:str|None = None,
+        ):
     query = schemas.Post_Query(
         index=index,
         limit=limit,
