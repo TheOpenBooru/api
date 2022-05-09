@@ -11,6 +11,7 @@ This is a nice noticeboard for what I want to do or am currently doing. To try a
 - Add option to for enabling/disabling re-encoding content depending on type
 - Add option to re-encode content in gelbooru import
 - Add option for maximum file size on re-encode
+- Rework posts.create to be less of a mess
 
 ## Near Future
 

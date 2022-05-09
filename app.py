@@ -46,6 +46,7 @@ if settings.SSL_ENABLED:
 if __name__ == "__main__":
     uvicorn.run(
         "app:app",
+        debug=True,
         host='0.0.0.0',
         port=settings.PORT,
         **ssl_params

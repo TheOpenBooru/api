@@ -25,7 +25,7 @@ database:
   choice: "mongodb"
   mongodb:
     name: "OpenBooru"
-    host: "localhost"
+    host: "slate"
     port: 27017
     wipe_on_startup: false
 
@@ -42,9 +42,9 @@ posts:
     local: # Import posts from local import directory
       enabled: true
     gelbooru: # Import posts from any gelbooru 2.0 site
-      enabled: false
+      enabled: true
       website: safebooru.org # Examples: safebooru.org, rule34.xxx
-      tags: ["sort:score"]
+      tags: ["sort:score","asami_sato", "-bra", "-bikini" ]
       limit: 400
 
 storage:

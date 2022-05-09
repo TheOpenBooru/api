@@ -9,10 +9,10 @@ def search(query:schemas.Post_Query) -> list[Post]:
         filters.append({'tags':{'$all':query.include_tags}})
     if query.exclude_tags:
         filters.append({'tags':{'$nin':query.exclude_tags}})
-    if query.md5:
-        filters.append({'md5s':{'$elemMatch':query.exclude_tags}})
-    if query.sha256:
-        filters.append({'sha256s':{'$elemMatch':query.exclude_tags}})
+    # if query.md5:
+    #     filters.append({'md5s':{'$elemMatch':query.exclude_tags}})
+    # if query.sha256:
+    #     filters.append({'sha256s':{'$elemMatch':query.exclude_tags}})
     if query.created_after:
         filters.append({'created_at':{"$gt":query.created_after}})
     if query.created_before:
