@@ -2,6 +2,7 @@ from . import normalise_tag
 from modules import database,posts
 from tqdm import tqdm
 from pathlib import Path
+import logging
 
 IMPORT_DIR = Path("data/import")
 
@@ -9,10 +10,13 @@ async def import_files():
     tag_files = {}
     data_files = {}
     for file in IMPORT_DIR.iterdir():
-        if file.name.endswith('.txt'):
-            tag_files[file.stem] = file
+        if file.name == '.gitignore':
+            continue
         else:
-            data_files[file.stem] = file
+            if file.name.endswith('.txt'):
+                tag_files[file.stem] = file
+            else:
+                data_files[file.stem] = file
 
     for name in tqdm(data_files.keys()):
         data_file = data_files[name]
@@ -24,8 +28,8 @@ async def import_files():
         try:
             await import_file(data_file,tag_file)
         except Exception as e:
-            print(f"Could not import {name}")
-            print(f"Reaseon: {e}")
+            logging.debug(f"Could not import {name}")
+            logging.debug(f"Reason {e}")
 
 async def import_file(data_file:Path,tag_file:Path|None):
     if tag_file == None:
@@ -35,8 +39,7 @@ async def import_file(data_file:Path,tag_file:Path|None):
             tags = f.readlines()
     tags = [normalise_tag(tag) for tag in tags]
 
-    with open(data_file,'rb') as f:
-        data = f.read()
+    data = data_file.read_bytes()
     post = await posts.create(data,data_file.name)
     post.tags = tags
     database.Post.update(post.id,post)
