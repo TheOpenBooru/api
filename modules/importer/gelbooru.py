@@ -8,15 +8,13 @@ import itertools
 import requests
 import warnings
 
-async def import_gelbooru():
-    hostname = settings.IMPORT_GELBOORU_WEBSITE
-    tags = settings.IMPORT_GELBOORU_TAGS
-    limit = settings.IMPORT_GELBOORU_LIMIT
+async def import_gelbooru(limit=settings.IMPORT_GELBOORU_LIMIT,tags=settings.IMPORT_GELBOORU_TAGS):
+    gelbooru_url = settings.IMPORT_GELBOORU_WEBSITE
     for index in itertools.count():
         if index == 100:
             warnings.warn('Gelbooru Import: Searched more than 100 pages')
 
-        url = f"https://{hostname}/index.php?page=dapi&s=post&q=index"
+        url = f"https://{gelbooru_url}/index.php?page=dapi&s=post&q=index"
         url += f"&tags={'+'.join(tags)}"
         r = requests.get(
             url,
