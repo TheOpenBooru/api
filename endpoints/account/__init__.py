@@ -1,3 +1,3 @@
 from fastapi import APIRouter
-router = APIRouter(prefix="/auth",tags=["Auth"])
+router = APIRouter(prefix="/account",tags=["Account"])
 from . import login,register
