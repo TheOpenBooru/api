@@ -1,5 +1,5 @@
-import mimetypes
 from modules import schemas,encoding,database,encoding,store
+import mimetypes
 import hashlib
 
 async def create(data:bytes,filename:str) -> schemas.Post:
@@ -9,14 +9,26 @@ async def create(data:bytes,filename:str) -> schemas.Post:
     return schema
 
 
+async def _quick_exists_check(data:bytes) -> bool:
+    sha256 = hashlib.sha256(data).hexdigest()
+    query = schemas.Post_Query(sha256=sha256)
+    searched_posts = database.Post.search(query)
+    if searched_posts == []:
+        return False
+    else:
+        return True
+
 class _PostSchemaGenerator:
     def __init__(self,data:bytes,filename:str):
         self.data = data
         self.filename = filename
         self.md5s = []
-        self.sha3_256 = []
+        self.sha256s = []
 
     async def generate(self):
+        if await _quick_exists_check(self.data):
+            raise ValueError("Post already exists")
+        
         media_type = await encoding.predict_media_type(self.data,self.filename)
         with media_type(self.data) as media:
             full = media.full()
@@ -31,7 +43,7 @@ class _PostSchemaGenerator:
             id=database.Post.get_unused_id(),
             md5s=self.md5s,
             uploader=0,
-            sha256s=self.sha3_256,
+            sha256s=self.sha256s,
             full=full_schema, # type: ignore
             preview=preview_schema, # type: ignore
             thumbnail=thumbnail_schema, # type: ignore
@@ -54,7 +66,6 @@ class _PostSchemaGenerator:
                 mimetype=file.mimetype,
                 height=file.height,
                 width=file.width,
-                type="image"
             )
         elif isinstance(file,encoding.AnimationFile):
             return schemas.Animation(
@@ -64,7 +75,6 @@ class _PostSchemaGenerator:
                 width=file.width,
                 duration=file.duration,
                 frame_count=file.frame_count,
-                type="animation"
                 )
         elif isinstance(file,encoding.VideoFile):
             return schemas.Video(
@@ -75,7 +85,6 @@ class _PostSchemaGenerator:
                 duration=file.duration,
                 fps=file.framerate,
                 has_sound=file.hasAudio,
-                type="video"
                 )
         else:
             raise TypeError("Unknown file type")
@@ -83,4 +92,4 @@ class _PostSchemaGenerator:
     def _generate_hashes(self,file:encoding.GenericFile):
         data = file.data
         self.md5s.append(hashlib.md5(data).hexdigest())
-        self.sha3_256.append(hashlib.sha3_256(data).hexdigest())
+        self.sha256s.append(hashlib.sha256(data).hexdigest())
