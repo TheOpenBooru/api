@@ -1,6 +1,6 @@
 from .hash import hash,compare
 from . import database
-from .password import is_password_invalid
+from .password import is_password_valid
 
 def login(username:str,password:str):
     user = database.get(username)
@@ -17,7 +17,7 @@ def register(username:str,password:str):
     """
     if database.get(username) != None:
         raise KeyError('User already exists')
-    elif is_password_invalid(password):
+    elif not is_password_valid(password):
         raise ValueError('Password is invalid')
     else:
         user = database.User(
@@ -32,7 +32,7 @@ def change_password(username:str,password:str):
     - ValueError: Password is not valid"""
     if database.get(username) == None:
         raise KeyError(f'User does not exist')
-    elif is_password_invalid(password):
+    elif not is_password_valid(password):
         raise ValueError(f"Password is invalid")
     else:
         database.update_hash(username,hash(password))

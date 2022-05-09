@@ -17,14 +17,14 @@ def get_password_requirements() -> PasswordRequirements:
         score=settings.PASSWORD_REQUIRED_SCORE,
     )
 
-def is_password_invalid(password:str):
+def is_password_valid(password:str):
     requirements = get_password_requirements()
     score = zxcvbn(password)['score']
     if len(password) < requirements.min_length:
-        return True
-    elif len(password) > requirements.max_length:
-        return True
-    elif score < requirements.score:
-        return True
-    else:
         return False
+    elif len(password) > requirements.max_length:
+        return False
+    elif score < requirements.score:
+        return False
+    else:
+        return True
