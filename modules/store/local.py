@@ -13,7 +13,7 @@ def put(data: bytes,suffix:str = "") -> str:
     """
     if type(data) != bytes:
         raise TypeError("Data wasn't bytes")
-    key = hashlib.sha3_256(data).hexdigest()
+    key = hashlib.sha256(data).hexdigest()
     key += suffix
     path = STORE_PATH / key
     with open(path, "wb") as f:
