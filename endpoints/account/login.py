@@ -7,18 +7,10 @@ from fastapi import Response,status
 responses = {
     202:{
         "description":"Successfully Signed in and Provided a Token",
-        "content": {
-            "text/plain":{
-                "example":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.m5V22b06bOUSSzrDzcGusUKjnvTZMHpIGI__nY3t328"
-            }
-        }
+        "content": {"text/plain":{}}
     },
-    404:{
-        "description":"Invalid Username or Password"
-    },
-    406:{
-        "description":"User's Password was reset. Please contact the administrator"
-    },
+    404:{"description":"Invalid Username or Password"},
+    406:{"description":"User's Password Was Reset"},
 }
 
 @router.post("/login",response_model=str,responses=responses) # type: ignore

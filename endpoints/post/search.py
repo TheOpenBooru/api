@@ -1,10 +1,18 @@
 from . import router
 from modules import schemas, posts, settings
-from fastapi import Query, Request
+from fastapi import Query
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
-@router.get("/search", response_model=list[schemas.Post])
+responses = {
+    200:{"description":"Successfully Retrieved"},
+}
+
+@router.get("/search",
+    response_model=list[schemas.Post],
+    status_code=200,
+    responses=responses, # type: ignore
+)
 async def search_posts(
         index:int = 0,
         limit:int = settings.MAX_SEARCH_LIMIT,
