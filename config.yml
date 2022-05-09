@@ -1,43 +1,43 @@
 config:
   site:
-    name: Open Booru
-    hostname: "localhost"
-    port: 8443
+    name: Open Booru # The website name to show to users
+    hostname: "localhost" # The hostname of the site, used in URLs provided to users
+    port: 8443 # The port of the site, used in URLs provided to users
   ssl:
-    enabled: false
-    key: ""
-    cert: ""
-  password_pepper: ""
+    enabled: false # Use HTTPS?
+    key: "" # SSL Key File Path
+    cert: "" # SSL Cert File Path
+  password_pepper: "" # Used to protect password hashes, ensure is a long randomly generated string
   hcaptcha:
-    sitekey: ""
-    secret: ""
+    sitekey: "" # The hCaptcha api site key
+    secret: "" # The hCaptcha api secret
   aws:
-    id: ""
-    secret: ""
-    region: "eu-west-2"
+    id: "" # AWS access key ID
+    secret: "" # AWS secret
+    region: "eu-west-2"  # The AWS region to use
   smtp:
-    email: ""
-    password: ""
-    hostname: ""
-    port: 25
+    email: "" # The email address to send emails from
+    password: "" # The password for the smtp server
+    hostname: "" # The smtp server hostname
+    port: 25 # The smtp server port
 
 database:
   choice: "mongodb" # What database to use
   mongodb:
     name: "OpenBooru" # Name of the database in mongodb
-    host: "slate"
-    port: 27017
+    host: "slate" # The hostname of the mongodb server
+    port: 27017 # The port of the mongodb server
     wipe_on_startup: false # Wipe the database on startup, useful for testing
 
 
 email:
-  template_paths:
-    email_verification: "./data/emails/email_verification.html"
-    password_reset: "./data/emails/password_reset.html"
+  template_paths: # The File Paths to the email templates
+    email_verification: "./data/emails/email_verification.html" # Used to verify a user owns an email
+    password_reset: "./data/emails/password_reset.html" # Used to reset a users password
 
 
 posts:
-  search_max_limit: 100 # Max number of results per search
+  search_max_limit: 100 # Max number of results users get per search
   import:
     local: # Import posts from local import directory
       enabled: true
@@ -48,62 +48,81 @@ posts:
         "asami_sato -bra -bikini",
         "pharah_(overwatch) mercy_(overwatch) yuri",
         "widowmaker_(overwatch) tracer_(overwatch) yuri -underwear",
-        "sombra_(overwatch) yuri -katya_volskaya"
+        "sombra_(overwatch) yuri -katya_volskaya",
+        "samus_aran yuri",
       ]
       limit: null # null for no limit
 
 storage:
   method: "local" # Valid methods: s3, local
+  local:
+    path: "./data/storage" # The path to the local storage directory
   s3:
     bucket-name: "openbooru" # Ensure name is valid
 
 authentication:
   token_expiration: 86400 # Login Token Expiration time in seconds
-  password_requirements: # Use null to disable check
+  password_requirements:
     min_length: 8 # Maximum length of password
     max_length: 128 # Maximum length of password
     score: 3
     # 1 is increibly vulnerable, 4 is very secure
     # Based on https://github.com/dropbox/zxcvbn
 
-thumbnail:
-  lossless: false
-  quality: 80
-  max_width: 250
-  max_height: 250
+encoding:
+  thumbnail:
+    lossless: false # Should webp be lossless
+    quality: 80 # Re-encoded webp quality (1-100/lossless)
+    max_width: 250 # max width before downscaling
+    max_height: 250 # max height before downscaling
 
-image:
-  full:
-    lossless: true # Should webp be lossless
-    quality: 100 # Re-encoded webp quality (1-100/lossless)
-    max_width: 4000 # max width before downscaling
-    max_height: 4000 # max height before downscaling
-  preview:
-    lossless: false
-    quality: 90
-    max_width: 1600
-    max_height: 1600
+  image:
+    full:
+      lossless: true # Refer to thumbnail
+      quality: 100 # Refer to thumbnail
+      max_width: 4000 # Refer to thumbnail
+      max_height: 4000 # Refer to thumbnail
+    preview:
+      lossless: false # Refer to thumbnail
+      quality: 90 # Refer to thumbnail
+      max_width: 1600 # Refer to thumbnail
+      max_height: 1600 # Refer to thumbnail
 
-animation:
-  lossless: true
-  quality: 100
-  max_width: 4000
-  max_height: 4000
+  animation:
+    lossless: true # Refer to thumbnail
+    quality: 100 # Refer to thumbnail
+    max_width: 4000 # Refer to thumbnail
+    max_height: 4000 # Refer to thumbnail
 
-video:
-  full:
-    reencode: false # Should the video be re-encoded to reduce filesize#TODO: implement
-  preview:
-    enabled: false # Should video previews be generated #TODO: implement
-    duration: 5 # How long should the video preview be#TODO: implement
-  thumbnail_offset: 10 # Perentage through the video for the thumbnail screenshot to be taken#TODO: implement
+  video: # How videos are handled
+    full:
+      reencode: false # Should the video be re-encoded to reduce filesize#TODO: Not implemented
+    preview:
+      enabled: false # Should video previews be generated #TODO: Not implemented
+      duration: 5 # How long should the video preview be #TODO: Not implemented
+    thumbnail_offset: 10 # Perentage through the video for the thumbnail screenshot to be taken #TODO: implemented
 
-permissions:
-  annonymous:
+permissions: # What permissions each level gets
+  # Avaliable Options are:
+    # canViewUsers - Can view other user's profiles
+    # canSearchUsers - Can search for users
+    # canEditUsers - Can edit other user's accounts
+    # canDeleteUsers - Can delete other user's accounts
+    
+    # canCreatePosts - Can create posts
+    # canViewPosts - Can view posts
+    # canSearchPosts - Can search for posts
+    # canEditPosts - Can make edits to posts
+    # canDeletePosts - Can delete other people's posts
+
+    # canCreateComments - Can create comments on posts
+    # canViewComments - Can view other people's comments on posts
+    # canDeleteComments - Can delete other people's comments on posts
+  annonymous: # Annonomous users, anyone can access
     - canViewPosts
     - canSearchPosts
 
-  user:
+  user: # User's with a normal account
     - canViewUsers
     - canSearchUsers
     
@@ -115,7 +134,7 @@ permissions:
     - canCreateComments
     - canViewComments
 
-  admin:
+  admin: # Site owners/admins
     - canViewUsers
     - canSearchUsers
     - canEditUsers

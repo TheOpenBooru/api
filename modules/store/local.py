@@ -2,7 +2,7 @@ from modules import settings
 import hashlib
 from pathlib import Path
 
-STORE_PATH = Path("data","files")
+STORE_PATH = Path(settings.STORAGE_LOCAL_PATH)
 
 def put(data: bytes,suffix:str = "") -> str:
     """Raises:

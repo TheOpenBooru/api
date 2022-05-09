@@ -51,6 +51,7 @@ AWS_REGION:str = get("config.aws.region")
 # Storage
 
 STORAGE_METHOD:str = get("storage.method")
+STORAGE_LOCAL_PATH:str = get("storage.local.path")
 STORAGE_S3_BUCKET:str = get("storage.s3.bucket-name")
 
 # Posts
@@ -82,27 +83,27 @@ PASSWORD_REQUIRED_SCORE:int = get("authentication.password_requirements.score")
 
 # Encoding
 
-THUMBNAIL_LOSSLESS:bool = get("thumbnail.lossless")
-THUMBNAIL_QUALITY:int = get("thumbnail.quality")
-THUMBNAIL_WIDTH:int = get("thumbnail.max_width")
-THUMBNAIL_HEIGHT:int = get("thumbnail.max_height")
+THUMBNAIL_LOSSLESS:bool = get("encoding.thumbnail.lossless")
+THUMBNAIL_QUALITY:int = get("encoding.thumbnail.quality")
+THUMBNAIL_WIDTH:int = get("encoding.thumbnail.max_width")
+THUMBNAIL_HEIGHT:int = get("encoding.thumbnail.max_height")
 
-IMAGE_FULL_LOSSLESS:bool = get("image.full.lossless")
-IMAGE_FULL_QUALITY:int = get("image.full.quality")
-IMAGE_FULL_WIDTH:int = get("image.full.max_width")
-IMAGE_FULL_HEIGHT:int = get("image.full.max_height")
+IMAGE_FULL_LOSSLESS:bool = get("encoding.image.full.lossless")
+IMAGE_FULL_QUALITY:int = get("encoding.image.full.quality")
+IMAGE_FULL_WIDTH:int = get("encoding.image.full.max_width")
+IMAGE_FULL_HEIGHT:int = get("encoding.image.full.max_height")
 
-IMAGE_PREVIEW_LOSSLESS:bool = get("image.preview.lossless")
-IMAGE_PREVIEW_QUALITY:int = get("image.preview.quality")
-IMAGE_PREVIEW_WIDTH:int = get("image.preview.max_width")
-IMAGE_PREVIEW_HEIGHT:int = get("image.preview.max_height")
+IMAGE_PREVIEW_LOSSLESS:bool = get("encoding.image.preview.lossless")
+IMAGE_PREVIEW_QUALITY:int = get("encoding.image.preview.quality")
+IMAGE_PREVIEW_WIDTH:int = get("encoding.image.preview.max_width")
+IMAGE_PREVIEW_HEIGHT:int = get("encoding.image.preview.max_height")
 
-ANIMATION_LOSSLESS:bool = get("animation.lossless")
-ANIMATION_QUALITY:int = get("animation.quality")
-ANIMATION_WIDTH:int = get("animation.max_width")
-ANIMATION_HEIGHT:int = get("animation.max_height")
+ANIMATION_LOSSLESS:bool = get("encoding.animation.lossless")
+ANIMATION_QUALITY:int = get("encoding.animation.quality")
+ANIMATION_WIDTH:int = get("encoding.animation.max_width")
+ANIMATION_HEIGHT:int = get("encoding.animation.max_height")
 
-VIDEO_REENCODE:bool = get("video.full.reencode")
-VIDEO_PREVIEW_ENABLED:bool = get("video.preview.enabled")
-VIDEO_PREVIEW_DURATION:float = get("video.preview.duration")
-VIDEO_THUMBNAIL_OFFSET:float = get("video.thumbnail_offset")
+VIDEO_REENCODE:bool = get("encoding.video.full.reencode")
+VIDEO_PREVIEW_ENABLED:bool = get("encoding.video.preview.enabled")
+VIDEO_PREVIEW_DURATION:float = get("encoding.video.preview.duration")
+VIDEO_THUMBNAIL_OFFSET:float = get("encoding.video.thumbnail_offset")
