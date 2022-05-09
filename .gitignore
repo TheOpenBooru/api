@@ -240,3 +240,4 @@ data/import/*
 data/log.txt
 ffprobe.json
 config.yml
+data/auth.db
