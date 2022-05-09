@@ -1,9 +1,12 @@
-from . import User,_user_store
+from . import User,user_collection
 
-def get(id:int):
+def get(id:int) -> User:
     """Raises:
     KeyError: User does not exist
     """
-    if id not in _user_store:
+    document = user_collection.find_one({'id':id})
+    if document == None:
         raise KeyError("User does not exist")
-    return _user_store[id]
+    else:
+        user = User.parse_obj(document)
+        return user

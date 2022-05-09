@@ -1,5 +1,6 @@
 from . import fields,BaseModel,GenericMedia,Image
 from pydantic import Field
+import time
 
 
 class Post_Edit(BaseModel):
@@ -9,12 +10,19 @@ class Post_Edit(BaseModel):
     tags: list[str] = fields.Tags
 
 class Post_Query(BaseModel):
-    sort: str = Field(default="created_at", description="How to sort the posts")
-    descending: str = Field(default=True, description="Should searhc be ordered descending")
     index: int = Field(default=0, description="Offset from the start of the results")
     limit: int = Field(default=64, description="Maximum number of results to return")
+    sort: str = Field(default="created_at", description="How to sort the posts")
+    descending: bool = Field(default=True, description="Should search be ordered descending")
+    
     include_tags: list[str] = fields.Tags
     exclude_tags: list[str] = fields.Tags
+    
+    created_after:float|None = Field(default=None)
+    created_before:float|None = Field(default=None)
+    
+    md5:str|None = Field(default_factory=list)
+    sha256:str|None = Field(default_factory=list)
 
 
 class Post(BaseModel):

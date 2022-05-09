@@ -1,4 +1,4 @@
-from modules import posts,schemas,importer,settings
+from modules import posts, schemas, importer, settings, database
 import yaml
 from unittest import IsolatedAsyncioTestCase as AsyncTestCase
 
@@ -7,6 +7,8 @@ class test_Post_Create_has_Correct_Attributes(AsyncTestCase):
     async def asyncSetUp(self):
         with open('./data/test/sample_data.json','r') as f:
             self.testdata = yaml.full_load(f)
+    async def asyncTearDown(self):
+        database.Post.clear()
     
     def assert_attributes(self,post:schemas.Post,attrs:dict):
         assert post.full.width == attrs["width"],f'{post.full.width} != {attrs["width"]}'
@@ -58,12 +60,28 @@ class test_Post_Create_has_Correct_Attributes(AsyncTestCase):
 
 class test_Post_Search(AsyncTestCase):
     async def asyncSetUp(self):
-        await importer.import_gelbooru()
+        await importer.import_gelbooru(50)
+    async def asyncTearDown(self):
+        database.Post.clear()
     
-    async def test_limit_is_correct(self):
-        query = schemas.Post_Query()
+    
+    async def test_Returns_Posts(self):
+        query = schemas.Post_Query(limit=10)
+        searched_posts = await posts.search(query)
+        assert len(searched_posts) > 0
+    
+    async def test_Posts_Are_Capped_To_Limit(self):
+        query = schemas.Post_Query(limit=10)
         searched_posts = await posts.search(query)
         assert len(searched_posts) == query.limit
+    
+    async def test_Index_Offsets_Post_Search(self):
+        query = schemas.Post_Query(limit=10)
+        index_0_posts = await posts.search(query)
+        query.index = 1
+        index_1_posts = await posts.search(query)
+        assert index_0_posts[1:10] == index_1_posts[:9]
+        assert len(index_1_posts) == query.limit
 
     async def test_Post_Search_Returns_Posts(self):
         query = schemas.Post_Query()

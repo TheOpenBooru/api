@@ -1,9 +1,14 @@
-from . import Post,_posts_store
+from . import Post, exists, post_collection
 
 def update(id:int,new_version:Post):
     """Raises:
     - KeyError: Post not found
     """
-    if id not in _posts_store:
+    if not exists(id):
         raise KeyError("Post not found")
-    _posts_store[id] = new_version
+    else:
+        document = new_version.dict()
+        post_collection.replace_one(
+            filter={'id':id},
+            replacement=document
+        )

@@ -18,15 +18,22 @@ def get(setting: str) -> Any:
             config = config[key]
     return config
 
+# Webserver Config
+
 SITE_NAME:str = get("config.site.name")
 HOSTNAME:str = get("config.site.hostname")
 PORT:str = get("config.site.port")
 
+SSL_ENABLED:bool = get("config.ssl.enabled")
 SSL_KEY_STORE:str = get("config.ssl.key")
 SSL_CERT_STORE:str = get("config.ssl.cert")
 
+# Hcaptcha
+
 HCAPTCHA_SITEKEY:str = get("config.hcaptcha.sitekey")
 HCAPTCHA_SECRET:str = get("config.hcaptcha.secret")
+
+# Email
 
 SMTP_EMAIL:str = get("config.smtp.email")
 SMTP_PASSWORD:str = get("config.smtp.password")
@@ -35,25 +42,45 @@ SMTP_PORT:int = get("config.smtp.port")
 EMAIL_TEMPLATE_EMAIL_VERIFICATION_PATH:str = get("email.template_paths.email_verification")
 EMAIL_TEMPLATE_PASSWORD_RESET_PATH:str = get("email.template_paths.password_reset")
 
+# AWS
+
 AWS_ID:str = get("config.aws.id")
 AWS_SECRET:str = get("config.aws.secret")
 AWS_REGION:str = get("config.aws.region")
 
+# Storage
+
 STORAGE_METHOD:str = get("storage.method")
 STORAGE_S3_BUCKET:str = get("storage.s3.bucket-name")
 
-MAX_SEARCH_LIMIT:int = get("search.max_limit")
-IMPORT_LOCAL_ENABLED:bool = get("posts.sources.local")
-IMPORT_GELBOORU_ENABLED:bool = get("posts.sources.gelbooru.enabled")
-IMPORT_GELBOORU_WEBSITE:str = get("posts.sources.gelbooru.website")
-IMPORT_GELBOORU_TAGS:list[str] = get("posts.sources.gelbooru.tags")
-IMPORT_GELBOORU_LIMIT:int = get("posts.sources.gelbooru.limit")
+# Posts
+
+MAX_SEARCH_LIMIT:int = get("posts.search_max_limit")
+
+# Database
+DATABASE_CHOICE:str = get("database.choice")
+MONGODB_PERSISTENT:bool = get("database.mongodb.persistent")
+MONGODB_DB_NAME:str = get("database.mongodb.name")
+MONGODB_HOSTNAME:str = get("database.mongodb.host")
+MONGODB_PORT:int = get("database.mongodb.port")
+
+# Import
+
+IMPORT_LOCAL_ENABLED:bool = get("posts.import.local.enabled")
+IMPORT_GELBOORU_ENABLED:bool = get("posts.import.gelbooru.enabled")
+IMPORT_GELBOORU_WEBSITE:str = get("posts.import.gelbooru.website")
+IMPORT_GELBOORU_TAGS:list[str] = get("posts.import.gelbooru.tags")
+IMPORT_GELBOORU_LIMIT:int = get("posts.import.gelbooru.limit")
+
+# Password
 
 PASSWORD_PEPPER:int = get("config.password_pepper")
-DEFAULT_TOKEN_EXPIRATION:int = get("token_expiration")
-PASSWORD_MIN_LENGTH:int = get("password_requirements.min_length")
-PASSWORD_MAX_LENGTH:int = get("password_requirements.max_length")
-PASSWORD_REQUIRED_SCORE:int = get("password_requirements.score")
+DEFAULT_TOKEN_EXPIRATION:int = get("authentication.token_expiration")
+PASSWORD_MIN_LENGTH:int = get("authentication.password_requirements.min_length")
+PASSWORD_MAX_LENGTH:int = get("authentication.password_requirements.max_length")
+PASSWORD_REQUIRED_SCORE:int = get("authentication.password_requirements.score")
+
+# Encoding
 
 THUMBNAIL_LOSSLESS:bool = get("thumbnail.lossless")
 THUMBNAIL_QUALITY:int = get("thumbnail.quality")

@@ -1,8 +1,15 @@
 version: "3.3"
 services:
+  mongodb:
+    image: 'mongo'
+    container_name: 'openbooru-mongodb'
+    ports:
+      - "27017:27019"
   open_booru_api:
     build: .
     ports:
       - "8443:8443"
     expose:
       - 8443
+    depends_on:
+      - mongodb

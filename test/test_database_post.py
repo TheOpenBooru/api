@@ -1,36 +1,10 @@
-"""
-Requirements:
-get_unused_id:
-    - IDs are unique
-    - IDs are sequential
-create:
-    - Prevents Duplicates:
-        - IDs
-        - MD5s
-        - SHA256s
-    - Validates Data:
-        - Uploader ID
-        - Type
-        - Rating
-        - Language
-update:
-    - The post becomes the new version
-search:
-    - Orders Correctly
-    - Appends at limit
-    - Does not have max limit
-delete:
-    - Entries cannot be gotten
-    - Allows deletion of non-existent entries
-"""
-
 from modules.database import Post
 from modules import schemas
 import unittest
 
 
 def generate_post(id:int|None = None) -> schemas.Post:
-    example_image = schemas.Image(
+    EXAMPLE_IMAGE = schemas.Image(
         url="https://example.com/image.png",
         height=100,width=100,
         mimetype='image/png'
@@ -39,21 +13,34 @@ def generate_post(id:int|None = None) -> schemas.Post:
     return schemas.Post(
         id=id,uploader=0,
         media_type="image",
-        thumbnail=example_image,
-        full=example_image,
+        thumbnail=EXAMPLE_IMAGE,
+        full=EXAMPLE_IMAGE,
     )
 
-class test_Get_Unused_ID(unittest.TestCase):
+class TestCase(unittest.TestCase):
+    def setUp(self):
+        Post.clear()
     def tearDown(self):
         Post.clear()
-    
+
+
+
+class test_Post_Count(TestCase):
+    def test_Count_Is_Updated_Correctly(self):
+        Post.create(generate_post(1))
+        assert Post.count() == 1
+        Post.create(generate_post(2))
+        assert Post.count() == 2
+
+
+class test_Get_Unused_ID(TestCase):
     def test_isnt_Used_By_Post(self):
         id = Post.get_unused_id()
-        assert Post.get(id=id) == None
+        self.assertRaises(KeyError,Post.get,id)
     
     def test_is_Unique_when_deleted_and_Re_Added(self):
         IDs = set()
-        for _ in range(1_000):
+        for _ in range(10):
             id = Post.get_unused_id()
             assert id not in IDs, f"ID {id} is not unique"
             
@@ -63,37 +50,81 @@ class test_Get_Unused_ID(unittest.TestCase):
             Post.delete(post.id)
 
 
-    def test_is_Sequential_when_deleted(self):
-        start_id = Post.get_unused_id()
-        for x in range(5_000):
-            id = Post.get_unused_id()
-            assert id == start_id + x, f"ID {id} was not sequential"
-            
-            post = generate_post(id)
-            Post.create(post)
-            Post.delete(post.id)
-
-
-class test_Create(unittest.TestCase):
-    def test_a(self):
+class test_Create(TestCase):
+    def test_Created_Posts_can_be_retrieved(self):
         post = generate_post()
         Post.create(post)
-        assert post == Post.get(id=post.id)
+        assert post == Post.get(post.id)
+    def test_prevents_duplicates_ids(self):
+        post_a = generate_post()
+        post_b = generate_post()
+        post_b.id = post_a.id
+        Post.create(post_a)
+        self.assertRaises(KeyError,Post.create,post_b)
+    
+    def test_prevents_duplicates_md5s(self):
+        post_a = generate_post()
+        post_b = generate_post()
+        post_b.md5s = post_a.md5s = ['f'*32]
+        Post.create(post_a)
+        self.assertRaises(KeyError,Post.create,post_b)
+    
+    def test_prevents_duplicates_sha256(self):
+        post_a = generate_post()
+        post_a.sha256s = ['f'*64]
+        Post.create(post_a)
+        post_b = generate_post()
+        post_b.sha256s = ['f'*64]
+        self.assertRaises(KeyError,Post.create,post_b)
 
-class test_Edit(unittest.TestCase):
+
+class test_Update(TestCase):
+    def setUp(self) -> None:
+        self.post = generate_post()
+        Post.create(self.post)
+    
     def test_a(self):
-        post = generate_post()
-        Post.create(post)
-        post.tags = ["rating:safe"]
-        Post.update(post.id,post)
-        assert post == Post.get(id=post.id)
+        post = self.post
+        new_post = post.copy()
+        new_post.tags = ["safe"]
+        Post.update(post.id,new_post)
+        assert Post.get(id=post.id) == new_post
+        assert Post.get(id=post.id) != post
 
-class test_Delete(unittest.TestCase):
-    def test_allows_non_existant_ID(self):
+
+class test_Delete(TestCase):
+    def setUp(self):
+        super().setUp()
+        self.post = post = generate_post()
+        Post.create(post)
+    
+    def test_Allows_Deletion_of_NonExistant_Post(self):
         Post.delete(Post.get_unused_id())
-
-    def test_deletes_removes_entries(self):
-        post = generate_post()
+    
+    def test_Deletes_Successfully_Removes_Entries(self):
+        self.post = post = generate_post()
         Post.create(post)
+        post = self.post
         Post.delete(post.id)
-        assert Post.get(id=post.id) == None, "Post was not deleted"
+        self.assertRaises(KeyError,Post.get,post.id)
+
+
+class test_Clear(TestCase):
+    def test_Clear_Removes_All_Posts(self):
+        Post.create(generate_post())
+        Post.clear()
+        assert Post.count() == 0
+
+
+class test_Increment_View(TestCase):
+    def setUp(self):
+        self.post = post = generate_post()
+        Post.create(post)
+    
+    def test_Increment_View(self):
+        id = self.post.id
+        for x in range(1,10):
+            Post.increment_view(id)
+            post = Post.get(id)
+            assert post
+            assert post.views == x, "Could not increment views"

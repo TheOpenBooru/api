@@ -1,10 +1,13 @@
-from . import _posts_store
+from . import post_collection,exists
 
 def increment_view(id:int):
     """Raises:
     - KeyError: Post not found
     """
-    if id not in _posts_store:
+    if not exists(id):
         raise KeyError("Post not found")
-    
-    _posts_store[id].views += 1 # type: ignore
+
+    post_collection.update_one(
+        filter={'id':id},
+        update={"$inc": {'views':1}}, # Increment views by 1
+    )

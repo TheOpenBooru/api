@@ -4,8 +4,9 @@ config:
     hostname: "localhost"
     port: 8443
   ssl:
-    key: "./data/key.pem"
-    cert: "./data/cert.pem"
+    enabled: false
+    key: ""
+    cert: ""
   password_pepper: ""
   hcaptcha:
     sitekey: ""
@@ -20,20 +21,28 @@ config:
     hostname: ""
     port: 25
 
+database:
+  choice: "mongodb"
+  mongodb:
+    name: "OpenBooru"
+    host: "localhost"
+    port: 27017
+    wipe_on_startup: false
+
 
 email:
   template_paths:
     email_verification: "./data/emails/email_verification.html"
     password_reset: "./data/emails/password_reset.html"
 
-search:
-  max_limit: 100 # Max number of results per search
 
 posts:
-  sources:
-    local: false # Import from local import directory
-    gelbooru: # Import data from any gelbooru 2.0 site
+  search_max_limit: 100 # Max number of results per search
+  import:
+    local: # Import posts from local import directory
       enabled: true
+    gelbooru: # Import posts from any gelbooru 2.0 site
+      enabled: false
       website: safebooru.org # Examples: safebooru.org, rule34.xxx
       tags: ["sort:score"]
       limit: 400
@@ -43,13 +52,46 @@ storage:
   s3:
     bucket-name: "openbooru" # Ensure name is valid
 
-token_expiration: 86400 # Login Token Expiration time in seconds
-password_requirements: # Use null to disable check
-  min_length: 8 # Maximum length of password
-  max_length: 128 # Maximum length of password
-  score: 3
-  # 1 is increibly vulnerable, 4 is very secure
-  # Based on https://github.com/dropbox/zxcvbn
+authentication:
+  token_expiration: 86400 # Login Token Expiration time in seconds
+  password_requirements: # Use null to disable check
+    min_length: 8 # Maximum length of password
+    max_length: 128 # Maximum length of password
+    score: 3
+    # 1 is increibly vulnerable, 4 is very secure
+    # Based on https://github.com/dropbox/zxcvbn
+
+thumbnail:
+  lossless: false
+  quality: 80
+  max_width: 250
+  max_height: 250
+
+image:
+  full:
+    lossless: true # Should webp be lossless
+    quality: 100 # Re-encoded webp quality (1-100/lossless)
+    max_width: 4000 # max width before downscaling
+    max_height: 4000 # max height before downscaling
+  preview:
+    lossless: false
+    quality: 90
+    max_width: 1600
+    max_height: 1600
+
+animation:
+  lossless: true
+  quality: 100
+  max_width: 4000
+  max_height: 4000
+
+video:
+  full:
+    reencode: false # Should the video be re-encoded to reduce filesize#TODO: implement
+  preview:
+    enabled: false # Should video previews be generated #TODO: implement
+    duration: 5 # How long should the video preview be#TODO: implement
+  thumbnail_offset: 10 # Perentage through the video for the thumbnail screenshot to be taken#TODO: implement
 
 permissions:
   annonymous:
@@ -83,36 +125,3 @@ permissions:
     - canCreateComments
     - canViewComments
     - canDeleteComments
-
-thumbnail:
-  lossless: false
-  quality: 80
-  max_width: 250
-  max_height: 250
-
-image:
-  full:
-    lossless: true # Should webp be lossless
-    quality: 100 # Re-encoded webp quality (1-100/lossless)
-    max_width: 4000 # max width before downscaling
-    max_height: 4000 # max height before downscaling
-  preview:
-    lossless: false
-    quality: 90
-    max_width: 1600
-    max_height: 1600
-
-animation:
-  lossless: true
-  quality: 100
-  max_width: 4000
-  max_height: 4000
-
-video:
-  full:
-    reencode: false # Should the video be re-encoded to reduce filesize
-  preview:
-    enabled: false # Should video previews be generated
-    duration: 5 # How long should the video preview be
-  thumbnail_offset: 10 # Perentage through the video for the thumbnail screenshot to be taken
-

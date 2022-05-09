@@ -1,4 +1,4 @@
-from . import is_post_unique, is_post_valid, _posts_store, Post
+from . import is_post_unique, is_post_valid, post_collection, Post
 
 def create(post:Post):
     """Raises:
@@ -10,4 +10,5 @@ def create(post:Post):
     elif not is_post_valid(post):
         raise ValueError("Invalid Post Data")
     else:
-        _posts_store[post.id] = post
+        document = post.dict()
+        post_collection.insert_one(document=document)

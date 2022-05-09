@@ -1,5 +1,4 @@
-from . import User,_user_store
+from . import User,user_collection
 
 def delete(id:int):
-    if id in _user_store:
-        _user_store.pop(id)
+    user_collection.delete_one({'id':id})

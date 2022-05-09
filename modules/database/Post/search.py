@@ -1,26 +1,28 @@
-from . import Post, _posts_store
+from xml.etree.ElementInclude import include
+from . import Post, post_collection
 from modules import schemas
+import pymongo
 
 def search(query:schemas.Post_Query) -> list[Post]:
-    """Raises:
-    - ValueError: Invalid Ordering
-    """
-    def filterTags(post:Post) -> bool:
-        valid = True
-        if query.include_tags:
-            for tag in query.include_tags:
-                valid = valid and tag in post.tags
-        if query.exclude_tags:
-            for tag in query.exclude_tags:
-                valid = valid and tag not in post.tags
-        return valid
-    
-    post_values = list(_posts_store.values())
-    posts = [x for x in post_values if x != None] # type: ignore
-    posts = filter(filterTags,posts)
-    posts = list(posts)
-    posts.sort(
-        key=lambda post: getattr(post,query.sort,0),
-        reverse=not query.descending
+    filters = []
+    if query.include_tags:
+        filters.append({'tags':{'$all':query.include_tags}})
+    if query.exclude_tags:
+        filters.append({'tags':{'$nin':query.exclude_tags}})
+    if query.md5:
+        filters.append({'md5s':{'$elemMatch':query.exclude_tags}})
+    if query.sha256:
+        filters.append({'sha256s':{'$elemMatch':query.exclude_tags}})
+    if query.created_after:
+        filters.append({'created_at':{"$gt":query.created_after}})
+    if query.created_before:
+        filters.append({'created_at':{"$lt":query.created_before}})
+
+    direction = pymongo.DESCENDING if query.descending else pymongo.ASCENDING
+    cursor = post_collection.find(
+        filter={'$and':filters} if filters else {},
+        skip=query.index,
+        limit=query.limit,
+        sort=[(query.sort,direction)],
     )
-    return posts[query.index:query.limit + query.index]
+    return [Post.parse_obj(doc) for doc in cursor]

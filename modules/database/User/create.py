@@ -1,13 +1,13 @@
-from . import User,_user_store
+from . import User, user_collection
 
 def create(user:User):
     """Raises:
     - KeyError: User already exists
     - ValueError: User is invalid
     """
-    if user.id in _user_store:
+    
+    if user_collection.find_one({'id':user.id}):
         raise KeyError("User already exists")
-    elif user.id is None:
-        raise ValueError("User already exists")
     else:
-        _user_store[user.id] = user
+        document = user.dict()
+        user_collection.insert_one(document)
