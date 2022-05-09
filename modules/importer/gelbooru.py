@@ -1,5 +1,5 @@
 import random
-from . import normalise_tag
+from . import normalise_tags
 from modules import schemas,settings
 from modules.database import Post
 from mimetypes import guess_type
@@ -14,10 +14,10 @@ async def import_gelbooru(
         searches:list[str]=settings.IMPORT_GELBOORU_SEARCHES,
         gelbooru_url = settings.IMPORT_GELBOORU_WEBSITE,
         ):
-
+    
     posts = []
     for search in searches:
-        new_posts = await run_gelbooru_search(gelbooru_url,search)
+        new_posts = await run_gelbooru_search(gelbooru_url,search,limit)
         posts.extend(new_posts)
     random.shuffle(posts)
 
@@ -32,7 +32,7 @@ async def import_gelbooru(
         except KeyError:
             continue
 
-async def run_gelbooru_search(url:str,search:str) -> list[bs4.BeautifulSoup]:
+async def run_gelbooru_search(url:str,search:str,limit:int|None) -> list[bs4.BeautifulSoup]:
     url = f"https://{url}/index.php?page=dapi&s=post&q=index"
     url += f"&tags={search}"
     
@@ -48,8 +48,12 @@ async def run_gelbooru_search(url:str,search:str) -> list[bs4.BeautifulSoup]:
         xml = bs4.BeautifulSoup(r.text,"lxml")
         new_posts = xml.find_all('post')
         found_posts.extend(new_posts)
+        
         if len(new_posts) != 1000:
             break
+        if limit and len(found_posts) >= limit:
+            break
+    
     return found_posts
 
 async def import_post_from_soup(soup:bs4.BeautifulSoup):
@@ -75,12 +79,9 @@ async def import_post_from_soup(soup:bs4.BeautifulSoup):
         
         # Tags
         tags = attrs['tags'].split(' ')
-        tags = [normalise_tag(tag) for tag in tags]
         if attrs['rating'] == 's':
             tags.append('rating:safe')
-        tags = list(set(tags))
-        if '' in tags:
-            tags.remove('')
+        tags = normalise_tags(tags)
         
         # Type
         TYPE_LOOKUP = {

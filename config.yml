@@ -45,10 +45,10 @@ posts:
       enabled: true
       website: safebooru.org # Examples: safebooru.org, rule34.xxx
       searches: [
-        "sort:score asami_sato -bra -bikini",
+        "asami_sato -bra -bikini",
         "pharah_(overwatch) mercy_(overwatch) yuri",
         "widowmaker_(overwatch) tracer_(overwatch) yuri -underwear",
-        "sombra_(overwatch) yuri"
+        "sombra_(overwatch) yuri -katya_volskaya"
       ]
       limit: null # null for no limit
 

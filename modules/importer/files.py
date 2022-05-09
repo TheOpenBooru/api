@@ -1,4 +1,4 @@
-from . import normalise_tag
+from . import normalise_tags
 from modules import database,posts
 from tqdm import tqdm
 from pathlib import Path
@@ -37,7 +37,7 @@ async def import_file(data_file:Path,tag_file:Path|None):
     else:
         with open(tag_file) as f:
             tags = f.readlines()
-    tags = [normalise_tag(tag) for tag in tags]
+    tags = normalise_tags(tags)
 
     data = data_file.read_bytes()
     post = await posts.create(data,data_file.name)
