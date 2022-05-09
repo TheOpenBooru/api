@@ -1,3 +1,4 @@
+import random
 from . import normalise_tag
 from modules import schemas,settings
 from modules.database import Post
@@ -8,82 +9,101 @@ import itertools
 import requests
 import warnings
 
-async def import_gelbooru(limit=settings.IMPORT_GELBOORU_LIMIT,tags=settings.IMPORT_GELBOORU_TAGS):
-    gelbooru_url = settings.IMPORT_GELBOORU_WEBSITE
-    for index in itertools.count():
-        if index == 100:
-            warnings.warn('Gelbooru Import: Searched more than 100 pages')
+async def import_gelbooru(
+        limit:int|None=settings.IMPORT_GELBOORU_LIMIT,
+        searches:list[str]=settings.IMPORT_GELBOORU_SEARCHES,
+        gelbooru_url = settings.IMPORT_GELBOORU_WEBSITE,
+        ):
 
-        url = f"https://{gelbooru_url}/index.php?page=dapi&s=post&q=index"
-        url += f"&tags={'+'.join(tags)}"
+    posts = []
+    for search in searches:
+        new_posts = await run_gelbooru_search(gelbooru_url,search)
+        posts.extend(new_posts)
+    random.shuffle(posts)
+
+    if limit:
+        if len(posts) < limit:
+            warnings.warn(f"Gelbooru Import: Did not reach intended limit")
+        posts = posts[:limit]
+    
+    for post in posts:
+        try:
+            await import_post_from_soup(post)
+        except KeyError:
+            continue
+
+async def run_gelbooru_search(url:str,search:str) -> list[bs4.BeautifulSoup]:
+    url = f"https://{url}/index.php?page=dapi&s=post&q=index"
+    url += f"&tags={search}"
+    
+    found_posts = []
+    for x in itertools.count():
         r = requests.get(
-            url,
+            url=url,
             params={
                 "limit":1000,
-                "pid":index,
+                "pid":x,
             }
         )
         xml = bs4.BeautifulSoup(r.text,"lxml")
-        loaded_posts = xml.find_all("post")
+        new_posts = xml.find_all('post')
+        found_posts.extend(new_posts)
+        if len(new_posts) != 1000:
+            break
+    return found_posts
+
+async def import_post_from_soup(soup:bs4.BeautifulSoup):
+        attrs:dict = soup.attrs
+        full = schemas.Image(
+            url=attrs['file_url'],
+            mimetype=guess_type(attrs['file_url'])[0], # type: ignore
+            width=int(attrs['width']),
+            height=int(attrs['height']),
+        )
+        preview = schemas.Image(
+            url=attrs['sample_url'],
+            mimetype=guess_type(attrs['sample_url'])[0], # type: ignore
+            width=int(attrs['sample_width']),
+            height=int(attrs['sample_height']),
+        )
+        thumbnail = schemas.Image(
+            url=attrs['preview_url'],
+            mimetype=guess_type(attrs['preview_url'])[0], # type: ignore
+            width=int(attrs['preview_width']),
+            height=int(attrs['preview_height']),
+        )
         
-        if len(loaded_posts) == 0:
-            warnings.warn(f"Gelbooru Import: Did not reach intended limit")
+        # Tags
+        tags = attrs['tags'].split(' ')
+        tags = [normalise_tag(tag) for tag in tags]
+        if attrs['rating'] == 's':
+            tags.append('rating:safe')
+        tags = list(set(tags))
+        if '' in tags:
+            tags.remove('')
+        
+        # Type
+        TYPE_LOOKUP = {
+            ".mp4":"video",
+            ".webm":"video",
+            ".png":"image",
+            ".jpg":"image",
+            ".jpeg":"image",
+            ".gif":"animation",
+        }
+        _,ext = os.path.splitext(attrs['file_url'])
+        media_type = TYPE_LOOKUP.get(ext,'unknown')
+        if media_type == 'unknown':
             return
         
-        for post in loaded_posts:
-            if len(Post.all()) >= limit:
-                return
-            attrs:dict = post.attrs
-            full = schemas.Image(
-                url=attrs['file_url'],
-                mimetype=guess_type(attrs['file_url'])[0], # type: ignore
-                width=int(attrs['width']),
-                height=int(attrs['height']),
+        post_obj = schemas.Post(
+            id=Post.get_unused_id(),
+            uploader=0,
+            media_type=media_type,
+            full=full,
+            preview=preview,
+            thumbnail=thumbnail,
+            md5s=[attrs.get('md5',''*24)],
+            tags=tags,
             )
-            preview = schemas.Image(
-                url=attrs['sample_url'],
-                mimetype=guess_type(attrs['sample_url'])[0], # type: ignore
-                width=int(attrs['sample_width']),
-                height=int(attrs['sample_height']),
-            )
-            thumbnail = schemas.Image(
-                url=post.attrs['preview_url'],
-                mimetype=guess_type(attrs['preview_url'])[0], # type: ignore
-                width=int(attrs['preview_width']),
-                height=int(attrs['preview_height']),
-            )
-            # Tags
-            tags = attrs['tags'].split(' ')
-            tags = [normalise_tag(tag) for tag in tags]
-            if attrs['rating'] == 's':
-                post.append('rating:safe')
-            tags = list(set(tags))
-            if '' in tags:
-                tags.remove('')
-            
-            # Type
-            TYPE_LOOKUP = {
-                ".mp4":"video",
-                ".webm":"video",
-                ".png":"image",
-                ".jpg":"image",
-                ".jpeg":"image",
-                ".gif":"animation",
-            }
-            _,ext = os.path.splitext(post.attrs['file_url'])
-            media_type = TYPE_LOOKUP.get(ext,'unknown')
-            if media_type == 'unknown':
-                continue
-            
-            post_obj = schemas.Post(
-                id=Post.get_unused_id(),
-                uploader=0,
-                media_type=media_type,
-                full=full,
-                preview=preview,
-                thumbnail=thumbnail,
-                md5s=[post.attrs.get('md5',''*24)],
-                tags=tags,
-                )
-            Post.create(post_obj)
-            
+        Post.create(post_obj)

@@ -22,12 +22,12 @@ config:
     port: 25
 
 database:
-  choice: "mongodb"
+  choice: "mongodb" # What database to use
   mongodb:
-    name: "OpenBooru"
+    name: "OpenBooru" # Name of the database in mongodb
     host: "slate"
     port: 27017
-    wipe_on_startup: false
+    wipe_on_startup: false # Wipe the database on startup, useful for testing
 
 
 email:
@@ -44,8 +44,13 @@ posts:
     gelbooru: # Import posts from any gelbooru 2.0 site
       enabled: true
       website: safebooru.org # Examples: safebooru.org, rule34.xxx
-      tags: ["sort:score","asami_sato", "-bra", "-bikini" ]
-      limit: 400
+      searches: [
+        "sort:score asami_sato -bra -bikini",
+        "pharah_(overwatch) mercy_(overwatch) yuri",
+        "widowmaker_(overwatch) tracer_(overwatch) yuri -underwear",
+        "sombra_(overwatch) yuri"
+      ]
+      limit: null # null for no limit
 
 storage:
   method: "local" # Valid methods: s3, local
