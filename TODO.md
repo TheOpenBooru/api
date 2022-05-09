@@ -2,9 +2,11 @@
 
 This is a nice noticeboard for what I want to do or am currently doing. To try and add a bit of transparency to the project.
 
+Additionally, if you want to contribute try working on some of the small changes in the [Short Term](#Short-term) Section
+
 ## Plans
 
-### Right Now
+### Short-term
 
 - File links should be unrelated to the store method, use redirects to redirect the correct content
 - Add Generic store class for future methods
@@ -15,8 +17,6 @@ This is a nice noticeboard for what I want to do or am currently doing. To try a
 
 ## Near Future
 
-- Implement perisitnant database
-- Create proper user accounts
 - Require captcha + email verification in signup
 - Add password reset email
 - Enable post creation and editting
