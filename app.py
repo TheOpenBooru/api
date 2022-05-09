@@ -37,12 +37,11 @@ def docs_redirect():
 
 
 ssl_params = {}
-
-key_file = Path(settings.SSL_KEY_STORE)
-cert_file = Path(settings.SSL_CERT_STORE)
-if key_file.exists() and cert_file.exists():
-    ssl_params["ssl_keyfile"] = settings.SSL_KEY_STORE
-    ssl_params["ssl_certfile"] = settings.SSL_CERT_STORE
+if settings.SSL_ENABLED:
+    ssl_params |= {
+        "ssl_keyfile":settings.SSL_KEY_STORE,
+        "ssl_certfile":settings.SSL_CERT_STORE,
+    }
 
 if __name__ == "__main__":
     uvicorn.run(
