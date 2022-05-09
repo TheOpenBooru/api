@@ -1,11 +1,16 @@
 # Core
 wheel
 requests
-bs4
-lxml
-iso639
+numpy
 python-box
 tqdm
+
+# Importing
+bs4
+lxml
+
+# Validation
+iso639
 
 # Endpoints
 fastapi
@@ -15,16 +20,18 @@ python-multipart
 
 # Database
 cachetools
-boto3
+pymongo
 
 # Encoding
-numpy
 pillow
 ffmpeg-python
 python-magic
 
 # Email
 jinja2
+
+# Storage
+boto3
 
 # Auth
 cryptography
