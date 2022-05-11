@@ -10,30 +10,30 @@ class Templates:
     with open(settings.EMAIL_TEMPLATE_EMAIL_VERIFICATION_PATH) as f:
         VERIFICATION_EMAIL = f.read()
 
-def send_password_reset(self, to:str, username:str, reset_link:str):
+def send_password_reset(to:str, username:str, token:str):
     """Raises:
         ValueError: The destination email address is not valid
     """
-    subject = f"{self.sitename}: Password Reset"
+    subject = f"{settings.SITE_NAME}: Password Reset"
     email_html = _render_jinja_template(
         Templates.PASSWORD_RESET,
-        sitename=self.sitename,
-        link=reset_link,
-        name=username
+        sitename=settings.SITE_NAME,
+        link=token,
+        name=username,
     )
     email_data = _construct_email(to, subject, email_html)
     _send_email(to,email_data)
 
 
-def send_email_verification(self,to:str ,name:str ,verification_link:str):
+def send_email_verification(to:str, name:str, token:str):
     """Raises:
         ValueError: The destination email address is not valid
     """
-    subject = f"{self.sitename}: Verify Email"
+    subject = f"{settings.SITE_NAME}: Verify Email"
     email_html = _render_jinja_template(
         Templates.VERIFICATION_EMAIL,
-        link=verification_link,
-        sitename=self.sitename,
+        link=token,
+        sitename=settings.SITE_NAME,
         name=name
     )
     email_data = _construct_email(to, subject, email_html)
