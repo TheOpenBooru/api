@@ -22,7 +22,7 @@ def get(setting: str) -> Any:
 
 SITE_NAME:str = get("config.site.name")
 HOSTNAME:str = get("config.site.hostname")
-PORT:str = get("config.site.port")
+PORT:int = get("config.site.port")
 
 SSL_ENABLED:bool = get("config.ssl.enabled")
 SSL_KEY_STORE:str = get("config.ssl.key")
