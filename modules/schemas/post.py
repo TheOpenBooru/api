@@ -1,6 +1,6 @@
 from . import fields,BaseModel,GenericMedia,Image
 from pydantic import Field
-import time
+from enum import Enum
 
 
 class Post_Edit(BaseModel):
@@ -9,10 +9,17 @@ class Post_Edit(BaseModel):
     editter: int = fields.User_ID
     tags: list[str] = fields.Tags
 
+class Valid_Post_Sorts(str, Enum):
+    id = "id"
+    created_at = "created_at"
+    views = "views"
+    upvotes = "upvotes"
+    downvotes = "downvotes"
+
 class Post_Query(BaseModel):
     index: int = Field(default=0, description="Offset from the start of the results")
     limit: int = Field(default=64, description="Maximum number of results to return")
-    sort: str = Field(default="created_at", description="How to sort the posts")
+    sort: Valid_Post_Sorts = Field(default="created_at", description="How to sort the posts")
     descending: bool = Field(default=True, description="Should search be ordered descending")
     
     include_tags: list[str] = fields.Tags

@@ -14,16 +14,16 @@ responses = {
     responses=responses, # type: ignore
 )
 async def search_posts(
-        index:int = 0,
-        limit:int = settings.MAX_SEARCH_LIMIT,
-        sort:str = "created_at",
-        descending:bool = True,
-        include_tags = Query(default=[]),
-        exclude_tags = Query(default=[]),
-        created_after:float|None = None,
-        created_before:float|None = None,
-        md5:str|None = None,
-        sha256:str|None = None,
+        index:int = Query(0, description="Offset by this many posts"),
+        limit:int = Query(settings.MAX_SEARCH_LIMIT,lt=settings.MAX_SEARCH_LIMIT, description="Maximum number of posts to return"),
+        sort:schemas.Valid_Post_Sorts = Query("created_at", description="The sort order for the posts"),
+        descending:bool = Query(True, description="The sort order for the posts"),
+        include_tags:list[str] = Query(default=[], description="Include posts with these tags"),
+        exclude_tags:list[str] = Query(default=[], description="Exclude posts with these tags"),
+        created_after:float|None = Query(default=None, description="Posts that were created after this unix timestamp"),
+        created_before:float|None = Query(default=None, description="Posts that were created before this unix timestamp"),
+        md5:str|None = Query(default=None, description="Posts with this md5"),
+        sha256:str|None = Query(default=None, description="Posts with this sha256"),
         ):
     query = schemas.Post_Query(
         index=index,
