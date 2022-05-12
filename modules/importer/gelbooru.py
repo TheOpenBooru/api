@@ -56,8 +56,12 @@ async def run_gelbooru_search(url:str,search:str,limit:int|None) -> list[bs4.Bea
     
     return found_posts
 
+
 async def import_post_from_soup(soup:bs4.BeautifulSoup):
         attrs:dict = soup.attrs
+        if await check_post_exists(attrs['md5']):
+            return
+        
         full = schemas.Image(
             url=attrs['file_url'],
             mimetype=guess_type(attrs['file_url'])[0], # type: ignore
@@ -108,3 +112,8 @@ async def import_post_from_soup(soup:bs4.BeautifulSoup):
             tags=tags,
             )
         Post.create(post_obj)
+
+
+async def check_post_exists(md5):
+    query = schemas.Post_Query(md5=md5)
+    return bool(Post.search(query))
