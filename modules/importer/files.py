@@ -1,10 +1,10 @@
 from . import normalise_tags
-from modules import database,posts
+from modules import database,posts,settings
 from tqdm import tqdm
 from pathlib import Path
 import logging
 
-IMPORT_DIR = Path("data/import")
+IMPORT_DIR = Path(settings.IMPORT_LOCAL_PATH)
 
 async def import_files():
     tag_files = {}
@@ -12,11 +12,11 @@ async def import_files():
     for file in IMPORT_DIR.iterdir():
         if file.name == '.gitignore':
             continue
+        
+        if file.name.endswith('.txt'):
+            tag_files[file.stem] = file
         else:
-            if file.name.endswith('.txt'):
-                tag_files[file.stem] = file
-            else:
-                data_files[file.stem] = file
+            data_files[file.stem] = file
 
     for name in tqdm(data_files.keys()):
         data_file = data_files[name]
