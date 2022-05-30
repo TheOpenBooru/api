@@ -1,14 +1,13 @@
 from modules import validate, settings
 import smtplib as _smtplib
+from pathlib import Path
 from email.mime.multipart import MIMEMultipart as _MIMEMultipart
 from email.mime.text import MIMEText as _MIMEText
 import jinja2 as _jinja2
 
 class Templates:
-    with open(settings.EMAIL_TEMPLATE_PASSWORD_RESET_PATH) as f:
-        PASSWORD_RESET = f.read()
-    with open(settings.EMAIL_TEMPLATE_EMAIL_VERIFICATION_PATH) as f:
-        VERIFICATION_EMAIL = f.read()
+    PASSWORD_RESET = Path(settings.EMAIL_TEMPLATE_PASSWORD_RESET_PATH).read_text()
+    VERIFICATION = Path(settings.EMAIL_TEMPLATE_VERIFICATION_PATH).read_text()
 
 def send_password_reset(to:str, username:str, token:str):
     """Raises:
@@ -31,7 +30,7 @@ def send_email_verification(to:str, name:str, token:str):
     """
     subject = f"{settings.SITE_NAME}: Verify Email"
     email_html = _render_jinja_template(
-        Templates.VERIFICATION_EMAIL,
+        Templates.VERIFICATION,
         link=token,
         sitename=settings.SITE_NAME,
         name=name
