@@ -19,7 +19,7 @@ class Permissions(_BaseModel):
     canDeleteComments:bool = False
 
 
-with open("./config.yml") as _f:
+with open("../settings.yml") as _f:
     _permission_lookup = _yaml.full_load(_f)['permissions']
 
 def permissions_from_level(level:str) -> Permissions:

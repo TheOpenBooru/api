@@ -2,8 +2,7 @@ import yaml
 from typing import Any
 
 
-
-with open("./config.yml") as f:
+with open("./settings.yml") as f:
     _config = yaml.full_load(f)
 
 def get(setting: str) -> Any:
@@ -20,7 +19,7 @@ def get(setting: str) -> Any:
 
 # Webserver Config
 
-SITE_NAME:str = get("config.site.name")
+SITE_NAME:str = get("config.site.display_name")
 HOSTNAME:str = get("config.site.hostname")
 PORT:int = get("config.site.port")
 
@@ -30,6 +29,7 @@ SSL_CERT_STORE:str = get("config.ssl.cert")
 
 # Hcaptcha
 
+HCAPTCHA_ENABLE:bool = get("config.hcaptcha.enabled")
 HCAPTCHA_SITEKEY:str = get("config.hcaptcha.sitekey")
 HCAPTCHA_SECRET:str = get("config.hcaptcha.secret")
 
@@ -39,7 +39,7 @@ SMTP_EMAIL:str = get("config.smtp.email")
 SMTP_PASSWORD:str = get("config.smtp.password")
 SMTP_HOSTNAME:str = get("config.smtp.hostname")
 SMTP_PORT:int = get("config.smtp.port")
-EMAIL_TEMPLATE_EMAIL_VERIFICATION_PATH:str = get("email.template_paths.email_verification")
+EMAIL_TEMPLATE_VERIFICATION_PATH:str = get("email.template_paths.email_verification")
 EMAIL_TEMPLATE_PASSWORD_RESET_PATH:str = get("email.template_paths.password_reset")
 
 # AWS
@@ -60,14 +60,15 @@ MAX_SEARCH_LIMIT:int = get("posts.search_max_limit")
 
 # Database
 DATABASE_CHOICE:str = get("database.choice")
-MONGODB_WIPE_ON_STARTUP:bool = get("database.mongodb.wipe_on_startup")
-MONGODB_DB_NAME:str = get("database.mongodb.name")
-MONGODB_HOSTNAME:str = get("database.mongodb.host")
-MONGODB_PORT:int = get("database.mongodb.port")
+MONGODB_WIPE_ON_STARTUP:bool = get("database.wipe_on_startup")
+MONGODB_DB_NAME:str = get("config.mongodb.name")
+MONGODB_HOSTNAME:str = get("config.mongodb.hostname")
+MONGODB_PORT:int = get("config.mongodb.port")
 
 # Import
 
 IMPORT_LOCAL_ENABLED:bool = get("posts.import.local.enabled")
+IMPORT_LOCAL_PATH:str = get("posts.import.local.local_path")
 IMPORT_GELBOORU_ENABLED:bool = get("posts.import.gelbooru.enabled")
 IMPORT_GELBOORU_WEBSITE:str = get("posts.import.gelbooru.website")
 IMPORT_GELBOORU_LIMIT:int|None = get("posts.import.gelbooru.limit")

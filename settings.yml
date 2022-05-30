@@ -1,51 +1,53 @@
 config:
   site:
-    name: Open Booru # The website name to show to users
-    hostname: "localhost" # The hostname of the site, used in URLs provided to users
-    port: 8443 # The port of the site, used in URLs provided to users
+    display_name: Open Booru
+    hostname: "localhost"
+    port: 8443
   ssl:
-    enabled: false # Use HTTPS?
-    key: "" # SSL Key File Path
-    cert: "" # SSL Cert File Path
-  password_pepper: "" # Used to protect password hashes, ensure is a long randomly generated string
+    enabled: false
+    key: ""
+    cert: ""
+  password_pepper: ""
   hcaptcha:
-    sitekey: "" # The hCaptcha api site key
-    secret: "" # The hCaptcha api secret
+    enabled: false
+    sitekey: ""
+    secret: ""
   aws:
-    id: "" # AWS access key ID
-    secret: "" # AWS secret
-    region: "eu-west-2"  # The AWS region to use
+    id: ""
+    secret: ""
+    region: "eu-west-2"
+  mongodb:
+    hostname: "localhost"
+    port: 27017
+    name: "openbooru"
   smtp:
-    email: "" # The email address to send emails from
-    password: "" # The password for the smtp server
-    hostname: "" # The smtp server hostname
-    port: 25 # The smtp server port
+    email: ""
+    password: ""
+    hostname: ""
+    port: 25
 
 database:
-  choice: "mongodb" # What database to use
-  mongodb:
-    name: "OpenBooru" # Name of the database in mongodb
-    host: "slate" # The hostname of the mongodb server
-    port: 27017 # The port of the mongodb server
-    wipe_on_startup: false # Wipe the database on startup, useful for testing
+  wipe_on_startup: false
+  choice: "mongodb"
 
 
 email:
-  template_paths: # The File Paths to the email templates
-    email_verification: "./data/emails/email_verification.html" # Used to verify a user owns an email
-    password_reset: "./data/emails/password_reset.html" # Used to reset a users password
+  template_paths:
+    email_verification: "./data/emails/email_verification.html"
+    password_reset: "./data/emails/password_reset.html"
 
 
 posts:
-  search_max_limit: 100 # Max number of results users get per search
+  search_max_limit: 100 # 
   import:
     local: # Import posts from local import directory
-      enabled: true
+      enabled: false
+      local_path: "./data/import" # The local path to import posts from
     gelbooru: # Import posts from any gelbooru 2.0 site
       enabled: true
       website: safebooru.org # Examples: safebooru.org, rule34.xxx
       searches: [
-        "asami_sato -bra -bikini",
+        "asami_sato yuri -bra -bikini",
         "pharah_(overwatch) mercy_(overwatch) yuri",
         "widowmaker_(overwatch) tracer_(overwatch) yuri -underwear",
         "sombra_(overwatch) yuri -katya_volskaya",
@@ -65,18 +67,16 @@ authentication:
   password_requirements:
     min_length: 8 # Maximum length of password
     max_length: 128 # Maximum length of password
-    score: 3
-    # 1 is increibly vulnerable, 4 is very secure
-    # Based on https://github.com/dropbox/zxcvbn
+    score: 3 
 
 encoding:
   thumbnail:
-    lossless: false # Should webp be lossless
-    quality: 80 # Re-encoded webp quality (1-100/lossless)
-    max_width: 250 # max width before downscaling
-    max_height: 250 # max height before downscaling
+    lossless: false # 
+    quality: 80 # 
+    max_width: 250 #
+    max_height: 250 # 
 
-  image:
+  image: # How image files are encoded
     full:
       lossless: true # Refer to thumbnail
       quality: 100 # Refer to thumbnail
@@ -88,15 +88,15 @@ encoding:
       max_width: 1600 # Refer to thumbnail
       max_height: 1600 # Refer to thumbnail
 
-  animation:
+  animation: # How animations (gifs) files are encoded
     lossless: true # Refer to thumbnail
     quality: 100 # Refer to thumbnail
     max_width: 4000 # Refer to thumbnail
     max_height: 4000 # Refer to thumbnail
 
-  video: # How videos are handled
+  video: # How videos files are encoded
     full:
-      reencode: false # Should the video be re-encoded to reduce filesize#TODO: Not implemented
+      reencode: false # Should the video be re-encoded to reduce filesize #TODO: Not implemented
     preview:
       enabled: false # Should video previews be generated #TODO: Not implemented
       duration: 5 # How long should the video preview be #TODO: Not implemented
