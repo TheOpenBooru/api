@@ -15,9 +15,9 @@ responses = {
 )
 async def search_posts(
         index:int = Query(0, description="Offset by this many posts"),
-        limit:int = Query(settings.MAX_SEARCH_LIMIT,lt=settings.MAX_SEARCH_LIMIT, description="Maximum number of posts to return"),
-        sort:schemas.Valid_Post_Sorts = Query("created_at", description="The sort order for the posts"),
-        descending:bool = Query(True, description="The sort order for the posts"),
+        limit:int = Query(settings.MAX_SEARCH_LIMIT,lt=settings.MAX_SEARCH_LIMIT + 1, description="Maximum number of posts to return"),
+        sort:schemas.Valid_Post_Sorts = Query(default="created_at", description="The sort order for the posts"),
+        descending:bool = Query(default=True, description="The sort order for the posts"),
         include_tags:list[str] = Query(default=[], description="Include posts with these tags"),
         exclude_tags:list[str] = Query(default=[], description="Exclude posts with these tags"),
         created_after:float|None = Query(default=None, description="Posts that were created after this unix timestamp"),
