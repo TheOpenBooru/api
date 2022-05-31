@@ -1,5 +1,7 @@
 # API
 
+[API Link](https://api.openbooru.org)
+
 The goals of Open Booru is to improve standardisation amongst boorus as well as seperating the GUI from the API so they can become application agnostic. This way sites such as https://r34.app can implement their own GUI for a booru.
 
 It's been in production since November 2021
