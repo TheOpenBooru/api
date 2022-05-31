@@ -19,11 +19,11 @@ async def import_gelbooru(
     for search in searches:
         new_posts = await _run_gelbooru_search(url,search,limit)
         posts.extend(new_posts)
+        if limit and len(posts) > limit:
+            break
     random.shuffle(posts)
 
     if limit:
-        if len(posts) < limit:
-            warnings.warn(f"Gelbooru Import: Did not reach intended limit")
         posts = posts[:limit]
     
     for post in posts:
