@@ -87,7 +87,6 @@ What database name to use in mongodb
 Default: `openbooru`
 Options: `test`
 
-
 # Settings
 
 These settings come pre-configured, but can be changed by the user
@@ -106,7 +105,6 @@ Which database to use
 
 Default: `mongodb`
 Options: `mongodb`
-
 
 ## email
 
@@ -185,9 +183,9 @@ Default: `["asami_sato yuri -bra -bikini",...]`
 
 ##### limit
 
-The maximum number of images to import
+The maximum number of images to import, null for no limit
 
-Default: `100`
+Default: `null`
 
 ## storage
 

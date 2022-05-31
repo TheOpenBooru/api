@@ -8,4 +8,3 @@ if settings.MONGODB_WIPE_ON_STARTUP:
     db_client.drop_database(settings.MONGODB_DB_NAME)
 
 db = db_client[settings.MONGODB_DB_NAME]
-

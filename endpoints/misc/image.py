@@ -7,7 +7,7 @@ def get_image(file:str):
     CACHE_HEADER = {
         "Cache-Control": "max-age=31536000, public"
     }
-    if settings.STORAGE_METHOD == "local":
+    if store.method.local == True:
         try:
             data = store.get(file)
         except FileNotFoundError:

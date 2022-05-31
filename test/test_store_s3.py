@@ -1,9 +1,11 @@
-from modules import store
+from modules.store.s3 import S3Store
+from modules import settings
 import unittest
 import random
-from pathlib import Path
+import requests
 
-method = store.LocalStore()
+settings.STORAGE_S3_BUCKET = "testbucket"
+method = S3Store()
 
 @unittest.skipUnless(method.usable, method.fail_reason)
 class TestCase(unittest.TestCase):
@@ -54,10 +56,24 @@ class test_Bad_Key_Should_Raise_Error(TestCase):
         self.assertRaises(FileNotFoundError,method.get,'foobar')
 
 
-class test_Does_Not_Allow_Path_Traversal(unittest.TestCase):
+class test_Does_Not_Allow_Path_Traversal(TestCase):
     def test_a(self):
         path = '../../../../../../../../etc/fstab'
         self.assertRaises(FileNotFoundError,method.get,path)
+
+
+class test_Files_can_be_Accessed_by_URL(TestCase):
+    def setUp(self):
+        self.key = "test_url"
+        self.data = b"example"
+        method.put(self.data, self.key)
+    def tearDown(self):
+        method.delete("test_url")
+    
+    def test_a(self):
+        url = method.url(self.key)
+        r = requests.get(url)
+        assert r.content == self.data
 
 
 class test_Deleted_Data_Cant_Be_Obtained(TestCase):

@@ -2,13 +2,17 @@ from modules import posts, schemas, importer, settings, database
 import yaml
 from unittest import IsolatedAsyncioTestCase as AsyncTestCase
 
+settings.STORAGE_METHOD = 'local'
 
 class test_Post_Create_has_Correct_Attributes(AsyncTestCase):
     async def asyncSetUp(self):
+        database.Post.clear()
         with open('./data/test/sample_data.json','r') as f:
             self.testdata = yaml.full_load(f)
+    
     async def asyncTearDown(self):
         database.Post.clear()
+    
     
     def assert_attributes(self,post:schemas.Post,attrs:dict):
         assert post.full.width == attrs["width"],f'{post.full.width} != {attrs["width"]}'
@@ -20,14 +24,14 @@ class test_Post_Create_has_Correct_Attributes(AsyncTestCase):
         if hasattr(post.full,"has_sound"):
             self.assertEqual(post.full.has_sound,attrs["hasAudio"]) # type: ignore
             assert post.full.has_sound == attrs["hasAudio"],attrs["hasAudio"] # type: ignore
-
+    
     def load_testdata(self,attrs:dict) -> tuple[bytes,str]:
         filepath = attrs['file']
         attrs.pop('file')
         with open(filepath,'rb') as f:
             data = f.read()
         return data,filepath
-
+    
     async def test_image(self):
         attrs = self.testdata["image"]["Complex"]
         data,filepath = self.load_testdata(attrs)
@@ -61,6 +65,7 @@ class test_Post_Create_has_Correct_Attributes(AsyncTestCase):
 class test_Post_Search(AsyncTestCase):
     async def asyncSetUp(self):
         await importer.import_gelbooru(50)
+        settings.POSTS_SEARCH_MAX_LIMIT = 20
     async def asyncTearDown(self):
         database.Post.clear()
     
@@ -93,11 +98,11 @@ class test_Post_Search(AsyncTestCase):
     async def test_Post_Search_Respects_Limit_in_Settings(self):
         query = schemas.Post_Query(limit=1_000_000)
         searched_posts = await posts.search(query)
-        max_limit = settings.MAX_SEARCH_LIMIT
-        assert len(searched_posts) <= max_limit
+        max_limit = settings.POSTS_SEARCH_MAX_LIMIT
+        assert len(searched_posts) == max_limit
 
     
     async def test_Post_Search_Converts_Negative_Limit_To_Zero(self):
         query = schemas.Post_Query(limit=-2)
         searched_posts = await posts.search(query)
-        assert len(searched_posts) == 0
+        assert len(searched_posts) == settings.POSTS_SEARCH_MAX_LIMIT

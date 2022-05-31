@@ -1,7 +1,8 @@
+# Read the Documentation: https://github.com/TheOpenBooru/api/blob/main/settings.md#config
 config:
   site:
     display_name: Open Booru
-    hostname: "localhost"
+    hostname: "slate"
     port: 8443
   ssl:
     enabled: false
@@ -42,12 +43,12 @@ posts:
     default_sort: "created_at"
     max_limit: 100
   import:
-    local: # Import posts from local import directory
+    local:
       enabled: false
-      local_path: "./data/import" # The local path to import posts from
-    gelbooru: # Import posts from any gelbooru 2.0 site
+      local_path: "./data/import"
+    gelbooru:
       enabled: true
-      website: safebooru.org # Examples: safebooru.org, rule34.xxx
+      website: safebooru.org
       searches: [
         "asami_sato yuri -bra -bikini",
         "pharah_(overwatch) mercy_(overwatch) yuri",
@@ -55,76 +56,61 @@ posts:
         "sombra_(overwatch) yuri -katya_volskaya",
         "samus_aran yuri",
       ]
-      limit: null # null for no limit
+      limit: null
 
 storage:
-  method: "local" # Valid methods: s3, local
+  method: "local"
   local:
-    path: "./data/storage" # The path to the local storage directory
+    path: "./data/storage"
   s3:
-    bucket-name: "openbooru" # Ensure name is valid
+    bucket-name: "openbooru"
 
 authentication:
-  token_expiration: 86400 # Login Token Expiration time in seconds
+  token_expiration: 86400
   password_requirements:
-    min_length: 8 # Maximum length of password
-    max_length: 128 # Maximum length of password
+    min_length: 8
+    max_length: 128
     score: 3 
 
 encoding:
   thumbnail:
-    lossless: false # 
-    quality: 80 # 
-    max_width: 250 #
-    max_height: 250 # 
+    lossless: false
+    quality: 80
+    max_width: 250
+    max_height: 250
 
-  image: # How image files are encoded
+  image:
     full:
-      lossless: true # Refer to thumbnail
-      quality: 100 # Refer to thumbnail
-      max_width: 4000 # Refer to thumbnail
-      max_height: 4000 # Refer to thumbnail
+      lossless: true
+      quality: 100
+      max_width: 4000
+      max_height: 4000
     preview:
-      lossless: false # Refer to thumbnail
-      quality: 90 # Refer to thumbnail
-      max_width: 1600 # Refer to thumbnail
-      max_height: 1600 # Refer to thumbnail
+      lossless: false
+      quality: 90
+      max_width: 1600
+      max_height: 1600
 
-  animation: # How animations (gifs) files are encoded
-    lossless: true # Refer to thumbnail
-    quality: 100 # Refer to thumbnail
-    max_width: 4000 # Refer to thumbnail
-    max_height: 4000 # Refer to thumbnail
+  animation:
+    lossless: true
+    quality: 100
+    max_width: 4000
+    max_height: 4000
 
-  video: # How videos files are encoded
+  video:
     full:
-      reencode: false # Should the video be re-encoded to reduce filesize #TODO: Not implemented
+      reencode: false #TODO: Not implemented
     preview:
-      enabled: false # Should video previews be generated #TODO: Not implemented
-      duration: 5 # How long should the video preview be #TODO: Not implemented
-    thumbnail_offset: 10 # Perentage through the video for the thumbnail screenshot to be taken #TODO: implemented
+      enabled: false #TODO: Not implemented
+      duration: 5 #TODO: Not implemented
+    thumbnail_offset: 10 #TODO: implemented
 
-permissions: # What permissions each level gets
-  # Avaliable Options are:
-    # canViewUsers - Can view other user's profiles
-    # canSearchUsers - Can search for users
-    # canEditUsers - Can edit other user's accounts
-    # canDeleteUsers - Can delete other user's accounts
-    
-    # canCreatePosts - Can create posts
-    # canViewPosts - Can view posts
-    # canSearchPosts - Can search for posts
-    # canEditPosts - Can make edits to posts
-    # canDeletePosts - Can delete other people's posts
-
-    # canCreateComments - Can create comments on posts
-    # canViewComments - Can view other people's comments on posts
-    # canDeleteComments - Can delete other people's comments on posts
-  annonymous: # Annonomous users, anyone can access
+permissions:
+  annonymous:
     - canViewPosts
     - canSearchPosts
 
-  user: # User's with a normal account
+  user:
     - canViewUsers
     - canSearchUsers
     
@@ -136,7 +122,7 @@ permissions: # What permissions each level gets
     - canCreateComments
     - canViewComments
 
-  admin: # Site owners/admins
+  admin:
     - canViewUsers
     - canSearchUsers
     - canEditUsers

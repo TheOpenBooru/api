@@ -2,6 +2,7 @@ from modules import schemas,encoding,database,encoding,store
 import mimetypes
 import hashlib
 
+
 async def create(data:bytes,filename:str) -> schemas.Post:
     generator = _PostSchemaGenerator(data,filename)
     schema = await generator.generate()
@@ -18,13 +19,15 @@ async def _quick_exists_check(data:bytes) -> bool:
     else:
         return True
 
+
 class _PostSchemaGenerator:
     def __init__(self,data:bytes,filename:str):
         self.data = data
         self.filename = filename
         self.md5s = []
         self.sha256s = []
-
+    
+    
     async def generate(self):
         if await _quick_exists_check(self.data):
             raise ValueError("Post already exists")
@@ -35,10 +38,11 @@ class _PostSchemaGenerator:
             preview = media.preview()
             thumbnail = media.thumbnail()
         
+        self._generate_hashes(self.data)
         full_schema = self.process_file(full)
         preview_schema = self.process_file(preview) if preview else None
         thumbnail_schema = self.process_file(thumbnail)
-
+        
         return schemas.Post(
             id=database.Post.get_unused_id(),
             md5s=self.md5s,
@@ -49,16 +53,28 @@ class _PostSchemaGenerator:
             thumbnail=thumbnail_schema, # type: ignore
             media_type=media_type.type,
         )
-
+    
+    
     def process_file(self,file:encoding.GenericFile) -> schemas.GenericMedia:
-        self._generate_hashes(file)
-        ext = mimetypes.guess_extension(file.mimetype) or ""
-        key = store.put(file.data,suffix=ext)
-        url = store.url(key)
+        self._generate_hashes(file.data)
+        filename = self._generate_filename(file)
+        store.put(file.data,filename)
+        url = store.generate_generic_url(filename)
         schema = self._generate_schema(file,url)
         return schema
     
-
+    
+    def _generate_filename(self,file:encoding.GenericFile) -> str:
+        hash = hashlib.sha3_256(file.data).hexdigest()
+        ext = mimetypes.guess_extension(file.mimetype) or ""
+        filename = hash + ext
+        return filename
+    
+    def _generate_hashes(self,data:bytes):
+        self.md5s.append(hashlib.md5(data).hexdigest())
+        self.sha256s.append(hashlib.sha256(data).hexdigest())
+    
+    
     def _generate_schema(self,file:encoding.GenericFile,url:str) -> schemas.GenericMedia:
         if isinstance(file,encoding.ImageFile):
             return schemas.Image(
@@ -88,8 +104,3 @@ class _PostSchemaGenerator:
                 )
         else:
             raise TypeError("Unknown file type")
-    
-    def _generate_hashes(self,file:encoding.GenericFile):
-        data = file.data
-        self.md5s.append(hashlib.md5(data).hexdigest())
-        self.sha256s.append(hashlib.sha256(data).hexdigest())
