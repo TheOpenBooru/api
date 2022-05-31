@@ -18,7 +18,7 @@ async def import_files():
         else:
             data_files[file.stem] = file
 
-    for name in tqdm(data_files.keys()):
+    for name in tqdm(data_files.keys(),desc="Importing files"):
         data_file = data_files[name]
         if name not in tag_files:
             tag_file = None
