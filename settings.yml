@@ -38,7 +38,9 @@ email:
 
 
 posts:
-  search_max_limit: 100 # 
+  search:
+    default_sort: "created_at"
+    max_limit: 100
   import:
     local: # Import posts from local import directory
       enabled: false

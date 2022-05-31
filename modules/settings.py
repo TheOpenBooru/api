@@ -56,7 +56,8 @@ STORAGE_S3_BUCKET:str = get("storage.s3.bucket-name")
 
 # Posts
 
-MAX_SEARCH_LIMIT:int = get("posts.search_max_limit")
+POSTS_SEARCH_DEFAULT_SORT:str = get("posts.search.default_sort")
+POSTS_SEARCH_MAX_LIMIT:int = get("posts.search.max_limit")
 
 # Database
 DATABASE_CHOICE:str = get("database.choice")

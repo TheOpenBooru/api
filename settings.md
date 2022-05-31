@@ -128,7 +128,16 @@ Default: `"./data/emails/password_reset.html"`
 
 ## posts
 
-### search_max_limit
+### search
+
+#### default_sort
+
+The default sort method if none is specified
+
+Default: `created_at`
+Options: `id`, `created_at`, `views`, `upvotes`, `downvotes`
+
+#### max_limit
 
 Max number of results users a user gets per search
 
