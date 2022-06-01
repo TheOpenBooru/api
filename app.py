@@ -31,7 +31,7 @@ async def startup_event():
     if settings.IMPORT_GELBOORU_ENABLED:
         await importer.import_gelbooru()
 
-@app.get('/',tags=["Misc"])
+@app.get('/',include_in_schema=False)
 def docs_redirect():
     return responses.RedirectResponse('/docs')
 
