@@ -1,5 +1,5 @@
 from . import fields,BaseModel,GenericMedia,Image
-from modules import settings
+from modules import settings,validate
 from pydantic import Field
 from enum import Enum
 
@@ -31,8 +31,8 @@ class Post_Query(BaseModel):
     created_after:float|None = Field(default=None)
     created_before:float|None = Field(default=None)
     
-    md5:str|None = Field(default_factory=list)
-    sha256:str|None = Field(default_factory=list)
+    md5:str|None = Field(default=None, regex=validate.MD5_REGEX)
+    sha256:str|None = Field(default=None, regex=validate.SHA256_REGEX)
 
 
 class Post(BaseModel):
@@ -40,13 +40,14 @@ class Post(BaseModel):
     created_at: float = fields.Created_At
     uploader: int = fields.User_ID
     deleted: bool = Field(default=False, description="Whether the post has been deleted")
+    source: str = Field(default="", description="The original source for the post")
 
     full: GenericMedia = Field(..., description="The full scale media for the Post")
     preview: GenericMedia|None = Field(default=None,description="A Medium Scale Version for the image, for hi-res posts")
     thumbnail: Image = Field(..., description="The lowest scale version of the image, for thumbnails")
     
     md5s: list[str] = Field(default_factory=list, description="The Post's MD5 hashes")
-    sha256s: list[str] = Field(default_factory=list, description="The Post's SHA3-256 hashes")
+    sha256s: list[str] = Field(default_factory=list, description="The Post's SHA256 hashes")
     media_type: str = fields.Post_Type
     
     tags: list[str] = fields.Tags
