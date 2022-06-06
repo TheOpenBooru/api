@@ -70,10 +70,9 @@ MONGODB_PORT:int = get("config.mongodb.port")
 
 IMPORT_LOCAL_ENABLED:bool = get("posts.import.local.enabled")
 IMPORT_LOCAL_PATH:str = get("posts.import.local.local_path")
-IMPORT_GELBOORU_ENABLED:bool = get("posts.import.gelbooru.enabled")
-IMPORT_GELBOORU_WEBSITE:str = get("posts.import.gelbooru.website")
-IMPORT_GELBOORU_LIMIT:int|None = get("posts.import.gelbooru.limit")
-IMPORT_GELBOORU_SEARCHES:list[str] = get("posts.import.gelbooru.searches")
+IMPORT_SAFEBOORU_ENABLED:bool = get("posts.import.safebooru.enabled")
+IMPORT_SAFEBOORU_LIMIT:int|None = get("posts.import.safebooru.limit")
+IMPORT_SAFEBOORU_SEARCHES:list[str] = get("posts.import.safebooru.searches")
 
 # Password
 

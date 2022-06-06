@@ -64,7 +64,7 @@ class test_Post_Create_has_Correct_Attributes(AsyncTestCase):
 
 class test_Post_Search(AsyncTestCase):
     async def asyncSetUp(self):
-        await importer.import_gelbooru(50)
+        await importer.import_safebooru_search(50)
         settings.POSTS_SEARCH_MAX_LIMIT = 20
     async def asyncTearDown(self):
         database.Post.clear()

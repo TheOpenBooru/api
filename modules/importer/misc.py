@@ -4,6 +4,9 @@ import string
 _VALID_CHARS = string.ascii_lowercase + string.digits + '_'
 
 def normalise_tags(tags:list[str]) -> list[str]:
+    if " " in tags:
+        tags.remove(" ")
+
     tags = [normalise_tag(tag) for tag in tags]
     tags = list(filter(validate.tag,tags))
     tags = list(set(tags))

@@ -1,4 +1,3 @@
-from pathlib import Path
 from modules import logging, settings, importer
 from endpoints import router
 
@@ -28,8 +27,8 @@ app.include_router(router)
 async def startup_event():
     if settings.IMPORT_LOCAL_ENABLED:
         await importer.import_files()
-    if settings.IMPORT_GELBOORU_ENABLED:
-        await importer.import_gelbooru()
+    if settings.IMPORT_SAFEBOORU_ENABLED:
+        await importer.import_safebooru_search()
 
 @app.get('/',include_in_schema=False)
 def docs_redirect():

@@ -159,21 +159,15 @@ Where are the local images located?
 
 Default: `"./data/import"`
 
-#### gelbooru
+#### safebooru
 
-Import images from gelbooru, currently works with safebooru.org only.
+Import images from safebooru
 
 ##### enabled
 
 Should you import images from gelbooru?
 
 Default: `true`
-
-##### website
-
-Which gelbooru website to use
-
-Default: `safebooru.org`
 
 ##### searches
 

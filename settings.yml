@@ -46,15 +46,14 @@ posts:
     local:
       enabled: false
       local_path: "./data/import"
-    gelbooru:
+    safebooru:
       enabled: true
-      website: safebooru.org
       searches: [
         "asami_sato yuri -bra -bikini",
+        "samus_aran yuri",
         "pharah_(overwatch) mercy_(overwatch) yuri",
         "widowmaker_(overwatch) tracer_(overwatch) yuri -underwear",
-        "sombra_(overwatch) yuri -katya_volskaya",
-        "samus_aran yuri",
+        "sombra_(overwatch) -katya_volskaya yuri",
       ]
       limit: null
 
