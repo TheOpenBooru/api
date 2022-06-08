@@ -1,7 +1,7 @@
 from modules import validate
 import string
 
-_VALID_CHARS = string.ascii_lowercase + string.digits + '_'
+_VALID_CHARS = string.ascii_lowercase + string.digits + '_()'
 
 def normalise_tags(tags:list[str]) -> list[str]:
     if " " in tags:

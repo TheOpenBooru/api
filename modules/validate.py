@@ -24,7 +24,7 @@ def post_type(type:str):
     return bool(_re.match(TYPE_REGEX, type))
 
 
-TAG_REGEX = r"^([a-z]{1,32}:)?[a-z0-9_]{1,32}$"
+TAG_REGEX = r"^([a-z]{1,32}:)?[_()a-z0-9]{1,32}$"
 def tag(tag: str) -> bool:
     return bool(_re.match(TAG_REGEX, tag))
 
