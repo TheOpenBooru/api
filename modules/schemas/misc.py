@@ -16,14 +16,6 @@ class Author(BaseModel):
     user_account: int = Field(..., description="The ID of the Account Bound to the Author")
 
 
-class Tag(BaseModel):
-    id: int = fields.Item_ID
-    created_at:float = fields.Created_At
-    name: str = Field(...,description="The Tag Name")
-    namespace: str = Field(..., description="The Tag Namespace")
-    count: int = Field(default_factory=int, description="The number of times the tag has been used")
-
-
 class Comment(BaseModel):
     id: int = fields.Item_ID
     created_at:float = fields.Created_At

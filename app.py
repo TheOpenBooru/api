@@ -1,4 +1,4 @@
-from modules import logging, settings, importer
+from modules import database, logging, settings, importer
 from endpoints import router
 
 import uvicorn
@@ -29,6 +29,7 @@ async def startup_event():
         await importer.import_files()
     if settings.IMPORT_SAFEBOORU_ENABLED:
         await importer.import_safebooru_search()
+    database.Tag.regenerate()
 
 @app.get('/',include_in_schema=False)
 def docs_redirect():
