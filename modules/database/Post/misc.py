@@ -9,10 +9,7 @@ def count() -> int:
     return post_collection.count_documents({})
 
 def get_unused_id() -> int:
-    new_id = random.randint(1,2**31)
-    while exists(new_id):
-        new_id = random.randint(1,2**31)
-    return new_id
+    return count() + 1
 
 def clear():
     post_collection.delete_many({})
