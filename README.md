@@ -14,7 +14,7 @@ Edit the config.yml, the config section contains the required settings.
 
 - ubuntu
   - other platforms may work, but are untested
-- python >= 3.10
+- python >= 3.9
 - ffmpeg
 - hcaptcha
 
@@ -25,7 +25,7 @@ Edit the config.yml, the config section contains the required settings.
 sudo apt-get install -y libmagic1 ffmpeg
 
 # Create a virtualenv
-python3.10 -m venv venv
+python3.9 -m venv venv
 
 # Install requirements
 ./venv/bin/pip install -r requirements.txt
@@ -40,7 +40,7 @@ You must manually install ffmpeg and it add it to the PATH
 
 ```powershell
 # Create a virtualenv
-python3.10 -m venv venv
+python3.9 -m venv venv
 
 # Install requirements
 .\venv\Scripts\pip.exe install python-magic-bin
