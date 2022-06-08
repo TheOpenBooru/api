@@ -50,7 +50,7 @@ async def _run_safebooru_search(search:str,limit:Union[int,None]) -> list[bs4.Be
                 "pid":x,
             }
         )
-        xml = bs4.BeautifulSoup(r.text,"lxml")
+        xml = bs4.BeautifulSoup(r.text,"xml")
         new_posts = xml.find_all('post')
         found_posts.extend(new_posts)
         
