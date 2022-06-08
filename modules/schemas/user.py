@@ -1,10 +1,10 @@
 from . import BaseModel,fields
 from pydantic import Field
-from time import time
+from typing import Union
 
 class User_Query(BaseModel):
-    username:str|None = Field(default=None)
-    email:str|None = Field(default=None)
+    username:Union[str,None] = Field(default=None)
+    email:Union[str,None] = Field(default=None)
 
 
 class User_Public(BaseModel):
@@ -26,7 +26,7 @@ class User(BaseModel):
     posts: list[int] = Field(default_factory=list, description="IDs of Posts made by the user")
     comments: list[int] = Field(default_factory=list, description="IDs of Comments made by the user")
     
-    email: str|None = Field(default=None, description="The User's Email Address")
+    email: Union[str,None] = Field(default=None, description="The User's Email Address")
     settings: dict = Field(default_factory=dict, description="The User's Settings")
     
     upvotes: list[int] = Field(default_factory=list, description="IDs of posts the user has upvoted")
