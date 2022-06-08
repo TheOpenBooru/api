@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from functools import cache, cached_property
+from typing import Union
 
 
 @dataclass(frozen=True)
@@ -36,7 +37,7 @@ class VideoFile:
     framerate:str
     hasAudio:bool
 
-GenericFile = ImageFile | AnimationFile | VideoFile
+GenericFile = Union[ImageFile,AnimationFile,VideoFile]
 
 class BaseMedia:
     type:str
@@ -59,7 +60,7 @@ class BaseMedia:
         ...
 
     @cache
-    def preview(self) -> GenericFile | None:
+    def preview(self) -> Union[GenericFile,None]:
         """Raises:
         - FileNotFoundError: Didn't use with statement to create file
         """

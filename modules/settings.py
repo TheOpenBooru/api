@@ -1,5 +1,5 @@
 import yaml
-from typing import Any
+from typing import Any, Union
 
 
 with open("./settings.yml") as f:
@@ -71,7 +71,7 @@ MONGODB_PORT:int = get("config.mongodb.port")
 IMPORT_LOCAL_ENABLED:bool = get("posts.import.local.enabled")
 IMPORT_LOCAL_PATH:str = get("posts.import.local.local_path")
 IMPORT_SAFEBOORU_ENABLED:bool = get("posts.import.safebooru.enabled")
-IMPORT_SAFEBOORU_LIMIT:int|None = get("posts.import.safebooru.limit")
+IMPORT_SAFEBOORU_LIMIT:Union[int,None] = get("posts.import.safebooru.limit")
 IMPORT_SAFEBOORU_SEARCHES:list[str] = get("posts.import.safebooru.searches")
 
 # Password

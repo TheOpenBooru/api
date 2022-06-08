@@ -2,6 +2,7 @@ from . import normalise_tags
 from modules import database,posts,settings
 from tqdm import tqdm
 from pathlib import Path
+from typing import Union
 import logging
 
 IMPORT_DIR = Path(settings.IMPORT_LOCAL_PATH)
@@ -31,7 +32,7 @@ async def import_files():
             logging.debug(f"Could not import {name}")
             logging.debug(f"Reason {e}")
 
-async def import_file(data_file:Path,tag_file:Path|None):
+async def import_file(data_file:Path,tag_file:Union[Path,None]):
     if tag_file == None:
         tags = []
     else:

@@ -1,5 +1,6 @@
 from functools import cached_property
 import mimetypes
+from typing import Union
 import warnings
 from magic import Magic
 import ffmpeg
@@ -69,7 +70,7 @@ class VideoProbe(Probe):
         return float(self.probe_data['format']['duration'])
 
     @cached_property
-    def frame_count(self) -> float|None:
+    def frame_count(self) -> Union[float,None]:
         if 'nb_frames' in self._video_stream:
             return float(self._video_stream['nb_frames'])
         else:

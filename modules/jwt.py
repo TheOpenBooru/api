@@ -1,4 +1,5 @@
 from modules import settings as _settings
+from typing import Union
 import secrets as _secrets
 import time as _time
 import jwt as _jwt
@@ -14,7 +15,7 @@ class TokenData:
 class BadTokenError(Exception):
     "The Token was Invalid, could be Corrupt, Invalid, Expired"
 
-def create(id:int, additional_data:dict|None = None, expiration:int = _settings.DEFAULT_TOKEN_EXPIRATION) -> str:
+def create(id:int, additional_data:Union[dict,None] = None, expiration:int = _settings.DEFAULT_TOKEN_EXPIRATION) -> str:
     """Raises:
     - ValueError: Data cannot contain the reserved field
     """

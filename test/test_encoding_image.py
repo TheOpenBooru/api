@@ -3,7 +3,7 @@ from modules.encoding import Image, ImageFile
 import io
 import json
 import unittest
-import asyncio
+from typing import Union
 from box import Box
 from pathlib import Path
 from PIL import Image as PILImage
@@ -27,7 +27,7 @@ class OutputLocation:
     thumbnail = Path("./data/files/image_thumbnail.webp")
 
 
-def load_image(path:str | Path) -> tuple[ImageFile,ImageFile,ImageFile]:
+def load_image(path:Union[str,Path]) -> tuple[ImageFile,ImageFile,ImageFile]:
     with open(path,'rb') as f:
         with Image(f.read()) as img:
             full = img.full()

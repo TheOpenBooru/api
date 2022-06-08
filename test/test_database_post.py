@@ -1,9 +1,10 @@
 from modules.database import Post
 from modules import schemas
 import unittest
+from typing import Union
 
 
-def generate_post(id:int|None = None) -> schemas.Post:
+def generate_post(id:Union[int,None] = None) -> schemas.Post:
     EXAMPLE_IMAGE = schemas.Image(
         url="https://example.com/image.png",
         height=100,width=100,

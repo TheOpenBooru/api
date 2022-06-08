@@ -1,4 +1,5 @@
 import random
+from typing import Union
 from . import normalise_tags
 from modules import schemas,settings
 from modules.database import Post
@@ -9,7 +10,7 @@ import itertools
 import requests
 
 async def import_safebooru_search(
-        limit:int|None=settings.IMPORT_SAFEBOORU_LIMIT,
+        limit:Union[int,None]=settings.IMPORT_SAFEBOORU_LIMIT,
         searches:list[str]=settings.IMPORT_SAFEBOORU_SEARCHES,
         ):
     
@@ -30,6 +31,7 @@ async def import_safebooru_search(
         except KeyError:
             continue
 
+
 async def import_safebooru_post(id:int):
     url = "https://safebooru.org/index.php?page=dapi&s=post&q=index"
     r = requests.get(url,params={'id':id})
@@ -37,7 +39,7 @@ async def import_safebooru_post(id:int):
     await _import_post_from_soup(soup)
 
 
-async def _run_safebooru_search(search:str,limit:int|None) -> list[bs4.BeautifulSoup]:
+async def _run_safebooru_search(search:str,limit:Union[int,None]) -> list[bs4.BeautifulSoup]:
     url = f"https://safebooru.org/index.php?page=dapi&s=post&q=index&tags={search}"
     found_posts = []
     for x in itertools.count():
@@ -86,6 +88,7 @@ async def _import_post_from_soup(soup:bs4.BeautifulSoup):
         )
     Post.create(post_obj)
 
+
 def _get_mediaType_from_url(url:str):
     TYPE_LOOKUP = {
         ".mp4":"video",
@@ -98,6 +101,7 @@ def _get_mediaType_from_url(url:str):
     _,ext = os.path.splitext(url)
     media_type = TYPE_LOOKUP[ext]
     return media_type
+
 
 def _generate_images_from_attrs(attrs:dict):
     full = schemas.Image(
@@ -119,6 +123,7 @@ def _generate_images_from_attrs(attrs:dict):
         height=int(attrs['preview_height']),
     )
     return full, preview, thumbnail
+
 
 async def _check_post_exists(md5):
     query = schemas.Post_Query(md5=md5)

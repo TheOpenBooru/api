@@ -1,12 +1,13 @@
 from dataclasses import dataclass
 import sqlite3
+from typing import Union
 
 
 @dataclass()
 class User:
     username:str
     hash:str
-    secret_2fa:str|None = None
+    secret_2fa:Union[str,None] = None
 
 
 conn = sqlite3.connect('./data/auth.db')
@@ -25,12 +26,14 @@ def create(user:User):
             (user.username,user.hash,user.secret_2fa)
         )
 
+
 def update_hash(username:str,hash:str):
     with conn:
         conn.execute(
             "UPDATE users SET hash=? WHERE username=?;",
             (hash,username)
         )
+
 
 def update_secret(username:str,secret:str):
     with conn:
@@ -39,7 +42,8 @@ def update_secret(username:str,secret:str):
             (secret,username)
         )
 
-def get(username:str) -> User | None:
+
+def get(username:str) -> Union[User,None]:
     with conn:
         cursor = conn.execute(
             "SELECT hash,secret_2fa FROM users WHERE username=?;",
@@ -55,6 +59,7 @@ def get(username:str) -> User | None:
             hash=hash,
             secret_2fa=secret
         )
+
 
 def delete(username:str):
     with conn:

@@ -1,5 +1,6 @@
 from . import router
 from modules import schemas, posts, settings
+from typing import Union
 from fastapi import Query
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
@@ -20,10 +21,10 @@ async def search_posts(
         descending:bool = Query(default=True, description="The sort order for the posts"),
         include_tags:list[str] = Query(default=[], description="Include posts with these tags"),
         exclude_tags:list[str] = Query(default=[], description="Exclude posts with these tags"),
-        created_after:float|None = Query(default=None, description="Posts that were created after this unix timestamp"),
-        created_before:float|None = Query(default=None, description="Posts that were created before this unix timestamp"),
-        md5:str|None = Query(default=None, description="Posts with this md5"),
-        sha256:str|None = Query(default=None, description="Posts with this sha256"),
+        created_after:Union[float,None] = Query(default=None, description="Posts that were created after this unix timestamp"),
+        created_before:Union[float,None] = Query(default=None, description="Posts that were created before this unix timestamp"),
+        md5:Union[str,None] = Query(default=None, description="Posts with this md5"),
+        sha256:Union[str,None] = Query(default=None, description="Posts with this sha256"),
         ):
     query = schemas.Post_Query(
         index=index,
