@@ -12,7 +12,4 @@ responses = {
     responses=responses, # type: ignore
 )
 async def edit_post(id:int,post_update:schemas.Post_Edit):
-    if not Post.exists(id):
-        return Response(status_code=status.HTTP_404_NOT_FOUND)
-    else:
-        return Response(status_code=status.HTTP_400_BAD_REQUEST)
+    return Response(status_code=status.HTTP_501_NOT_IMPLEMENTED)
