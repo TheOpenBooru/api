@@ -2,13 +2,15 @@ from .hash import hash,compare
 from . import database
 from .password import is_password_valid
 
-def login(username:str,password:str):
+EXAMPLE_HASH = hash("")
+
+def login(username:str,password:str) -> bool:
     user = database.get(username)
     if user == None:
-        return False
+        hash = EXAMPLE_HASH
     else:
         hash = user.hash
-        return compare(password, hash)
+    return compare(password, hash)
 
 def register(username:str,password:str):
     """Raises:
