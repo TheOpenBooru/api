@@ -1,7 +1,7 @@
 from . import router
 from modules import auth, schemas
 from modules.database import User
-from fastapi import Response,status
+from fastapi import Response, status, Body
 
 
 responses = {
@@ -11,7 +11,7 @@ responses = {
 }
 
 @router.post("/register",responses=responses) # type: ignore
-async def register(username: str, password: str):
+async def register(username: str = Body(), password: str = Body()):
     query = schemas.User_Query(username=username)
     users = User.search(query)
     if len(users) > 0:

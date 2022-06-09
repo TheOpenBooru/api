@@ -1,11 +1,11 @@
 from . import router
-from modules import auth, jwt, schemas, email
+from modules import auth, schemas, jwt
 from modules.database import User
-from fastapi import Response,status
+from fastapi import Response, status, Body
 
 
 responses = {
-    202:{
+    200:{
         "description":"Successfully Signed in and Provided a Token",
         "content": {"text/plain":{}}
     },
@@ -14,7 +14,7 @@ responses = {
 }
 
 @router.post("/login",response_model=str,responses=responses) # type: ignore
-async def login(username:str,password:str):
+async def login(username:str = Body(),password:str = Body()):
     query = schemas.User_Query(username=username)
     users = User.search(query)
     if len(users) == 0:
@@ -37,14 +37,12 @@ async def login(username:str,password:str):
                     status_code=status.HTTP_401_UNAUTHORIZED
                 )
             else:
-                token = jwt.create(
-                    id=user.id,
-                    additional_data={
+                token = jwt.create({
                         "username":user.username,
                         "level":user.level,
                     }
                 )
                 return Response(
                     token,
-                    status_code=status.HTTP_202_ACCEPTED,
+                    status_code=status.HTTP_200_OK,
                 )
