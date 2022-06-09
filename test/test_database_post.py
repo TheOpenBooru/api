@@ -129,3 +129,29 @@ class test_Increment_View(TestCase):
             post = Post.get(id)
             assert post
             assert post.views == x, "Could not increment views"
+
+class test_DatabasePosts_getByMD5(TestCase):
+    def setUp(self):
+        self.post = generate_post()
+        self.md5 = "a"*32
+        self.post.md5s = [self.md5]
+        Post.create(self.post)
+
+    def test_Retrieves_Successfully(self):
+        assert Post.getByMD5(self.md5) == self.post
+    
+    def test_NonExistant_Raises_Error(self):
+        self.assertRaises(KeyError,Post.getByMD5,"f"*16)
+
+class test_DatabasePosts_getBySHA256(TestCase):
+    def setUp(self):
+        self.post = generate_post()
+        self.sha256 = "a"*64
+        self.post.sha256s = [self.sha256]
+        Post.create(self.post)
+
+    def test_Retrieves_Successfully(self):
+        assert Post.getBySHA256(self.sha256) == self.post
+    
+    def test_NonExistant_Raises_Error(self):
+        self.assertRaises(KeyError,Post.getBySHA256,"f"*32)
