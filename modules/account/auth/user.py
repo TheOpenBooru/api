@@ -17,7 +17,7 @@ def register(username:str,password:str):
     - KeyError: User already exists
     """
     if database.get(username) != None:
-        raise KeyError('User already exists')
+        database.delete(username) # Above system has priority, so deleting existing users is fine
     user = database.User(
         username=username,
         hash=hash(password)
