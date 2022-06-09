@@ -2,11 +2,6 @@ from . import BaseModel,fields
 from pydantic import Field
 from typing import Union
 
-class User_Query(BaseModel):
-    username:Union[str,None] = Field(default=None)
-    email:Union[str,None] = Field(default=None)
-
-
 class User_Public(BaseModel):
     id: int = fields.Item_ID
     created_at: float = fields.Created_At
