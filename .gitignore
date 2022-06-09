@@ -241,4 +241,4 @@ data/log.txt
 ffprobe.json
 config.yml
 data/auth.db
-modules/jwt.py
+data/tokensecret.key
