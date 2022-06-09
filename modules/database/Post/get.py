@@ -11,7 +11,6 @@ def getByMD5(md5:str) -> Post:
     """Raises
     - KeyError: Could not find post
     """
-    document = post_collection.find_one()
     return _get_by_filter({"md5s":{'$elemMatch':{"$eq":md5}}})
 
 def getBySHA256(sha256:str) -> Post:
