@@ -17,5 +17,5 @@ async def all_tags():
     tags = database.Tag.all()
     return JSONResponse(
         content=jsonable_encoder(tags),
-        headers={"Cache-Control": "max-age=3600, public"},
+        headers={"Cache-Control": f"max-age={60*60*24}, public"},
     )
