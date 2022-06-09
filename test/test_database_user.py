@@ -51,7 +51,7 @@ class test_User_getByEmail(unittest.TestCase):
         email = "doesntexist@bar.com"
         self.assertRaises(KeyError,User.getByEmail,email)
 
-class test_User_getByUsernam(TestCase):
+class test_User_getByUsername(TestCase):
     def setUp(self):
         self.user = generate_user()
         self.name = "example_name"
@@ -64,3 +64,14 @@ class test_User_getByUsernam(TestCase):
     def test_b(self):
         username = "DoesntExist"
         self.assertRaises(KeyError,User.getByUsername,username)
+
+class test_User_createPost(TestCase):
+    def setUp(self):
+        self.user = generate_user()
+        User.create(self.user)
+    
+    def test_a(self):
+        User.createPost(self.user.id,2)
+        User.createPost(self.user.id,3)
+        user = User.get(self.user.id)
+        assert user.posts == [2,3]
