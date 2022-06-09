@@ -26,7 +26,6 @@ def permissions_from_level(level:str) -> Permissions:
     """Raises:
     - KeyError: Invalid Level
     """
-    level = level.lower()
     if level not in _permission_lookup:
         raise KeyError("Invalid Level")
     else:

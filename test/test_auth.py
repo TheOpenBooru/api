@@ -1,10 +1,10 @@
-from modules import auth
+from modules.account import auth
 import time
 from tqdm import tqdm
 import unittest
 import random
 
-VALID_PASSWORD = r"GzsU`d>%8r_WK`u~JpMZR}tmL{,#:vmC'__\BTw#x2aVq+\Q{)"
+VALID_PASSWORD = r"MZR}tmL{,#:vmC'__\BTw#x2aVq+\Q{)"
 
 class test_cant_register_user_twice(unittest.TestCase):
     def setUp(self):

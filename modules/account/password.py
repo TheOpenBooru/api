@@ -9,7 +9,7 @@ class PasswordRequirements:
     max_length:int
     score:float
 
-def get_password_requirements() -> PasswordRequirements:
+def getPasswordRequirements() -> PasswordRequirements:
     config = settings.PASSWORD_MIN_LENGTH
     return PasswordRequirements(
         min_length=settings.PASSWORD_MIN_LENGTH,
@@ -17,8 +17,8 @@ def get_password_requirements() -> PasswordRequirements:
         score=settings.PASSWORD_REQUIRED_SCORE,
     )
 
-def is_password_valid(password:str):
-    requirements = get_password_requirements()
+def isPasswordValid(password:str):
+    requirements = getPasswordRequirements()
     score = zxcvbn(password)['score']
     if len(password) < requirements.min_length:
         return False
