@@ -12,13 +12,13 @@ app = FastAPI(
     docs_url='/docs',
 )
 
+app.add_middleware(GZipMiddleware)
 app.add_middleware(CORSMiddleware,
     allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
     allow_credentials=True,
 )
-app.add_middleware(GZipMiddleware)
 
 
 app.include_router(router)
