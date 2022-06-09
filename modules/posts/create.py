@@ -9,17 +9,6 @@ async def create(data:bytes,filename:str) -> schemas.Post:
     database.Post.create(schema)
     return schema
 
-
-async def _quick_exists_check(data:bytes) -> bool:
-    sha256 = hashlib.sha256(data).hexdigest()
-    query = schemas.Post_Query(sha256=sha256)
-    searched_posts = database.Post.search(query)
-    if searched_posts == []:
-        return False
-    else:
-        return True
-
-
 class _PostSchemaGenerator:
     def __init__(self,data:bytes,filename:str):
         self.data = data
@@ -29,7 +18,7 @@ class _PostSchemaGenerator:
     
     
     async def generate(self):
-        if await _quick_exists_check(self.data):
+        if await _checkExists(self.data):
             raise ValueError("Post already exists")
         
         media_type = await encoding.predict_media_type(self.data,self.filename)
@@ -57,50 +46,62 @@ class _PostSchemaGenerator:
     
     def process_file(self,file:encoding.GenericFile) -> schemas.GenericMedia:
         self._generate_hashes(file.data)
-        filename = self._generate_filename(file)
+        filename = _generate_filename(file)
         store.put(file.data,filename)
         url = store.generate_generic_url(filename)
-        schema = self._generate_schema(file,url)
+        schema = _generate_schema(file,url)
         return schema
     
     
-    def _generate_filename(self,file:encoding.GenericFile) -> str:
-        hash = hashlib.sha3_256(file.data).hexdigest()
-        ext = mimetypes.guess_extension(file.mimetype) or ""
-        filename = hash + ext
-        return filename
     
     def _generate_hashes(self,data:bytes):
         self.md5s.append(hashlib.md5(data).hexdigest())
         self.sha256s.append(hashlib.sha256(data).hexdigest())
-    
-    
-    def _generate_schema(self,file:encoding.GenericFile,url:str) -> schemas.GenericMedia:
-        if isinstance(file,encoding.ImageFile):
-            return schemas.Image(
-                url=url,
-                mimetype=file.mimetype,
-                height=file.height,
-                width=file.width,
+
+
+def _generate_schema(file:encoding.GenericFile,url:str) -> schemas.GenericMedia:
+    if isinstance(file,encoding.ImageFile):
+        return schemas.Image(
+            url=url,
+            mimetype=file.mimetype,
+            height=file.height,
+            width=file.width,
+        )
+    elif isinstance(file,encoding.AnimationFile):
+        return schemas.Animation(
+            url=url,
+            mimetype=file.mimetype,
+            height=file.height,
+            width=file.width,
+            duration=file.duration,
+            frame_count=file.frame_count,
             )
-        elif isinstance(file,encoding.AnimationFile):
-            return schemas.Animation(
-                url=url,
-                mimetype=file.mimetype,
-                height=file.height,
-                width=file.width,
-                duration=file.duration,
-                frame_count=file.frame_count,
-                )
-        elif isinstance(file,encoding.VideoFile):
-            return schemas.Video(
-                url=url,
-                mimetype=file.mimetype,
-                height=file.height,
-                width=file.width,
-                duration=file.duration,
-                fps=file.framerate,
-                has_sound=file.hasAudio,
-                )
-        else:
-            raise TypeError("Unknown file type")
+    elif isinstance(file,encoding.VideoFile):
+        return schemas.Video(
+            url=url,
+            mimetype=file.mimetype,
+            height=file.height,
+            width=file.width,
+            duration=file.duration,
+            fps=file.framerate,
+            has_sound=file.hasAudio,
+            )
+    else:
+        raise TypeError("Unknown file type")
+
+
+def _generate_filename(file:encoding.GenericFile) -> str:
+    hash = hashlib.sha3_256(file.data).hexdigest()
+    ext = mimetypes.guess_extension(file.mimetype) or ""
+    filename = hash + ext
+    return filename
+
+
+async def _checkExists(data:bytes) -> bool:
+    md5 = hashlib.md5(data).hexdigest()
+    try:
+        database.Post.getByMD5(md5)
+    except KeyError:
+        return False
+    else:
+        return True
