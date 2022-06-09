@@ -1,4 +1,4 @@
-# Read the Documentation: https://github.com/TheOpenBooru/api/blob/main/settings.md#config
+# Read the Documentation: https://github.com/TheOpenBooru/api/blob/main/settings.md
 config:
   site:
     display_name: Open Booru
