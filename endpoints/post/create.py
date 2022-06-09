@@ -1,6 +1,10 @@
+import logging
 from . import router
 from modules import schemas,posts
-from fastapi import Response,status,UploadFile
+from endpoints.meta.token import Account,DecodeToken
+from fastapi import Response, status, Depends, UploadFile
+from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 
 responses = {
     201:{"description":"Successfully Created"},
@@ -9,21 +13,22 @@ responses = {
 }
 
 @router.post("/create",
-             response_model=schemas.Post,
-             status_code=status.HTTP_201_CREATED,
-             responses=responses, # type: ignore
+    response_model=schemas.Post,
+    status_code=status.HTTP_201_CREATED,
+    responses=responses, # type: ignore
 )
-async def create_post(data:bytes,filename:str):
-    authorised = False
-    if not authorised:
-        return Response(status_code=status.HTTP_401_UNAUTHORIZED)
+
+async def create_post(image_file:UploadFile, user:Account=Depends(DecodeToken)):
+    if not user.permissions.canCreatePosts:
+        return Response(status_code=401)
+    
+    try:
+        data = await image_file.read()
+        filename = image_file.filename
+        post = await posts.create(data,filename) # type: ignore
+    except Exception as e:
+        logging.debug(e)
+        return Response(status_code=400)
     else:
-        try:
-            post = await posts.create(data,filename) # type: ignore
-        except Exception:
-            return Response(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                content="Failed to Create Post",
-            )
-        else:
-            return post
+        json = jsonable_encoder(post)
+        return JSONResponse(json,201)
