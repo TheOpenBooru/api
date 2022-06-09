@@ -1,41 +1,32 @@
 from modules import settings as _settings
-from typing import Union
 import secrets as _secrets
 import time as _time
 import jwt as _jwt
-from dataclasses import dataclass as _dataclass
+from pathlib import Path
 
-_SECRET_KEY = _secrets.token_hex(64)
+_SECRET_PATH = Path("./data/tokensecret.key")
+if not _SECRET_PATH.exists():
+    _SECRET_KEY = _secrets.token_hex(64)
+    _SECRET_PATH.write_text(_SECRET_KEY)
+else:
+    _SECRET_KEY = _SECRET_PATH.read_text()
 
-@_dataclass()
-class TokenData:
-    userID: int
-    data: dict
 
 class BadTokenError(Exception):
     "The Token was Invalid, could be Corrupt, Invalid, Expired"
 
-def create(id:int, additional_data:Union[dict,None] = None, expiration:int = _settings.DEFAULT_TOKEN_EXPIRATION) -> str:
+def create(data:dict, expiration:int = _settings.DEFAULT_TOKEN_EXPIRATION) -> str:
     """Raises:
     - ValueError: Data cannot contain the reserved field
     """
-    payload = {
-        "_user_id": id,
-        "exp": _time.time() + expiration,
-    }
+    if "exp" in data:
+        raise ValueError(f"Data cannot contain a rerved field: 'exp'")
 
-    
-    if additional_data:
-        if "exp" in additional_data:
-            raise ValueError(f"Data cannot contain a rerved field: 'exp'")
-        if "_user_id" in additional_data:
-            raise ValueError(f"Data cannot contain a rerved field: '_user_id'")
-        payload |= additional_data
-    
+    payload = data | {"exp": _time.time() + expiration}
     return _jwt.encode(payload, _SECRET_KEY, algorithm="HS256")
 
 
-def decode(token: str) -> TokenData:
+def decode(token: str) -> dict:
     """Raises:
     - BadTokenError: Malformed or Invalid Token
     """
@@ -44,7 +35,5 @@ def decode(token: str) -> TokenData:
     except Exception:
         raise BadTokenError("Malformed or Invalid Token")
     
-    user_id = data["_user_id"]
-    data.pop("_user_id")
     data.pop("exp")
-    return TokenData(user_id, data)
+    return data
