@@ -5,8 +5,8 @@ class BaseModel(_PydanticBaseModel):
 
 
 from . import fields
-from .media import GenericMedia,Animation,Video,Image
-from .misc import Author,Comment
-from .tag import Tag,Tag_Query
-from .post import Post,Post_Edit,Post_Query,Valid_Post_Sorts
-from .user import User,User_Public,User_Query
+from .media import GenericMedia, Animation, Video, Image
+from .misc import Author, Comment
+from .tag import Tag, Tag_Query
+from .post import Post, Post_Edit, Post_Query, Valid_Post_Sorts
+from .user import User, User_Public
