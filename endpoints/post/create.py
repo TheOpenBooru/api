@@ -25,8 +25,7 @@ async def create_post(image_file:UploadFile, user:Account=Depends(DecodeToken)):
     try:
         data = await image_file.read()
         filename = image_file.filename
-        post = await posts.create(data,filename) # type: ignore
-        database.User.createPost(user.id,post.id)
+        post = await posts.create(data,filename,user.id) # type: ignore
     except Exception as e:
         logging.debug(e)
         return Response(status_code=400)

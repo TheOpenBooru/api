@@ -1,11 +1,14 @@
 from modules import schemas,encoding,database,encoding,store
 import mimetypes
 import hashlib
+from typing import Union
 
 
-async def create(data:bytes,filename:str) -> schemas.Post:
+async def create(data:bytes,filename:str,user_id:Union[int,None] = None) -> schemas.Post:
     generator = _PostSchemaGenerator(data,filename)
     schema = await generator.generate()
+    if user_id:
+        schema.uploader = user_id
     database.Post.create(schema)
     return schema
 
