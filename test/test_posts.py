@@ -1,4 +1,4 @@
-from modules import posts, schemas, importer, settings, database
+from modules import posts, schemas, importer, settings, database, store
 import yaml
 from unittest import IsolatedAsyncioTestCase as AsyncTestCase
 
@@ -6,6 +6,7 @@ settings.STORAGE_METHOD = 'local'
 
 class test_Post_Create_has_Correct_Attributes(AsyncTestCase):
     async def asyncSetUp(self):
+        store.clear()
         database.Post.clear()
         with open('./data/test/sample_data.json','r') as f:
             self.testdata = yaml.full_load(f)
