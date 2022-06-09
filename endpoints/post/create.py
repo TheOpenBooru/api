@@ -13,19 +13,17 @@ responses = {
              status_code=status.HTTP_201_CREATED,
              responses=responses, # type: ignore
 )
-async def create_post(image_file:UploadFile):
+async def create_post(data:bytes,filename:str):
     authorised = False
     if not authorised:
         return Response(status_code=status.HTTP_401_UNAUTHORIZED)
     else:
-        data = await image_file.read()
-        filename = image_file.filename
         try:
             post = await posts.create(data,filename) # type: ignore
         except Exception:
             return Response(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                content="Failed to Create Post from Image",
+                content="Failed to Create Post",
             )
         else:
             return post
