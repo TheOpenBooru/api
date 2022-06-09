@@ -1,6 +1,6 @@
 import logging
 from . import router
-from modules import schemas,posts
+from modules import schemas, posts, database
 from endpoints.meta.token import Account,DecodeToken
 from fastapi import Response, status, Depends, UploadFile
 from fastapi.responses import JSONResponse
@@ -26,6 +26,7 @@ async def create_post(image_file:UploadFile, user:Account=Depends(DecodeToken)):
         data = await image_file.read()
         filename = image_file.filename
         post = await posts.create(data,filename) # type: ignore
+        database.User.createPost(user.id,post.id)
     except Exception as e:
         logging.debug(e)
         return Response(status_code=400)
