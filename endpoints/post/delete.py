@@ -1,5 +1,5 @@
 from . import router
-from endpoints.meta.token import DecodeToken,Account
+from endpoints._token import DecodeToken,Account
 from modules import database
 from fastapi import Response, Depends
 

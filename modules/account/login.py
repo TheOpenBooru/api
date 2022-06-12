@@ -7,9 +7,7 @@ def login(username:str,password:str) -> str:
     - PasswordWasReset
     """
     _validate_username(username)
-    
     user = database.User.getByUsername(username)
-    
     if not auth.login(username,password):
         raise LoginFailure
     else:

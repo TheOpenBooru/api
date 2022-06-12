@@ -18,4 +18,5 @@ async def register(username: str = Body(), password: str = Body()):
     except account.InvalidPassword:
         return Response("Password Does not meet requirements",400)
     else:
-        return Response(status_code=200)
+        token = account.login(username, password)
+        return token

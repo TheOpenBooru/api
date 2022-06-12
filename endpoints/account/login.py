@@ -1,6 +1,7 @@
 from . import router
 from modules import account
-from fastapi import Response, Body
+from fastapi.security import OAuth2PasswordRequestForm
+from fastapi import Response, Depends
 
 
 responses = {
@@ -13,9 +14,9 @@ responses = {
 }
 
 @router.post("/login",response_model=str,responses=responses) # type: ignore
-async def login(username:str = Body(),password:str = Body()):
+async def login(oauth:OAuth2PasswordRequestForm = Depends()):
     try:
-        token = account.login(username,password)
+        token = account.login(oauth.username,oauth.password)
     except account.LoginFailure:
         return Response("Invalid Username or Password",401)
     except account.PasswordWasReset:
