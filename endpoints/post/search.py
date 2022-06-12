@@ -5,14 +5,13 @@ from fastapi import Query
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
-responses = {
-    200:{"description":"Successfully Retrieved"},
-}
 
 @router.get("/search",
     response_model=list[schemas.Post],
     status_code=200,
-    responses=responses, # type: ignore
+    responses={
+        200:{"description":"Successfully Retrieved"},
+    },
 )
 async def search_posts(
         index:int = Query(default=0, description="Offset by this many posts"),

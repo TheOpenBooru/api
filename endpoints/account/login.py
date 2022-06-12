@@ -4,16 +4,17 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import Response, Depends
 
 
-responses = {
-    200:{
-        "description":"Successfully Signed in and Provided a Token",
-        "content": {"text/plain":{}}
-    },
-    404:{"description":"Invalid Username or Password"},
-    406:{"description":"User's Password Was Reset"},
-}
-
-@router.post("/login",response_model=str,responses=responses) # type: ignore
+@router.post("/login",
+    response_model=str,
+    responses={
+        200:{
+            "description":"Successfully Signed in and Provided a Token",
+            "content": {"text/plain":{}}
+        },
+        404:{"description":"Invalid Username or Password"},
+        406:{"description":"User's Password Was Reset"},
+    }
+)
 async def login(oauth:OAuth2PasswordRequestForm = Depends()):
     try:
         token = account.login(oauth.username,oauth.password)

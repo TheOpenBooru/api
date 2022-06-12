@@ -4,15 +4,13 @@ from modules.database import Post
 from fastapi import Response,status
 
 
-responses = {
-    200:{"description":"Successfully Retrieved Post"},
-    404:{"description":"The Post Could Not Be Found"},
-}
-
 @router.get("/post/{id}",
     response_model=schemas.Post,
     status_code=status.HTTP_200_OK,
-    responses=responses, # type: ignore
+    responses={
+        200:{"description":"Successfully Retrieved Post"},
+        404:{"description":"The Post Could Not Be Found"},
+    },
 )
 async def get_post(id:int):
     CACHE_HEADER = {"Cache-Control": "max-age=60, private"}

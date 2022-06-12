@@ -4,14 +4,13 @@ from fastapi import Depends
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
-responses = {
-    200:{"description":"Successfully Retrieved"},
-}
 
 @router.get("/search",
     response_model=list[schemas.Tag],
     status_code=200,
-    responses=responses, # type: ignore
+    responses={
+        200:{"description":"Successfully Retrieved"},
+    },
 )
 async def search_tags(query:schemas.Tag_Query = Depends()):
     tags = database.Tag.search(query)
