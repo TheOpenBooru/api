@@ -34,7 +34,3 @@ Item_ID = _Field(
     ...,
     description="The Unique ID for this Item",
 )
-User_ID:int = _Field(
-    ...,
-    description="The User ID of the Post Creator"
-)
