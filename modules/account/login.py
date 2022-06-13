@@ -1,27 +1,29 @@
-from . import auth,PasswordWasReset,LoginFailure
+from . import auth,PasswordWasReset,LoginFailure,AccountDoesntExists
 from modules import database,jwt,schemas
 
 def login(username:str,password:str) -> str:
     """Raises:
     - LoginFailure
     - PasswordWasReset
+    - AccountDoesntExists
     """
     _validate_username(username)
+    
     user = database.User.getByUsername(username)
-    if not auth.login(username,password):
-        raise LoginFailure
-    else:
+    if auth.login(username,password):
         return _generate_token(user)
+    else:
+        raise LoginFailure
 
 
 def _validate_username(username:str):
+    try:
+        user = database.User.getByUsername(username)
+    except KeyError:
+        raise AccountDoesntExists
+    
     if not auth.exists(username):
         raise PasswordWasReset
-    
-    try:
-        database.User.getByUsername(username)
-    except KeyError:
-        raise LoginFailure
 
 
 def _generate_token(user:schemas.User) -> str:

@@ -10,13 +10,16 @@ class Account:
 class LoginFailure(Exception):
     pass
 
+class InvalidToken(Exception):
+    pass
+
 class InvalidPassword(Exception):
     pass
 
 class PasswordWasReset(Exception):
     pass
 
-class InvalidToken(Exception):
+class AccountDoesntExists(Exception):
     pass
 
 class AccountAlreadyExists(Exception):

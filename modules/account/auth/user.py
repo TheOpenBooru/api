@@ -12,6 +12,7 @@ def login(username:str,password:str) -> bool:
         hash = user.hash
     return compare(password, hash)
 
+
 def register(username:str,password:str):
     """Raises:
     - KeyError: User already exists
@@ -24,6 +25,7 @@ def register(username:str,password:str):
     )
     database.create(user)
 
+
 def change_password(username:str,password:str):
     """Raises:
     - KeyError: User does not exist
@@ -33,8 +35,10 @@ def change_password(username:str,password:str):
     else:
         database.update_hash(username,hash(password))
 
+
 def exists(username:str):
     return database.get(username) != None
+
 
 def delete(username:str):
     database.delete(username)
