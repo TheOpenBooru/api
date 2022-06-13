@@ -6,18 +6,6 @@ import random
 
 VALID_PASSWORD = r"MZR}tmL{,#:vmC'__\BTw#x2aVq+\Q{)"
 
-class test_cant_register_user_twice(unittest.TestCase):
-    def setUp(self):
-        auth.register('user1',VALID_PASSWORD)
-    
-    def tearDown(self):
-        auth.delete('user1')
-    
-    def test_cant_register_user_twice(self):
-        with self.assertRaises(KeyError):
-            auth.register('user1',VALID_PASSWORD)
-
-
 class test_Register_and_Signin(unittest.TestCase):
     def tearDown(self):
         auth.delete('user1')
