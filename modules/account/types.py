@@ -1,11 +1,11 @@
 from dataclasses import dataclass
-from . import Permissions
+from . import UserPermissions
 
 @dataclass(frozen=True)
 class Account:
     id:int
     username:str
-    permissions:Permissions
+    permissions:UserPermissions
 
 class LoginFailure(Exception):
     pass

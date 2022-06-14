@@ -2,7 +2,7 @@ import yaml as _yaml
 from pydantic import BaseModel as _BaseModel
 
 
-class Permissions(_BaseModel):
+class UserPermissions(_BaseModel):
     canViewUsers:bool = False
     canSearchUsers:bool = False
     canEditUsers:bool = False
@@ -22,7 +22,7 @@ class Permissions(_BaseModel):
 with open("./settings.yml") as _f:
     _permission_lookup = _yaml.full_load(_f)['permissions']
 
-def permissions_from_level(level:str) -> Permissions:
+def permissions_from_level(level:str) -> UserPermissions:
     """Raises:
     - KeyError: Invalid Level
     """
@@ -31,4 +31,4 @@ def permissions_from_level(level:str) -> Permissions:
     else:
         valid_actions = _permission_lookup[level]
         object_form = {action:True for action in valid_actions}
-        return Permissions.parse_obj(object_form)
+        return UserPermissions.parse_obj(object_form)
