@@ -1,7 +1,6 @@
 from functools import cached_property
 import mimetypes
 from typing import Union
-import warnings
 from magic import Magic
 import ffmpeg
 
