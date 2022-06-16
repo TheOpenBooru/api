@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 router = APIRouter()
-from ._token import Account,DecodeToken
 from . import account,profile,post,tag,misc
 
 router.include_router(account.router)

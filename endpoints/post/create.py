@@ -1,6 +1,6 @@
 from . import router
-from modules import schemas, posts
-from endpoints._token import Account, DecodeToken
+from modules import schemas, posts, account
+from modules.dependencies import DecodeToken, RequirePermission
 from fastapi import Response, status, UploadFile, Depends
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
@@ -14,8 +14,9 @@ from fastapi.encoders import jsonable_encoder
         400:{"description":"Failed To Create Post From Image"},
         409:{"description":"Post Already Exists"},
     },
+    dependencies=[Depends(RequirePermission("canCreatePosts"))],
 )
-async def create_post(image:UploadFile, user:Account = Depends(DecodeToken)):
+async def create_post(image:UploadFile, user:account.Account = Depends(DecodeToken)):
     try:
         data = await image.read()
         filename = image.filename

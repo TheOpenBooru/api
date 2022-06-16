@@ -1,6 +1,5 @@
 from . import router
-from .._token import Account, DecodeToken
-from modules import database
+from modules import database, dependencies, account
 from fastapi import Response, Depends, Body, status
 
 
@@ -14,7 +13,7 @@ from fastapi import Response, Depends, Body, status
 )
 async def update_settings(
         settings:str = Body(description="Settings to be stored on the user's profile, 4096 characters max"),
-        account:Account = Depends(DecodeToken)
+        account:account.Account = Depends(dependencies.DecodeToken)
         ):
     try:
         database.User.updateSettings(account.id,settings)
@@ -22,4 +21,3 @@ async def update_settings(
     except ValueError:
         
         return Response(status_code=200)
-        
