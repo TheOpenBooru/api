@@ -3,8 +3,10 @@ import mimetypes
 import hashlib
 from typing import Union
 
+
 class PostExistsException(Exception):
     pass
+
 
 async def create(data:bytes,filename:str,user_id:Union[int,None] = None) -> schemas.Post:
     generator = _PostSchemaGenerator(data,filename)
