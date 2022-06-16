@@ -61,7 +61,7 @@ POSTS_SEARCH_MAX_LIMIT:int = get("posts.search.max_limit")
 
 # Database
 DATABASE_CHOICE:str = get("database.choice")
-MONGODB_WIPE_ON_STARTUP:bool = get("database.wipe_on_startup")
+WIPE_ON_STARTUP:bool = get("config.wipe_on_startup")
 MONGODB_DB_NAME:str = get("config.mongodb.name")
 MONGODB_HOSTNAME:str = get("config.mongodb.hostname")
 MONGODB_PORT:int = get("config.mongodb.port")

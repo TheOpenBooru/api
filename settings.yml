@@ -26,9 +26,9 @@ config:
     password: ""
     hostname: ""
     port: 25
+  wipe_on_startup: false
 
 database:
-  wipe_on_startup: false
   choice: "mongodb"
 
 
