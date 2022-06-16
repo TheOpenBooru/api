@@ -15,7 +15,6 @@ from fastapi import Response,status
 async def get_post(id:int):
     CACHE_HEADER = {"Cache-Control": "max-age=60, private"}
     if Post.exists(id):
-        Post.increment_view(id)
         post = Post.get(id)
         return Response(
             content=post.json(),

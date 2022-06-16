@@ -10,4 +10,4 @@ from .create import create
 from .delete import delete
 from .search import search
 from .update import update
-from .actions import increment_view
+from .votes import add_upvote, remove_upvote, add_downvote, remove_downvote

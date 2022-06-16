@@ -1,11 +1,14 @@
+from datetime import datetime
 from . import BaseMedia,ImageFile,VideoFile,Image
 from .probe import VideoProbe
 from modules import settings
 import os
+import time
 import shutil
 import random
 import ffmpeg
 from pathlib import Path
+
 
 class Video(BaseMedia):
     type = "video"
@@ -59,14 +62,24 @@ class Video(BaseMedia):
         - FileNotFoundError: Didn't use `with` statement to create file
         """
         offset_percentage = 0.01 * settings.VIDEO_THUMBNAIL_OFFSET
+        offset_time = float(offset_percentage * self._probe.duration)
+        offset_time = min(self._probe.duration, offset_time)
+        
         try:
             data,err = (
                 ffmpeg
                 .input(self._filepath)
-                .output("pipe:",
-                    f='image2',vframes=1
+                .output(
+                    "pipe:",
+                    f='image2',
+                    vframes=1,
+                    ss=offset_time,
                 )
-                .run(input=self._data,capture_stdout=True,capture_stderr=True)
+                .run(
+                    input=self._data,
+                    capture_stdout=True,
+                    capture_stderr=True
+                )
             )
         except ffmpeg.Error as e:
             raise ValueError(e.stderr)
