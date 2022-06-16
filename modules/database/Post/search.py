@@ -6,6 +6,8 @@ import pymongo
 DEFAULT_QUERY = schemas.Post_Query()
 def search(query:schemas.Post_Query = DEFAULT_QUERY) -> list[Post]:
     filters = []
+    if query.exclude_ratings:
+        filters.append({'rating':{'$nin':query.exclude_ratings}})
     if query.include_tags:
         filters.append({'tags':{'$all':query.include_tags}})
     if query.exclude_tags:

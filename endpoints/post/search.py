@@ -1,5 +1,6 @@
 from . import router
 from modules import schemas, posts, settings
+from modules.schemas import Valid_Post_Sorts,Valid_Post_Ratings,Post
 from typing import Union
 from fastapi import Query
 from fastapi.responses import JSONResponse
@@ -16,7 +17,8 @@ from fastapi.encoders import jsonable_encoder
 async def search_posts(
         index:int = Query(default=0, description="Offset by this many posts"),
         limit:int = Query(default=settings.POSTS_SEARCH_MAX_LIMIT,lt=settings.POSTS_SEARCH_MAX_LIMIT + 1, description="Maximum number of posts to return"),
-        sort:schemas.Valid_Post_Sorts = Query(default=settings.POSTS_SEARCH_DEFAULT_SORT, description="The sort order for the posts"),
+        sort:Valid_Post_Sorts = Query(default=settings.POSTS_SEARCH_DEFAULT_SORT, description="The sort order for the posts"),
+        exclude_ratings:list[Valid_Post_Ratings] = Query(default=[], description="Exclude these ratings from the results"),
         descending:bool = Query(default=True, description="The sort order for the posts"),
         include_tags:list[str] = Query(default=[], description="Include posts with these tags"),
         exclude_tags:list[str] = Query(default=[], description="Exclude posts with these tags"),
@@ -29,6 +31,7 @@ async def search_posts(
         index=index,
         limit=limit,
         sort=sort,
+        exclude_ratings=exclude_ratings,
         descending=descending,
         include_tags=include_tags,
         exclude_tags=exclude_tags,

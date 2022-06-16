@@ -5,6 +5,20 @@ from typing import Union
 from enum import Enum
 
 
+class Valid_Post_Sorts(str, Enum):
+    id = "id"
+    created_at = "created_at"
+    upvotes = "upvotes"
+    downvotes = "downvotes"
+
+
+class Valid_Post_Ratings(str, Enum):
+    safe = "safe"
+    sensitive = "sensitive"
+    mature = "mature"
+    explicit = "explicit"
+    
+
 class PostEdit(BaseModel):
     created_at: float = fields.Created_At
     post_id: int = fields.Item_ID
@@ -16,17 +30,11 @@ class PostEdit(BaseModel):
     new_source: str = Field(default="", description="The new source for the post")
 
 
-class Valid_Post_Sorts(str, Enum):
-    id = "id"
-    created_at = "created_at"
-    upvotes = "upvotes"
-    downvotes = "downvotes"
-
-
 class Post_Query(BaseModel):
     index: int = Field(default=0, description="Offset from the start of the results")
     limit: int = Field(default=64, description="Maximum number of results to return")
     sort: Valid_Post_Sorts = Field(default=settings.POSTS_SEARCH_DEFAULT_SORT, description="How to sort the posts")
+    exclude_ratings: list[Valid_Post_Ratings] = Field(default_factory=list, description="Ratings to exlucde from the results")
     descending: bool = Field(default=True, description="Should search be ordered descending")
     
     include_tags: list[str] = Field(default_factory=list)
@@ -53,7 +61,8 @@ class Post(BaseModel):
     md5s: list[str] = Field(default_factory=list, description="The Post's MD5 hashes")
     sha256s: list[str] = Field(default_factory=list, description="The Post's SHA256 hashes")
     media_type: str = fields.Post_Type
-    
+
+    rating: Valid_Post_Ratings = Field(default="mature", description="The default rating for a post")
     tags: list[str] = fields.Tags
     comments: list[int] = fields.Comments
     edits: list[PostEdit] = Field(default_factory=list, description="The edits made to the post")
