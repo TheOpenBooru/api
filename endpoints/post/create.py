@@ -20,7 +20,7 @@ async def create_post(image:UploadFile, user:account.Account = Depends(DecodeTok
     try:
         data = await image.read()
         filename = image.filename
-        post = await posts.create(data,filename,user.id)
+        post = await posts.create(data,filename,user_id=user.id)
     except posts.PostExistsException:
         return Response("Post Already Exists", 409)
     except Exception as e:
