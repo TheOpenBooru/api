@@ -4,7 +4,7 @@ from .utils import _normalise_tag,_normalise_tags, _predict_media_type
 from .files import Files
 from .safebooru import Safebooru
 from .hydrus import Hydrus
-ofrom .tubmlr import Tumblr
+from .tubmlr import Tumblr
 
 async def import_all():
     importers = [
