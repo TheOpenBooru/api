@@ -6,7 +6,7 @@ from enum import Enum
 class Type(str, Enum):
     image = 'image'
     video = 'video'
-    animation = 'video'
+    animation = 'animation'
 
 class BaseMedia(BaseModel):
     url: str = Field(..., description="The URI for the File")
