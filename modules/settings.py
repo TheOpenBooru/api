@@ -68,13 +68,26 @@ MONGODB_PORT:int = get("config.mongodb.port")
 
 # Import
 
-IMPORT_LOCAL_ENABLED:bool = get("posts.import.local.enabled")
-IMPORT_LOCAL_PATH:str = get("posts.import.local.local_path")
+IMPORT_FILES_ENABLED:bool = get("posts.import.local.enabled")
+IMPORT_FILES_BASEPATH:str = get("posts.import.local.local_path")
+
+IMPORT_HYDRUS_ENABLED:bool = get("posts.import.hydrus.enabled")
+IMPORT_HYDRUS_KEY:str = get("posts.import.hydrus.access_key")
+IMPORT_HYDRUS_URL:str = get("posts.import.hydrus.url")
+IMPORT_HYDRUS_TAGS:str = get("posts.import.hydrus.tags")
+
 IMPORT_SAFEBOORU_ENABLED:bool = get("posts.import.safebooru.enabled")
 IMPORT_SAFEBOORU_LIMIT:Union[int,None] = get("posts.import.safebooru.limit")
 IMPORT_SAFEBOORU_SEARCHES:list[str] = get("posts.import.safebooru.searches")
 
-# Password
+IMPORT_TUMBLR_ENABLED:bool = get("posts.import.tumblr.enabled")
+IMPORT_TUMBLR_KEY:str = get("posts.import.tumblr.consumer_key")
+IMPORT_TUMBLR_SECRET:str = get("posts.import.tumblr.consumer_secret")
+IMPORT_TUMBLR_BLOGS:list[str] = get("posts.import.tumblr.blogs")
+
+IMPORT_YOUTUBE_ENABLED:bool = get("posts.import.youtube.enabled")
+
+# Passwords
 
 PASSWORD_PEPPER:int = get("config.password_pepper")
 DEFAULT_TOKEN_EXPIRATION:int = get("authentication.token_expiration")

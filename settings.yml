@@ -46,8 +46,20 @@ posts:
     local:
       enabled: false
       local_path: "./data/import"
+    hydrus:
+      enabled: false
+      access_key: ""
+      url: "http://localhost:45869/"
+      tags:
+        - "system:everything"
+    tumblr:
+      enabled: false
+      consumer_key: ""
+      consumer_secret: ""
+      blogs:
+        - pauladrawsnstuff
     safebooru:
-      enabled: true
+      enabled: false
       searches: [
         "asami_sato yuri -bra -bikini",
         "samus_aran yuri",
@@ -55,7 +67,7 @@ posts:
         "widowmaker_(overwatch) tracer_(overwatch) yuri -underwear",
         "sombra_(overwatch) -katya_volskaya yuri",
       ]
-      limit: null
+      limit: 100
 
 storage:
   method: "local"

@@ -1,4 +1,4 @@
-from modules import posts, schemas, importer, settings, database, store
+from modules import posts, schemas, importing, settings, database, store
 import yaml
 from unittest import IsolatedAsyncioTestCase as AsyncTestCase
 
@@ -65,7 +65,7 @@ class test_Post_Create_has_Correct_Attributes(AsyncTestCase):
 
 class test_Post_Search(AsyncTestCase):
     async def asyncSetUp(self):
-        await importer.import_safebooru_search(50)
+        await importing.import_safebooru_search(50)
         settings.POSTS_SEARCH_MAX_LIMIT = 20
     async def asyncTearDown(self):
         database.Post.clear()
