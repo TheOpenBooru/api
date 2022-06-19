@@ -8,6 +8,8 @@ tqdm
 # Importing
 bs4
 lxml
+hydrus_api
+pytumblr
 
 # Validation
 iso639
