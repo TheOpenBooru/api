@@ -85,8 +85,6 @@ IMPORT_TUMBLR_KEY:str = get("posts.import.tumblr.consumer_key")
 IMPORT_TUMBLR_SECRET:str = get("posts.import.tumblr.consumer_secret")
 IMPORT_TUMBLR_BLOGS:list[str] = get("posts.import.tumblr.blogs")
 
-IMPORT_YOUTUBE_ENABLED:bool = get("posts.import.youtube.enabled")
-
 # Passwords
 
 PASSWORD_PEPPER:int = get("config.password_pepper")
