@@ -1,6 +1,5 @@
 from . import router
-from modules import database, account
-from modules.dependencies import DecodeToken, RequirePermission
+from modules import database, fastapi
 from fastapi import Response, Depends
 
 
@@ -9,7 +8,7 @@ from fastapi import Response, Depends
         204:{"description":"Post Successfully Deleted"},
         401:{"description":"You Were Not Authorised To Delete This Post"},
     },
-    dependencies=[Depends(RequirePermission("canDeletePosts"))],
+    dependencies=[Depends(fastapi.RequirePermission("canDeletePosts"))],
 )
 async def delete_post(id:int):
     database.Post.delete(id)

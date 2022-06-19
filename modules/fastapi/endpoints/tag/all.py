@@ -1,6 +1,5 @@
 from . import router
 from modules import schemas, database
-from fastapi import Depends
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 

@@ -1,6 +1,5 @@
 from . import router
-from modules import schemas, posts
-from modules.dependencies import RequirePermission, DecodeToken, Account
+from modules import schemas, posts, fastapi, account
 from fastapi import Depends, Body, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
@@ -13,13 +12,13 @@ from typing import Union
         404:{"description":"The Post Could Not Be Found"},
     },
     response_model=schemas.Post,
-    dependencies=[Depends(RequirePermission("canEditPosts"))],
+    dependencies=[Depends(fastapi.RequirePermission("canEditPosts"))],
 )
 async def edit_post(
         id:int,
         tags:Union[None,list[str]] = Body(default=None,description="The tags for the new post version"),
         source:Union[None,str] = Body(default=None,description="The source to update the post with"),
-        user:Account = Depends(DecodeToken)
+        user:account.Account = Depends(fastapi.DecodeToken)
         ):
     try:
         new_post = posts.editPost(id, user.id, tags, source)
