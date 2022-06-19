@@ -25,10 +25,7 @@ app.include_router(main_router)
 
 @app.on_event("startup")
 async def startup_event():
-    if settings.IMPORT_LOCAL_ENABLED:
-        await importer.import_files()
-    if settings.IMPORT_SAFEBOORU_ENABLED:
-        await importer.import_safebooru_search()
+    await importing.import_all()
     database.Tag.regenerate()
 
 
