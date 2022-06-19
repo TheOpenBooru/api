@@ -13,14 +13,19 @@ async def create(
         filename:str,
         *,
         user_id:Union[int,None] = None,
-        additional_tags:Union[list[str],None] = None
+        additional_tags:Union[list[str],None] = None,
+        source:Union[str,None] = None,
         ) -> schemas.Post:
     generator = _PostSchemaGenerator(data,filename)
     schema = await generator.generate()
+    
     if additional_tags:
         schema.tags.extend(additional_tags)
     if user_id:
         schema.uploader = user_id
+    if source:
+        schema.source = source
+    
     database.Post.create(schema)
     return schema
 
