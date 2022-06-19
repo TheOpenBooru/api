@@ -72,7 +72,7 @@ class Tumblr(URLImporter):
         return {
             'id': id,
             'blogname': blogname,
-        }
+        } # type: ignore
 
 
     async def _import_post(self,post:dict[str,Any]):
@@ -80,6 +80,7 @@ class Tumblr(URLImporter):
         tags = post['tags']
         tags = _normalise_tags(tags)
         if post["type"] == "photo":
+            return
             for photo in post['photos']:
                 file_url = photo['original_size']['url']
                 await self._import_post_data(
@@ -88,11 +89,12 @@ class Tumblr(URLImporter):
                     tags=tags
                 )
         elif post["type"] == "video":
-            await self._import_post_data(
-                file_url=post['video_url'],
-                source=source,
-                tags=tags
-            )
+            if "video_url" in post:
+                await self._import_post_data(
+                    file_url=post['video_url'],
+                    source=source,
+                    tags=tags
+                )
 
 
     async def _import_post_data(self,file_url:str,source:str,tags:list[str]):
