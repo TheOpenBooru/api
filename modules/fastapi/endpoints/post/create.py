@@ -1,7 +1,7 @@
 from . import router
 from modules import schemas, posts, account, fastapi
-from fastapi import Response, status, UploadFile, Depends
-from fastapi.responses import JSONResponse
+from fastapi import status, UploadFile, Depends
+from fastapi.responses import JSONResponse, PlainTextResponse
 from fastapi.encoders import jsonable_encoder
 
 
@@ -21,9 +21,9 @@ async def create_post(image:UploadFile, user:account.Account = Depends(fastapi.D
         filename = image.filename
         post = await posts.create(data,filename,user_id=user.id)
     except posts.PostExistsException:
-        return Response("Post Already Exists", 409)
+        return PlainTextResponse("Post Already Exists", 409)
     except Exception as e:
-        return Response("Generic Error", 400)
+        return PlainTextResponse("Generic Error", 400)
     else:
         json = jsonable_encoder(post)
         return JSONResponse(json,201)

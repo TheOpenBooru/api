@@ -16,12 +16,12 @@ from fastapi.encoders import jsonable_encoder
 )
 async def get_post(id:int):
     CACHE_HEADER = {"Cache-Control": "max-age=60, private"}
-    if Post.exists(id):
+    if not Post.exists(id):
+        return Response(status_code=status.HTTP_404_NOT_FOUND)
+    else:
         post = Post.get(id)
         return JSONResponse(
             content=jsonable_encoder(post),
             headers=CACHE_HEADER,
             status_code=status.HTTP_200_OK,
         )
-    else:
-        return Response(status_code=status.HTTP_404_NOT_FOUND)

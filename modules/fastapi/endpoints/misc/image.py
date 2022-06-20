@@ -1,6 +1,7 @@
 from .. import router
 from modules import store, settings
-from fastapi import Response, responses, status
+from fastapi import Response, status
+from fastapi.responses import RedirectResponse, StreamingResponse
 
 
 @router.get("/image/{file}",
@@ -16,7 +17,10 @@ def get_image(file:str):
         except FileNotFoundError:
             return Response(status_code=status.HTTP_404_NOT_FOUND)
         else:
-            return Response(data,headers=CACHE_HEADER)
+            return StreamingResponse(
+                data,
+                headers=CACHE_HEADER
+            )
     else:
         url = store.url(file)
-        return responses.RedirectResponse(url=url)
+        return RedirectResponse(url=url)

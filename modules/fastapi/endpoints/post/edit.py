@@ -26,6 +26,6 @@ async def edit_post(
         raise HTTPException(status_code=400, detail=e.args[0])
     else:
         return JSONResponse(
-            status_code=202,
             content=jsonable_encoder(new_post)
+            status_code=202,
         )

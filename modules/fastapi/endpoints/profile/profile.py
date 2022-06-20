@@ -8,7 +8,7 @@ from fastapi.encoders import jsonable_encoder
 @router.get("",
     responses={
         200:{"description":"Profile Data Retrieved Successfully"},
-        400:{"description":"Not Logged In"},
+        401:{"description":"Not Logged In"},
     },
     response_model=schemas.User,
 )

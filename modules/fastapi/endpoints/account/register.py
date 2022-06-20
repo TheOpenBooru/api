@@ -1,6 +1,7 @@
 from . import router
 from modules import schemas, account
-from fastapi import Response, Body
+from fastapi import Body
+from fastapi.responses import PlainTextResponse
 
 
 @router.post("/register",
@@ -14,9 +15,9 @@ async def register(username: str = Body(), password: str = Body()):
     try:
         account.register(username, password)
     except account.AccountAlreadyExists:
-        return Response("User already exists",409)
+        return PlainTextResponse("User already exists",409)
     except account.InvalidPassword:
-        return Response("Password Does not meet requirements",400)
+        return PlainTextResponse("Password Does not meet requirements",400)
     else:
         token = account.login(username, password)
         return token
