@@ -80,6 +80,16 @@ class S3Store(BaseStore):
             return buf.getvalue()
 
 
+    def exists(self, filename:str):
+        """TODO: Don't donwload files to check existance"""
+        try:
+            self.get(filename)
+        except FileNotFoundError:
+            return False
+        else:
+            return True
+
+
     def url(self, filename:str) -> str:
         TEMPLATE = "https://{bucket}.s3.{region}.amazonaws.com/{filename}"
         return TEMPLATE.format(
@@ -97,6 +107,7 @@ class S3Store(BaseStore):
             )
         except Exception:
             pass # Shouldn't error if key doesn't exist
+
 
     def clear(self):
         self.bucket.objects.all().delete()

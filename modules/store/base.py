@@ -13,6 +13,11 @@ class BaseStore:
         - FileExistsError: The file already exists
         """
         raise NotImplementedError
+
+
+    def exists(self, filename:str) -> bool:
+        ...
+
     
     def get(self, filename:str) -> bytes:
         """Retrieves the data from a file stored
@@ -22,14 +27,17 @@ class BaseStore:
         """
         raise NotImplementedError
     
+
     def url(self, filename:str) -> str:
         """Generates the URL for the file"""
         raise NotImplementedError
     
+
     def delete(self, filename:str):
         "Deletes a file with the specified filename"
         raise NotImplementedError
     
+
     def clear(self):
         "Deletes every file stored"
         raise NotImplementedError

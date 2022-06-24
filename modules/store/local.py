@@ -15,7 +15,7 @@ class LocalStore(BaseStore):
     
     
     def put(self, data:bytes, filename:str):
-        path = STORE_PATH / filename
+        path = self.path(filename)
         if type(data) != bytes:
             raise TypeError("Data wasn't bytes")
         if path.exists():
@@ -25,8 +25,12 @@ class LocalStore(BaseStore):
             f.write(data)
 
 
+    def exists(self, filename:str) -> bool:
+        return Path(STORE_PATH,filename).exists()
+
+
     def get(self, filename:str) -> bytes:
-        path = STORE_PATH / filename
+        path = self.path(filename)
         if path.parent != STORE_PATH:
             raise FileNotFoundError("Path Traversal Detected")
         elif not path.exists():
@@ -50,7 +54,7 @@ class LocalStore(BaseStore):
 
 
     def delete(self, filename:str):
-        path = STORE_PATH / filename
+        path = self.path(filename)
         path.unlink(missing_ok=True)
 
 
@@ -58,3 +62,7 @@ class LocalStore(BaseStore):
         for file in STORE_PATH.iterdir():
             if file.name != '.gitignore':
                 file.unlink()
+
+
+    def path(self,filename:str) -> Path:
+        return STORE_PATH / filename
