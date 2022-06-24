@@ -117,19 +117,6 @@ class test_Clear(TestCase):
         assert Post.count() == 0
 
 
-class test_Increment_View(TestCase):
-    def setUp(self):
-        self.post = post = generate_post()
-        Post.create(post)
-    
-    def test_Increment_View(self):
-        id = self.post.id
-        for x in range(1,10):
-            Post.increment_view(id)
-            post = Post.get(id)
-            assert post
-            assert post.views == x, "Could not increment views"
-
 class test_DatabasePosts_getByMD5(TestCase):
     def setUp(self):
         self.post = generate_post()

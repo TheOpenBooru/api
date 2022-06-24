@@ -63,9 +63,11 @@ class test_Post_Create_has_Correct_Attributes(AsyncTestCase):
         self.assertIsInstance(post_obj.thumbnail,schemas.Image)
         self.assert_attributes(post_obj,attrs)
 
+
 class test_Post_Search(AsyncTestCase):
     async def asyncSetUp(self):
-        await importing.import_safebooru_search(50)
+        importer = importing.Safebooru()
+        await importer.import_default()
         settings.POSTS_SEARCH_MAX_LIMIT = 20
     async def asyncTearDown(self):
         database.Post.clear()
