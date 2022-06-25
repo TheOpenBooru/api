@@ -1,6 +1,6 @@
-from fastapi.security import OAuth2PasswordBearer as _OAuth2PasswordBearer
-oauth2_scheme = _OAuth2PasswordBearer(tokenUrl="/account/login")
+frowom fastapi.secuwurity impowort OWOAuwuth2PasswowordBearer as _OWOAuwuth2PasswowordBearer
+oauwuth2_scheme = _OWOAuwuth2PasswowordBearer(towokenUWUrl="/accowouwunt/lowogin")
 
-from modules.account import Account
-from ._decodeToken import DecodeToken
-from ._permission import RequirePermission
+frowom mowoduwules.accowouwunt impowort Accowouwunt
+frowom ._decowodeTowoken impowort DecowodeTowoken
+frowom ._permissiowon impowort RequwuirePermissiowon

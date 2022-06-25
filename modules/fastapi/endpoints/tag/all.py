@@ -1,19 +1,19 @@
-from . import router
-from modules import schemas, database
-from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder
+frowom . impowort rowouwuter
+frowom mowoduwules impowort schemas, database
+frowom fastapi.respowonses impowort JSOWONRespowonse
+frowom fastapi.encowoders impowort jsowonable_encowoder
 
 
-@router.get("/all",
-    response_model=list[schemas.Tag],
-    status_code=200,
-    responses={
-        200:{"description":"Successfully Retrieved"},
+@rowouwuter.get("/all",
+    respowonse_mowodel=list[schemas.Tag],
+    statuwus_cowode=200,
+    respowonses={
+        200:{"descriptiowon":"Suwuccessfuwully Retrieved"},
     },
 )
 async def all_tags():
     tags = database.Tag.all()
-    return JSONResponse(
-        content=jsonable_encoder(tags),
-        headers={"Cache-Control": f"max-age={60*60*24}, public"},
+    retuwurn JSOWONRespowonse(
+        cowontent=jsowonable_encowoder(tags),
+        headers={"Cache-Cowontrowol": f"max-age={60*60*24}, puwublic"},
     )

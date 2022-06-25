@@ -1,70 +1,70 @@
-# For most projects, this workflow file will not need changing; you simply need
-# to commit it to your repository.
+# Fowor mowost prowojects, this woworkflowow file will nowot need changing; yowouwu simply need
+# towo cowommit it towo yowouwur repowositowory.
 #
-# You may wish to alter this file to override the set of languages analyzed,
-# or to provide custom queries or build logic.
+# Yowouwu may wish towo alter this file towo override the set owof languwuages analyzed,
+# owor towo prowovide cuwustowom quwueries owor buwuild lowogic.
 #
-# ******** NOTE ********
-# We have attempted to detect the languages in your repository. Please check
-# the `language` matrix defined below to confirm you have the correct set of
-# supported CodeQL languages.
+# ******** NOWOTE ********
+# We have attempted towo detect the languwuages in yowouwur repowositowory. Please check
+# the `languwuage` matrix defined belowow towo cowonfirm yowouwu have the coworrect set owof
+# suwuppoworted CowodeQL languwuages.
 #
-name: "CodeQL"
+name: "CowodeQL"
 
 on:
-  push:
+  puwush:
     branches: [ main ]
-  pull_request:
-    # The branches below must be a subset of the branches above
+  puwull_requwuest:
+    # The branches belowow muwust be a suwubset owof the branches abowove
     branches: [ main ]
-  schedule:
-    - cron: '21 6 * * 6'
+  scheduwule:
+    - crowon: '21 6 * * 6'
 
-jobs:
+jowobs:
   analyze:
     name: Analyze
-    runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
+    ruwuns-owon: uwubuntuwu-latest
+    permissiowons:
+      actiowons: read
+      cowontents: read
+      secuwurity-events: write
 
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'python' ]
-        # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
-        # Learn more about CodeQL language support at https://git.io/codeql-language-support
+        languwuage: [ 'pythowon' ]
+        # CowodeQL suwuppoworts [ 'cpp', 'csharp', 'gowo', 'java', 'javascript', 'pythowon', 'ruwuby' ]
+        # Learn mowore abowouwut CowodeQL languwuage suwuppowort at https://git.iowo/cowodeql-languwuage-suwuppowort
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+    - name: Checkowouwut repowositowory
+      uwuses: actiowons/checkowouwut@v2
 
-    # Initializes the CodeQL tools for scanning.
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
+    # Initializes the CowodeQL tools fowor scanning.
+    - name: Initialize CowodeQL
+      uwuses: githuwub/cowodeql-actiowon/init@v1
       with:
-        languages: ${{ matrix.language }}
-        # If you wish to specify custom queries, you can do so here or in a config file.
-        # By default, queries listed here will override any specified in a config file.
-        # Prefix the list here with "+" to use these queries and those in the config file.
-        # queries: ./path/to/local/query, your-org/your-repo/queries@main
+        languwuages: ${{ matrix.languwuage }}
+        # If yowouwu wish towo specify cuwustowom quwueries, yowouwu can dowo sowo here owor in a cowonfig file.
+        # By defauwult, quwueries listed here will owoverride any specified in a cowonfig file.
+        # Prefix the list here with "+" towo uwuse these quwueries and thowose in the cowonfig file.
+        # quwueries: ./path/towo/lowocal/quwuery, yowouwur-oworg/yowouwur-repowo/quwueries@main
 
-    # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
-    # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v1
+    # Auwutowobuwuild attempts towo buwuild any cowompiled languwuages  (C/C++, C#, owor Java).
+    # If this step fails, then yowouwu showouwuld remowove it and ruwun the buwuild manuwually (see belowow)
+    - name: Auwutowobuwuild
+      uwuses: githuwub/cowodeql-actiowon/auwutowobuwuild@v1
 
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 https://git.io/JvXDl
+    # ℹ️ Cowommand-line prowograms towo ruwun uwusing the OWOS shell.
+    # 📚 https://git.iowo/JvXDl
 
-    # ✏️ If the Autobuild fails above, remove it and uncomment the following three lines
-    #    and modify them (or add more) to build your code if your project
-    #    uses a compiled language
+    # ✏️ If the Auwutowobuwuild fails abowove, remowove it and uwuncowomment the fowollowowing three lines
+    #    and mowodify them (owor add mowore) towo buwuild yowouwur cowode if yowouwur prowoject
+    #    uwuses a cowompiled languwuage
 
-    #- run: |
+    #- ruwun: |
     #   make bootstrap
     #   make release
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
+    - name: Perfoworm CowodeQL Analysis
+      uwuses: githuwub/cowodeql-actiowon/analyze@v1

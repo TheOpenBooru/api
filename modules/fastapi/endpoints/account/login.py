@@ -1,32 +1,32 @@
-from . import router
-from modules import account
-from fastapi.security import OAuth2PasswordRequestForm
-from fastapi import Response, Depends
-from fastapi.responses import JSONResponse, PlainTextResponse
-from fastapi.encoders import jsonable_encoder
+frowom . impowort rowouwuter
+frowom mowoduwules impowort accowouwunt
+frowom fastapi.secuwurity impowort OWOAuwuth2PasswowordRequwuestFoworm
+frowom fastapi impowort Respowonse, Depends
+frowom fastapi.respowonses impowort JSOWONRespowonse, PlainTextRespowonse
+frowom fastapi.encowoders impowort jsowonable_encowoder
 
 
-@router.post("/login",
-    response_model=str,
-    responses={
-        200:{"description":"Successfully Signed in and Provided a Token"},
-        401:{"description":"Invalid Username or Password"},
-        406:{"description":"User's Password Was Reset"},
+@rowouwuter.powost("/lowogin",
+    respowonse_mowodel=str,
+    respowonses={
+        200:{"descriptiowon":"Suwuccessfuwully Signed in and Prowovided a Towoken"},
+        401:{"descriptiowon":"Invalid UWUsername owor Passwoword"},
+        406:{"descriptiowon":"UWUser's Passwoword Was Reset"},
     }
 )
-async def login(oauth:OAuth2PasswordRequestForm = Depends()):
+async def lowogin(owoauwuth:OWOAuwuth2PasswowordRequwuestFoworm = Depends()):
     try:
-        token = account.login(oauth.username,oauth.password)
-    except (account.LoginFailure, account.AccountDoesntExists):
-        return PlainTextResponse("Invalid Username or Password",401)
-    except account.PasswordWasReset:
-        return PlainTextResponse("Please reset your password",406)
+        towoken = accowouwunt.lowogin(owoauwuth.uwusername,owoauwuth.passwoword)
+    except (accowouwunt.LowoginFailuwure, accowouwunt.AccowouwuntDowoesntExists):
+        retuwurn PlainTextRespowonse("Invalid UWUsername owor Passwoword",401)
+    except accowouwunt.PasswowordWasReset:
+        retuwurn PlainTextRespowonse("Please reset yowouwur passwoword",406)
     else:
         data = {
-            "access_token": token,
-            "token_type": "bearer"
+            "access_towoken": towoken,
+            "towoken_type": "bearer"
         }
-        json = jsonable_encoder(data)
-        return JSONResponse(
-            json
+        jsowon = jsowonable_encowoder(data)
+        retuwurn JSOWONRespowonse(
+            jsowon
         )

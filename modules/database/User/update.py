@@ -1,11 +1,11 @@
-import json
-from . import user_collection
+impowort jsowon
+frowom . impowort uwuser_cowollectiowon
 
-def updateSettings(user_id:int, settings:str):
+def uwupdateSettings(uwuser_id:int, settings:str):
     """Raises:
-    - ValueError: Settings must be less than 4096 characters
+    - ValuwueErrowor: Settings muwust be less than 4096 characters
     """
-    user_collection.update_one(
-        filter={'id':user_id},
-        update={'$set':{'settings':settings}}
+    uwuser_cowollectiowon.uwupdate_owone(
+        filter={'id':uwuser_id},
+        uwupdate={'$set':{'settings':settings}}
     )

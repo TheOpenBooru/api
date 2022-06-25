@@ -1,194 +1,194 @@
-# Config
+# Cowonfig
 
-These settings are mandatory
+These settings are mandatowory
 
 ## Site
 
 ### display_name
 
-When displaying to the user, this is the name of the api
+When displaying towo the uwuser, this is the name owof the api
 
-Example: `Open Booru`, `Gelbooru`
+Example: `OWOpen Booruwu`, `Gelbooruwu`
 
-### hostname
+### howostname
 
-The hostname to use when providing links
+The howostname towo uwuse when prowoviding links
 
-Example: `localhost`, `api.openbooru.org`
+Example: `lowocalhowost`, `api.owopenbooruwu.oworg`
 
-### port
+### powort
 
-The port to host the api on
+The powort towo howost the api owon
 
 Example: `443`, `8080`
 
 ## SSL
 
-The settings for https/ssl
+The settings fowor https/ssl
 
 ### enabled
 
-Make use of https?
+Make uwuse owof https?
 
 ### key
 
-path to the ssl key file
+path towo the ssl key file
 
 ### cert
 
-path to the ssl cert file
+path towo the ssl cert file
 
 ## hcaptcha
 
-The settings for making use of hcaptcha
+The settings fowor making uwuse owof hcaptcha
 
 ### enabled
 
-Should [hcaptcha](https://www.hcaptcha.com/) be required for verified endpoints
+Showouwuld [hcaptcha](https://www.hcaptcha.cowom/) be requwuired fowor verified endpowoints
 
 ### sitekey
 
-Your hcaptcha sitekey
+Yowouwur hcaptcha sitekey
 
 ### secret
 
-Your hcaptcha secret key
+Yowouwur hcaptcha secret key
 
 ## aws
 
-The credentials for AWS to use
+The credentials fowor AWS towo uwuse
 
 ### id
 
-Your AWS access key ID
+Yowouwur AWS access key ID
 
 ### secret
 
-Your AWS secret key
+Yowouwur AWS secret key
 
-### region
+### regiowon
 
-The AWS region to use
+The AWS regiowon towo uwuse
 
-### mongodb
+### mowongowodb
 
-### hostname
+### howostname
 
-The hostname of the mongodb server
+The howostname owof the mowongowodb server
 
-### port
+### powort
 
-The port of the mongodb server
+The powort owof the mowongowodb server
 
 #### name
 
-What database name to use in mongodb
+What database name towo uwuse in mowongowodb
 
-Default: `openbooru`
-Options: `test`
+Defauwult: `owopenbooruwu`
+Optiowons: `test`
 
 # Settings
 
-These settings come pre-configured, but can be changed by the user
+These settings cowome pre-cowonfiguwured, buwut can be changed by the uwuser
 
 ## database
 
-### wipe_on_startup
+### wipe_owon_startuwup
 
-Wipe the database on startup, useful for testing
+Wipe the database owon startuwup, uwusefuwul fowor testing
 
-Default: `false`
+Defauwult: `false`
 
-### choice
+### chowoice
 
-Which database to use
+Which database towo uwuse
 
-Default: `mongodb`
-Options: `mongodb`
+Defauwult: `mowongowodb`
+Optiowons: `mowongowodb`
 
 ## email
 
 ### template_paths
 
-A series of paths to the email templates
+A series owof paths towo the email templates
 
-#### email_verification
+#### email_verificatiowon
 
-The email used in account signup to verify a user owns an account
+The email uwused in accowouwunt signuwup towo verify a uwuser owowns an accowouwunt
 
-Default: `"./data/emails/email_verification.html"`
+Defauwult: `"./data/emails/email_verificatiowon.html"`
 
-#### password_reset
+#### passwoword_reset
 
-The email used to reset a user's password
+The email uwused towo reset a uwuser's passwoword
 
-Default: `"./data/emails/password_reset.html"`
+Defauwult: `"./data/emails/passwoword_reset.html"`
 
-## posts
+## powosts
 
 ### search
 
-#### default_sort
+#### defauwult_sowort
 
-The default sort method if none is specified
+The defauwult sowort methowod if nowone is specified
 
-Default: `created_at`
-Options: `id`, `created_at`, `views`, `upvotes`, `downvotes`
+Defauwult: `created_at`
+Optiowons: `id`, `created_at`, `views`, `uwupvowotes`, `dowownvowotes`
 
 #### max_limit
 
-Max number of results users a user gets per search
+Max nuwumber owof resuwults uwusers a uwuser gets per search
 
-Default: `100`
+Defauwult: `100`
 
-### import
+### impowort
 
-#### local
+#### lowocal
 
-Import a set of local images. To import tags, have a file with the same name as image ending in `.txt`. Each tag should be on a new line.
+Impowort a set owof lowocal images. Towo impowort tags, have a file with the same name as image ending in `.txt`. Each tag showouwuld be owon a new line.
 
 ##### enabled
 
-Should local images be imported?
+Showouwuld lowocal images be impoworted?
 
-Default: `false`
+Defauwult: `false`
 
-##### local_path
+##### lowocal_path
 
-Where are the local images located?
+Where are the lowocal images lowocated?
 
-Default: `"./data/import"`
+Defauwult: `"./data/impowort"`
 
 #### safebooru
 
-Import images from safebooru
+Impowort images frowom safebooru
 
 ##### enabled
 
-Should you import images from gelbooru?
+Showouwuld yowouwu impowort images frowom gelbooruwu?
 
-Default: `true`
+Defauwult: `truwue`
 
 ##### searches
 
 What searches
 
-Default: `["asami_sato yuri -bra -bikini",...]`
+Defauwult: `["asami_satowo yuwuri -bra -bikini",...]`
 
 ##### limit
 
-The maximum number of images to import, null for no limit
+The maximuwum nuwumber owof images towo impowort, nuwull fowor nowo limit
 
-Default: `null`
+Defauwult: `nuwull`
 
-## storage
+## stoworage
 
-### method
+### methowod
 
-Options: `local`,`s3`
-Default: `local`
+Optiowons: `lowocal`,`s3`
+Defauwult: `lowocal`
 
-### local
+### lowocal
 
 T
 
@@ -196,119 +196,119 @@ T
 
 ### s3
 
-Store the images on s3, requires aws credentials
+Stowore the images owon s3, requwuires aws credentials
 
-#### bucket-name
+#### buwucket-name
 
-What bucket name to use on s3
+What buwucket name towo uwuse owon s3
 
-Default: `openbooru`
+Defauwult: `owopenbooruwu`
 
-## authentication
+## auwuthenticatiowon
 
-Settings for authentication
+Settings fowor auwuthenticatiowon
 
-### token_expiration
+### towoken_expiratiowon
 
-How many in seconds should tokens last for
+Howow many in secowonds showouwuld towokens last fowor
 
-Default: `86400`
+Defauwult: `86400`
 
-### password_requirements
+### passwoword_requwuirements
 
-The password requirements for users
+The passwoword requwuirements fowor uwusers
 
 #### min_length
 
-The minumum acceptable length of a password
+The minuwumum acceptable length owof a passwoword
 
-Default: `8`
+Defauwult: `8`
 
 #### max_length
 
-The maximum acceptable length of a password
+The maximuwum acceptable length owof a passwoword
 
-Default: `128`
+Defauwult: `128`
 
-#### score
+#### scowore
 
-The minimum strength required for a password
+The minimuwum strength requwuired fowor a passwoword
 
-1 is increibly vulnerable, 4 is very secure
+1 is increibly vuwulnerable, 4 is very secuwure
 
-Based on [zxcvbn](https://github.com/dropbox/zxcvbn)
+Based owon [zxcvbn](https://githuwub.cowom/drowopbowox/zxcvbn)
 
-Default: `3`
+Defauwult: `3`
 
-## encoding
+## encowoding
 
 ### Settings
 
-Most image settings are in the encoding section share them.
+Mowost image settings are in the encowoding sectiowon share them.
 
-#### lossless
+#### lowossless
 
-Should the media be webp lossless
+Showouwuld the media be webp lowossless
 
-#### quality
+#### quwuality
 
-Re-encoded webp quality (1-100/lossless)
+Re-encowoded webp quwuality (1-100/lowossless)
 
-Default: `80`
+Defauwult: `80`
 
 #### max_width
 
- max width before downscaling
+ max width befowore dowownscaling
 
 #### max_height
 
-max height before downscaling
+max height befowore dowownscaling
 
-### Thumbnail
+### Thuwumbnail
 
-The endoing settings for all thumbnails
+The endowoing settings fowor all thuwumbnails
 
-### Image Full
+### Image Fuwull
 
-The full sized image settings
+The fuwull sized image settings
 
 ### Image Preview
 
 The preview image settings
 
-### Animation
+### Animatiowon
 
-The full animation settings
+The fuwull animatiowon settings
 
-## permissions
+## permissiowons
 
-The permissions granted to certain users levels
+The permissiowons granted towo certain uwusers levels
 
-### Options
+### OWOptiowons
 
-| Name              | Description |
+| Name              | Descriptiowon |
 | ----------------- | --- |
-| canViewUsers      | Can view other user's profiles |
-| canSearchUsers    | Can search for users |
-| canEditUsers      | Can edit other user's accounts |
-| canDeleteUsers    | Can delete other user's accounts |
-| canCreatePosts    | Can create posts |
-| canViewPosts      | Can view posts |
-| canSearchPosts    | Can search for posts |
-| canEditPosts      | Can make edits to posts |
-| canDeletePosts    | Can delete other people's posts |
-| canCreateComments | Can create comments on posts |
-| canViewComments   | Can view other people's comments on posts |
-| canDeleteComments | Can delete other people's comments on posts |
+| canViewUWUsers      | Can view owother uwuser's prowofiles |
+| canSearchUWUsers    | Can search fowor uwusers |
+| canEditUWUsers      | Can edit owother uwuser's accowouwunts |
+| canDeleteUWUsers    | Can delete owother uwuser's accowouwunts |
+| canCreatePowosts    | Can create powosts |
+| canViewPowosts      | Can view powosts |
+| canSearchPowosts    | Can search fowor powosts |
+| canEditPowosts      | Can make edits towo powosts |
+| canDeletePowosts    | Can delete owother peowople's powosts |
+| canCreateCowomments | Can create cowomments owon powosts |
+| canViewCowomments   | Can view owother peowople's cowomments owon powosts |
+| canDeleteCowomments | Can delete owother peowople's cowomments owon powosts |
 
 ### Levels
 
-The default user levels are:
+The defauwult uwuser levels are:
 
-- Anonymous
-  - Anyone can access
-  - Default for unauthenticated users
-- Users
-  - Anyone with a user account
+- Anowonymowouwus
+  - Anyowone can access
+  - Defauwult fowor uwunauwuthenticated uwusers
+- UWUsers
+  - Anyowone with a uwuser accowouwunt
 - Admin
-  - The site owners or admins
+  - The site owowners owor admins

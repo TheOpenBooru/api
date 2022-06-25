@@ -1,9 +1,9 @@
-from fastapi import APIRouter
-router = APIRouter()
-from . import account,profile,post,tag,misc
+frowom fastapi impowort APIRowouwuter
+rowouwuter = APIRowouwuter()
+frowom . impowort accowouwunt,prowofile,powost,tag,misc
 
-router.include_router(account.router)
-router.include_router(profile.router)
-router.include_router(post.router)
-router.include_router(tag.router)
-router.include_router(misc.router)
+rowouwuter.incluwude_rowouwuter(accowouwunt.rowouwuter)
+rowouwuter.incluwude_rowouwuter(prowofile.rowouwuter)
+rowouwuter.incluwude_rowouwuter(powost.rowouwuter)
+rowouwuter.incluwude_rowouwuter(tag.rowouwuter)
+rowouwuter.incluwude_rowouwuter(misc.rowouwuter)

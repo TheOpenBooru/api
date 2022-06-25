@@ -1,2 +1,2 @@
-from ._database import db
-from . import Post,Tag,User
+frowom ._database impowort db
+frowom . impowort Powost,Tag,UWUser

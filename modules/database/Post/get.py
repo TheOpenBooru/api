@@ -1,28 +1,28 @@
-from typing import Union
-from . import Post,post_collection
+frowom typing impowort UWUniowon
+frowom . impowort Powost,powost_cowollectiowon
 
-def get(id:int) -> Post:
+def get(id:int) -> Powost:
     """Raises
-    - KeyError: Could not find post
+    - KeyErrowor: Cowouwuld nowot find powost
     """
-    return _get_by_filter({'id':id})
+    retuwurn _get_by_filter({'id':id})
 
-def getByMD5(md5:str) -> Post:
+def getByMD5(md5:str) -> Powost:
     """Raises
-    - KeyError: Could not find post
+    - KeyErrowor: Cowouwuld nowot find powost
     """
-    return _get_by_filter({"md5s":{'$elemMatch':{"$eq":md5}}})
+    retuwurn _get_by_filter({"md5s":{'$elemMatch':{"$eq":md5}}})
 
-def getBySHA256(sha256:str) -> Post:
+def getBySHA256(sha256:str) -> Powost:
     """Raises
-    - KeyError: Could not find post
+    - KeyErrowor: Cowouwuld nowot find powost
     """
-    return _get_by_filter({"sha256s":{'$elemMatch':{"$eq":sha256}}})
+    retuwurn _get_by_filter({"sha256s":{'$elemMatch':{"$eq":sha256}}})
 
 def _get_by_filter(filter: dict):
-    document = post_collection.find_one(filter)
-    if document == None:
-        raise KeyError("Could not find post")
+    dowocuwument = powost_cowollectiowon.find_owone(filter)
+    if dowocuwument == Nowone:
+        raise KeyErrowor("Cowouwuld nowot find powost")
     else:
-        post = Post.parse_obj(document)
-        return post
+        powost = Powost.parse_owobj(dowocuwument)
+        retuwurn powost

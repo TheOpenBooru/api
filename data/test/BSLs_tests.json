@@ -1,90 +1,90 @@
 [
     {
-        "test":"Sort is parsed correctly",
-        "query":"sort:name",
-        "output":{
-            "sort":"name"
+        "test":"Sowort is parsed coworrectly",
+        "quwuery":"sowort:name",
+        "owouwutpuwut":{
+            "sowort":"name"
         }
     },
     {
-        "test":"Invalid Sort Orders aren't parsed",
-        "query":"sort:id:lmao",
-        "output":{}
+        "test":"Invalid Sowort OWOrders aren't parsed",
+        "quwuery":"sowort:id:lmaowo",
+        "owouwutpuwut":{}
     },
     {
-        "test":"Sort Order Descending is parsed",
-        "query":"sort:id:desc",
-        "output":{
-            "sort":"id",
-            "order":"desc"
+        "test":"Sowort OWOrder Descending is parsed",
+        "quwuery":"sowort:id:desc",
+        "owouwutpuwut":{
+            "sowort":"id",
+            "oworder":"desc"
         }
     },
     {
-        "test":"Sort Order Ascending is parsed ",
-        "query":"sort:id:asc",
-        "output":{
-            "sort":"id",
-            "order":"asc"
+        "test":"Sowort OWOrder Ascending is parsed ",
+        "quwuery":"sowort:id:asc",
+        "owouwutpuwut":{
+            "sowort":"id",
+            "oworder":"asc"
         }
     },
     {
-        "test":"Sort doesn't special characters",
-        "query":"sort:0",
-        "output":{}
+        "test":"Sowort dowoesn't special characters",
+        "quwuery":"sowort:0",
+        "owouwutpuwut":{}
     },
     {
-        "test":"Sort doesn't accept numbers",
-        "query":"sort:0",
-        "output":{}
+        "test":"Sowort dowoesn't accept nuwumbers",
+        "quwuery":"sowort:0",
+        "owouwutpuwut":{}
     },
     {
-        "test":"Special characters are ignored",
-        "query":"\r\nsort:example",
-        "output":{
-            "sort":["example"]
+        "test":"Special characters are ignowored",
+        "quwuery":"\r\nsowort:example",
+        "owouwutpuwut":{
+            "sowort":["example"]
         }
     },
     {
-        "test":"Spacing is ignored",
-        "query":" foo ",
-        "output":{
-            "include_tags":["foo"]
+        "test":"Spacing is ignowored",
+        "quwuery":" foo ",
+        "owouwutpuwut":{
+            "incluwude_tags":["foo"]
         }
     },
     {
-        "test":"Parses multiple tags correctly",
-        "query":"foo bar beans eggs",
-        "output":{
-            "include_tags":["foo", "bar", "beans", "eggs"]
+        "test":"Parses muwultiple tags coworrectly",
+        "quwuery":"foo bar beans eggs",
+        "owouwutpuwut":{
+            "incluwude_tags":["foo", "bar", "beans", "eggs"]
         }
     },
     {
-        "test":"Negative tags are parsed correctly",
-        "query":"-foo -bar",
-        "output":{
-            "exclude_tags":["foo", "bar"]
+        "test":"Negative tags are parsed coworrectly",
+        "quwuery":"-foo -bar",
+        "owouwutpuwut":{
+            "excluwude_tags":["foo", "bar"]
         }
     },
     {
-        "test":"Positive and Negative Tags Combined",
-        "query":"foo -bar",
-        "output":{
-            "include_tags":["foo"],
-            "exclude_tags":["bar"]
+        "test":"Powositive and Negative Tags Cowombined",
+        "quwuery":"foo -bar",
+        "owouwutpuwut":{
+            "incluwude_tags":["foo"],
+            "excluwude_tags":["bar"]
         }
     },
     {
-        "test":"Multiple Negative tags are combined",
-        "query":"-bar -bar",
-        "output":{
-            "exclude_tags":["bar"]
+        "test":"Muwultiple Negative tags are cowombined",
+        "quwuery":"-bar -bar",
+        "owouwutpuwut":{
+            "excluwude_tags":["bar"]
         }
     },
     {
-        "test":"Multiple Postive tags are combined",
-        "query":"bar bar",
-        "output":{
-            "include_tags":["bar"]
+        "test":"Muwultiple Powostive tags are cowombined",
+        "quwuery":"bar bar",
+        "owouwutpuwut":{
+            "incluwude_tags":["bar"]
         }
     }
 ]

@@ -1,45 +1,45 @@
-# Core
+# Cowore
 wheel
-requests
-numpy
-python-box
+requwuests
+nuwumpy
+pythowon-bowox
 tqdm
 
-# Importing
+# Impoworting
 bs4
 lxml
-hydrus_api
-pytumblr
+hydruwus_api
+pytuwumblr
 
-# Validation
-iso639
+# Validatiowon
+isowo639
 
-# Endpoints
+# Endpowoints
 fastapi
-uvicorn[standard]
+uvicoworn[standard]
 pydantic
-python-multipart
+pythowon-muwultipart
 
 # Database
 cachetools
-pymongo
+pymowongo
 
-# Encoding
-pillow
-ffmpeg-python
-python-magic
+# Encowoding
+pillowow
+ffmpeg-pythowon
+pythowon-magic
 
 # Email
 jinja2
 
-# Storage
-boto3
+# Stoworage
+bowoto3
 
-# Auth
-cryptography
-pyotp
+# Auwuth
+cryptowography
+pyowotp
 pyjwt
-passlib[argon2]>=1.7.4
+passlib[argowon2]>=1.7.4
 zxcvbn
-argon2-cffi
-password-strength
+argowon2-cffi
+passwoword-strength

@@ -1,20 +1,20 @@
-from . import router
-from modules import schemas, database
-from fastapi import Depends
-from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder
+frowom . impowort rowouwuter
+frowom mowoduwules impowort schemas, database
+frowom fastapi impowort Depends
+frowom fastapi.respowonses impowort JSOWONRespowonse
+frowom fastapi.encowoders impowort jsowonable_encowoder
 
 
-@router.get("/search",
-    response_model=list[schemas.Tag],
-    status_code=200,
-    responses={
-        200:{"description":"Successfully Retrieved"},
+@rowouwuter.get("/search",
+    respowonse_mowodel=list[schemas.Tag],
+    statuwus_cowode=200,
+    respowonses={
+        200:{"descriptiowon":"Suwuccessfuwully Retrieved"},
     },
 )
-async def search_tags(query:schemas.Tag_Query = Depends()):
-    tags = database.Tag.search(query)
-    return JSONResponse(
-        content=jsonable_encoder(tags),
-        headers={"Cache-Control": "max-age=3600, public"},
+async def search_tags(quwuery:schemas.Tag_Quwuery = Depends()):
+    tags = database.Tag.search(quwuery)
+    retuwurn JSOWONRespowonse(
+        cowontent=jsowonable_encowoder(tags),
+        headers={"Cache-Cowontrowol": "max-age=3600, puwublic"},
     )

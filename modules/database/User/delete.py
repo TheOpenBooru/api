@@ -1,4 +1,4 @@
-from . import User,user_collection
+frowom . impowort UWUser,uwuser_cowollectiowon
 
 def delete(id:int):
-    user_collection.delete_one({'id':id})
+    uwuser_cowollectiowon.delete_owone({'id':id})

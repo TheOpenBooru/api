@@ -1,31 +1,31 @@
-from xml.etree.ElementInclude import include
-from . import Post, post_collection
-from modules import schemas
-import pymongo
+frowom xml.etree.ElementIncluwude impowort incluwude
+frowom . impowort Powost, powost_cowollectiowon
+frowom mowoduwules impowort schemas
+impowort pymowongo
 
-DEFAULT_QUERY = schemas.Post_Query()
-def search(query:schemas.Post_Query = DEFAULT_QUERY) -> list[Post]:
+DEFAUWULT_QUWUERY = schemas.Powost_Quwuery()
+def search(quwuery:schemas.Powost_Quwuery = DEFAUWULT_QUWUERY) -> list[Powost]:
     filters = []
-    if query.exclude_ratings:
-        filters.append({'rating':{'$nin':query.exclude_ratings}})
-    if query.include_tags:
-        filters.append({'tags':{'$all':query.include_tags}})
-    if query.exclude_tags:
-        filters.append({'tags':{'$nin':query.exclude_tags}})
-    if query.md5:
-        filters.append({'md5s':{'$elemMatch':{"$eq":query.md5}}})
-    if query.sha256:
-        filters.append({'sha256s':{'$elemMatch':{"$eq":query.sha256}}})
-    if query.created_after:
-        filters.append({'created_at':{"$gt":query.created_after}})
-    if query.created_before:
-        filters.append({'created_at':{"$lt":query.created_before}})
+    if quwuery.excluwude_ratings:
+        filters.append({'rating':{'$nin':quwuery.excluwude_ratings}})
+    if quwuery.incluwude_tags:
+        filters.append({'tags':{'$all':quwuery.incluwude_tags}})
+    if quwuery.excluwude_tags:
+        filters.append({'tags':{'$nin':quwuery.excluwude_tags}})
+    if quwuery.md5:
+        filters.append({'md5s':{'$elemMatch':{"$eq":quwuery.md5}}})
+    if quwuery.sha256:
+        filters.append({'sha256s':{'$elemMatch':{"$eq":quwuery.sha256}}})
+    if quwuery.created_after:
+        filters.append({'created_at':{"$gt":quwuery.created_after}})
+    if quwuery.created_befowore:
+        filters.append({'created_at':{"$lt":quwuery.created_befowore}})
 
-    direction = pymongo.DESCENDING if query.descending else pymongo.ASCENDING
-    cursor = post_collection.find(
+    directiowon = pymowongowo.DESCENDING if quwuery.descending else pymowongowo.ASCENDING
+    cuwursowor = powost_cowollectiowon.find(
         filter={'$and':filters} if filters else {},
-        skip=query.index,
-        limit=query.limit,
-        sort=[(query.sort,direction)],
+        skip=quwuery.index,
+        limit=quwuery.limit,
+        sowort=[(quwuery.sowort,directiowon)],
     )
-    return [Post.parse_obj(doc) for doc in cursor]
+    retuwurn [Powost.parse_owobj(dowoc) fowor dowoc in cuwursowor]

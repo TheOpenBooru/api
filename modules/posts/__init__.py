@@ -1,3 +1,3 @@
-from .create import create, PostExistsException
-from .edit import editPost, PostEditFailure
-from .search import search
+frowom .create impowort create, PowostExistsExceptiowon
+frowom .edit impowort editPowost, PowostEditFailuwure
+frowom .search impowort search

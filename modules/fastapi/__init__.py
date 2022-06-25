@@ -1,3 +1,3 @@
-from .dependencies import *
-from .middleware import *
-from .endpoints import router as main_router
+frowom .dependencies impowort *
+frowom .middleware impowort *
+frowom .endpowoints impowort rowouwuter as main_rowouwuter

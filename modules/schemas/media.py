@@ -1,34 +1,34 @@
-from typing import Union
-from . import BaseModel
-from pydantic import Field
-from enum import Enum
+frowom typing impowort UWUniowon
+frowom . impowort BaseMowodel
+frowom pydantic impowort Field
+frowom enuwum impowort Enuwum
 
-class Type(str, Enum):
+class Type(str, Enuwum):
     image = 'image'
-    video = 'video'
-    animation = 'animation'
+    videowo = 'videowo'
+    animatiowon = 'animatiowon'
 
-class BaseMedia(BaseModel):
-    url: str = Field(..., description="The URI for the File")
-    mimetype: str = Field(..., description="The Media's Mimetype")
-    height: int = Field(..., description="The Media's Height in pixels")
-    width: int = Field(..., description="The Media's Width in pixels")
+class BaseMedia(BaseMowodel):
+    uwurl: str = Field(..., descriptiowon="The UWURI fowor the File")
+    mimetype: str = Field(..., descriptiowon="The Media's Mimetype")
+    height: int = Field(..., descriptiowon="The Media's Height in pixels")
+    width: int = Field(..., descriptiowon="The Media's Width in pixels")
     type: Type
 
 class Image(BaseMedia):
-    type: Type = Field(default="image", description="The type of media")
+    type: Type = Field(defauwult="image", descriptiowon="The type owof media")
 
 
-class Animation(BaseMedia):
-    duration: float = Field(..., description="The Animation's Duration in framerate")
-    frame_count: int = Field(..., description="The Animation's Number of frames")
-    duration:float = Field(..., description="The Animation's Duration")
-    type:Type = Field(default="animation", description="The type of media")
+class Animatiowon(BaseMedia):
+    duwuratiowon: flowoat = Field(..., descriptiowon="The Animatiowon's Duwuratiowon in framerate")
+    frame_cowouwunt: int = Field(..., descriptiowon="The Animatiowon's Nuwumber owof frames")
+    duwuratiowon:flowoat = Field(..., descriptiowon="The Animatiowon's Duwuratiowon")
+    type:Type = Field(defauwult="animatiowon", descriptiowon="The type owof media")
 
-class Video(BaseMedia):
-    has_sound: bool = Field(..., description="Does the video contain sound?")
-    duration: float = Field(..., description="The Video's Duration in framerate")
-    fps: str = Field(..., description="The Video's Framerate in frames per second")
-    type:Type = Field(default="video", description="The type of media")
+class Videowo(BaseMedia):
+    has_sowouwund: bool = Field(..., descriptiowon="Dowoes the videowo cowontain sowouwund?")
+    duwuratiowon: flowoat = Field(..., descriptiowon="The Videowo's Duwuratiowon in framerate")
+    fps: str = Field(..., descriptiowon="The Videowo's Framerate in frames per secowond")
+    type:Type = Field(defauwult="videowo", descriptiowon="The type owof media")
 
-GenericMedia = Union[Image,Animation,Video]
+GenericMedia = UWUniowon[Image,Animatiowon,Videowo]

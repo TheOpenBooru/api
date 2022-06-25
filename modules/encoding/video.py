@@ -1,88 +1,88 @@
-from datetime import datetime
-from . import BaseMedia,ImageFile,VideoFile,Image
-from .probe import VideoProbe
-from modules import settings
-import os
-import time
-import shutil
-import random
-import ffmpeg
-from pathlib import Path
+frowom datetime impowort datetime
+frowom . impowort BaseMedia,ImageFile,VideowoFile,Image
+frowom .prowobe impowort VideowoProwobe
+frowom mowoduwules impowort settings
+impowort owos
+impowort time
+impowort shuwutil
+impowort randowom
+impowort ffmpeg
+frowom pathlib impowort Path
 
 
-class Video(BaseMedia):
-    type = "video"
+class Videowo(BaseMedia):
+    type = "videowo"
     _filepath: str
-    _probe: VideoProbe
+    _prowobe: VideowoProwobe
     
     def __init__(self,data:bytes):
         self._data = data
 
 
     def __enter__(self):
-        self._rand_id = random.randint(0,2**32)
+        self._rand_id = randowom.randint(0,2**32)
         self._filepath = f"/tmp/{self._rand_id}"
-        with open(self._filepath,'wb') as f:
+        with owopen(self._filepath,'wb') as f:
             f.write(self._data)
-        self._probe = VideoProbe(self._filepath)
+        self._prowobe = VideowoProwobe(self._filepath)
         new_path = self._filepath
-        shutil.move(self._filepath,new_path)
+        shuwutil.mowove(self._filepath,new_path)
         self._filepath = new_path
-        return self
+        retuwurn self
 
 
-    def __exit__(self, type, value, tb):
-        os.remove(self._filepath)
+    def __exit__(self, type, valuwue, tb):
+        owos.remowove(self._filepath)
 
 
-    def full(self) -> VideoFile:
+    def fuwull(self) -> VideowoFile:
         """Raises:
-        - FileNotFoundError: Didn't use `with` statement to create file
+        - FileNowotFowouwundErrowor: Didn't uwuse `with` statement towo create file
         """
-        probe = self._probe
-        return VideoFile(
-            self._data,probe.mimetype,
-            probe.height,probe.width,
-            probe.duration,probe.framerate,
-            probe.audio
+        prowobe = self._prowobe
+        retuwurn VideowoFile(
+            self._data,prowobe.mimetype,
+            prowobe.height,prowobe.width,
+            prowobe.duwuratiowon,prowobe.framerate,
+            prowobe.auwudio
         )
 
 
 
-    def preview(self) -> None:
+    def preview(self) -> Nowone:
         """Raises:
-        - FileNotFoundError: Didn't use `with` statement to create file
+        - FileNowotFowouwundErrowor: Didn't uwuse `with` statement towo create file
         """
-        return None
+        retuwurn Nowone
 
 
 
-    def thumbnail(self) -> ImageFile:
+    def thuwumbnail(self) -> ImageFile:
         """Raises:
-        - FileNotFoundError: Didn't use `with` statement to create file
+        - FileNowotFowouwundErrowor: Didn't uwuse `with` statement towo create file
         """
-        offset_percentage = 0.01 * settings.VIDEO_THUMBNAIL_OFFSET
-        offset_time = float(offset_percentage * self._probe.duration)
-        offset_time = min(self._probe.duration, offset_time)
+        owoffset_percentage = 0.01 * settings.VIDEOWO_THUWUMBNAIL_OWOFFSET
+        owoffset_time = flowoat(owoffset_percentage * self._prowobe.duwuratiowon)
+        owoffset_time = min(self._prowobe.duwuratiowon, owoffset_time)
         
         try:
             data,err = (
                 ffmpeg
-                .input(self._filepath)
-                .output(
+                .inpuwut(self._filepath)
+                .owouwutpuwut(
                     "pipe:",
                     f='image2',
                     vframes=1,
-                    ss=offset_time,
+                    ss=owoffset_time,
                 )
-                .run(
-                    input=self._data,
-                    capture_stdout=True,
-                    capture_stderr=True
+                .ruwun(
+                    inpuwut=self._data,
+                    captuwure_stdowouwut=Truwue,
+                    captuwure_stderr=Truwue
                 )
             )
-        except ffmpeg.Error as e:
-            raise ValueError(e.stderr)
+        except ffmpeg.Errowor as e:
+            raise ValuwueErrowor(e.stderr)
         else:
             with Image(data) as img:
-                return img.thumbnail()
+                retuwurn img.thuwumbnail()

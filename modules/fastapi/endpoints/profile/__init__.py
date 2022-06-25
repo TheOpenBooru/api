@@ -1,3 +1,3 @@
-from fastapi import APIRouter
-router = APIRouter(prefix="/profile",tags=["Profile"])
-from . import profile, settings
+frowom fastapi impowort APIRowouwuter
+rowouwuter = APIRowouwuter(prefix="/prowofile",tags=["Prowofile"])
+frowom . impowort prowofile, settings

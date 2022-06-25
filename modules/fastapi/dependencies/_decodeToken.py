@@ -1,16 +1,16 @@
-from . import oauth2_scheme
-from modules import account as _account
-from fastapi import HTTPException, Depends
+frowom . impowort owoauwuth2_scheme
+frowom mowoduwules impowort accowouwunt as _accowouwunt
+frowom fastapi impowort HTTPExceptiowon, Depends
 
 
-async def DecodeToken(token:str = Depends(oauth2_scheme)) -> _account.Account:
+async def DecowodeTowoken(towoken:str = Depends(owoauwuth2_scheme)) -> _accowouwunt.Accowouwunt:
     try:
-        login = _account.decode(token)
-    except _account.InvalidToken:
-        raise HTTPException(
-            status_code=401,
-            detail="Bad Authorization Token",
-            headers={"WWW-Authenticate": "Bearer"},
+        lowogin = _accowouwunt.decowode(towoken)
+    except _accowouwunt.InvalidTowoken:
+        raise HTTPExceptiowon(
+            statuwus_cowode=401,
+            detail="Bad Auwuthoworizatiowon Towoken",
+            headers={"WWW-Auwuthenticate": "Bearer"},
         )
     else:
-        return login
+        retuwurn lowogin

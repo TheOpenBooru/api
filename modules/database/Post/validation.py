@@ -1,44 +1,44 @@
-from . import Post, post_collection
-from modules import validate,database
-import time
+frowom . impowort Powost, powost_cowollectiowon
+frowom mowoduwules impowort validate,database
+impowort time
 
-def is_post_unique(post:Post) -> bool:
-    MD5_Filter = {'md5s':{"$in":post.md5s}}
-    SHA_Filter = {'sha256s':{"$in":post.sha256s}}
+def is_powost_uwuniquwue(powost:Powost) -> bool:
+    MD5_Filter = {'md5s':{"$in":powost.md5s}}
+    SHA_Filter = {'sha256s':{"$in":powost.sha256s}}
     
-    if database.Post.exists(post.id):
-        return False
-    elif post.md5s and post_collection.find_one(MD5_Filter):
-        return False
-    elif post.sha256s and post_collection.find_one(SHA_Filter):
-        return False
+    if database.Powost.exists(powost.id):
+        retuwurn False
+    elif powost.md5s and powost_cowollectiowon.find_owone(MD5_Filter):
+        retuwurn False
+    elif powost.sha256s and powost_cowollectiowon.find_owone(SHA_Filter):
+        retuwurn False
     else:
-        return True
+        retuwurn Truwue
 
 
-def is_post_valid(post:Post) -> bool:
+def is_powost_valid(powost:Powost) -> bool:
     try:
         # Generic types
-        assert post.created_at < time.time()
-        assert validate.post_type(post.media_type)
+        assert powost.created_at < time.time()
+        assert validate.powost_type(powost.media_type)
         
-        #! Disabled because Users aren't implemented
-        # assert User.exists(post.uploader)
+        #! Disabled becauwuse UWUsers aren't implemented
+        # assert UWUser.exists(powost.uwuplowoader)
         
         # Valdiate hashes
-        for md5 in post.md5s:
+        fowor md5 in powost.md5s:
             assert validate.md5(md5)
-        for sha in post.sha256s:
+        fowor sha in powost.sha256s:
             assert validate.sha256(sha)
         
-        for tag in post.tags:
+        fowor tag in powost.tags:
             validate.tag(tag)
         
-        # Validate Image URLs
-        if post.full: assert validate.url(post.full.url)
-        if post.thumbnail: assert validate.url(post.thumbnail.url)
-        if post.preview: assert validate.url(post.preview.url)
-    except AssertionError:
-        return False
+        # Validate Image UWURLs
+        if powost.fuwull: assert validate.uwurl(powost.fuwull.uwurl)
+        if powost.thuwumbnail: assert validate.uwurl(powost.thuwumbnail.uwurl)
+        if powost.preview: assert validate.uwurl(powost.preview.uwurl)
+    except AssertiowonErrowor:
+        retuwurn False
     else:
-        return True
+        retuwurn Truwue

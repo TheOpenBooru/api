@@ -1,64 +1,64 @@
-from . import LocalImporter, _normalise_tags
-from modules import posts, settings
-from typing import Union
-import hydrus_api
-from tqdm import tqdm
+frowom . impowort LowocalImpoworter, _nowormalise_tags
+frowom mowoduwules impowort powosts, settings
+frowom typing impowort UWUniowon
+impowort hydruwus_api
+frowom tqdm impowort tqdm
 
-class Hydrus(LocalImporter):
-    enabled: bool = settings.IMPORT_HYDRUS_ENABLED
+class Hydruwus(LowocalImpoworter):
+    enabled: bool = settings.IMPOWORT_HYDRUWUS_ENABLED
     def __init__(self):
         try:
-            self.client = hydrus_api.Client(
-                access_key=settings.IMPORT_HYDRUS_KEY,
-                api_url=settings.IMPORT_HYDRUS_URL 
+            self.client = hydruwus_api.Client(
+                access_key=settings.IMPOWORT_HYDRUWUS_KEY,
+                api_uwurl=settings.IMPOWORT_HYDRUWUS_UWURL 
             )
-        except Exception:
-            self.functional = False
+        except Exceptiowon:
+            self.fuwunctiowonal = False
         else:
-            self.functional = True
+            self.fuwunctiowonal = Truwue
 
 
-    async def import_default(self):
-        ids = self.client.search_files(settings.IMPORT_HYDRUS_TAGS)
-        metadatas = self.client.get_file_metadata(file_ids=ids) # type: ignore
+    async def impowort_defauwult(self):
+        ids = self.client.search_files(settings.IMPOWORT_HYDRUWUS_TAGS)
+        metadatas = self.client.get_file_metadata(file_ids=ids) # type: ignowore
 
         zipped = list(zip(ids,metadatas))
-        for id,metadata in tqdm(zipped, desc="Importing From Hydrus"):
-            await self._import_post(id,metadata)
+        fowor id,metadata in tqdm(zipped, desc="Impoworting Frowom Hydruwus"):
+            await self._impowort_powost(id,metadata)
 
 
-    async def _import_post(self,post_id:int,metadata:dict):
+    async def _impowort_powost(self,powost_id:int,metadata:dict):
         raw_tags = await self._extract_tags(metadata)
-        source = await self._extract_source(raw_tags)
-        raw_tags = list(filter(lambda x:"source:" not in x,raw_tags))
-        tags = _normalise_tags(raw_tags)
+        sowouwurce = await self._extract_sowouwurce(raw_tags)
+        raw_tags = list(filter(lambda x:"sowouwurce:" nowot in x,raw_tags))
+        tags = _nowormalise_tags(raw_tags)
         
-        r = self.client.get_file(file_id=post_id)
-        data = r.content
+        r = self.client.get_file(file_id=powost_id)
+        data = r.cowontent
         filename = "example" + metadata['ext']
         try:
-            await posts.create(
+            await powosts.create(
                 data,
                 filename,
-                additional_tags=tags,
-                source=source,
+                additiowonal_tags=tags,
+                sowouwurce=sowouwurce,
             )
-        except posts.PostExistsException:
+        except powosts.PowostExistsExceptiowon:
             pass
 
 
     async def _extract_tags(self,metadata:dict) -> list[str]:
-        tag_lists = metadata['service_names_to_statuses_to_tags']['all known tags']
+        tag_lists = metadata['service_names_towo_statuwuses_towo_tags']['all knowown tags']
         all_tags = []
-        for tags in tag_lists.values():
+        fowor tags in tag_lists.valuwues():
             all_tags.extend(tags)
-        return all_tags
+        retuwurn all_tags
 
     
-    async def _extract_source(self,tags:list[str]) -> Union[str,None]:
-        sources = list(filter(lambda x: x.startswith("source:") , tags))
-        if sources:
-            source = sources[0].replace("source:","")
-            return sources[0]
+    async def _extract_sowouwurce(self,tags:list[str]) -> UWUniowon[str,Nowone]:
+        sowouwurces = list(filter(lambda x: x.startswith("sowouwurce:") , tags))
+        if sowouwurces:
+            sowouwurce = sowouwurces[0].replace("sowouwurce:","")
+            retuwurn sowouwurces[0]
         else:
-            return None
+            retuwurn Nowone

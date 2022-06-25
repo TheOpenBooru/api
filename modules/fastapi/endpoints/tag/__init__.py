@@ -1,3 +1,3 @@
-from fastapi import APIRouter
-router = APIRouter(prefix="/tags",tags=["Tag"])
-from . import search
+frowom fastapi impowort APIRowouwuter
+rowouwuter = APIRowouwuter(prefix="/tags",tags=["Tag"])
+frowom . impowort search

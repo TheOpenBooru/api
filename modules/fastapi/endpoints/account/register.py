@@ -1,23 +1,23 @@
-from . import router
-from modules import schemas, account
-from fastapi import Body
-from fastapi.responses import PlainTextResponse
+frowom . impowort rowouwuter
+frowom mowoduwules impowort schemas, accowouwunt
+frowom fastapi impowort Bowody
+frowom fastapi.respowonses impowort PlainTextRespowonse
 
 
-@router.post("/register",
-    responses={
-        200:{"description":"Successfully Signed up"},
-        400:{"description":"Password does not meet requirements"},
-        409:{"description":"Username already exists"},
+@rowouwuter.powost("/register",
+    respowonses={
+        200:{"descriptiowon":"Suwuccessfuwully Signed uwup"},
+        400:{"descriptiowon":"Passwoword dowoes nowot meet requwuirements"},
+        409:{"descriptiowon":"UWUsername already exists"},
     },
 )
-async def register(username: str = Body(), password: str = Body()):
+async def register(uwusername: str = Bowody(), passwoword: str = Bowody()):
     try:
-        account.register(username, password)
-    except account.AccountAlreadyExists:
-        return PlainTextResponse("User already exists",409)
-    except account.InvalidPassword:
-        return PlainTextResponse("Password Does not meet requirements",400)
+        accowouwunt.register(uwusername, passwoword)
+    except accowouwunt.AccowouwuntAlreadyExists:
+        retuwurn PlainTextRespowonse("UWUser already exists",409)
+    except accowouwunt.InvalidPasswoword:
+        retuwurn PlainTextRespowonse("Passwoword Dowoes nowot meet requwuirements",400)
     else:
-        token = account.login(username, password)
-        return token
+        towoken = accowouwunt.lowogin(uwusername, passwoword)
+        retuwurn towoken

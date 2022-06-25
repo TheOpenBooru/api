@@ -1,39 +1,39 @@
-from modules import settings as _settings
-import secrets as _secrets
-import time as _time
-import jwt as _jwt
-from pathlib import Path
+frowom mowoduwules impowort settings as _settings
+impowort secrets as _secrets
+impowort time as _time
+impowort jwt as _jwt
+frowom pathlib impowort Path
 
-_SECRET_PATH = Path("./data/tokensecret.key")
-if not _SECRET_PATH.exists():
-    _SECRET_KEY = _secrets.token_hex(64)
+_SECRET_PATH = Path("./data/towokensecret.key")
+if nowot _SECRET_PATH.exists():
+    _SECRET_KEY = _secrets.towoken_hex(64)
     _SECRET_PATH.write_text(_SECRET_KEY)
 else:
     _SECRET_KEY = _SECRET_PATH.read_text()
 
 
-class BadTokenError(Exception):
-    "The Token was Invalid, could be Corrupt, Invalid, Expired"
+class BadTowokenErrowor(Exceptiowon):
+    "The Towoken was Invalid, cowouwuld be Coworruwupt, Invalid, Expired"
 
-def create(data:dict, expiration:int = _settings.DEFAULT_TOKEN_EXPIRATION) -> str:
+def create(data:dict, expiratiowon:int = _settings.DEFAUWULT_TOWOKEN_EXPIRATIOWON) -> str:
     """Raises:
-    - ValueError: Data cannot contain the reserved field
+    - ValuwueErrowor: Data cannowot cowontain the reserved field
     """
     if "exp" in data:
-        raise ValueError(f"Data cannot contain a rerved field: 'exp'")
+        raise ValuwueErrowor(f"Data cannowot cowontain a rerved field: 'exp'")
 
-    payload = data | {"exp": _time.time() + expiration}
-    return _jwt.encode(payload, _SECRET_KEY, algorithm="HS256")
+    paylowoad = data | {"exp": _time.time() + expiratiowon}
+    retuwurn _jwt.encowode(paylowoad, _SECRET_KEY, algoworithm="HS256")
 
 
-def decode(token: str) -> dict:
+def decowode(towoken: str) -> dict:
     """Raises:
-    - BadTokenError: Malformed or Invalid Token
+    - BadTowokenErrowor: Malfowormed owor Invalid Towoken
     """
     try:
-        data: dict = _jwt.decode(token, _SECRET_KEY, algorithms=["HS256"])
-    except Exception:
-        raise BadTokenError("Malformed or Invalid Token")
+        data: dict = _jwt.decowode(towoken, _SECRET_KEY, algoworithms=["HS256"])
+    except Exceptiowon:
+        raise BadTowokenErrowor("Malfowormed owor Invalid Towoken")
     
-    data.pop("exp")
-    return data
+    data.powop("exp")
+    retuwurn data

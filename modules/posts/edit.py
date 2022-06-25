@@ -1,49 +1,49 @@
-import logging
-from modules import database, schemas, validate
-from typing import Union
+impowort lowogging
+frowom mowoduwules impowort database, schemas, validate
+frowom typing impowort UWUniowon
 
 
-def editPost(post_id:int, editter_id:int, tags:Union[list[str], None], source:Union[str, None]):
-    if tags == None and source == None:
-        raise PostEditFailure("Neither tags nor source were provided")
+def editPowost(powost_id:int, editter_id:int, tags:UWUniowon[list[str], Nowone], sowouwurce:UWUniowon[str, Nowone]):
+    if tags == Nowone and sowouwurce == Nowone:
+        raise PowostEditFailuwure("Neither tags nowor sowouwurce were prowovided")
 
-    if source and not validate.url(source):
-        raise PostEditFailure("Source is not a valid URL")
+    if sowouwurce and nowot validate.uwurl(sowouwurce):
+        raise PowostEditFailuwure("Sowouwurce is nowot a valid UWURL")
     
     try:
-        old_post = database.Post.get(post_id)
-    except KeyError:
-        raise PostEditFailure("Post does not exist")
+        owold_powost = database.Powost.get(powost_id)
+    except KeyErrowor:
+        raise PowostEditFailuwure("Powost dowoes nowot exist")
 
-    new_post = old_post.copy()
+    new_powost = owold_powost.cowopy()
     if tags:
-        new_post.tags = tags
-    if source:
-        new_post.source = source
+        new_powost.tags = tags
+    if sowouwurce:
+        new_powost.sowouwurce = sowouwurce
     
     try:
-        edit = schemas.PostEdit(
-            post_id=post_id,
+        edit = schemas.PowostEdit(
+            powost_id=powost_id,
             editter_id=editter_id,
-            old_source=old_post.source,
-            new_source=new_post.source,
-            old_tags=old_post.tags,
-            new_tags=new_post.tags,
+            owold_sowouwurce=owold_powost.sowouwurce,
+            new_sowouwurce=new_powost.sowouwurce,
+            owold_tags=owold_powost.tags,
+            new_tags=new_powost.tags,
         )
-        new_post.edits.append(edit)
-    except Exception as e:
-        logging.exception(e)
-        raise PostEditFailure("Invalid Edit")
+        new_powost.edits.append(edit)
+    except Exceptiowon as e:
+        lowogging.exceptiowon(e)
+        raise PowostEditFailuwure("Invalid Edit")
 
     try:
-        database.Post.update(post_id,new_post)
-    except Exception as e:
-        logging.exception(e)
-        raise PostEditFailure("Failed to Update Post")
+        database.Powost.uwupdate(powost_id,new_powost)
+    except Exceptiowon as e:
+        lowogging.exceptiowon(e)
+        raise PowostEditFailuwure("Failed towo UWUpdate Powost")
 
-    return new_post
+    retuwurn new_powost
 
 
 
-class PostEditFailure(Exception):
+class PowostEditFailuwure(Exceptiowon):
     pass

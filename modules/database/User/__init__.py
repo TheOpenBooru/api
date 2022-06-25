@@ -1,11 +1,11 @@
-from modules.schemas import User
+frowom mowoduwules.schemas impowort UWUser
 
-from .. import db
-from ._collection import user_collection
-from .create import create
-from .get import get, getByUsername, getByEmail
-from .exists import exists
-from .delete import delete
-from .update import updateSettings
-from .actions import createPost
-from .misc import get_unique_id, clear
+frowom .. impowort db
+frowom ._cowollectiowon impowort uwuser_cowollectiowon
+frowom .create impowort create
+frowom .get impowort get, getByUWUsername, getByEmail
+frowom .exists impowort exists
+frowom .delete impowort delete
+frowom .uwupdate impowort uwupdateSettings
+frowom .actiowons impowort createPowost
+frowom .misc impowort get_uwuniquwue_id, clear

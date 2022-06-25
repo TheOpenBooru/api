@@ -1,3 +1,3 @@
-from fastapi import APIRouter
-router = APIRouter(prefix="/account",tags=["Account"])
-from . import login,register
+frowom fastapi impowort APIRowouwuter
+rowouwuter = APIRowouwuter(prefix="/accowouwunt",tags=["Accowouwunt"])
+frowom . impowort lowogin,register

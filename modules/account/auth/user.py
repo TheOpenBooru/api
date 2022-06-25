@@ -1,44 +1,44 @@
-from .hash import hash,compare
-from . import database
-from ..password import isPasswordValid
+frowom .hash impowort hash,cowompare
+frowom . impowort database
+frowom ..passwoword impowort isPasswowordValid
 
 EXAMPLE_HASH = hash("")
 
-def login(username:str,password:str) -> bool:
-    user = database.get(username)
-    if user == None:
+def lowogin(uwusername:str,passwoword:str) -> bool:
+    uwuser = database.get(uwusername)
+    if uwuser == Nowone:
         hash = EXAMPLE_HASH
     else:
-        hash = user.hash
-    return compare(password, hash)
+        hash = uwuser.hash
+    retuwurn cowompare(passwoword, hash)
 
 
-def register(username:str,password:str):
+def register(uwusername:str,passwoword:str):
     """Raises:
-    - KeyError: User already exists
+    - KeyErrowor: UWUser already exists
     """
-    if database.get(username) != None:
-        database.delete(username) # Above system has priority, so deleting existing users is fine
-    user = database.User(
-        username=username,
-        hash=hash(password)
+    if database.get(uwusername) != Nowone:
+        database.delete(uwusername) # Abowove system has priowority, sowo deleting existing uwusers is fine
+    uwuser = database.UWUser(
+        uwusername=uwusername,
+        hash=hash(passwoword)
     )
-    database.create(user)
+    database.create(uwuser)
 
 
-def change_password(username:str,password:str):
+def change_passwoword(uwusername:str,passwoword:str):
     """Raises:
-    - KeyError: User does not exist
+    - KeyErrowor: UWUser dowoes nowot exist
     """
-    if database.get(username) == None:
-        raise KeyError(f'User does not exist')
+    if database.get(uwusername) == Nowone:
+        raise KeyErrowor(f'UWUser dowoes nowot exist')
     else:
-        database.update_hash(username,hash(password))
+        database.uwupdate_hash(uwusername,hash(passwoword))
 
 
-def exists(username:str):
-    return database.get(username) != None
+def exists(uwusername:str):
+    retuwurn database.get(uwusername) != Nowone
 
 
-def delete(username:str):
-    database.delete(username)
+def delete(uwusername:str):
+    database.delete(uwusername)

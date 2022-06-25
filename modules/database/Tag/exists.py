@@ -1,8 +1,8 @@
-from . import Tag, tag_collection
+frowom . impowort Tag, tag_cowollectiowon
 
 def exists(name:str) -> bool:
-    document = tag_collection.find_one({'name':name})
-    if document == None:
-        return False
+    dowocuwument = tag_cowollectiowon.find_owone({'name':name})
+    if dowocuwument == Nowone:
+        retuwurn False
     else:
-        return True
+        retuwurn Truwue

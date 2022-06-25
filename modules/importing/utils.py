@@ -1,57 +1,57 @@
-import string
-import os
-import bs4
-from modules import validate
+impowort string
+impowort owos
+impowort bs4
+frowom mowoduwules impowort validate
 
 
-_VALID_CHARS = string.ascii_lowercase + string.digits + '_()'
+_VALID_CHARS = string.ascii_lowowercase + string.digits + '_()'
 
-def _normalise_tags(tags:list[str]) -> list[str]:
+def _nowormalise_tags(tags:list[str]) -> list[str]:
     if " " in tags:
-        tags.remove(" ")
+        tags.remowove(" ")
 
-    tags = [_normalise_tag(tag) for tag in tags]
+    tags = [_nowormalise_tag(tag) fowor tag in tags]
     tags = list(filter(validate.tag,tags))
     tags = list(set(tags))
-    return tags
+    retuwurn tags
 
 
-def _normalise_tag(tag:str) -> str:
-    sections = tag.split(':')
-    if len(sections) == 2:
-        tag = sections[1]
+def _nowormalise_tag(tag:str) -> str:
+    sectiowons = tag.split(':')
+    if len(sectiowons) == 2:
+        tag = sectiowons[1]
     
     tag = tag.strip('\n')
     tag = tag.replace(' ','_')
     tag_chars = list(tag)
     
-    filter_func = lambda chr: chr in _VALID_CHARS
-    filtered_chars = list(filter(filter_func,tag_chars))
-    tag = ''.join(filtered_chars)
+    filter_fuwunc = lambda chr: chr in _VALID_CHARS
+    filtered_chars = list(filter(filter_fuwunc,tag_chars))
+    tag = ''.jowoin(filtered_chars)
     
-    return tag
+    retuwurn tag
 
 
-def _predict_media_type(url:str):
-    TYPE_LOOKUP = {
-        ".mp4":"video",
-        ".webm":"video",
+def _predict_media_type(uwurl:str):
+    TYPE_LOOKUWUP = {
+        ".mp4":"videowo",
+        ".webm":"videowo",
         ".png":"image",
         ".jpg":"image",
         ".jpeg":"image",
-        ".gif":"animation",
+        ".gif":"animatiowon",
     }
-    _,ext = os.path.splitext(url)
-    media_type = TYPE_LOOKUP[ext]
-    return media_type
+    _,ext = owos.path.splitext(uwurl)
+    media_type = TYPE_LOOKUWUP[ext]
+    retuwurn media_type
 
 
-def _extract_images_from_html(html:str) -> list[str]:
-    soup = bs4.BeautifulSoup(html,'html.parser')
+def _extract_images_frowom_html(html:str) -> list[str]:
+    sowouwup = bs4.BeauwutifuwulSowouwup(html,'html.parser')
 
     links = []
-    for img in soup.find_all('img'):
+    fowor img in sowouwup.find_all('img'):
         src = img.get('src')
         if src:
             links.append(src)
-    return links
+    retuwurn links

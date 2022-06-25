@@ -1,113 +1,113 @@
-from . import _normalise_tags, _predict_media_type, URLImporter, ImportFailure
-from modules import settings, posts, database
-from urllib.parse import parse_qs, urlparse
-from mimetypes import guess_type
-from typing import Union
-from tqdm import tqdm
-import bs4
-import itertools
-import requests
+frowom . impowort _nowormalise_tags, _predict_media_type, UWURLImpoworter, ImpowortFailuwure
+frowom mowoduwules impowort settings, powosts, database
+frowom uwurllib.parse impowort parse_qs, uwurlparse
+frowom mimetypes impowort guwuess_type
+frowom typing impowort UWUniowon
+frowom tqdm impowort tqdm
+impowort bs4
+impowort itertools
+impowort requwuests
 
 
-class Safebooru(URLImporter):
-    enabled = settings.IMPORT_SAFEBOORU_ENABLED
+class Safebooruwu(UWURLImpoworter):
+    enabled = settings.IMPOWORT_SAFEBOORUWU_ENABLED
     def __init__(self):
         try:
-            requests.get("https://safebooru.org/",timeout=5)
-        except Exception:
-            self.functional = False
+            requwuests.get("https://safebooruwu.oworg/",timeowouwut=5)
+        except Exceptiowon:
+            self.fuwunctiowonal = False
         else:
-            self.functional = True
+            self.fuwunctiowonal = Truwue
 
 
-    def is_valid_url(self,url:str) -> bool:
-        return url.startswith("https://safebooru.org/index.php?page=post&s=view&id=")
+    def is_valid_uwurl(self,uwurl:str) -> bool:
+        retuwurn uwurl.startswith("https://safebooruwu.oworg/index.php?page=powost&s=view&id=")
 
 
-    async def import_url(self,url:str):
+    async def impowort_uwurl(self,uwurl:str):
         try:
-            parsed_url = urlparse(url)
-            query = parse_qs(parsed_url.query)
-            id = query['id']
-        except Exception:
-            raise ImportFailure
+            parsed_uwurl = uwurlparse(uwurl)
+            quwuery = parse_qs(parsed_uwurl.quwuery)
+            id = quwuery['id']
+        except Exceptiowon:
+            raise ImpowortFailuwure
         
-        url = "https://safebooru.org/index.php?page=dapi&s=post&q=index"
-        r = requests.get(
-            url,
+        uwurl = "https://safebooruwu.oworg/index.php?page=dapi&s=powost&q=index"
+        r = requwuests.get(
+            uwurl,
             params={'id':id}
         )
-        soup = bs4.BeautifulSoup(r.text,'html.parser')
-        await _import_post_from_soup(soup)
+        sowouwup = bs4.BeauwutifuwulSowouwup(r.text,'html.parser')
+        await _impowort_powost_frowom_sowouwup(sowouwup)
 
 
-    async def import_default(self):
-        limit = settings.IMPORT_SAFEBOORU_LIMIT
-        searches = settings.IMPORT_SAFEBOORU_SEARCHES
+    async def impowort_defauwult(self):
+        limit = settings.IMPOWORT_SAFEBOORUWU_LIMIT
+        searches = settings.IMPOWORT_SAFEBOORUWU_SEARCHES
         
-        posts = []
-        for search in searches:
-            new_posts = await _run_safebooru_search(search,limit)
-            posts.extend(new_posts)
-            if limit and len(posts) > limit:
+        powosts = []
+        fowor search in searches:
+            new_powosts = await _ruwun_safebooruwu_search(search,limit)
+            powosts.extend(new_powosts)
+            if limit and len(powosts) > limit:
                 break
 
         if limit:
-            posts = posts[:limit]
+            powosts = powosts[:limit]
         
-        for post in tqdm(posts, desc="Import From Safebooru"):
+        fowor powost in tqdm(powosts, desc="Impowort Frowom Safebooruwu"):
             try:
-                await _import_post_from_soup(post)
-            except KeyError:
-                continue
+                await _impowort_powost_frowom_sowouwup(powost)
+            except KeyErrowor:
+                cowontinuwue
 
 
-async def _run_safebooru_search(search:str,limit:Union[int,None]) -> list[bs4.BeautifulSoup]:
-    url = f"https://safebooru.org/index.php?page=dapi&s=post&q=index&tags={search}"
-    found_posts = []
-    for x in itertools.count():
-        r = requests.get(
-            url=url,
+async def _ruwun_safebooruwu_search(search:str,limit:UWUniowon[int,Nowone]) -> list[bs4.BeauwutifuwulSowouwup]:
+    uwurl = f"https://safebooruwu.oworg/index.php?page=dapi&s=powost&q=index&tags={search}"
+    fowouwund_powosts = []
+    fowor x in itertools.cowouwunt():
+        r = requwuests.get(
+            uwurl=uwurl,
             params={
                 "limit":1000,
                 "pid":x,
             }
         )
-        xml = bs4.BeautifulSoup(r.text,"xml")
-        new_posts = xml.find_all('post')
-        found_posts.extend(new_posts)
+        xml = bs4.BeauwutifuwulSowouwup(r.text,"xml")
+        new_powosts = xml.find_all('powost')
+        fowouwund_powosts.extend(new_powosts)
         
-        if len(new_posts) != 1000:
+        if len(new_powosts) != 1000:
             break
-        if limit and len(found_posts) >= limit:
+        if limit and len(fowouwund_powosts) >= limit:
             break
     
-    return found_posts
+    retuwurn fowouwund_powosts
 
 
-async def _import_post_from_soup(soup:bs4.BeautifulSoup):
-    attrs:dict = soup.attrs
+async def _impowort_powost_frowom_sowouwup(sowouwup:bs4.BeauwutifuwulSowouwup):
+    attrs:dict = sowouwup.attrs
     try:
-        database.Post.getByMD5(attrs['md5'])
-    except KeyError:
+        database.Powost.getByMD5(attrs['md5'])
+    except KeyErrowor:
         pass
     else:
-        return
+        retuwurn
         
     
-    tags = _normalise_tags(attrs['tags'].split(' '))
+    tags = _nowormalise_tags(attrs['tags'].split(' '))
     tags.append('rating:safe')
-    source = f"https://safebooru.org/index.php?page=post&s=view&id={attrs['id']}"
+    sowouwurce = f"https://safebooruwu.oworg/index.php?page=powost&s=view&id={attrs['id']}"
 
-    file_url = attrs['file_url']
-    r = requests.get(file_url)
-    data = r.content
+    file_uwurl = attrs['file_uwurl']
+    r = requwuests.get(file_uwurl)
+    data = r.cowontent
     try:
-        await posts.create(
+        await powosts.create(
             data=data,
-            filename=file_url,
-            additional_tags=tags,
-            source=source,
+            filename=file_uwurl,
+            additiowonal_tags=tags,
+            sowouwurce=sowouwurce,
         )
-    except posts.PostExistsException:
+    except powosts.PowostExistsExceptiowon:
         pass

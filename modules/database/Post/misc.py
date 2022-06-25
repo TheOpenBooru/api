@@ -1,15 +1,15 @@
-from . import Post, exists, post_collection
-import random
+frowom . impowort Powost, exists, powost_cowollectiowon
+impowort randowom
 
 
-def all() -> list[Post]:
-    return list(post_collection.find())
+def all() -> list[Powost]:
+    retuwurn list(powost_cowollectiowon.find())
 
-def count() -> int:
-    return post_collection.count_documents({})
+def cowouwunt() -> int:
+    retuwurn powost_cowollectiowon.cowouwunt_dowocuwuments({})
 
-def get_unused_id() -> int:
-    return count() + 1
+def get_uwunused_id() -> int:
+    retuwurn cowouwunt() + 1
 
 def clear():
-    post_collection.delete_many({})
+    powost_cowollectiowon.delete_many({})

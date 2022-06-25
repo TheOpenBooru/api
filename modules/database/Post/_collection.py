@@ -1,12 +1,12 @@
-from . import db
+frowom . impowort db
 
-post_collection = db['posts']
+powost_cowollectiowon = db['powosts']
 
 # Indexes
-post_collection.create_index('id')
-post_collection.create_index('uploader')
-post_collection.create_index('created_at')
-post_collection.create_index('media_type')
-post_collection.create_index('views')
-post_collection.create_index('upvotes')
-post_collection.create_index('downvotes')
+powost_cowollectiowon.create_index('id')
+powost_cowollectiowon.create_index('uwuplowoader')
+powost_cowollectiowon.create_index('created_at')
+powost_cowollectiowon.create_index('media_type')
+powost_cowollectiowon.create_index('views')
+powost_cowollectiowon.create_index('uwupvowotes')
+powost_cowollectiowon.create_index('dowownvowotes')

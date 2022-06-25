@@ -1,6 +1,6 @@
-from . import tag_collection,Tag
+frowom . impowort tag_cowollectiowon,Tag
 
 def all() -> list[Tag]:
-    docs = tag_collection.find({})
-    all_tags = [Tag.parse_raw(doc) for doc in docs]
-    return all_tags
+    dowocs = tag_cowollectiowon.find({})
+    all_tags = [Tag.parse_raw(dowoc) fowor dowoc in dowocs]
+    retuwurn all_tags

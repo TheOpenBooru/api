@@ -1,66 +1,66 @@
-from modules import validate, settings
-import smtplib as _smtplib
-from pathlib import Path
-from email.mime.multipart import MIMEMultipart as _MIMEMultipart
-from email.mime.text import MIMEText as _MIMEText
-import jinja2 as _jinja2
+frowom mowoduwules impowort validate, settings
+impowort smtplib as _smtplib
+frowom pathlib impowort Path
+frowom email.mime.muwultipart impowort MIMEMuwultipart as _MIMEMuwultipart
+frowom email.mime.text impowort MIMEText as _MIMEText
+impowort jinja2 as _jinja2
 
 class Templates:
-    PASSWORD_RESET = Path(settings.EMAIL_TEMPLATE_PASSWORD_RESET_PATH).read_text()
-    VERIFICATION = Path(settings.EMAIL_TEMPLATE_VERIFICATION_PATH).read_text()
+    PASSWOWORD_RESET = Path(settings.EMAIL_TEMPLATE_PASSWOWORD_RESET_PATH).read_text()
+    VERIFICATIOWON = Path(settings.EMAIL_TEMPLATE_VERIFICATIOWON_PATH).read_text()
 
-def send_password_reset(to:str, username:str, token:str):
+def send_passwoword_reset(towo:str, uwusername:str, towoken:str):
     """Raises:
-        ValueError: The destination email address is not valid
+        ValuwueErrowor: The destinatiowon email address is nowot valid
     """
-    subject = f"{settings.SITE_NAME}: Password Reset"
+    suwubject = f"{settings.SITE_NAME}: Passwoword Reset"
     email_html = _render_jinja_template(
-        Templates.PASSWORD_RESET,
+        Templates.PASSWOWORD_RESET,
         sitename=settings.SITE_NAME,
-        link=token,
-        name=username,
+        link=towoken,
+        name=uwusername,
     )
-    email_data = _construct_email(to, subject, email_html)
-    _send_email(to,email_data)
+    email_data = _cowonstruwuct_email(towo, suwubject, email_html)
+    _send_email(towo,email_data)
 
 
-def send_email_verification(to:str, name:str, token:str):
+def send_email_verificatiowon(towo:str, name:str, towoken:str):
     """Raises:
-        ValueError: The destination email address is not valid
+        ValuwueErrowor: The destinatiowon email address is nowot valid
     """
-    subject = f"{settings.SITE_NAME}: Verify Email"
+    suwubject = f"{settings.SITE_NAME}: Verify Email"
     email_html = _render_jinja_template(
-        Templates.VERIFICATION,
-        link=token,
+        Templates.VERIFICATIOWON,
+        link=towoken,
         sitename=settings.SITE_NAME,
         name=name
     )
-    email_data = _construct_email(to, subject, email_html)
-    _send_email(to,email_data)
+    email_data = _cowonstruwuct_email(towo, suwubject, email_html)
+    _send_email(towo,email_data)
 
 
 def _render_jinja_template(template_string:str, **kwargs) -> str:
-    _jinja_env = _jinja2.Environment(loader=_jinja2.BaseLoader())
-    template = _jinja_env.from_string(template_string)
-    body = template.render(**kwargs)
-    return body
+    _jinja_env = _jinja2.Envirowonment(lowoader=_jinja2.BaseLowoader())
+    template = _jinja_env.frowom_string(template_string)
+    bowody = template.render(**kwargs)
+    retuwurn bowody
 
 
-def _construct_email(to:str, subject:str, body:str) -> str:
-    message = _MIMEMultipart()
-    message["From"] = settings.SMTP_EMAIL
-    message["To"] = to
-    message["Subject"] = subject
-    message.attach(_MIMEText(body, "html"))
-    return message.as_string()
+def _cowonstruwuct_email(towo:str, suwubject:str, bowody:str) -> str:
+    message = _MIMEMuwultipart()
+    message["Frowom"] = settings.SMTP_EMAIL
+    message["Towo"] = to
+    message["Suwubject"] = suwubject
+    message.attach(_MIMEText(bowody, "html"))
+    retuwurn message.as_string()
 
 
-def _send_email(to:str, document:str):
+def _send_email(towo:str, dowocuwument:str):
     email = settings.SMTP_EMAIL
-    password = settings.SMTP_PASSWORD
-    hostname = settings.SMTP_HOSTNAME
-    port = settings.SMTP_PORT
-    with _smtplib.SMTP(hostname, port) as session:
-        session.starttls()
-        session.login(email, password)
-        session.sendmail(email, to, document)
+    passwoword = settings.SMTP_PASSWOWORD
+    howostname = settings.SMTP_HOWOSTNAME
+    powort = settings.SMTP_POWORT
+    with _smtplib.SMTP(howostname, powort) as sessiowon:
+        sessiowon.starttls()
+        sessiowon.lowogin(email, passwoword)
+        sessiowon.sendmail(email, towo, dowocuwument)

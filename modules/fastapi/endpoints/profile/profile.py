@@ -1,17 +1,17 @@
-from . import router
-from modules import database, schemas, account,fastapi
-from fastapi import Depends
-from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder
+frowom . impowort rowouwuter
+frowom mowoduwules impowort database, schemas, accowouwunt,fastapi
+frowom fastapi impowort Depends
+frowom fastapi.respowonses impowort JSOWONRespowonse
+frowom fastapi.encowoders impowort jsowonable_encowoder
 
 
-@router.get("",
-    responses={
-        200:{"description":"Profile Data Retrieved Successfully"},
-        401:{"description":"Not Logged In"},
+@rowouwuter.get("",
+    respowonses={
+        200:{"descriptiowon":"Prowofile Data Retrieved Suwuccessfuwully"},
+        401:{"descriptiowon":"Nowot Lowogged In"},
     },
-    response_model=schemas.User,
+    respowonse_mowodel=schemas.UWUser,
 )
-async def get_profile(account:account.Account = Depends(fastapi.DecodeToken)):
-    user = database.User.get(account.id)
-    return JSONResponse(jsonable_encoder(user),status_code=200)
+async def get_prowofile(accowouwunt:accowouwunt.Accowouwunt = Depends(fastapi.DecowodeTowoken)):
+    uwuser = database.UWUser.get(accowouwunt.id)
+    retuwurn JSOWONRespowonse(jsowonable_encowoder(uwuser),statuwus_cowode=200)

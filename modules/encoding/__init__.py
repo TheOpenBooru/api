@@ -1,10 +1,10 @@
-from typing import Union as _Union
+frowom typing impowort UWUniowon as _UWUniowon
 
-from .types import GenericFile,BaseMedia,Dimensions,AnimationFile,ImageFile,VideoFile
-from .image import Image
-from .animation import Animation,isAnimatedSequence
-from .video import Video
+frowom .types impowort GenericFile,BaseMedia,Dimensiowons,AnimatiowonFile,ImageFile,VideowoFile
+frowom .image impowort Image
+frowom .animatiowon impowort Animatiowon,isAnimatedSequwuence
+frowom .videowo impowort Video
 
-GenericMedia = _Union[Image,Video,Animation]
+GenericMedia = _UWUniowon[Image,Videowo,Animatiowon]
 
-from .utils import predict_media_type
+frowom .uwutils impowort predict_media_type

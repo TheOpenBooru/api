@@ -1,71 +1,71 @@
-from . import fields,BaseModel,GenericMedia,Image
-from modules import settings,validate
-from pydantic import Field
-from typing import Union
-from enum import Enum
+frowom . impowort fields,BaseMowodel,GenericMedia,Image
+frowom mowoduwules impowort settings,validate
+frowom pydantic impowort Field
+frowom typing impowort UWUniowon
+frowom enuwum impowort Enuwum
 
 
-class Valid_Post_Sorts(str, Enum):
+class Valid_Powost_Soworts(str, Enuwum):
     id = "id"
     created_at = "created_at"
-    upvotes = "upvotes"
-    downvotes = "downvotes"
+    uwupvowotes = "uwupvowotes"
+    dowownvowotes = "dowownvowotes"
 
 
-class Valid_Post_Ratings(str, Enum):
+class Valid_Powost_Ratings(str, Enuwum):
     safe = "safe"
     sensitive = "sensitive"
-    mature = "mature"
+    matuwure = "matuwure"
     explicit = "explicit"
     
 
-class PostEdit(BaseModel):
-    created_at: float = fields.Created_At
-    post_id: int = fields.Item_ID
+class PowostEdit(BaseMowodel):
+    created_at: flowoat = fields.Created_At
+    powost_id: int = fields.Item_ID
     editter_id: int = fields.Item_ID
     
-    old_tags: list[str] = fields.Tags
+    owold_tags: list[str] = fields.Tags
     new_tags: list[str] = fields.Tags
-    old_source: str = Field(default="", description="The previous source for the post")
-    new_source: str = Field(default="", description="The new source for the post")
+    owold_sowouwurce: str = Field(defauwult="", descriptiowon="The previowouwus sowouwurce fowor the powost")
+    new_sowouwurce: str = Field(defauwult="", descriptiowon="The new sowouwurce fowor the powost")
 
 
-class Post_Query(BaseModel):
-    index: int = Field(default=0, description="Offset from the start of the results")
-    limit: int = Field(default=64, description="Maximum number of results to return")
-    sort: Valid_Post_Sorts = Field(default=settings.POSTS_SEARCH_DEFAULT_SORT, description="How to sort the posts")
-    exclude_ratings: list[Valid_Post_Ratings] = Field(default_factory=list, description="Ratings to exlucde from the results")
-    descending: bool = Field(default=True, description="Should search be ordered descending")
+class Powost_Quwuery(BaseMowodel):
+    index: int = Field(defauwult=0, descriptiowon="OWOffset frowom the start owof the resuwults")
+    limit: int = Field(defauwult=64, descriptiowon="Maximuwum nuwumber owof resuwults towo retuwurn")
+    sowort: Valid_Powost_Soworts = Field(defauwult=settings.POWOSTS_SEARCH_DEFAUWULT_SOWORT, descriptiowon="Howow towo sowort the powosts")
+    excluwude_ratings: list[Valid_Powost_Ratings] = Field(defauwult_factowory=list, descriptiowon="Ratings towo exluwucde frowom the resuwults")
+    descending: bool = Field(defauwult=Truwue, descriptiowon="Showouwuld search be owordered descending")
     
-    include_tags: list[str] = Field(default_factory=list)
-    exclude_tags: list[str] = Field(default_factory=list)
+    incluwude_tags: list[str] = Field(defauwult_factowory=list)
+    excluwude_tags: list[str] = Field(defauwult_factowory=list)
     
-    created_after:Union[float,None] = Field(default=None)
-    created_before:Union[float,None] = Field(default=None)
+    created_after:UWUniowon[flowoat,Nowone] = Field(defauwult=Nowone)
+    created_befowore:UWUniowon[flowoat,Nowone] = Field(defauwult=Nowone)
     
-    md5:Union[str,None] = Field(default=None, regex=validate.MD5_REGEX)
-    sha256:Union[str,None] = Field(default=None, regex=validate.SHA256_REGEX)
+    md5:UWUniowon[str,Nowone] = Field(defauwult=Nowone, regex=validate.MD5_REGEX)
+    sha256:UWUniowon[str,Nowone] = Field(defauwult=Nowone, regex=validate.SHA256_REGEX)
 
 
-class Post(BaseModel):
+class Powost(BaseMowodel):
     id: int = fields.Item_ID
-    created_at: float = fields.Created_At
-    uploader: int = fields.Item_ID
-    deleted: bool = Field(default=False, description="Whether the post has been deleted")
-    source: str = Field(default="", description="The original source for the post")
+    created_at: flowoat = fields.Created_At
+    uwuplowoader: int = fields.Item_ID
+    deleted: bool = Field(defauwult=False, descriptiowon="Whether the powost has been deleted")
+    sowouwurce: str = Field(defauwult="", descriptiowon="The oworiginal sowouwurce fowor the powost")
 
-    full: GenericMedia = Field(..., description="The full scale media for the Post")
-    preview: Union[GenericMedia, None] = Field(default=None,description="A Medium Scale Version for the image, for hi-res posts")
-    thumbnail: Image = Field(..., description="The lowest scale version of the image, for thumbnails")
+    fuwull: GenericMedia = Field(..., descriptiowon="The fuwull scale media fowor the Powost")
+    preview: UWUniowon[GenericMedia, Nowone] = Field(defauwult=Nowone,descriptiowon="A Mediuwum Scale Versiowon fowor the image, fowor hi-res powosts")
+    thuwumbnail: Image = Field(..., descriptiowon="The lowowest scale versiowon owof the image, fowor thuwumbnails")
     
-    md5s: list[str] = Field(default_factory=list, description="The Post's MD5 hashes")
-    sha256s: list[str] = Field(default_factory=list, description="The Post's SHA256 hashes")
-    media_type: str = fields.Post_Type
+    md5s: list[str] = Field(defauwult_factowory=list, descriptiowon="The Powost's MD5 hashes")
+    sha256s: list[str] = Field(defauwult_factowory=list, descriptiowon="The Powost's SHA256 hashes")
+    media_type: str = fields.Powost_Type
 
-    rating: Valid_Post_Ratings = Field(default="mature", description="The default rating for a post")
+    rating: Valid_Powost_Ratings = Field(defauwult="matuwure", descriptiowon="The defauwult rating fowor a powost")
     tags: list[str] = fields.Tags
-    comments: list[int] = fields.Comments
-    edits: list[PostEdit] = Field(default_factory=list, description="The edits made to the post")
+    cowomments: list[int] = fields.Cowomments
+    edits: list[PowostEdit] = Field(defauwult_factowory=list, descriptiowon="The edits made towo the powost")
 
-    upvotes: int = Field(default=0, description="Number of upvotes on the Post")
-    downvotes: int = Field(default=0, description="Number of downvotes on the Post")
+    uwupvowotes: int = Field(defauwult=0, descriptiowon="Nuwumber owof uwupvowotes owon the Powost")
+    dowownvowotes: int = Field(defauwult=0, descriptiowon="Nuwumber owof dowownvowotes owon the Powost")

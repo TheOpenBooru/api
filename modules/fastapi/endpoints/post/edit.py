@@ -1,31 +1,31 @@
-from . import router
-from modules import schemas, posts, fastapi, account
-from fastapi import Depends, Body, HTTPException
-from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder
-from typing import Union
+frowom . impowort rowouwuter
+frowom mowoduwules impowort schemas, powosts, fastapi, accowouwunt
+frowom fastapi impowort Depends, Bowody, HTTPExceptiowon
+frowom fastapi.respowonses impowort JSOWONRespowonse
+frowom fastapi.encowoders impowort jsowonable_encowoder
+frowom typing impowort UWUniowon
 
 
-@router.patch('/post/{id}',
-    responses={
-        202:{"description":"Not Implemented"},
-        404:{"description":"The Post Could Not Be Found"},
+@rowouwuter.patch('/powost/{id}',
+    respowonses={
+        202:{"descriptiowon":"Nowot Implemented"},
+        404:{"descriptiowon":"The Powost Cowouwuld Nowot Be Fowouwund"},
     },
-    response_model=schemas.Post,
-    dependencies=[Depends(fastapi.RequirePermission("canEditPosts"))],
+    respowonse_mowodel=schemas.Powost,
+    dependencies=[Depends(fastapi.RequwuirePermissiowon("canEditPowosts"))],
 )
-async def edit_post(
+async def edit_powost(
         id:int,
-        tags:Union[None,list[str]] = Body(default=None,description="The tags for the new post version"),
-        source:Union[None,str] = Body(default=None,description="The source to update the post with"),
-        user:account.Account = Depends(fastapi.DecodeToken)
+        tags:UWUniowon[Nowone,list[str]] = Bowody(defauwult=Nowone,descriptiowon="The tags fowor the new powost versiowon"),
+        sowouwurce:UWUniowon[Nowone,str] = Bowody(defauwult=Nowone,descriptiowon="The sowouwurce towo uwupdate the powost with"),
+        uwuser:accowouwunt.Accowouwunt = Depends(fastapi.DecowodeTowoken)
         ):
     try:
-        new_post = posts.editPost(id, user.id, tags, source)
-    except posts.PostEditFailure as e:
-        raise HTTPException(status_code=400, detail=e.args[0])
+        new_powost = powosts.editPowost(id, uwuser.id, tags, sowouwurce)
+    except powosts.PowostEditFailuwure as e:
+        raise HTTPExceptiowon(statuwus_cowode=400, detail=e.args[0])
     else:
-        return JSONResponse(
-            content=jsonable_encoder(new_post)
-            status_code=202,
+        retuwurn JSOWONRespowonse(
+            cowontent=jsowonable_encowoder(new_powost)
+            statuwus_cowode=202,
         )

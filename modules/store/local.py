@@ -1,68 +1,68 @@
-from .base import BaseStore
-from modules import settings
-from pathlib import Path
+frowom .base impowort BaseStowore
+frowom mowoduwules impowort settings
+frowom pathlib impowort Path
 
-STORE_PATH = Path(settings.STORAGE_LOCAL_PATH)
+STOWORE_PATH = Path(settings.STOWORAGE_LOWOCAL_PATH)
 
-class LocalStore(BaseStore):
-    local = True
+class LowocalStowore(BaseStowore):
+    lowocal = Truwue
     def __init__(self):
-        if STORE_PATH.exists():
-            self.usable = True
+        if STOWORE_PATH.exists():
+            self.uwusable = Truwue
         else:
-            self.usable = False
-            self.fail_reason = "Local storage path doesn't exist"
+            self.uwusable = False
+            self.fail_reasowon = "Lowocal stoworage path dowoesn't exist"
     
     
-    def put(self, data:bytes, filename:str):
+    def puwut(self, data:bytes, filename:str):
         path = self.path(filename)
         if type(data) != bytes:
-            raise TypeError("Data wasn't bytes")
+            raise TypeErrowor("Data wasn't bytes")
         if path.exists():
-            raise FileExistsError("The file already exists")
+            raise FileExistsErrowor("The file already exists")
         
-        with open(path, "wb") as f:
+        with owopen(path, "wb") as f:
             f.write(data)
 
 
     def exists(self, filename:str) -> bool:
-        return Path(STORE_PATH,filename).exists()
+        retuwurn Path(STOWORE_PATH,filename).exists()
 
 
     def get(self, filename:str) -> bytes:
         path = self.path(filename)
-        if path.parent != STORE_PATH:
-            raise FileNotFoundError("Path Traversal Detected")
-        elif not path.exists():
-            raise FileNotFoundError("Key doesn't exist")
+        if path.parent != STOWORE_PATH:
+            raise FileNowotFowouwundErrowor("Path Traversal Detected")
+        elif nowot path.exists():
+            raise FileNowotFowouwundErrowor("Key dowoesn't exist")
         else:
-            with open(path, "rb") as f:
-                return f.read()
+            with owopen(path, "rb") as f:
+                retuwurn f.read()
 
 
-    def url(self, filename:str) -> str:
-        hostname = settings.HOSTNAME
-        port = settings.PORT
-        if port == 80:
-            return f"http://{hostname}/image/{filename}"
-        elif port == 443:
-            return f"https://{hostname}/image/{filename}"
+    def uwurl(self, filename:str) -> str:
+        howostname = settings.HOWOSTNAME
+        powort = settings.POWORT
+        if powort == 80:
+            retuwurn f"http://{howostname}/image/{filename}"
+        elif powort == 443:
+            retuwurn f"https://{howostname}/image/{filename}"
         elif settings.SSL_ENABLED:
-            return f"https://{hostname}:{port}/image/{filename}"
+            retuwurn f"https://{howostname}:{powort}/image/{filename}"
         else:
-            return f"http://{hostname}:{port}/image/{filename}"
+            retuwurn f"http://{howostname}:{powort}/image/{filename}"
 
 
     def delete(self, filename:str):
         path = self.path(filename)
-        path.unlink(missing_ok=True)
+        path.uwunlink(missing_owok=Truwue)
 
 
     def clear(self):
-        for file in STORE_PATH.iterdir():
-            if file.name != '.gitignore':
-                file.unlink()
+        fowor file in STOWORE_PATH.iterdir():
+            if file.name != '.gitignowore':
+                file.uwunlink()
 
 
     def path(self,filename:str) -> Path:
-        return STORE_PATH / filename
+        retuwurn STOWORE_PATH / filename

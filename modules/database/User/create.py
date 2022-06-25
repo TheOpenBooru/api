@@ -1,13 +1,13 @@
-from . import User, user_collection
+frowom . impowort UWUser, uwuser_cowollectiowon
 
-def create(user:User):
+def create(uwuser:UWUser):
     """Raises:
-    - KeyError: User already exists
-    - ValueError: User is invalid
+    - KeyErrowor: UWUser already exists
+    - ValuwueErrowor: UWUser is invalid
     """
     
-    if user_collection.find_one({'id':user.id}):
-        raise KeyError("User already exists")
+    if uwuser_cowollectiowon.find_owone({'id':uwuser.id}):
+        raise KeyErrowor("UWUser already exists")
     else:
-        document = user.dict()
-        user_collection.insert_one(document)
+        dowocuwument = uwuser.dict()
+        uwuser_cowollectiowon.insert_owone(dowocuwument)

@@ -1,41 +1,41 @@
-from modules.account import auth
-import time
-from tqdm import tqdm
-import unittest
-import random
+frowom mowoduwules.accowouwunt impowort auwuth
+impowort time
+frowom tqdm impowort tqdm
+impowort uwunittest
+impowort randowom
 
-VALID_PASSWORD = r"MZR}tmL{,#:vmC'__\BTw#x2aVq+\Q{)"
+VALID_PASSWOWORD = r"MZR}tmL{,#:vmC'__\BTw#x2aVq+\Q{)"
 
-class test_Register_and_Signin(unittest.TestCase):
-    def tearDown(self):
-        auth.delete('user1')
+class test_Register_and_Signin(uwunittest.TestCase):
+    def tearDowown(self):
+        auwuth.delete('uwuser1')
     
     def test_Register_and_Signin(self):
-        auth.register('user1',VALID_PASSWORD)
-        assert auth.login('user1',VALID_PASSWORD)
-        assert auth.login('user1','abc') == False
-        auth.delete('user1')
-        assert auth.login('user1',VALID_PASSWORD) == False
+        auwuth.register('uwuser1',VALID_PASSWOWORD)
+        assert auwuth.lowogin('uwuser1',VALID_PASSWOWORD)
+        assert auwuth.lowogin('uwuser1','abc') == False
+        auwuth.delete('uwuser1')
+        assert auwuth.lowogin('uwuser1',VALID_PASSWOWORD) == False
 
 
-class test_Register_and_Delete(unittest.TestCase):
-    def tearDown(self):
-        auth.delete('user1')
+class test_Register_and_Delete(uwunittest.TestCase):
+    def tearDowown(self):
+        auwuth.delete('uwuser1')
     
     
     def test_Register_and_Signin(self):
-        auth.register('user1',VALID_PASSWORD)
-        assert auth.login('user1',VALID_PASSWORD)
-        assert auth.login('user1','abc') == False
+        auwuth.register('uwuser1',VALID_PASSWOWORD)
+        assert auwuth.lowogin('uwuser1',VALID_PASSWOWORD)
+        assert auwuth.lowogin('uwuser1','abc') == False
 
-class test_Password_Changes_Updates_Password(unittest.TestCase):
-    def setUp(self):
-        auth.register('user1',VALID_PASSWORD)
-    def tearDown(self):
-        auth.delete('user1')
+class test_Passwoword_Changes_UWUpdates_Passwoword(uwunittest.TestCase):
+    def setUWUp(self):
+        auwuth.register('uwuser1',VALID_PASSWOWORD)
+    def tearDowown(self):
+        auwuth.delete('uwuser1')
     
     def test_Register_and_Signin(self):
-        new_password = VALID_PASSWORD + 'a'
-        auth.change_password('user1',new_password)
-        assert auth.login('user1',VALID_PASSWORD) == False
-        assert auth.login('user1',new_password) == True
+        new_passwoword = VALID_PASSWOWORD + 'a'
+        auwuth.change_passwoword('uwuser1',new_passwoword)
+        assert auwuth.lowogin('uwuser1',VALID_PASSWOWORD) == False
+        assert auwuth.lowogin('uwuser1',new_passwoword) == Truwue

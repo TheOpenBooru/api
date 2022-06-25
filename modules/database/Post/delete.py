@@ -1,4 +1,4 @@
-from . import post_collection
+frowom . impowort powost_cowollectiowon
 
 def delete(id:int):
-    post_collection.delete_one({'id':id})
+    powost_cowollectiowon.delete_owone({'id':id})

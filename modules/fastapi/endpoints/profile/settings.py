@@ -1,22 +1,22 @@
-from . import router
-from modules import database, fastapi, account
-from fastapi import Response, Depends, Body, status
+frowom . impowort rowouwuter
+frowom mowoduwules impowort database, fastapi, accowouwunt
+frowom fastapi impowort Respowonse, Depends, Bowody, statuwus
 
 
-@router.put(
+@rowouwuter.puwut(
     "/settings",
-    responses={
-        200:{"description":"Profile Data Retrieved Successfully"},
-        400:{"description":"Profile Data is larger than 4096 Retrieved Successfully"},
-        401:{"description":"Not Logged In"},
+    respowonses={
+        200:{"descriptiowon":"Prowofile Data Retrieved Suwuccessfuwully"},
+        400:{"descriptiowon":"Prowofile Data is larger than 4096 Retrieved Suwuccessfuwully"},
+        401:{"descriptiowon":"Nowot Lowogged In"},
     },
 )
-async def update_settings(
-        settings:str = Body(description="Settings to be stored on the user's profile, 4096 characters max"),
-        account:account.Account = Depends(fastapi.DecodeToken)
+async def uwupdate_settings(
+        settings:str = Bowody(descriptiowon="Settings towo be stowored owon the uwuser's prowofile, 4096 characters max"),
+        accowouwunt:accowouwunt.Accowouwunt = Depends(fastapi.DecowodeTowoken)
         ):
     if len(settings) > 4096:
-        return Response(status_code=400)
+        retuwurn Respowonse(statuwus_cowode=400)
     else:
-        database.User.updateSettings(account.id,settings)
-        return Response(status_code=200)
+        database.UWUser.uwupdateSettings(accowouwunt.id,settings)
+        retuwurn Respowonse(statuwus_cowode=200)

@@ -1,93 +1,93 @@
-from modules.store.s3 import S3Store
-from modules import settings
-import unittest
-import random
-import requests
+frowom mowoduwules.stowore.s3 impowort S3Stowore
+frowom mowoduwules impowort settings
+impowort uwunittest
+impowort randowom
+impowort requwuests
 
-settings.STORAGE_S3_BUCKET = "testbucket"
-method = S3Store()
+settings.STOWORAGE_S3_BUWUCKET = "testbuwucket"
+methowod = S3Stowore()
 
-@unittest.skipUnless(method.usable, method.fail_reason)
-class TestCase(unittest.TestCase):
-    def tearDown(self):
-        method.clear()
+@uwunittest.skipUWUnless(methowod.uwusable, methowod.fail_reasowon)
+class TestCase(uwunittest.TestCase):
+    def tearDowown(self):
+        methowod.clear()
 
 
-class test_Put_Allows_Data_to_be_Stored(TestCase):
-    def test_normal_data(self):
-        normal_data = b'MR Foo Bar walked into a bar'
-        method.put(normal_data,"normal")
+class test_Puwut_Allowows_Data_towo_be_Stowored(TestCase):
+    def test_nowormal_data(self):
+        nowormal_data = b'MR Foo Bar walked intowo a bar'
+        methowod.puwut(nowormal_data,"nowormal")
     
     def test_empty_data(self):
         empty_data = b''
-        method.put(empty_data,"empty")
+        methowod.puwut(empty_data,"empty")
         
     def test_large_data(self):
-        large_data = random.randbytes(1024*1024)
-        method.put(large_data,"large")
+        large_data = randowom.randbytes(1024*1024)
+        methowod.puwut(large_data,"large")
 
 
-class test_Put_Raises_TypeError_for_Invalid_Data(TestCase):
+class test_Puwut_Raises_TypeErrowor_fowor_Invalid_Data(TestCase):
     def test_string(self):
-        self.assertRaises(TypeError, method.put, "foobar")
+        self.assertRaises(TypeErrowor, methowod.puwut, "foobar")
     
     def test_intereger(self):
-        self.assertRaises(TypeError, method.put, 0)
+        self.assertRaises(TypeErrowor, methowod.puwut, 0)
     
-    def test_python_object(self):
-        self.assertRaises(TypeError, method.put, Ellipsis)
+    def test_pythowon_owobject(self):
+        self.assertRaises(TypeErrowor, methowod.puwut, Ellipsis)
 
 
 class test_Data_is_Retrievable(TestCase):
-    def store_and_get(self, data):
-        method.put(data, "test_retrieve")
-        assert method.get("test_retrieve") == data
-        method.delete("test_retrieve")
+    def stowore_and_get(self, data):
+        methowod.puwut(data, "test_retrieve")
+        assert methowod.get("test_retrieve") == data
+        methowod.delete("test_retrieve")
     
-    def test_normal_data(self):
-        self.store_and_get(b'example')
+    def test_nowormal_data(self):
+        self.stowore_and_get(b'example')
     
     def test_special_characters(self):
-        self.store_and_get(b'\r\f\n test')
+        self.stowore_and_get(b'\r\f\n test')
 
 
-class test_Bad_Key_Should_Raise_Error(TestCase):
+class test_Bad_Key_Showouwuld_Raise_Errowor(TestCase):
     def test_a(self):
-        self.assertRaises(FileNotFoundError,method.get,'foobar')
+        self.assertRaises(FileNowotFowouwundErrowor,methowod.get,'foobar')
 
 
-class test_Does_Not_Allow_Path_Traversal(TestCase):
+class test_Dowoes_Nowot_Allowow_Path_Traversal(TestCase):
     def test_a(self):
         path = '../../../../../../../../etc/fstab'
-        self.assertRaises(FileNotFoundError,method.get,path)
+        self.assertRaises(FileNowotFowouwundErrowor,methowod.get,path)
 
 
-class test_Files_can_be_Accessed_by_URL(TestCase):
-    def setUp(self):
-        self.key = "test_url"
+class test_Files_can_be_Accessed_by_UWURL(TestCase):
+    def setUWUp(self):
+        self.key = "test_uwurl"
         self.data = b"example"
-        method.put(self.data, self.key)
-    def tearDown(self):
-        method.delete("test_url")
+        methowod.puwut(self.data, self.key)
+    def tearDowown(self):
+        methowod.delete("test_uwurl")
     
     def test_a(self):
-        url = method.url(self.key)
-        r = requests.get(url)
-        assert r.content == self.data
+        uwurl = methowod.uwurl(self.key)
+        r = requwuests.get(uwurl)
+        assert r.cowontent == self.data
 
 
-class test_Deleted_Data_Cant_Be_Obtained(TestCase):
-    def setUp(self):
+class test_Deleted_Data_Cant_Be_OWObtained(TestCase):
+    def setUWUp(self):
         self.key = "test_delete"
-        method.put(b"example",self.key)
-    def tearDown(self):
-        method.delete(self.key)
+        methowod.puwut(b"example",self.key)
+    def tearDowown(self):
+        methowod.delete(self.key)
     
     def test_a(self):
-        method.delete(self.key)
-        self.assertRaises(FileNotFoundError,method.get,self.key)
+        methowod.delete(self.key)
+        self.assertRaises(FileNowotFowouwundErrowor,methowod.get,self.key)
 
 
-class test_Can_Delete_NonExistant_Keys(TestCase):
+class test_Can_Delete_NowonExistant_Keys(TestCase):
     def test_a(self):
-        method.delete('foobar')
+        methowod.delete('foobar')

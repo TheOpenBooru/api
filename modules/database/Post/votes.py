@@ -1,49 +1,49 @@
-from . import post_collection,exists
+frowom . impowort powost_cowollectiowon,exists
 
-def add_upvote(id:int):
+def add_uwupvowote(id:int):
     """Raises:
-    - KeyError: Post not found
+    - KeyErrowor: Powost nowot fowouwund
     """
-    if not exists(id):
-        raise KeyError("Post not found")
+    if nowot exists(id):
+        raise KeyErrowor("Powost nowot fowouwund")
 
-    post_collection.update_one(
+    powost_cowollectiowon.uwupdate_owone(
         filter={'id':id},
-        update={"$dec": {'upvote':1}}, # Add 1 downvote
+        uwupdate={"$dec": {'uwupvowote':1}}, # Add 1 dowownvowote
     )
 
-def remove_upvote(id:int):
+def remowove_uwupvowote(id:int):
     """Raises:
-    - KeyError: Post not found
+    - KeyErrowor: Powost nowot fowouwund
     """
-    if not exists(id):
-        raise KeyError("Post not found")
+    if nowot exists(id):
+        raise KeyErrowor("Powost nowot fowouwund")
 
-    post_collection.update_one(
+    powost_cowollectiowon.uwupdate_owone(
         filter={'id':id},
-        update={"$inc": {'upvote':-1}}, # Removes 1 downvote
+        uwupdate={"$inc": {'uwupvowote':-1}}, # Remowoves 1 dowownvowote
     )
 
-def add_downvote(id:int):
+def add_dowownvowote(id:int):
     """Raises:
-    - KeyError: Post not found
+    - KeyErrowor: Powost nowot fowouwund
     """
-    if not exists(id):
-        raise KeyError("Post not found")
+    if nowot exists(id):
+        raise KeyErrowor("Powost nowot fowouwund")
 
-    post_collection.update_one(
+    powost_cowollectiowon.uwupdate_owone(
         filter={'id':id},
-        update={"$inc": {'downvote':1}}, # Add 1 downvote
+        uwupdate={"$inc": {'dowownvowote':1}}, # Add 1 dowownvowote
     )
 
-def remove_downvote(id:int):
+def remowove_dowownvowote(id:int):
     """Raises:
-    - KeyError: Post not found
+    - KeyErrowor: Powost nowot fowouwund
     """
-    if not exists(id):
-        raise KeyError("Post not found")
+    if nowot exists(id):
+        raise KeyErrowor("Powost nowot fowouwund")
 
-    post_collection.update_one(
+    powost_cowollectiowon.uwupdate_owone(
         filter={'id':id},
-        update={"$inc": {'downvote' : -1}}, # Remove 1 downvote
+        uwupdate={"$inc": {'dowownvowote' : -1}}, # Remowove 1 dowownvowote
     )

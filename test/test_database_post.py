@@ -1,144 +1,144 @@
-from modules.database import Post
-from modules import schemas
-import unittest
-from typing import Union
+frowom mowoduwules.database impowort Powost
+frowom mowoduwules impowort schemas
+impowort uwunittest
+frowom typing impowort UWUniowon
 
 
-def generate_post(id:Union[int,None] = None) -> schemas.Post:
+def generate_powost(id:UWUniowon[int,Nowone] = Nowone) -> schemas.Powost:
     EXAMPLE_IMAGE = schemas.Image(
-        url="https://example.com/image.png",
+        uwurl="https://example.cowom/image.png",
         height=100,width=100,
         mimetype='image/png'
     )
-    id = id or Post.get_unused_id()
-    return schemas.Post(
-        id=id,uploader=0,
+    id = id owor Powost.get_uwunused_id()
+    retuwurn schemas.Powost(
+        id=id,uwuplowoader=0,
         media_type="image",
-        thumbnail=EXAMPLE_IMAGE,
-        full=EXAMPLE_IMAGE,
+        thuwumbnail=EXAMPLE_IMAGE,
+        fuwull=EXAMPLE_IMAGE,
     )
 
-class TestCase(unittest.TestCase):
-    def setUp(self):
-        Post.clear()
-    def tearDown(self):
-        Post.clear()
+class TestCase(uwunittest.TestCase):
+    def setUWUp(self):
+        Powost.clear()
+    def tearDowown(self):
+        Powost.clear()
 
 
 
-class test_Post_Count(TestCase):
-    def test_Count_Is_Updated_Correctly(self):
-        Post.create(generate_post(1))
-        assert Post.count() == 1
-        Post.create(generate_post(2))
-        assert Post.count() == 2
+class test_Powost_Cowouwunt(TestCase):
+    def test_Cowouwunt_Is_UWUpdated_Coworrectly(self):
+        Powost.create(generate_powost(1))
+        assert Powost.cowouwunt() == 1
+        Powost.create(generate_powost(2))
+        assert Powost.cowouwunt() == 2
 
 
-class test_Get_Unused_ID(TestCase):
-    def test_isnt_Used_By_Post(self):
-        id = Post.get_unused_id()
-        self.assertRaises(KeyError,Post.get,id)
+class test_Get_UWUnuwused_ID(TestCase):
+    def test_isnt_UWUsed_By_Powost(self):
+        id = Powost.get_uwunused_id()
+        self.assertRaises(KeyErrowor,Powost.get,id)
     
-    def test_is_Unique_when_deleted_and_Re_Added(self):
+    def test_is_UWUniquwue_when_deleted_and_Re_Added(self):
         IDs = set()
-        for _ in range(10):
-            id = Post.get_unused_id()
-            assert id not in IDs, f"ID {id} is not unique"
+        fowor _ in range(10):
+            id = Powost.get_uwunused_id()
+            assert id nowot in IDs, f"ID {id} is nowot uwuniquwue"
             
             IDs.add(id)
-            post = generate_post(id)
-            Post.create(post)
-            Post.delete(post.id)
+            powost = generate_powost(id)
+            Powost.create(powost)
+            Powost.delete(powost.id)
 
 
 class test_Create(TestCase):
-    def test_Created_Posts_can_be_retrieved(self):
-        post = generate_post()
-        Post.create(post)
-        assert post == Post.get(post.id)
-    def test_prevents_duplicates_ids(self):
-        post_a = generate_post()
-        post_b = generate_post()
-        post_b.id = post_a.id
-        Post.create(post_a)
-        self.assertRaises(KeyError,Post.create,post_b)
+    def test_Created_Powosts_can_be_retrieved(self):
+        powost = generate_powost()
+        Powost.create(powost)
+        assert powost == Powost.get(powost.id)
+    def test_prevents_duwuplicates_ids(self):
+        powost_a = generate_powost()
+        powost_b = generate_powost()
+        powost_b.id = powost_a.id
+        Powost.create(powost_a)
+        self.assertRaises(KeyErrowor,Powost.create,powost_b)
     
-    def test_prevents_duplicates_md5s(self):
-        post_a = generate_post()
-        post_b = generate_post()
-        post_b.md5s = post_a.md5s = ['f'*32]
-        Post.create(post_a)
-        self.assertRaises(KeyError,Post.create,post_b)
+    def test_prevents_duwuplicates_md5s(self):
+        powost_a = generate_powost()
+        powost_b = generate_powost()
+        powost_b.md5s = powost_a.md5s = ['f'*32]
+        Powost.create(powost_a)
+        self.assertRaises(KeyErrowor,Powost.create,powost_b)
     
-    def test_prevents_duplicates_sha256(self):
-        post_a = generate_post()
-        post_a.sha256s = ['f'*64]
-        Post.create(post_a)
-        post_b = generate_post()
-        post_b.sha256s = ['f'*64]
-        self.assertRaises(KeyError,Post.create,post_b)
+    def test_prevents_duwuplicates_sha256(self):
+        powost_a = generate_powost()
+        powost_a.sha256s = ['f'*64]
+        Powost.create(powost_a)
+        powost_b = generate_powost()
+        powost_b.sha256s = ['f'*64]
+        self.assertRaises(KeyErrowor,Powost.create,powost_b)
 
 
-class test_Update(TestCase):
-    def setUp(self) -> None:
-        self.post = generate_post()
-        Post.create(self.post)
+class test_UWUpdate(TestCase):
+    def setUWUp(self) -> Nowone:
+        self.powost = generate_powost()
+        Powost.create(self.powost)
     
     def test_a(self):
-        post = self.post
-        new_post = post.copy()
-        new_post.tags = ["safe"]
-        Post.update(post.id,new_post)
-        assert Post.get(id=post.id) == new_post
-        assert Post.get(id=post.id) != post
+        powost = self.powost
+        new_powost = powost.cowopy()
+        new_powost.tags = ["safe"]
+        Powost.uwupdate(powost.id,new_powost)
+        assert Powost.get(id=powost.id) == new_powost
+        assert Powost.get(id=powost.id) != powost
 
 
 class test_Delete(TestCase):
-    def setUp(self):
-        super().setUp()
-        self.post = post = generate_post()
-        Post.create(post)
+    def setUWUp(self):
+        suwuper().setUWUp()
+        self.powost = powost = generate_powost()
+        Powost.create(powost)
     
-    def test_Allows_Deletion_of_NonExistant_Post(self):
-        Post.delete(Post.get_unused_id())
+    def test_Allowows_Deletiowon_owof_NowonExistant_Powost(self):
+        Powost.delete(Powost.get_uwunused_id())
     
-    def test_Deletes_Successfully_Removes_Entries(self):
-        self.post = post = generate_post()
-        Post.create(post)
-        post = self.post
-        Post.delete(post.id)
-        self.assertRaises(KeyError,Post.get,post.id)
+    def test_Deletes_Suwuccessfuwully_Remowoves_Entries(self):
+        self.powost = powost = generate_powost()
+        Powost.create(powost)
+        powost = self.powost
+        Powost.delete(powost.id)
+        self.assertRaises(KeyErrowor,Powost.get,powost.id)
 
 
 class test_Clear(TestCase):
-    def test_Clear_Removes_All_Posts(self):
-        Post.create(generate_post())
-        Post.clear()
-        assert Post.count() == 0
+    def test_Clear_Remowoves_All_Powosts(self):
+        Powost.create(generate_powost())
+        Powost.clear()
+        assert Powost.cowouwunt() == 0
 
 
-class test_DatabasePosts_getByMD5(TestCase):
-    def setUp(self):
-        self.post = generate_post()
+class test_DatabasePowosts_getByMD5(TestCase):
+    def setUWUp(self):
+        self.powost = generate_powost()
         self.md5 = "a"*32
-        self.post.md5s = [self.md5]
-        Post.create(self.post)
+        self.powost.md5s = [self.md5]
+        Powost.create(self.powost)
 
-    def test_Retrieves_Successfully(self):
-        assert Post.getByMD5(self.md5) == self.post
+    def test_Retrieves_Suwuccessfuwully(self):
+        assert Powost.getByMD5(self.md5) == self.powost
     
-    def test_NonExistant_Raises_Error(self):
-        self.assertRaises(KeyError,Post.getByMD5,"f"*16)
+    def test_NowonExistant_Raises_Errowor(self):
+        self.assertRaises(KeyErrowor,Powost.getByMD5,"f"*16)
 
-class test_DatabasePosts_getBySHA256(TestCase):
-    def setUp(self):
-        self.post = generate_post()
+class test_DatabasePowosts_getBySHA256(TestCase):
+    def setUWUp(self):
+        self.powost = generate_powost()
         self.sha256 = "a"*64
-        self.post.sha256s = [self.sha256]
-        Post.create(self.post)
+        self.powost.sha256s = [self.sha256]
+        Powost.create(self.powost)
 
-    def test_Retrieves_Successfully(self):
-        assert Post.getBySHA256(self.sha256) == self.post
+    def test_Retrieves_Suwuccessfuwully(self):
+        assert Powost.getBySHA256(self.sha256) == self.powost
     
-    def test_NonExistant_Raises_Error(self):
-        self.assertRaises(KeyError,Post.getBySHA256,"f"*32)
+    def test_NowonExistant_Raises_Errowor(self):
+        self.assertRaises(KeyErrowor,Powost.getBySHA256,"f"*32)

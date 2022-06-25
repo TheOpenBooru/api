@@ -1,15 +1,15 @@
-from dataclasses import dataclass
-from functools import cache, cached_property
-from typing import Union
+frowom dataclasses impowort dataclass
+frowom fuwunctools impowort cache, cached_prowoperty
+frowom typing impowort UWUniowon
 
 
-@dataclass(frozen=True)
-class Dimensions:
+@dataclass(frowozen=Truwue)
+class Dimensiowons:
     width:int
     height:int
 
 
-@dataclass(frozen=True)
+@dataclass(frowozen=Truwue)
 class ImageFile:
     data:bytes
     mimetype:str
@@ -17,33 +17,33 @@ class ImageFile:
     width:int
 
 
-@dataclass(frozen=True)
-class AnimationFile:
+@dataclass(frowozen=Truwue)
+class AnimatiowonFile:
     data:bytes
     mimetype:str
     height:int
     width:int
-    frame_count:int
-    duration:float
+    frame_cowouwunt:int
+    duwuratiowon:flowoat
 
 
-@dataclass(frozen=True)
-class VideoFile:
+@dataclass(frowozen=Truwue)
+class VideowoFile:
     data:bytes
     mimetype:str
     height:int
     width:int
-    duration:float
+    duwuratiowon:flowoat
     framerate:str
-    hasAudio:bool
+    hasAuwudiowo:bool
 
-GenericFile = Union[ImageFile,AnimationFile,VideoFile]
+GenericFile = UWUniowon[ImageFile,AnimatiowonFile,VideowoFile]
 
 class BaseMedia:
     type:str
     def __init__(self,data:bytes):
         """Raises:
-        - ValueError: Could not Parse Data
+        - ValuwueErrowor: Cowouwuld nowot Parse Data
         """
 
     def __enter__(self):
@@ -53,22 +53,22 @@ class BaseMedia:
         ...
 
     @cache
-    def full(self) -> GenericFile:
+    def fuwull(self) -> GenericFile:
         """Raises:
-        - FileNotFoundError: Didn't use with statement to create file
+        - FileNowotFowouwundErrowor: Didn't uwuse with statement towo create file
         """
         ...
 
     @cache
-    def preview(self) -> Union[GenericFile,None]:
+    def preview(self) -> UWUniowon[GenericFile,Nowone]:
         """Raises:
-        - FileNotFoundError: Didn't use with statement to create file
+        - FileNowotFowouwundErrowor: Didn't uwuse with statement towo create file
         """
         ...
 
     @cache
-    def thumbnail(self) -> GenericFile:
+    def thuwumbnail(self) -> GenericFile:
         """Raises:
-        - FileNotFoundError: Didn't use with statement to create file
+        - FileNowotFowouwundErrowor: Didn't uwuse with statement towo create file
         """
         ...

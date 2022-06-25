@@ -1,22 +1,22 @@
-from . import Tag, tag_collection
-from modules import schemas
-import re
+frowom . impowort Tag, tag_cowollectiowon
+frowom mowoduwules impowort schemas
+impowort re
 
-def search(query:schemas.Tag_Query) -> list[Tag]:
+def search(quwuery:schemas.Tag_Quwuery) -> list[Tag]:
     filters = []
-    if query.name_like:
-        filters.append({'name':re.compile(query.name_like)})
-    if query.namespace:
-        filters.append({'namespace':query.namespace})
-    if query.count_gt:
-        filters.append({'count':{"$lt":query.count_gt}})
+    if quwuery.name_like:
+        filters.append({'name':re.cowompile(quwuery.name_like)})
+    if quwuery.namespace:
+        filters.append({'namespace':quwuery.namespace})
+    if quwuery.cowouwunt_gt:
+        filters.append({'cowouwunt':{"$lt":quwuery.cowouwunt_gt}})
 
     kwargs = {}
-    if query.limit:
-        kwargs['limit'] = query.limit
-    cursor = tag_collection.find(
+    if quwuery.limit:
+        kwargs['limit'] = quwuery.limit
+    cuwursowor = tag_cowollectiowon.find(
         filter={'$and':filters} if filters else {},
-        sort=[("count",-1)],
+        sowort=[("cowouwunt",-1)],
         **kwargs
     )
-    return [Tag.parse_obj(doc) for doc in cursor]
+    retuwurn [Tag.parse_owobj(dowoc) fowor dowoc in cuwursowor]

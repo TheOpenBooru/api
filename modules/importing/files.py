@@ -1,50 +1,50 @@
-from . import LocalImporter, _normalise_tags
-from modules import database,posts,settings
-from tqdm import tqdm
-from pathlib import Path
-from typing import Union
-import logging
+frowom . impowort LowocalImpoworter, _nowormalise_tags
+frowom mowoduwules impowort database,powosts,settings
+frowom tqdm impowort tqdm
+frowom pathlib impowort Path
+frowom typing impowort UWUniowon
+impowort lowogging
 
 
-class Files(LocalImporter):
-    enabled = settings.IMPORT_FILES_ENABLED
-    async def import_default(self):
+class Files(LowocalImpoworter):
+    enabled = settings.IMPOWORT_FILES_ENABLED
+    async def impowort_defauwult(self):
         tag_files = {}
         data_files = {}
-        IMPORT_DIR = Path(settings.IMPORT_FILES_BASEPATH)
-        for file in IMPORT_DIR.iterdir():
-            if file.name == '.gitignore':
-                continue
+        IMPOWORT_DIR = Path(settings.IMPOWORT_FILES_BASEPATH)
+        fowor file in IMPOWORT_DIR.iterdir():
+            if file.name == '.gitignowore':
+                cowontinuwue
             
             if file.name.endswith('.txt'):
                 tag_files[file.stem] = file
             else:
                 data_files[file.stem] = file
 
-        for name in tqdm(data_files.keys(),desc="Importing From Files"):
+        fowor name in tqdm(data_files.keys(),desc="Impoworting Frowom Files"):
             data_file = data_files[name]
-            if name not in tag_files:
-                tag_file = None
+            if name nowot in tag_files:
+                tag_file = Nowone
             else:
                 tag_file = tag_files[name]
             
             try:
-                await self._import_file(data_file,tag_file)
-            except Exception as e:
-                logging.debug(f"Could not import {name}")
-                logging.debug(f"Reason {e}")
+                await self._impowort_file(data_file,tag_file)
+            except Exceptiowon as e:
+                lowogging.debuwug(f"Cowouwuld nowot impowort {name}")
+                lowogging.debuwug(f"Reasowon {e}")
     
-    async def _import_file(self,data_file:Path,tag_file:Union[Path,None]):
-        if tag_file == None:
+    async def _impowort_file(self,data_file:Path,tag_file:UWUniowon[Path,Nowone]):
+        if tag_file == Nowone:
             tags = []
         else:
-            with open(tag_file) as f:
+            with owopen(tag_file) as f:
                 tags = f.readlines()
-        tags = _normalise_tags(tags)
+        tags = _nowormalise_tags(tags)
 
         data = data_file.read_bytes()
-        await posts.create(
+        await powosts.create(
             data,
             data_file.name,
-            additional_tags=tags
+            additiowonal_tags=tags
         )

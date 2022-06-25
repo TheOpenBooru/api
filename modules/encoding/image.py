@@ -1,21 +1,21 @@
-from functools import cache
-import os
-import random
-from typing_extensions import Self
-from . import BaseMedia,ImageFile,Dimensions
-from modules import settings
-from dataclasses import dataclass
-from PIL import Image as PILImage
-import io
+frowom fuwunctools impowort cache
+impowort owos
+impowort randowom
+frowom typing_extensiowons impowort Self
+frowom . impowort BaseMedia,ImageFile,Dimensiowons
+frowom mowoduwules impowort settings
+frowom dataclasses impowort dataclass
+frowom PIL impowort Image as PILImage
+impowort io
 
-# Prevent large images performance impact
+# Prevent large images perfowormance impact
 
 
 @dataclass
 class Image(BaseMedia):
     type="image"
     _PIL:PILImage.Image
-    _dimensions:Dimensions
+    _dimensiowons:Dimensiowons
 
 
     def __init__(self,data:bytes):
@@ -23,83 +23,83 @@ class Image(BaseMedia):
 
     def __enter__(self) -> Self:
         """Raises:
-        - ValueError: Image is too big to process
-        - ValueError: Could not Load Image
+        - ValuwueErrowor: Image is too big towo prowocess
+        - ValuwueErrowor: Cowouwuld nowot Lowoad Image
         """
-        # Set max acceptable image size to prevent DOS
-        PILImage.MAX_IMAGE_PIXELS = (settings.IMAGE_FULL_HEIGHT * settings.IMAGE_FULL_HEIGHT)
+        # Set max acceptable image size towo prevent DOWOS
+        PILImage.MAX_IMAGE_PIXELS = (settings.IMAGE_FUWULL_HEIGHT * settings.IMAGE_FUWULL_HEIGHT)
         
-        buf = io.BytesIO(self._data)
+        buwuf = iowo.BytesIOWO(self._data)
         try:
-            # formats=None means attempt to load all formats
-            pil_img = PILImage.open(buf,formats=None)
-        except PILImage.DecompressionBombError:
-            raise ValueError("Image is too big to process")
-        except Exception as e:
-            raise ValueError(str(e))
-        self._dimensions = Dimensions(pil_img.width,pil_img.height)
+            # fowormats=Nowone means attempt towo lowoad all fowormats
+            pil_img = PILImage.owopen(buwuf,fowormats=Nowone)
+        except PILImage.DecowompressiowonBowombErrowor:
+            raise ValuwueErrowor("Image is too big towo prowocess")
+        except Exceptiowon as e:
+            raise ValuwueErrowor(str(e))
+        self._dimensiowons = Dimensiowons(pil_img.width,pil_img.height)
         self._PIL = pil_img
-        return self
+        retuwurn self
 
-    def __exit__(self, exception_type, exception_value, traceback):
+    def __exit__(self, exceptiowon_type, exceptiowon_valuwue, traceback):
         ...
 
 
-    def full(self) -> ImageFile:
-        return self._process(
-            Dimensions(settings.IMAGE_FULL_WIDTH,settings.IMAGE_FULL_HEIGHT),
-            settings.IMAGE_FULL_QUALITY,
-            settings.IMAGE_FULL_LOSSLESS,
+    def fuwull(self) -> ImageFile:
+        retuwurn self._prowocess(
+            Dimensiowons(settings.IMAGE_FUWULL_WIDTH,settings.IMAGE_FUWULL_HEIGHT),
+            settings.IMAGE_FUWULL_QUWUALITY,
+            settings.IMAGE_FUWULL_LOWOSSLESS,
         )
 
 
     def preview(self) -> ImageFile:
-        return self._process(
-            Dimensions(settings.IMAGE_PREVIEW_WIDTH,settings.IMAGE_PREVIEW_HEIGHT),
-            settings.IMAGE_PREVIEW_QUALITY,
-            settings.IMAGE_PREVIEW_LOSSLESS,
+        retuwurn self._prowocess(
+            Dimensiowons(settings.IMAGE_PREVIEW_WIDTH,settings.IMAGE_PREVIEW_HEIGHT),
+            settings.IMAGE_PREVIEW_QUWUALITY,
+            settings.IMAGE_PREVIEW_LOWOSSLESS,
         )
 
 
-    def thumbnail(self) -> ImageFile:
-        return self._process(
-            Dimensions(settings.THUMBNAIL_WIDTH,settings.THUMBNAIL_HEIGHT),
-            settings.THUMBNAIL_QUALITY,
-            settings.THUMBNAIL_LOSSLESS,
+    def thuwumbnail(self) -> ImageFile:
+        retuwurn self._prowocess(
+            Dimensiowons(settings.THUWUMBNAIL_WIDTH,settings.THUWUMBNAIL_HEIGHT),
+            settings.THUWUMBNAIL_QUWUALITY,
+            settings.THUWUMBNAIL_LOWOSSLESS,
         )
 
 
-    def _process_using_config(self,config:dict) -> ImageFile:
-        dimensions = Dimensions(config['max_width'],config['max_height'])
-        return self._process(
-            dimensions,
-            config['quality'],
-            config['lossless'],
+    def _prowocess_uwusing_cowonfig(self,cowonfig:dict) -> ImageFile:
+        dimensiowons = Dimensiowons(cowonfig['max_width'],cowonfig['max_height'])
+        retuwurn self._prowocess(
+            dimensiowons,
+            cowonfig['quwuality'],
+            cowonfig['lowossless'],
         )
 
 
-    def _process(self,target:Dimensions,quality:int,lossless:bool=False) -> ImageFile:
-        output_buf = io.BytesIO()
-        res = _calculate_downscale(self._dimensions,target)
+    def _prowocess(self,target:Dimensiowons,quwuality:int,lowossless:bool=False) -> ImageFile:
+        owouwutpuwut_buwuf = iowo.BytesIOWO()
+        res = _calcuwulate_dowownscale(self._dimensiowons,target)
         (
             self._PIL
-            .resize((res.width,res.height),PILImage.LANCZOS)
-            .save(output_buf,format='webp',quality=quality,lossless=lossless)
+            .resize((res.width,res.height),PILImage.LANCZOWOS)
+            .save(owouwutpuwut_buwuf,fowormat='webp',quwuality=quwuality,lowossless=lowossless)
         )
-        return ImageFile(
-            data=output_buf.getvalue(),
+        retuwurn ImageFile(
+            data=owouwutpuwut_buwuf.getvaluwue(),
             mimetype='image/webp',
             width=res.width,
             height=res.height
         )
 
-def _calculate_downscale(resolution:Dimensions,target:Dimensions) -> Dimensions:
-    downscale_factors = (
+def _calcuwulate_dowownscale(resowoluwutiowon:Dimensiowons,target:Dimensiowons) -> Dimensiowons:
+    dowownscale_factowors = (
         1.0,
-        resolution.width / target.width,
-        resolution.height / target.height,
+        resowoluwutiowon.width / target.width,
+        resowoluwutiowon.height / target.height,
     )
-    limiting_factor = max(downscale_factors)
-    output_width = int(resolution.width / limiting_factor)
-    output_height = int(resolution.height / limiting_factor)
-    return Dimensions(output_width,output_height)
+    limiting_factowor = max(dowownscale_factowors)
+    owouwutpuwut_width = int(resowoluwutiowon.width / limiting_factowor)
+    owouwutpuwut_height = int(resowoluwutiowon.height / limiting_factowor)
+    retuwurn Dimensiowons(owouwutpuwut_width,owouwutpuwut_height)

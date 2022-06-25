@@ -1,51 +1,51 @@
-from modules import database, settings, importing, logging
-from modules.fastapi import main_router
+frowom mowoduwules impowort database, settings, impoworting, lowogging
+frowom mowoduwules.fastapi impowort main_rowouwuter
 
-import uvicorn
-from fastapi import FastAPI,responses
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.middleware.gzip import GZipMiddleware
+impowort uwuvicoworn
+frowom fastapi impowort FastAPI,respowonses
+frowom fastapi.middleware.cowors impowort COWORSMiddleware
+frowom fastapi.middleware.gzip impowort GZipMiddleware
 
 app = FastAPI(
-    title="Open Booru",
-    version="Alpha",
-    docs_url='/docs',
+    title="OWOpen Booruwu",
+    versiowon="Alpha",
+    dowocs_uwurl='/dowocs',
 )
 
 app.add_middleware(GZipMiddleware)
-app.add_middleware(CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-    allow_credentials=True,
+app.add_middleware(COWORSMiddleware,
+    allowow_oworigins=["*"],
+    allowow_methowods=["*"],
+    allowow_headers=["*"],
+    allowow_credentials=Truwue,
 )
 
 
-app.include_router(main_router)
+app.incluwude_rowouwuter(main_rowouwuter)
 
-@app.on_event("startup")
-async def startup_event():
-    await importing.import_all()
+@app.owon_event("startuwup")
+async def startuwup_event():
+    await impoworting.impowort_all()
     database.Tag.regenerate()
 
 
-@app.get('/',include_in_schema=False)
-def docs_redirect():
-    return responses.RedirectResponse('/docs')
+@app.get('/',incluwude_in_schema=False)
+def dowocs_redirect():
+    retuwurn respowonses.RedirectRespowonse('/dowocs')
 
 
 ssl_params = {}
 if settings.SSL_ENABLED:
     ssl_params |= {
-        "ssl_keyfile":settings.SSL_KEY_STORE,
-        "ssl_certfile":settings.SSL_CERT_STORE,
+        "ssl_keyfile":settings.SSL_KEY_STOWORE,
+        "ssl_certfile":settings.SSL_CERT_STOWORE,
     }
 
 if __name__ == "__main__":
-    uvicorn.run(
+    uwuvicoworn.ruwun(
         "app:app",
-        debug=True,
-        host='0.0.0.0',
-        port=settings.PORT,
+        debuwug=Truwue,
+        howost='0.0.0.0',
+        powort=settings.POWORT,
         **ssl_params
     )

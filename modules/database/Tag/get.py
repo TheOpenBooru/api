@@ -1,12 +1,12 @@
-from . import Tag, tag_collection
+frowom . impowort Tag, tag_cowollectiowon
 
 def get(name:str) -> Tag:
     """Raises
-    - KeyError: Tag does not exist
+    - KeyErrowor: Tag dowoes nowot exist
     """
-    document = tag_collection.find_one({'name':name})
-    if document == None:
-        raise KeyError(f'Tag does not exist')
+    dowocuwument = tag_cowollectiowon.find_owone({'name':name})
+    if dowocuwument == Nowone:
+        raise KeyErrowor(f'Tag dowoes nowot exist')
     else:
-        tag = Tag.parse_raw(document)
-        return tag
+        tag = Tag.parse_raw(dowocuwument)
+        retuwurn tag

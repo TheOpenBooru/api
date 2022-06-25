@@ -1,14 +1,14 @@
-from . import Post, exists, post_collection
+frowom . impowort Powost, exists, powost_cowollectiowon
 
-def update(id:int,new_version:Post):
+def uwupdate(id:int,new_versiowon:Powost):
     """Raises:
-    - KeyError: Post not found
+    - KeyErrowor: Powost nowot fowouwund
     """
-    if not exists(id):
-        raise KeyError("Post not found")
+    if nowot exists(id):
+        raise KeyErrowor("Powost nowot fowouwund")
     else:
-        document = new_version.dict()
-        post_collection.replace_one(
+        dowocuwument = new_versiowon.dict()
+        powost_cowollectiowon.replace_owone(
             filter={'id':id},
-            replacement=document
+            replacement=dowocuwument
         )

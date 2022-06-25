@@ -1,14 +1,14 @@
-# Read the Documentation: https://github.com/TheOpenBooru/api/blob/main/settings.md
-config:
+# Read the Dowocuwumentatiowon: https://githuwub.cowom/TheOWOpenBooruwu/api/blowob/main/settings.md
+cowonfig:
   site:
-    display_name: Open Booru
-    hostname: "slate"
-    port: 8443
+    display_name: OWOpen Booru
+    howostname: "slate"
+    powort: 8443
   ssl:
     enabled: false
     key: ""
     cert: ""
-  password_pepper: ""
+  passwoword_pepper: ""
   hcaptcha:
     enabled: false
     sitekey: ""
@@ -16,135 +16,135 @@ config:
   aws:
     id: ""
     secret: ""
-    region: "eu-west-2"
-  mongodb:
-    hostname: "localhost"
-    port: 27017
-    name: "openbooru"
+    regiowon: "euwu-west-2"
+  mowongowodb:
+    howostname: "lowocalhowost"
+    powort: 27017
+    name: "owopenbooruwu"
   smtp:
     email: ""
-    password: ""
-    hostname: ""
-    port: 25
-  wipe_on_startup: false
+    passwoword: ""
+    howostname: ""
+    powort: 25
+  wipe_owon_startuwup: false
 
 database:
-  choice: "mongodb"
+  chowoice: "mowongowodb"
 
 
 email:
   template_paths:
-    email_verification: "./data/emails/email_verification.html"
-    password_reset: "./data/emails/password_reset.html"
+    email_verificatiowon: "./data/emails/email_verificatiowon.html"
+    passwoword_reset: "./data/emails/passwoword_reset.html"
 
 
-posts:
+powosts:
   search:
-    default_sort: "created_at"
+    defauwult_sowort: "created_at"
     max_limit: 100
-  import:
-    local:
+  impowort:
+    lowocal:
       enabled: false
-      local_path: "./data/import"
-    hydrus:
+      lowocal_path: "./data/impowort"
+    hydruwus:
       enabled: false
       access_key: ""
-      url: "http://localhost:45869/"
+      uwurl: "http://lowocalhowost:45869/"
       tags:
         - "system:everything"
-    tumblr:
+    tuwumblr:
       enabled: false
-      consumer_key: ""
-      consumer_secret: ""
-      blogs:
-        - pauladrawsnstuff
-    safebooru:
+      cowonsuwumer_key: ""
+      cowonsuwumer_secret: ""
+      blowogs:
+        - pauwuladrawsnstuwuff
+    safebooruwu:
       enabled: false
       searches: [
-        "asami_sato yuri -bra -bikini",
-        "samus_aran yuri",
-        "pharah_(overwatch) mercy_(overwatch) yuri",
-        "widowmaker_(overwatch) tracer_(overwatch) yuri -underwear",
-        "sombra_(overwatch) -katya_volskaya yuri",
+        "asami_satowo yuwuri -bra -bikini",
+        "samuwus_aran yuwuri",
+        "pharah_(owoverwatch) mercy_(owoverwatch) yuwuri",
+        "widowowmaker_(owoverwatch) tracer_(owoverwatch) yuwuri -uwunderwear",
+        "sowombra_(owoverwatch) -katya_vowolskaya yuwuri",
       ]
       limit: 100
 
-storage:
-  method: "local"
-  local:
-    path: "./data/storage"
+stoworage:
+  methowod: "lowocal"
+  lowocal:
+    path: "./data/stoworage"
   s3:
-    bucket-name: "openbooru"
+    buwucket-name: "owopenbooruwu"
 
-authentication:
-  token_expiration: 86400
-  password_requirements:
+auwuthenticatiowon:
+  towoken_expiratiowon: 86400
+  passwoword_requwuirements:
     min_length: 8
     max_length: 128
-    score: 3 
+    scowore: 3 
 
-encoding:
-  thumbnail:
-    lossless: false
-    quality: 80
+encowoding:
+  thuwumbnail:
+    lowossless: false
+    quwuality: 80
     max_width: 250
     max_height: 250
 
   image:
-    full:
-      lossless: true
-      quality: 100
+    fuwull:
+      lowossless: truwue
+      quwuality: 100
       max_width: 4000
       max_height: 4000
     preview:
-      lossless: false
-      quality: 90
+      lowossless: false
+      quwuality: 90
       max_width: 1600
       max_height: 1600
 
-  animation:
-    lossless: true
-    quality: 100
+  animatiowon:
+    lowossless: truwue
+    quwuality: 100
     max_width: 4000
     max_height: 4000
 
-  video:
-    full:
-      reencode: false #TODO: Not implemented
+  videowo:
+    fuwull:
+      reencowode: false #TOWODO: Nowot implemented
     preview:
-      enabled: false #TODO: Not implemented
-      duration: 5 #TODO: Not implemented
-    thumbnail_offset: 10 #TODO: implemented
+      enabled: false #TOWODO: Nowot implemented
+      duwuratiowon: 5 #TOWODO: Nowot implemented
+    thuwumbnail_owoffset: 10 #TOWODO: implemented
 
-permissions:
-  annonymous:
-    - canViewPosts
-    - canSearchPosts
+permissiowons:
+  annowonymowouwus:
+    - canViewPowosts
+    - canSearchPowosts
 
-  user:
-    - canViewUsers
-    - canSearchUsers
+  uwuser:
+    - canViewUWUsers
+    - canSearchUWUsers
     
-    - canCreatePosts
-    - canViewPosts
-    - canSearchPosts
-    - canEditPosts
+    - canCreatePowosts
+    - canViewPowosts
+    - canSearchPowosts
+    - canEditPowosts
     
-    - canCreateComments
-    - canViewComments
+    - canCreateCowomments
+    - canViewCowomments
 
   admin:
-    - canViewUsers
-    - canSearchUsers
-    - canEditUsers
-    - canDeleteUsers
+    - canViewUWUsers
+    - canSearchUWUsers
+    - canEditUWUsers
+    - canDeleteUWUsers
     
-    - canCreatePosts
-    - canViewPosts
-    - canSearchPosts
-    - canEditPosts
-    - canDeletePosts
+    - canCreatePowosts
+    - canViewPowosts
+    - canSearchPowosts
+    - canEditPowosts
+    - canDeletePowosts
     
-    - canCreateComments
-    - canViewComments
-    - canDeleteComments
+    - canCreateCowomments
+    - canViewCowomments
+    - canDeleteCowomments

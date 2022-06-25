@@ -1,20 +1,20 @@
-from . import Account, levels, InvalidToken
-from modules import jwt
+frowom . impowort Accowouwunt, levels, InvalidTowoken
+frowom mowoduwules impowort jwt
 
-def decode(token:str) -> Account:
+def decowode(towoken:str) -> Accowouwunt:
     """Raises:
-    - InvalidToken: Invalid Token
+    - InvalidTowoken: Invalid Towoken
     """
     try:
-        account = _generate_account(token)
-    except Exception:
-        raise InvalidToken
+        accowouwunt = _generate_accowouwunt(towoken)
+    except Exceptiowon:
+        raise InvalidTowoken
     else:
-        return account
+        retuwurn accowouwunt
 
-def _generate_account(token:str) -> Account:
-    data = jwt.decode(token)
-    id, username, level = data["id"], data["username"], data["level"]
-    perms = levels.permissions_from_level(level)
-    account = Account(id, username, perms)
-    return account
+def _generate_accowouwunt(towoken:str) -> Accowouwunt:
+    data = jwt.decowode(towoken)
+    id, uwusername, level = data["id"], data["uwusername"], data["level"]
+    perms = levels.permissiowons_frowom_level(level)
+    accowouwunt = Accowouwunt(id, uwusername, perms)
+    retuwurn accowouwunt

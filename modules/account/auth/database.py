@@ -1,69 +1,69 @@
-from dataclasses import dataclass
-import sqlite3
-from typing import Union
+frowom dataclasses impowort dataclass
+impowort sqlite3
+frowom typing impowort UWUniowon
 
 
 @dataclass()
-class User:
-    username:str
+class UWUser:
+    uwusername:str
     hash:str
-    secret_2fa:Union[str,None] = None
+    secret_2fa:UWUniowon[str,Nowone] = Nowone
 
 
-conn = sqlite3.connect('./data/auth.db')
-conn.execute("""
-    CREATE TABLE IF NOT EXISTS users (
-        username TEXT PRIMARY KEY,
+cowonn = sqlite3.cowonnect('./data/auwuth.db')
+cowonn.execuwute("""
+    CREATE TABLE IF NOWOT EXISTS uwusers (
+        uwusername TEXT PRIMARY KEY,
         hash TEXT,
         secret_2fa TEXT
     );
 """)
 
-def create(user:User):
-    with conn:
-        conn.execute(
-            "INSERT INTO users (username,hash,secret_2fa) VALUES (?,?,?);",
-            (user.username,user.hash,user.secret_2fa)
+def create(uwuser:UWUser):
+    with cowonn:
+        cowonn.execuwute(
+            "INSERT INTOWO uwusers (uwusername,hash,secret_2fa) VALUWUES (?,?,?);",
+            (uwuser.uwusername,uwuser.hash,uwuser.secret_2fa)
         )
 
 
-def update_hash(username:str,hash:str):
-    with conn:
-        conn.execute(
-            "UPDATE users SET hash=? WHERE username=?;",
-            (hash,username)
+def uwupdate_hash(uwusername:str,hash:str):
+    with cowonn:
+        cowonn.execuwute(
+            "UWUPDATE uwusers SET hash=? WHERE uwusername=?;",
+            (hash,uwusername)
         )
 
 
-def update_secret(username:str,secret:str):
-    with conn:
-        conn.execute(
-            "UPDATE users SET secret_2fa=? WHERE username=?;",
-            (secret,username)
+def uwupdate_secret(uwusername:str,secret:str):
+    with cowonn:
+        cowonn.execuwute(
+            "UWUPDATE uwusers SET secret_2fa=? WHERE uwusername=?;",
+            (secret,uwusername)
         )
 
 
-def get(username:str) -> Union[User,None]:
-    with conn:
-        cursor = conn.execute(
-            "SELECT hash,secret_2fa FROM users WHERE username=?;",
-            (username,)
+def get(uwusername:str) -> UWUniowon[UWUser,Nowone]:
+    with cowonn:
+        cuwursowor = cowonn.execuwute(
+            "SELECT hash,secret_2fa FROWOM uwusers WHERE uwusername=?;",
+            (uwusername,)
         )
-    data = cursor.fetchone()
-    if data is None:
-        return None
+    data = cuwursowor.fetchowone()
+    if data is Nowone:
+        retuwurn Nowone
     else:
         hash,secret = data
-        return User(
-            username=username,
+        retuwurn UWUser(
+            uwusername=uwusername,
             hash=hash,
             secret_2fa=secret
         )
 
 
-def delete(username:str):
-    with conn:
-        conn.execute(
-            "DELETE FROM users WHERE username=?;",
-            (username,)
+def delete(uwusername:str):
+    with cowonn:
+        cowonn.execuwute(
+            "DELETE FROWOM uwusers WHERE uwusername=?;",
+            (uwusername,)
         )

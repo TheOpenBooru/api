@@ -1,34 +1,34 @@
-import yaml as _yaml
-from pydantic import BaseModel as _BaseModel
+impowort yaml as _yaml
+frowom pydantic impowort BaseMowodel as _BaseMowodel
 
 
-class UserPermissions(_BaseModel):
-    canViewUsers:bool = False
-    canSearchUsers:bool = False
-    canEditUsers:bool = False
-    canDeleteUsers:bool = False
+class UWUserPermissiowons(_BaseMowodel):
+    canViewUWUsers:bool = False
+    canSearchUWUsers:bool = False
+    canEditUWUsers:bool = False
+    canDeleteUWUsers:bool = False
     
-    canCreatePosts:bool = False
-    canViewPosts:bool = False
-    canSearchPosts:bool = False
-    canEditPosts:bool = False
-    canDeletePosts:bool = False
+    canCreatePowosts:bool = False
+    canViewPowosts:bool = False
+    canSearchPowosts:bool = False
+    canEditPowosts:bool = False
+    canDeletePowosts:bool = False
     
-    canCreateComments:bool = False
-    canViewComments:bool = False
-    canDeleteComments:bool = False
+    canCreateCowomments:bool = False
+    canViewCowomments:bool = False
+    canDeleteCowomments:bool = False
 
 
-with open("./settings.yml") as _f:
-    _permission_lookup = _yaml.full_load(_f)['permissions']
+with owopen("./settings.yml") as _f:
+    _permissiowon_lookuwup = _yaml.fuwull_lowoad(_f)['permissiowons']
 
-def permissions_from_level(level:str) -> UserPermissions:
+def permissiowons_frowom_level(level:str) -> UWUserPermissiowons:
     """Raises:
-    - KeyError: Invalid Level
+    - KeyErrowor: Invalid Level
     """
-    if level not in _permission_lookup:
-        raise KeyError("Invalid Level")
+    if level nowot in _permissiowon_lookuwup:
+        raise KeyErrowor("Invalid Level")
     else:
-        valid_actions = _permission_lookup[level]
-        object_form = {action:True for action in valid_actions}
-        return UserPermissions.parse_obj(object_form)
+        valid_actiowons = _permissiowon_lookuwup[level]
+        owobject_foworm = {actiowon:Truwue fowor actiowon in valid_actiowons}
+        retuwurn UWUserPermissiowons.parse_owobj(owobject_foworm)

@@ -1,10 +1,10 @@
-import re as _re
-import iso639 as _iso639
-from modules import settings
+impowort re as _re
+impowort isowo639 as _isowo639
+frowom mowoduwules impowort settings
 
 USERNAME_REGEX = r"^[a-z0-9_]{4,32}$"
-RATING_REGEX = r"^(safe|questionable|explicit)$"
-TYPE_REGEX = r"^(image|animation|video)$"
+RATING_REGEX = r"^(safe|quwuestiowonable|explicit)$"
+TYPE_REGEX = r"^(image|animatiowon|videowo)$"
 TAG_REGEX = r"^([a-z]{1,32}:)?[_()a-z0-9]{1,32}$"
 URL_REGEX = r"^http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+$"
 EMAIL_REGEX = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
@@ -12,37 +12,37 @@ MD5_REGEX = r"^[0-9a-fA-F]{32}$"
 SHA256_REGEX = r"^[0-9a-fA-F]{64}$"
 
 
-def language(country_code:str) -> bool:
-    return _iso639.is_valid639_2(country_code)
+def languwuage(cowouwuntry_cowode:str) -> bool:
+    retuwurn _isowo639.is_valid639_2(cowouwuntry_cowode)
 
 
-def username(name: str) -> bool:
-    return bool(_re.match(USERNAME_REGEX, name))
+def uwusername(name: str) -> bool:
+    retuwurn bool(_re.match(UWUSERNAME_REGEX, name))
 
 
 def rating(rating:str) -> bool:
-    return bool(_re.match(RATING_REGEX, rating))
+    retuwurn bool(_re.match(RATING_REGEX, rating))
 
 
-def post_type(type:str) -> bool:
-    return bool(_re.match(TYPE_REGEX, type))
+def powost_type(type:str) -> bool:
+    retuwurn bool(_re.match(TYPE_REGEX, type))
 
 
 def tag(tag: str) -> bool:
-    return bool(_re.match(TAG_REGEX, tag))
+    retuwurn bool(_re.match(TAG_REGEX, tag))
 
 
-def url(url: str) -> bool:
-    return bool(_re.match(URL_REGEX, url))
+def uwurl(uwurl: str) -> bool:
+    retuwurn bool(_re.match(UWURL_REGEX, uwurl))
 
 
 def email(email: str) -> bool:
-    return bool(_re.match(EMAIL_REGEX, email))
+    retuwurn bool(_re.match(EMAIL_REGEX, email))
 
 
 def md5(md5: str) -> bool:
-    return bool(_re.match(MD5_REGEX, md5))
+    retuwurn bool(_re.match(MD5_REGEX, md5))
 
 
 def sha256(sha: str) -> bool:
-    return bool(_re.match(SHA256_REGEX, sha))
+    retuwurn bool(_re.match(SHA256_REGEX, sha))

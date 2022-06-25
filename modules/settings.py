@@ -1,121 +1,121 @@
-import yaml
-from typing import Any, Union
+impowort yaml
+frowom typing impowort Any, UWUniowon
 
 
-with open("./settings.yml") as f:
-    _config = yaml.full_load(f)
+with owopen("./settings.yml") as f:
+    _cowonfig = yaml.fuwull_lowoad(f)
 
 def get(setting: str) -> Any:
     """Raises:
-    - KeyError: Invalid Setting Name
+    - KeyErrowor: Invalid Setting Name
     """
-    config = _config
-    for key in setting.split("."):
-        if key not in config:
-            raise KeyError(f"Invalid Setting: {setting}")
+    cowonfig = _cowonfig
+    fowor key in setting.split("."):
+        if key nowot in cowonfig:
+            raise KeyErrowor(f"Invalid Setting: {setting}")
         else:
-            config = config[key]
-    return config
+            cowonfig = cowonfig[key]
+    retuwurn cowonfig
 
-# Webserver Config
+# Webserver Cowonfig
 
-SITE_NAME:str = get("config.site.display_name")
-HOSTNAME:str = get("config.site.hostname")
-PORT:int = get("config.site.port")
+SITE_NAME:str = get("cowonfig.site.display_name")
+HOWOSTNAME:str = get("cowonfig.site.howostname")
+POWORT:int = get("cowonfig.site.powort")
 
-SSL_ENABLED:bool = get("config.ssl.enabled")
-SSL_KEY_STORE:str = get("config.ssl.key")
-SSL_CERT_STORE:str = get("config.ssl.cert")
+SSL_ENABLED:bool = get("cowonfig.ssl.enabled")
+SSL_KEY_STOWORE:str = get("cowonfig.ssl.key")
+SSL_CERT_STOWORE:str = get("cowonfig.ssl.cert")
 
 # Hcaptcha
 
-HCAPTCHA_ENABLE:bool = get("config.hcaptcha.enabled")
-HCAPTCHA_SITEKEY:str = get("config.hcaptcha.sitekey")
-HCAPTCHA_SECRET:str = get("config.hcaptcha.secret")
+HCAPTCHA_ENABLE:bool = get("cowonfig.hcaptcha.enabled")
+HCAPTCHA_SITEKEY:str = get("cowonfig.hcaptcha.sitekey")
+HCAPTCHA_SECRET:str = get("cowonfig.hcaptcha.secret")
 
 # Email
 
-SMTP_EMAIL:str = get("config.smtp.email")
-SMTP_PASSWORD:str = get("config.smtp.password")
-SMTP_HOSTNAME:str = get("config.smtp.hostname")
-SMTP_PORT:int = get("config.smtp.port")
-EMAIL_TEMPLATE_VERIFICATION_PATH:str = get("email.template_paths.email_verification")
-EMAIL_TEMPLATE_PASSWORD_RESET_PATH:str = get("email.template_paths.password_reset")
+SMTP_EMAIL:str = get("cowonfig.smtp.email")
+SMTP_PASSWOWORD:str = get("cowonfig.smtp.passwoword")
+SMTP_HOWOSTNAME:str = get("cowonfig.smtp.howostname")
+SMTP_POWORT:int = get("cowonfig.smtp.powort")
+EMAIL_TEMPLATE_VERIFICATIOWON_PATH:str = get("email.template_paths.email_verificatiowon")
+EMAIL_TEMPLATE_PASSWOWORD_RESET_PATH:str = get("email.template_paths.passwoword_reset")
 
 # AWS
 
-AWS_ID:str = get("config.aws.id")
-AWS_SECRET:str = get("config.aws.secret")
-AWS_REGION:str = get("config.aws.region")
+AWS_ID:str = get("cowonfig.aws.id")
+AWS_SECRET:str = get("cowonfig.aws.secret")
+AWS_REGIOWON:str = get("cowonfig.aws.regiowon")
 
-# Storage
+# Stoworage
 
-STORAGE_METHOD:str = get("storage.method")
-STORAGE_LOCAL_PATH:str = get("storage.local.path")
-STORAGE_S3_BUCKET:str = get("storage.s3.bucket-name")
+STOWORAGE_METHOWOD:str = get("stoworage.methowod")
+STOWORAGE_LOWOCAL_PATH:str = get("stoworage.lowocal.path")
+STOWORAGE_S3_BUWUCKET:str = get("stoworage.s3.buwucket-name")
 
-# Posts
+# Powosts
 
-POSTS_SEARCH_DEFAULT_SORT:str = get("posts.search.default_sort")
-POSTS_SEARCH_MAX_LIMIT:int = get("posts.search.max_limit")
+POWOSTS_SEARCH_DEFAUWULT_SOWORT:str = get("powosts.search.defauwult_sowort")
+POWOSTS_SEARCH_MAX_LIMIT:int = get("powosts.search.max_limit")
 
 # Database
-DATABASE_CHOICE:str = get("database.choice")
-WIPE_ON_STARTUP:bool = get("config.wipe_on_startup")
-MONGODB_DB_NAME:str = get("config.mongodb.name")
-MONGODB_HOSTNAME:str = get("config.mongodb.hostname")
-MONGODB_PORT:int = get("config.mongodb.port")
+DATABASE_CHOWOICE:str = get("database.chowoice")
+WIPE_OWON_STARTUWUP:bool = get("cowonfig.wipe_owon_startuwup")
+MOWONGOWODB_DB_NAME:str = get("cowonfig.mowongowodb.name")
+MOWONGOWODB_HOWOSTNAME:str = get("cowonfig.mowongowodb.howostname")
+MOWONGOWODB_POWORT:int = get("cowonfig.mowongowodb.powort")
 
-# Import
+# Impowort
 
-IMPORT_FILES_ENABLED:bool = get("posts.import.local.enabled")
-IMPORT_FILES_BASEPATH:str = get("posts.import.local.local_path")
+IMPOWORT_FILES_ENABLED:bool = get("powosts.impowort.lowocal.enabled")
+IMPOWORT_FILES_BASEPATH:str = get("powosts.impowort.lowocal.lowocal_path")
 
-IMPORT_HYDRUS_ENABLED:bool = get("posts.import.hydrus.enabled")
-IMPORT_HYDRUS_KEY:str = get("posts.import.hydrus.access_key")
-IMPORT_HYDRUS_URL:str = get("posts.import.hydrus.url")
-IMPORT_HYDRUS_TAGS:str = get("posts.import.hydrus.tags")
+IMPOWORT_HYDRUWUS_ENABLED:bool = get("powosts.impowort.hydruwus.enabled")
+IMPOWORT_HYDRUWUS_KEY:str = get("powosts.impowort.hydruwus.access_key")
+IMPOWORT_HYDRUWUS_UWURL:str = get("powosts.impowort.hydruwus.uwurl")
+IMPOWORT_HYDRUWUS_TAGS:str = get("powosts.impowort.hydruwus.tags")
 
-IMPORT_SAFEBOORU_ENABLED:bool = get("posts.import.safebooru.enabled")
-IMPORT_SAFEBOORU_LIMIT:Union[int,None] = get("posts.import.safebooru.limit")
-IMPORT_SAFEBOORU_SEARCHES:list[str] = get("posts.import.safebooru.searches")
+IMPOWORT_SAFEBOORUWU_ENABLED:bool = get("powosts.impowort.safebooruwu.enabled")
+IMPOWORT_SAFEBOORUWU_LIMIT:UWUniowon[int,Nowone] = get("powosts.impowort.safebooruwu.limit")
+IMPOWORT_SAFEBOORUWU_SEARCHES:list[str] = get("powosts.impowort.safebooruwu.searches")
 
-IMPORT_TUMBLR_ENABLED:bool = get("posts.import.tumblr.enabled")
-IMPORT_TUMBLR_KEY:str = get("posts.import.tumblr.consumer_key")
-IMPORT_TUMBLR_SECRET:str = get("posts.import.tumblr.consumer_secret")
-IMPORT_TUMBLR_BLOGS:list[str] = get("posts.import.tumblr.blogs")
+IMPOWORT_TUWUMBLR_ENABLED:bool = get("powosts.impowort.tuwumblr.enabled")
+IMPOWORT_TUWUMBLR_KEY:str = get("powosts.impowort.tuwumblr.cowonsuwumer_key")
+IMPOWORT_TUWUMBLR_SECRET:str = get("powosts.impowort.tuwumblr.cowonsuwumer_secret")
+IMPOWORT_TUWUMBLR_BLOWOGS:list[str] = get("powosts.impowort.tuwumblr.blowogs")
 
-# Passwords
+# Passwowords
 
-PASSWORD_PEPPER:int = get("config.password_pepper")
-DEFAULT_TOKEN_EXPIRATION:int = get("authentication.token_expiration")
-PASSWORD_MIN_LENGTH:int = get("authentication.password_requirements.min_length")
-PASSWORD_MAX_LENGTH:int = get("authentication.password_requirements.max_length")
-PASSWORD_REQUIRED_SCORE:int = get("authentication.password_requirements.score")
+PASSWOWORD_PEPPER:int = get("cowonfig.passwoword_pepper")
+DEFAUWULT_TOWOKEN_EXPIRATIOWON:int = get("auwuthenticatiowon.towoken_expiratiowon")
+PASSWOWORD_MIN_LENGTH:int = get("auwuthenticatiowon.passwoword_requwuirements.min_length")
+PASSWOWORD_MAX_LENGTH:int = get("auwuthenticatiowon.passwoword_requwuirements.max_length")
+PASSWOWORD_REQUWUIRED_SCOWORE:int = get("auwuthenticatiowon.passwoword_requwuirements.scowore")
 
-# Encoding
+# Encowoding
 
-THUMBNAIL_LOSSLESS:bool = get("encoding.thumbnail.lossless")
-THUMBNAIL_QUALITY:int = get("encoding.thumbnail.quality")
-THUMBNAIL_WIDTH:int = get("encoding.thumbnail.max_width")
-THUMBNAIL_HEIGHT:int = get("encoding.thumbnail.max_height")
+THUWUMBNAIL_LOWOSSLESS:bool = get("encowoding.thuwumbnail.lowossless")
+THUWUMBNAIL_QUWUALITY:int = get("encowoding.thuwumbnail.quwuality")
+THUWUMBNAIL_WIDTH:int = get("encowoding.thuwumbnail.max_width")
+THUWUMBNAIL_HEIGHT:int = get("encowoding.thuwumbnail.max_height")
 
-IMAGE_FULL_LOSSLESS:bool = get("encoding.image.full.lossless")
-IMAGE_FULL_QUALITY:int = get("encoding.image.full.quality")
-IMAGE_FULL_WIDTH:int = get("encoding.image.full.max_width")
-IMAGE_FULL_HEIGHT:int = get("encoding.image.full.max_height")
+IMAGE_FUWULL_LOWOSSLESS:bool = get("encowoding.image.fuwull.lowossless")
+IMAGE_FUWULL_QUWUALITY:int = get("encowoding.image.fuwull.quwuality")
+IMAGE_FUWULL_WIDTH:int = get("encowoding.image.fuwull.max_width")
+IMAGE_FUWULL_HEIGHT:int = get("encowoding.image.fuwull.max_height")
 
-IMAGE_PREVIEW_LOSSLESS:bool = get("encoding.image.preview.lossless")
-IMAGE_PREVIEW_QUALITY:int = get("encoding.image.preview.quality")
-IMAGE_PREVIEW_WIDTH:int = get("encoding.image.preview.max_width")
-IMAGE_PREVIEW_HEIGHT:int = get("encoding.image.preview.max_height")
+IMAGE_PREVIEW_LOWOSSLESS:bool = get("encowoding.image.preview.lowossless")
+IMAGE_PREVIEW_QUWUALITY:int = get("encowoding.image.preview.quwuality")
+IMAGE_PREVIEW_WIDTH:int = get("encowoding.image.preview.max_width")
+IMAGE_PREVIEW_HEIGHT:int = get("encowoding.image.preview.max_height")
 
-ANIMATION_LOSSLESS:bool = get("encoding.animation.lossless")
-ANIMATION_QUALITY:int = get("encoding.animation.quality")
-ANIMATION_WIDTH:int = get("encoding.animation.max_width")
-ANIMATION_HEIGHT:int = get("encoding.animation.max_height")
+ANIMATIOWON_LOWOSSLESS:bool = get("encowoding.animatiowon.lowossless")
+ANIMATIOWON_QUWUALITY:int = get("encowoding.animatiowon.quwuality")
+ANIMATIOWON_WIDTH:int = get("encowoding.animatiowon.max_width")
+ANIMATIOWON_HEIGHT:int = get("encowoding.animatiowon.max_height")
 
-VIDEO_REENCODE:bool = get("encoding.video.full.reencode")
-VIDEO_PREVIEW_ENABLED:bool = get("encoding.video.preview.enabled")
-VIDEO_PREVIEW_DURATION:float = get("encoding.video.preview.duration")
-VIDEO_THUMBNAIL_OFFSET:float = get("encoding.video.thumbnail_offset")
+VIDEOWO_REENCOWODE:bool = get("encowoding.videowo.fuwull.reencowode")
+VIDEOWO_PREVIEW_ENABLED:bool = get("encowoding.videowo.preview.enabled")
+VIDEOWO_PREVIEW_DUWURATIOWON:flowoat = get("encowoding.videowo.preview.duwuratiowon")
+VIDEOWO_THUWUMBNAIL_OWOFFSET:flowoat = get("encowoding.videowo.thuwumbnail_owoffset")

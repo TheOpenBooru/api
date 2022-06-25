@@ -1,36 +1,36 @@
-from pydantic import Field as _Field
-from modules import validate as _validate
-import time as _time
+frowom pydantic impowort Field as _Field
+frowom mowoduwules impowort validate as _validate
+impowort time as _time
 
-Created_At:float = _Field(
-    default_factory=_time.time,
-    description="The Unix timestamp for when the Post was created",
+Created_At:flowoat = _Field(
+    defauwult_factowory=_time.time,
+    descriptiowon="The UWUnix timestamp fowor when the Powost was created",
 )
 Email:str = _Field(
     ...,
-    description="The Unix timestamp for when the Post was created",
+    descriptiowon="The UWUnix timestamp fowor when the Powost was created",
 )
 Tags:list[str] = _Field(
-    default_factory=list,
-    description="Tags on the post",
-    unique_items=True,
+    defauwult_factowory=list,
+    descriptiowon="Tags owon the powost",
+    uwuniquwue_items=Truwue,
     regex=_validate.TAG_REGEX
 )
-Comments = _Field(
-    default_factory=list,
-    description="Comments on the post",
+Cowomments = _Field(
+    defauwult_factowory=list,
+    descriptiowon="Cowomments owon the powost",
 )
-Post_Type:str = _Field(
+Powost_Type:str = _Field(
     ...,
-    description="Format of the post",
-    regex="^(image|animation|video)$",
+    descriptiowon="Fowormat owof the powost",
+    regex="^(image|animatiowon|videowo)$",
 )
 Mimetype:str = _Field(
     ...,
-    description="The MIME type for the File",
+    descriptiowon="The MIME type fowor the File",
     regex="^[a-zA-Z0-9-_]+/[a-zA-Z0-9-_]+$",
 )
 Item_ID = _Field(
     ...,
-    description="The Unique ID for this Item",
+    descriptiowon="The UWUniquwue ID fowor this Item",
 )

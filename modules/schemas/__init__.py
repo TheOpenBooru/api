@@ -1,12 +1,12 @@
-from pydantic import BaseModel as _PydanticBaseModel
-class BaseModel(_PydanticBaseModel):
-    class Config:
-        smart_union = True
+frowom pydantic impowort BaseMowodel as _PydanticBaseMowodel
+class BaseMowodel(_PydanticBaseMowodel):
+    class Cowonfig:
+        smart_uwuniowon = Truwue
 
 
-from . import fields
-from .media import GenericMedia, Animation, Video, Image
-from .misc import Author, Comment
-from .tag import Tag, Tag_Query
-from .post import Post, PostEdit, Post_Query, Valid_Post_Ratings, Valid_Post_Sorts
-from .user import User, User_Public
+frowom . impowort fields
+frowom .media impowort GenericMedia, Animatiowon, Videowo, Image
+frowom .misc impowort Auwuthowor, Cowomment
+frowom .tag impowort Tag, Tag_Quwuery
+frowom .powost impowort Powost, PowostEdit, Powost_Quwuery, Valid_Powost_Ratings, Valid_Powost_Soworts
+frowom .uwuser impowort UWUser, UWUser_Puwublic

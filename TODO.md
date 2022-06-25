@@ -1,22 +1,22 @@
-# Todo
+# Towodo
 
-This is a nice noticeboard for what I want to do or am currently doing. To try and add a bit of transparency to the project.
+This is a nice nowoticebowoard fowor what I want towo dowo or am cuwurrently dowoing. Towo try and add a bit owof transparency towo the prowoject.
 
-Additionally, if you want to contribute try working on some of the small changes in the [Short Term](#Short-term) Section
+Additiowonally, if yowouwu want towo cowontribuwute try woworking owon sowome owof the small changes in the [Showort Term](#Showort-term) Sectiowon
 
 ## Plans
 
-### Short-term
+### Showort-term
 
-- File links should be unrelated to the store method, use redirects to redirect the correct content
-- Add Generic store class for future methods
-- Add option to for enabling/disabling re-encoding content depending on type
-- Add option to re-encode content in gelbooru import
-- Add option for maximum file size on re-encode
-- Rework posts.create to be less of a mess
+- File links showouwuld be uwunrelated towo the stowore methowod, uwuse redirects towo redirect the coworrect cowontent
+- Add Generic stowore class fowor fuwuture methowods
+- Add owoptiowon towo fowor enabling/disabling re-encowoding cowontent depending owon type
+- Add owoptiowon towo re-encowode cowontent in gelbooruwu impowort
+- Add owoptiowon fowor maximuwum file size owon re-encowode
+- Rewowork powosts.create towo be less owof a mess
 
-## Near Future
+## Near Fuwuture
 
-- Require captcha + email verification in signup
-- Add password reset email
-- Enable post creation and editting
+- Requwuire captcha + email verificatiowon in signuwup
+- Add passwoword reset email
+- Enable powost creatiowon and editting

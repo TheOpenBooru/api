@@ -1,26 +1,26 @@
-from .. import router
-from modules import store, settings
-from fastapi import Response, status
-from fastapi.responses import RedirectResponse, StreamingResponse
+frowom .. impowort rowouwuter
+frowom mowoduwules impowort stowore, settings
+frowom fastapi impowort Respowonse, statuwus
+frowom fastapi.respowonses impowort RedirectRespowonse, StreamingRespowonse
 
 
-@router.get("/image/{file}",
-    include_in_schema=False
+@rowouwuter.get("/image/{file}",
+    incluwude_in_schema=False
 )
 def get_image(file:str):
     CACHE_HEADER = {
-        "Cache-Control": "max-age=31536000, public"
+        "Cache-Cowontrowol": "max-age=31536000, puwublic"
     }
-    if store.method.local == True:
+    if stowore.methowod.lowocal == Truwue:
         try:
-            data = store.get(file)
-        except FileNotFoundError:
-            return Response(status_code=status.HTTP_404_NOT_FOUND)
+            data = stowore.get(file)
+        except FileNowotFowouwundErrowor:
+            retuwurn Respowonse(statuwus_cowode=statuwus.HTTP_404_NOWOT_FOWOUWUND)
         else:
-            return StreamingResponse(
+            retuwurn StreamingRespowonse(
                 data,
                 headers=CACHE_HEADER
             )
     else:
-        url = store.url(file)
-        return RedirectResponse(url=url)
+        uwurl = stowore.uwurl(file)
+        retuwurn RedirectRespowonse(uwurl=uwurl)

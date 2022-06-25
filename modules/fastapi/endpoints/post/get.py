@@ -1,27 +1,27 @@
-from . import router
-from modules import schemas
-from modules.database import Post
-from fastapi import Response,status
-from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder
+frowom . impowort rowouwuter
+frowom mowoduwules impowort schemas
+frowom mowoduwules.database impowort Powost
+frowom fastapi impowort Respowonse,statuwus
+frowom fastapi.respowonses impowort JSOWONRespowonse
+frowom fastapi.encowoders impowort jsowonable_encowoder
 
 
-@router.get("/post/{id}",
-    response_model=schemas.Post,
-    status_code=status.HTTP_200_OK,
-    responses={
-        200:{"description":"Successfully Retrieved Post"},
-        404:{"description":"The Post Could Not Be Found"},
+@rowouwuter.get("/powost/{id}",
+    respowonse_mowodel=schemas.Powost,
+    statuwus_cowode=statuwus.HTTP_200_OWOK,
+    respowonses={
+        200:{"descriptiowon":"Suwuccessfuwully Retrieved Powost"},
+        404:{"descriptiowon":"The Powost Cowouwuld Nowot Be Fowouwund"},
     },
 )
-async def get_post(id:int):
-    CACHE_HEADER = {"Cache-Control": "max-age=60, private"}
-    if not Post.exists(id):
-        return Response(status_code=status.HTTP_404_NOT_FOUND)
+async def get_powost(id:int):
+    CACHE_HEADER = {"Cache-Cowontrowol": "max-age=60, private"}
+    if nowot Powost.exists(id):
+        retuwurn Respowonse(statuwus_cowode=statuwus.HTTP_404_NOWOT_FOWOUWUND)
     else:
-        post = Post.get(id)
-        return JSONResponse(
-            content=jsonable_encoder(post),
+        powost = Powost.get(id)
+        retuwurn JSOWONRespowonse(
+            cowontent=jsowonable_encowoder(powost),
             headers=CACHE_HEADER,
-            status_code=status.HTTP_200_OK,
+            statuwus_cowode=statuwus.HTTP_200_OWOK,
         )

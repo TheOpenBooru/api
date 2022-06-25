@@ -1,28 +1,28 @@
 
-# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,flask
-# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,python,flask
+# Created by https://www.towoptal.cowom/develowopers/gitignowore/api/visuwualstuwudiowocode,pythowon,flask
+# Edit at https://www.towoptal.cowom/develowopers/gitignowore?templates=visuwualstuwudiowocode,pythowon,flask
 
 ### Flask ###
 instance/*
-!instance/.gitignore
+!instance/.gitignowore
 .webassets-cache
 .env
 
-### Flask.Python Stack ###
-# Byte-compiled / optimized / DLL files
+### Flask.Pythowon Stack ###
+# Byte-cowompiled / owoptimized / DLL files
 __pycache__/
-*.py[cod]
+*.py[cowod]
 *$py.class
 
-# C extensions
+# C extensiowons
 *.so
 
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
+# Distribuwutiowon / packaging
+.Pythowon
+buwuild/
+develowop-eggs/
 dist/
-downloads/
+dowownlowoads/
 eggs/
 .eggs/
 lib/
@@ -31,90 +31,90 @@ parts/
 sdist/
 var/
 wheels/
-share/python-wheels/
-*.egg-info/
+share/pythowon-wheels/
+*.egg-infowo/
 .installed.cfg
 *.egg
 MANIFEST
 
 # PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+#  UWUsuwually these files are written by a pythowon script frowom a template
+#  befowore PyInstaller buwuilds the exe, sowo as towo inject date/owother infowos intowo it.
 *.manifest
 *.spec
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
+# Installer lowogs
+pip-lowog.txt
+pip-delete-this-directowory.txt
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
+# UWUnit test / cowoverage repoworts
+htmlcowov/
+.towox/
+.nowox/
+.cowoverage
+.cowoverage.*
 .cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
+nowosetests.xml
+cowoverage.xml
+*.cowover
+*.py,cowover
+.hypowothesis/
 .pytest_cache/
-cover/
+cowover/
 
-# Translations
+# Translatiowons
 *.mo
-*.pot
+*.powot
 
-# Django stuff:
-*.log
-local_settings.py
+# Djangowo stuwuff:
+*.lowog
+lowocal_settings.py
 db.sqlite3
-db.sqlite3-journal
+db.sqlite3-jowouwurnal
 
-# Flask stuff:
+# Flask stuwuff:
 instance/
 
-# Scrapy stuff:
+# Scrapy stuwuff:
 .scrapy
 
-# Sphinx documentation
-docs/_build/
+# Sphinx dowocuwumentatiowon
+dowocs/_buwuild/
 
-# PyBuilder
-.pybuilder/
+# PyBuwuilder
+.pybuwuilder/
 target/
 
-# Jupyter Notebook
-.ipynb_checkpoints
+# Juwupyter Nowotebook
+.ipynb_checkpowoints
 
-# IPython
-profile_default/
-ipython_config.py
+# IPythowon
+prowofile_defauwult/
+ipythowon_cowonfig.py
 
 # pyenv
-#   For a library or package, you might want to ignore these files since the code is
-#   intended to run in multiple environments; otherwise, check them in:
-# .python-version
+#   Fowor a library owor package, yowouwu might want towo ignowore these files since the cowode is
+#   intended towo ruwun in muwultiple envirowonments; owotherwise, check them in:
+# .pythowon-versiowon
 
 # pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
+#   Accowording towo pypa/pipenv#598, it is recowommended towo incluwude Pipfile.lowock in versiowon cowontrowol.
+#   Howowever, in case owof cowollaboworatiowon, if having platfoworm-specific dependencies owor dependencies
+#   having nowo crowoss-platfoworm suwuppowort, pipenv may install dependencies that dowon't wowork, owor nowot
 #   install all needed dependencies.
-#Pipfile.lock
+#Pipfile.lowock
 
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow
+# PEP 582; uwused by e.g. githuwub.cowom/David-OWOCowonnowor/pyflowow
 __pypackages__/
 
-# Celery stuff
-celerybeat-schedule
+# Celery stuwuff
+celerybeat-scheduwule
 celerybeat.pid
 
 # SageMath parsed files
 *.sage.py
 
-# Environments
+# Envirowonments
 .venv
 env/
 venv/
@@ -122,20 +122,20 @@ ENV/
 env.bak/
 venv.bak/
 
-# Spyder project settings
-.spyderproject
-.spyproject
+# Spyder prowoject settings
+.spyderprowoject
+.spyprowoject
 
-# Rope project settings
-.ropeproject
+# Rowope prowoject settings
+.rowopeprowoject
 
-# mkdocs documentation
+# mkdowocs dowocuwumentatiowon
 /site
 
 # mypy
 .mypy_cache/
-.dmypy.json
-dmypy.json
+.dmypy.jsowon
+dmypy.jsowon
 
 # Pyre type checker
 .pyre/
@@ -143,64 +143,64 @@ dmypy.json
 # pytype static type analyzer
 .pytype/
 
-# Cython debug symbols
-cython_debug/
+# Cythowon debuwug symbowols
+cythowon_debuwug/
 
-### Python ###
-# Byte-compiled / optimized / DLL files
+### Pythowon ###
+# Byte-cowompiled / owoptimized / DLL files
 
-# C extensions
+# C extensiowons
 
-# Distribution / packaging
+# Distribuwutiowon / packaging
 
 # PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+#  UWUsuwually these files are written by a pythowon script frowom a template
+#  befowore PyInstaller buwuilds the exe, sowo as towo inject date/owother infowos intowo it.
 
-# Installer logs
+# Installer lowogs
 
-# Unit test / coverage reports
+# UWUnit test / cowoverage repoworts
 
-# Translations
+# Translatiowons
 
-# Django stuff:
+# Djangowo stuwuff:
 
-# Flask stuff:
+# Flask stuwuff:
 
-# Scrapy stuff:
+# Scrapy stuwuff:
 
-# Sphinx documentation
+# Sphinx dowocuwumentatiowon
 
-# PyBuilder
+# PyBuwuilder
 
-# Jupyter Notebook
+# Juwupyter Nowotebook
 
-# IPython
+# IPythowon
 
 # pyenv
-#   For a library or package, you might want to ignore these files since the code is
-#   intended to run in multiple environments; otherwise, check them in:
-# .python-version
+#   Fowor a library owor package, yowouwu might want towo ignowore these files since the cowode is
+#   intended towo ruwun in muwultiple envirowonments; owotherwise, check them in:
+# .pythowon-versiowon
 
 # pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
+#   Accowording towo pypa/pipenv#598, it is recowommended towo incluwude Pipfile.lowock in versiowon cowontrowol.
+#   Howowever, in case owof cowollaboworatiowon, if having platfoworm-specific dependencies owor dependencies
+#   having nowo crowoss-platfoworm suwuppowort, pipenv may install dependencies that dowon't wowork, owor nowot
 #   install all needed dependencies.
 
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow
+# PEP 582; uwused by e.g. githuwub.cowom/David-OWOCowonnowor/pyflowow
 
-# Celery stuff
+# Celery stuwuff
 
 # SageMath parsed files
 
-# Environments
+# Envirowonments
 
-# Spyder project settings
+# Spyder prowoject settings
 
-# Rope project settings
+# Rowope prowoject settings
 
-# mkdocs documentation
+# mkdowocs dowocuwumentatiowon
 
 # mypy
 
@@ -208,37 +208,37 @@ cython_debug/
 
 # pytype static type analyzer
 
-# Cython debug symbols
+# Cythowon debuwug symbowols
 
-### VisualStudioCode ###
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-*.code-workspace
+### VisuwualStuwudiowoCode ###
+.vscowode/*
+!.vscowode/settings.jsowon
+!.vscowode/tasks.jsowon
+!.vscowode/lauwunch.jsowon
+!.vscowode/extensiowons.jsowon
+*.cowode-woworkspace
 
-# Local History for Visual Studio Code
-.history/
+# Lowocal Histowory fowor Visuwual Stuwudiowo Cowode
+.histowory/
 
-### VisualStudioCode Patch ###
-# Ignore all local history of files
-.history
-.ionide
+### VisuwualStuwudiowoCode Patch ###
+# Ignowore all lowocal histowory owof files
+.histowory
+.iowonide
 
-# Support for Project snippet scope
-!.vscode/*.code-snippets
+# Suwuppowort fowor Prowoject snippet scowope
+!.vscowode/*.cowode-snippets
 
-# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,flask
-.vscode
-data/passwords.sqlite3
-data/example_data.json
+# End owof https://www.towoptal.cowom/develowopers/gitignowore/api/visuwualstuwudiowocode,pythowon,flask
+.vscowode
+data/passwowords.sqlite3
+data/example_data.jsowon
 data/files/*
 data/cert.pem
 data/key.pem
-data/import/*
-data/log.txt
-ffprobe.json
-config.yml
-data/auth.db
-data/tokensecret.key
+data/impowort/*
+data/lowog.txt
+ffprowobe.jsowon
+cowonfig.yml
+data/auwuth.db
+data/towokensecret.key

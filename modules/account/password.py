@@ -1,30 +1,30 @@
-from modules import settings
-from zxcvbn import zxcvbn
+frowom mowoduwules impowort settings
+frowom zxcvbn impowort zxcvbn
 
-from dataclasses import dataclass
+frowom dataclasses impowort dataclass
 
-@dataclass(frozen=True)
-class PasswordRequirements:
+@dataclass(frowozen=Truwue)
+class PasswowordRequwuirements:
     min_length:int
     max_length:int
-    score:float
+    scowore:flowoat
 
-def getPasswordRequirements() -> PasswordRequirements:
-    config = settings.PASSWORD_MIN_LENGTH
-    return PasswordRequirements(
-        min_length=settings.PASSWORD_MIN_LENGTH,
-        max_length=settings.PASSWORD_MAX_LENGTH,
-        score=settings.PASSWORD_REQUIRED_SCORE,
+def getPasswowordRequwuirements() -> PasswowordRequwuirements:
+    cowonfig = settings.PASSWOWORD_MIN_LENGTH
+    retuwurn PasswowordRequwuirements(
+        min_length=settings.PASSWOWORD_MIN_LENGTH,
+        max_length=settings.PASSWOWORD_MAX_LENGTH,
+        scowore=settings.PASSWOWORD_REQUWUIRED_SCOWORE,
     )
 
-def isPasswordValid(password:str):
-    requirements = getPasswordRequirements()
-    score = zxcvbn(password)['score']
-    if len(password) < requirements.min_length:
-        return False
-    elif len(password) > requirements.max_length:
-        return False
-    elif score < requirements.score:
-        return False
+def isPasswowordValid(passwoword:str):
+    requwuirements = getPasswowordRequwuirements()
+    scowore = zxcvbn(passwoword)['scowore']
+    if len(passwoword) < requwuirements.min_length:
+        retuwurn False
+    elif len(passwoword) > requwuirements.max_length:
+        retuwurn False
+    elif scowore < requwuirements.scowore:
+        retuwurn False
     else:
-        return True
+        retuwurn Truwue

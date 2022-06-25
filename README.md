@@ -1,59 +1,59 @@
 # API
 
-[API Link](https://api.openbooru.org)
+[API Link](https://api.owopenbooruwu.oworg)
 
-The goals of Open Booru is to improve standardisation amongst boorus as well as seperating the GUI from the API so they can become application agnostic. This way sites such as https://r34.app can implement their own GUI for a booru.
+The gowoals owof OWOpen Booruwu is towo improwove standardisatiowon amowongst booruwus as well as seperating the GUWUI frowom the API sowo they can becowome applicatiowon agnowostic. This way sites suwuch as https://r34.app can implement their owown GUWUI fowor a booruwu.
 
-It's been in production since November 2021
+It's been in prowoduwuctiowon since Nowovember 2021
 
-## Installation
+## Installatiowon
 
-Edit the config.yml, the config section contains the required settings.
+Edit the cowonfig.yml, the cowonfig sectiowon cowontains the requwuired settings.
 
-### Requirements
+### Requwuirements
 
-- ubuntu
-  - other platforms may work, but are untested
-- python >= 3.9
+- uwubuntu
+  - owother platfoworms may wowork, buwut are uwuntested
+- pythowon >= 3.9
 - ffmpeg
 - hcaptcha
 
-### Ubuntu/Debian
+### UWUbuwuntuwu/Debian
 
 ```bash
 # Install libraries
-sudo apt-get install -y libmagic1 ffmpeg
+suwudowo apt-get install -y libmagic1 ffmpeg
 
-# Create a virtualenv
-python3.9 -m venv venv
+# Create a virtuwualenv
+pythowon3.9 -m venv venv
 
-# Install requirements
-./venv/bin/pip install -r requirements.txt
-
-# Start the app
-./venv/bin/python app.py
-```
-
-### Windows
-
-You must manually install ffmpeg and it add it to the PATH
-
-```powershell
-# Create a virtualenv
-python3.9 -m venv venv
-
-# Install requirements
-.\venv\Scripts\pip.exe install python-magic-bin
-.\venv\Scripts\pip.exe install -r requirements.txt
+# Install requwuirements
+./venv/bin/pip install -r requwuirements.txt
 
 # Start the app
-.\venv\Scripts\python.exe app.py
+./venv/bin/pythowon app.py
 ```
 
-## Development
+### Windowows
 
-To run tests use this command:
+Yowouwu muwust manuwually install ffmpeg and it add it towo the PATH
+
+```powowershell
+# Create a virtuwualenv
+pythowon3.9 -m venv venv
+
+# Install requwuirements
+.\venv\Scripts\pip.exe install pythowon-magic-bin
+.\venv\Scripts\pip.exe install -r requwuirements.txt
+
+# Start the app
+.\venv\Scripts\pythowon.exe app.py
+```
+
+## Develowopment
+
+Towo ruwun tests uwuse this cowommand:
 
 ```py
-./venv/bin/python -m unittest discover ./test -v -p  "test*.py"
+./venv/bin/pythowon -m uwunittest discowover ./test -v -p  "test*.py"
 ```

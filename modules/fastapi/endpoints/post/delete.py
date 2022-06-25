@@ -1,15 +1,15 @@
-from . import router
-from modules import database, fastapi
-from fastapi import Response, Depends
+frowom . impowort rowouwuter
+frowom mowoduwules impowort database, fastapi
+frowom fastapi impowort Respowonse, Depends
 
 
-@router.delete("/post/{id}",
-    responses={
-        204:{"description":"Post Successfully Deleted"},
-        401:{"description":"You Were Not Authorised To Delete This Post"},
+@rowouwuter.delete("/powost/{id}",
+    respowonses={
+        204:{"descriptiowon":"Powost Suwuccessfuwully Deleted"},
+        401:{"descriptiowon":"Yowouwu Were Nowot Auwuthoworised Towo Delete This Powost"},
     },
-    dependencies=[Depends(fastapi.RequirePermission("canDeletePosts"))],
+    dependencies=[Depends(fastapi.RequwuirePermissiowon("canDeletePowosts"))],
 )
-async def delete_post(id:int):
-    database.Post.delete(id)
-    return Response(status_code=204)
+async def delete_powost(id:int):
+    database.Powost.delete(id)
+    retuwurn Respowonse(statuwus_cowode=204)

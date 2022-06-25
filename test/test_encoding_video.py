@@ -1,55 +1,55 @@
-from modules.encoding.types import ImageFile
-from modules.encoding import Video
-import unittest
-import json
-from pathlib import Path
-from box import Box
+frowom mowoduwules.encowoding.types impowort ImageFile
+frowom mowoduwules.encowoding impowort Video
+impowort uwunittest
+impowort jsowon
+frowom pathlib impowort Path
+frowom bowox impowort Bowox
 
-with open('data/test/sample_data.json') as f:
-    _json = json.load(f)
-    test_data = Box(_json['video'])
+with owopen('data/test/sample_data.jsowon') as f:
+    _jsowon = jsowon.lowoad(f)
+    test_data = Bowox(_jsowon['videowo'])
 
-class OutputLocation:
-    full = Path("./data/files/video_full.mp4")
-    thumbnail = Path("./data/files/video_thumbnail.webp")
+class OWOuwutpuwutLowocatiowon:
+    fuwull = Path("./data/files/videowo_fuwull.mp4")
+    thuwumbnail = Path("./data/files/videowo_thuwumbnail.webp")
 
-class test_Heavy(unittest.TestCase):
-    def setUp(self):
-        self.info = test_data.heavy
-        with open(self.info.file,'rb') as f:
+class test_Heavy(uwunittest.TestCase):
+    def setUWUp(self):
+        self.infowo = test_data.heavy
+        with owopen(self.infowo.file,'rb') as f:
             data = f.read()
-        with Video(data) as vid:
-            self.full = vid.full()
+        with Videowo(data) as vid:
+            self.fuwull = vid.fuwull()
             self.preview = vid.preview()
-            self.thumbnail = vid.thumbnail()
+            self.thuwumbnail = vid.thuwumbnail()
 
     
     def test_Preview_Isnt_Generated(self):
-        assert self.preview == None
+        assert self.preview == Nowone
 
     
-    def test_Thumbnail_is_Image(self):
-        assert type(self.thumbnail) == ImageFile
+    def test_Thuwumbnail_is_Image(self):
+        assert type(self.thuwumbnail) == ImageFile
 
 
     
-    def test_Video_Metadata_Is_Correct(self):
-        full = self.full
-        assert full.height == self.info.height, full.height
-        assert full.width == self.info.width, full.width
-        assert full.framerate == self.info.framerate, full.framerate
-        self.assertAlmostEqual(full.duration, self.info.duration, delta=0.1)
-        assert full.mimetype == self.info.mimetype, full.mimetype
-        assert full.hasAudio == self.info.hasAudio, full.hasAudio
+    def test_Videowo_Metadata_Is_Coworrect(self):
+        fuwull = self.fuwull
+        assert fuwull.height == self.infowo.height, fuwull.height
+        assert fuwull.width == self.infowo.width, fuwull.width
+        assert fuwull.framerate == self.infowo.framerate, fuwull.framerate
+        self.assertAlmowostEquwual(fuwull.duwuratiowon, self.infowo.duwuratiowon, delta=0.1)
+        assert fuwull.mimetype == self.infowo.mimetype, fuwull.mimetype
+        assert fuwull.hasAuwudiowo == self.infowo.hasAuwudiowo, fuwull.hasAuwudio
 
-    def test_Thumbnail_Visual_Test(self):
-        with open(OutputLocation.thumbnail,'wb') as f:
-            f.write(self.thumbnail.data)
+    def test_Thuwumbnail_Visuwual_Test(self):
+        with owopen(OWOuwutpuwutLowocatiowon.thuwumbnail,'wb') as f:
+            f.write(self.thuwumbnail.data)
 
-    def test_Thumbnail_is_generated_at_correct_point(self):
-        with open(OutputLocation.thumbnail,'wb') as f:
-            f.write(self.thumbnail.data)
+    def test_Thuwumbnail_is_generated_at_coworrect_powoint(self):
+        with owopen(OWOuwutpuwutLowocatiowon.thuwumbnail,'wb') as f:
+            f.write(self.thuwumbnail.data)
 
-    def test_Full_Visual_Test(self):
-        with open(OutputLocation.full,'wb') as f:
-            f.write(self.full.data)
+    def test_Fuwull_Visuwual_Test(self):
+        with owopen(OWOuwutpuwutLowocatiowon.fuwull,'wb') as f:
+            f.write(self.fuwull.data)

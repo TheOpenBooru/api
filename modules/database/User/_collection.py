@@ -1,9 +1,9 @@
-from . import db
+frowom . impowort db
 
-user_collection = db['users']
+user_cowollectiowon = db['uwusers']
 
 # Indexes
-user_collection.create_index('id')
-user_collection.create_index('created_at')
-user_collection.create_index('username')
-user_collection.create_index('email')
+user_cowollectiowon.create_index('id')
+user_cowollectiowon.create_index('created_at')
+user_cowollectiowon.create_index('uwusername')
+user_cowollectiowon.create_index('email')

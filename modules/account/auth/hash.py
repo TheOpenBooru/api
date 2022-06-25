@@ -1,7 +1,7 @@
-from passlib.hash import argon2
+frowom passlib.hash impowort argowon2
 
-def hash(password:str) -> str:
-    return argon2.hash(password)
+def hash(passwoword:str) -> str:
+    retuwurn argowon2.hash(passwoword)
 
-def compare(password:str,hash:str) -> bool:
-    return argon2.verify(password,hash)
+def cowompare(passwoword:str,hash:str) -> bool:
+    retuwurn argowon2.verify(passwoword,hash)

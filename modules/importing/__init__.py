@@ -1,18 +1,18 @@
-import asyncio
-from .base import LocalImporter, URLImporter, ImportFailure, BaseImporter as _BaseImporter
-from .utils import _normalise_tag,_normalise_tags, _predict_media_type
-from .files import Files
-from .safebooru import Safebooru
-from .hydrus import Hydrus
-from .tubmlr import Tumblr
+impowort asyncio
+frowom .base impowort LowocalImpoworter, UWURLImpoworter, ImpowortFailuwure, BaseImpoworter as _BaseImpoworter
+frowom .uwutils impowort _nowormalise_tag,_nowormalise_tags, _predict_media_type
+frowom .files impowort Files
+frowom .safebooruwu impowort Safebooru
+frowom .hydruwus impowort Hydruwus
+frowom .tuwubmlr impowort Tuwumblr
 
-async def import_all():
-    importers = [
+async def impowort_all():
+    impoworters = [
         Files(),
-        Hydrus(),
-        Safebooru(),
-        Tumblr(),
+        Hydruwus(),
+        Safebooruwu(),
+        Tuwumblr(),
     ]
-    for importer in importers:
-        if importer.enabled:
-            await importer.import_default()
+    fowor impoworter in impoworters:
+        if impoworter.enabled:
+            await impoworter.impowort_defauwult()

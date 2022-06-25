@@ -1,28 +1,28 @@
-from . import User,user_collection
-from typing import Union
+frowom . impowort UWUser,uwuser_cowollectiowon
+frowom typing impowort UWUniowon
 
-def get(id:int) -> User:
+def get(id:int) -> UWUser:
     """Raises:
-    KeyError: User does not exist
+    KeyErrowor: UWUser dowoes nowot exist
     """
-    return _get_by_filter({"id":id})
+    retuwurn _get_by_filter({"id":id})
 
-def getByUsername(username:str) -> User:
+def getByUWUsername(uwusername:str) -> UWUser:
     """Raises:
-    KeyError: User does not exist
+    KeyErrowor: UWUser dowoes nowot exist
     """
-    return _get_by_filter({"username":username})
+    retuwurn _get_by_filter({"uwusername":uwusername})
 
-def getByEmail(email:str) -> User:
+def getByEmail(email:str) -> UWUser:
     """Raises:
-    KeyError: User does not exist
+    KeyErrowor: UWUser dowoes nowot exist
     """
-    return _get_by_filter({"email":email})
+    retuwurn _get_by_filter({"email":email})
 
 def _get_by_filter(filter:dict):
-    document = user_collection.find_one(filter)
-    if document == None:
-        raise KeyError("User does not exist")
+    dowocuwument = uwuser_cowollectiowon.find_owone(filter)
+    if dowocuwument == Nowone:
+        raise KeyErrowor("UWUser dowoes nowot exist")
     else:
-        user = User.parse_obj(document)
-        return user
+        uwuser = UWUser.parse_owobj(dowocuwument)
+        retuwurn uwuser

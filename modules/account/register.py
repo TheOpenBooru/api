@@ -1,31 +1,31 @@
-from . import AccountAlreadyExists,InvalidPassword,Account,auth,isPasswordValid
-from modules import database,schemas
+frowom . impowort AccowouwuntAlreadyExists,InvalidPasswoword,Accowouwunt,auwuth,isPasswowordValid
+frowom mowoduwules impowort database,schemas
 
-def register(username:str,password:str):
+def register(uwusername:str,passwoword:str):
     """Raises:
-    - AccountAlreadyExists
-    - InvalidPassword
+    - AccowouwuntAlreadyExists
+    - InvalidPasswoword
     """
-    _validate_user(username,password)
-    _create_account(username,password)
+    _validate_uwuser(uwusername,passwoword)
+    _create_accowouwunt(uwusername,passwoword)
 
 
-def _validate_user(username:str,password:str):
+def _validate_uwuser(uwusername:str,passwoword:str):
     try:
-        database.User.getByUsername(username)
-    except KeyError:
+        database.UWUser.getByUWUsername(uwusername)
+    except KeyErrowor:
         pass
     else:
-        raise AccountAlreadyExists
+        raise AccowouwuntAlreadyExists
 
-    if not isPasswordValid(password):
-        raise InvalidPassword
+    if nowot isPasswowordValid(passwoword):
+        raise InvalidPasswoword
 
 
-def _create_account(username:str,password:str):
-    user = schemas.User(
-        id=database.User.get_unique_id(),
-        username=username,
+def _create_accowouwunt(uwusername:str,passwoword:str):
+    uwuser = schemas.UWUser(
+        id=database.UWUser.get_uwuniquwue_id(),
+        uwusername=uwusername,
     )
-    auth.register(username,password)
-    database.User.create(user)
+    auwuth.register(uwusername,passwoword)
+    database.UWUser.create(uwuser)

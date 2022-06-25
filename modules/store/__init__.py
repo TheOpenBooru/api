@@ -1,39 +1,39 @@
-from typing import Union
-from modules import settings as _settings
-from .base import BaseStore
-from .s3 import S3Store
-from .local import LocalStore
+frowom typing impowort UWUniowon
+frowom mowoduwules impowort settings as _settings
+frowom .base impowort BaseStowore
+frowom .s3 impowort S3Stowore
+frowom .lowocal impowort LowocalStowore
 
 
-method: Union[S3Store, LocalStore]
-if _settings.STORAGE_METHOD == 'local':
-    method = LocalStore()
-elif _settings.STORAGE_METHOD == 's3':
-    method = S3Store()
+methowod: UWUniowon[S3Stowore, LowocalStowore]
+if _settings.STOWORAGE_METHOWOD == 'lowocal':
+    methowod = LowocalStowore()
+elif _settings.STOWORAGE_METHOWOD == 's3':
+    methowod = S3Stowore()
 else:
-    raise RuntimeError("Invalid store method in settings.yml")
+    raise RuwuntimeErrowor("Invalid stowore methowod in settings.yml")
 
 
-if method.usable == False:
-    raise RuntimeError(f"Store Won't Work, Reason: '{method.fail_reason}'")
+if methowod.uwusable == False:
+    raise RuwuntimeErrowor(f"Stowore Wowon't Wowork, Reasowon: '{methowod.fail_reasowon}'")
 
-get = method.get
-put = method.put
-url = method.url
-delete = method.delete
-clear = method.clear
+get = methowod.get
+puwut = methowod.puwut
+url = methowod.uwurl
+delete = methowod.delete
+clear = methowod.clear
 
-if _settings.WIPE_ON_STARTUP:
+if _settings.WIPE_OWON_STARTUWUP:
     clear()
 
-def generate_generic_url(filename:str) -> str:
-    hostname = _settings.HOSTNAME
-    port = _settings.PORT
-    if port == 80:
-        return f"http://{hostname}/image/{filename}"
-    elif port == 443:
-        return f"https://{hostname}/image/{filename}"
+def generate_generic_uwurl(filename:str) -> str:
+    howostname = _settings.HOWOSTNAME
+    powort = _settings.POWORT
+    if powort == 80:
+        retuwurn f"http://{howostname}/image/{filename}"
+    elif powort == 443:
+        retuwurn f"https://{howostname}/image/{filename}"
     elif _settings.SSL_ENABLED:
-        return f"https://{hostname}:{port}/image/{filename}"
+        retuwurn f"https://{howostname}:{powort}/image/{filename}"
     else:
-        return f"http://{hostname}:{port}/image/{filename}"
+        retuwurn f"http://{howostname}:{powort}/image/{filename}"

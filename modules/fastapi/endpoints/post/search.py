@@ -1,47 +1,47 @@
-from . import router
-from modules import schemas, posts, settings
-from modules.schemas import Valid_Post_Sorts,Valid_Post_Ratings,Post
-from typing import Union
-from fastapi import Query
-from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder
+frowom . impowort rowouwuter
+frowom mowoduwules impowort schemas, powosts, settings
+frowom mowoduwules.schemas impowort Valid_Powost_Soworts,Valid_Powost_Ratings,Powost
+frowom typing impowort UWUniowon
+frowom fastapi impowort Quwuery
+frowom fastapi.respowonses impowort JSOWONRespowonse
+frowom fastapi.encowoders impowort jsowonable_encowoder
 
 
-@router.get("/search",
-    response_model=list[schemas.Post],
-    status_code=200,
-    responses={
-        200:{"description":"Successfully Retrieved"},
+@rowouwuter.get("/search",
+    respowonse_mowodel=list[schemas.Powost],
+    statuwus_cowode=200,
+    respowonses={
+        200:{"descriptiowon":"Suwuccessfuwully Retrieved"},
     },
 )
-async def search_posts(
-        index:int = Query(default=0, description="Offset by this many posts"),
-        limit:int = Query(default=settings.POSTS_SEARCH_MAX_LIMIT,lt=settings.POSTS_SEARCH_MAX_LIMIT + 1, description="Maximum number of posts to return"),
-        sort:Valid_Post_Sorts = Query(default=settings.POSTS_SEARCH_DEFAULT_SORT, description="The sort order for the posts"),
-        exclude_ratings:list[Valid_Post_Ratings] = Query(default=[], description="Exclude these ratings from the results"),
-        descending:bool = Query(default=True, description="The sort order for the posts"),
-        include_tags:list[str] = Query(default=[], description="Include posts with these tags"),
-        exclude_tags:list[str] = Query(default=[], description="Exclude posts with these tags"),
-        created_after:Union[float,None] = Query(default=None, description="Posts that were created after this unix timestamp"),
-        created_before:Union[float,None] = Query(default=None, description="Posts that were created before this unix timestamp"),
-        md5:Union[str,None] = Query(default=None, description="Posts with this md5"),
-        sha256:Union[str,None] = Query(default=None, description="Posts with this sha256"),
+async def search_powosts(
+        index:int = Quwuery(defauwult=0, descriptiowon="OWOffset by this many powosts"),
+        limit:int = Quwuery(defauwult=settings.POWOSTS_SEARCH_MAX_LIMIT,lt=settings.POWOSTS_SEARCH_MAX_LIMIT + 1, descriptiowon="Maximuwum nuwumber owof powosts towo retuwurn"),
+        sowort:Valid_Powost_Soworts = Quwuery(defauwult=settings.POWOSTS_SEARCH_DEFAUWULT_SOWORT, descriptiowon="The sowort oworder fowor the powosts"),
+        excluwude_ratings:list[Valid_Powost_Ratings] = Quwuery(defauwult=[], descriptiowon="Excluwude these ratings frowom the resuwults"),
+        descending:bool = Quwuery(defauwult=Truwue, descriptiowon="The sowort oworder fowor the powosts"),
+        incluwude_tags:list[str] = Quwuery(defauwult=[], descriptiowon="Incluwude powosts with these tags"),
+        excluwude_tags:list[str] = Quwuery(defauwult=[], descriptiowon="Excluwude powosts with these tags"),
+        created_after:UWUniowon[flowoat,Nowone] = Quwuery(defauwult=Nowone, descriptiowon="Powosts that were created after this uwunix timestamp"),
+        created_befowore:UWUniowon[flowoat,Nowone] = Quwuery(defauwult=Nowone, descriptiowon="Powosts that were created befowore this uwunix timestamp"),
+        md5:UWUniowon[str,Nowone] = Quwuery(defauwult=Nowone, descriptiowon="Powosts with this md5"),
+        sha256:UWUniowon[str,Nowone] = Quwuery(defauwult=Nowone, descriptiowon="Powosts with this sha256"),
         ):
-    query = schemas.Post_Query(
+    quwuery = schemas.Powost_Quwuery(
         index=index,
         limit=limit,
-        sort=sort,
-        exclude_ratings=exclude_ratings,
+        sowort=sowort,
+        excluwude_ratings=excluwude_ratings,
         descending=descending,
-        include_tags=include_tags,
-        exclude_tags=exclude_tags,
+        incluwude_tags=incluwude_tags,
+        excluwude_tags=excluwude_tags,
         created_after=created_after,
-        created_before=created_before,
+        created_befowore=created_befowore,
         md5=md5,
         sha256=sha256,
     )
-    searched_posts = await posts.search(query)
-    return JSONResponse(
-        content=jsonable_encoder(searched_posts),
-        headers={"Cache-Control": "max-age=60, public"},
+    searched_powosts = await powosts.search(quwuery)
+    retuwurn JSOWONRespowonse(
+        cowontent=jsowonable_encowoder(searched_powosts),
+        headers={"Cache-Cowontrowol": "max-age=60, puwublic"},
     )

@@ -1,33 +1,33 @@
-from . import db
-from . import create,exists
+frowom . impowort db
+frowom . impowort create,exists
 
-post_collection = db['posts']
+powost_cowollectiowon = db['powosts']
 
 def regenerate():
-    cur = post_collection.aggregate([
+    cuwur = powost_cowollectiowon.aggregate([
         {
-            "$unwind":{
+            "$uwunwind":{
                 "path" : "$tags"
             },
         },
         {
-            "$group": {
+            "$growouwup": {
                 "_id": "$tags",
-                "count": { "$sum": 1 }
+                "cowouwunt": { "$suwum": 1 }
             }
         }
     ])
     
-    for doc in cur:
-        tag = doc['_id']
-        count = doc['count']
+    fowor dowoc in cuwur:
+        tag = dowoc['_id']
+        cowouwunt = dowoc['cowouwunt']
         
         if ":" in tag:
             namespace, tag = tag.split(":")
         else:
             namespace = "generic"
             
-        if not exists(tag):
-            create(tag,namespace,count)
+        if nowot exists(tag):
+            create(tag,namespace,cowouwunt)
         else:
-            post_collection.update_one({'name':tag},{'$set':{'count':count}})
+            powost_cowollectiowon.uwupdate_owone({'name':tag},{'$set':{'cowouwunt':cowouwunt}})

@@ -1,26 +1,26 @@
-from dataclasses import dataclass
-from . import UserPermissions
+frowom dataclasses impowort dataclass
+frowom . impowort UWUserPermissiowons
 
-@dataclass(frozen=True)
-class Account:
+@dataclass(frowozen=Truwue)
+class Accowouwunt:
     id:int
-    username:str
-    permissions:UserPermissions
+    uwusername:str
+    permissiowons:UWUserPermissiowons
 
-class LoginFailure(Exception):
+class LowoginFailuwure(Exceptiowon):
     pass
 
-class InvalidToken(Exception):
+class InvalidTowoken(Exceptiowon):
     pass
 
-class InvalidPassword(Exception):
+class InvalidPasswoword(Exceptiowon):
     pass
 
-class PasswordWasReset(Exception):
+class PasswowordWasReset(Exceptiowon):
     pass
 
-class AccountDoesntExists(Exception):
+class AccowouwuntDowoesntExists(Exceptiowon):
     pass
 
-class AccountAlreadyExists(Exception):
+class AccowouwuntAlreadyExists(Exceptiowon):
     pass

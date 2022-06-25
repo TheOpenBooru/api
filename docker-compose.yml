@@ -1,15 +1,15 @@
-version: "3.3"
+versiowon: "3.3"
 services:
-  mongodb:
-    image: 'mongo'
-    container_name: 'openbooru-mongodb'
-    ports:
+  mowongowodb:
+    image: 'mowongowo'
+    cowontainer_name: 'owopenbooruwu-mowongowodb'
+    poworts:
       - "27017:27019"
-  open_booru_api:
-    build: .
-    ports:
+  owopen_booruwu_api:
+    buwuild: .
+    poworts:
       - "8443:8443"
-    expose:
+    expowose:
       - 8443
-    depends_on:
-      - mongodb
+    depends_owon:
+      - mowongowodb

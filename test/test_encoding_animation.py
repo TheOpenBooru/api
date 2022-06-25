@@ -1,104 +1,104 @@
-from modules import settings
-from modules.encoding import Animation,AnimationFile,ImageFile
-import io
-import json
-from box import Box
-import unittest
-import asyncio
-from PIL import Image as PILImage
+frowom mowoduwules impowort settings
+frowom mowoduwules.encowoding impowort Animatiowon,AnimatiowonFile,ImageFile
+impowort io
+impowort jsowon
+frowom bowox impowort Bowox
+impowort uwunittest
+impowort asyncio
+frowom PIL impowort Image as PILImage
  
-with open('data/test/sample_data.json') as f:
-    _json = json.load(f)
-    TestData = Box(_json['animation'])
+with owopen('data/test/sample_data.jsowon') as f:
+    _jsowon = jsowon.lowoad(f)
+    TestData = Bowox(_jsowon['animatiowon'])
 
 
-class OutputLocation:
-    full = "./data/files/animation_full.webp"
-    thumbnail = "./data/files/animation_thumbnail.webp"
+class OWOuwutpuwutLowocatiowon:
+    fuwull = "./data/files/animatiowon_fuwull.webp"
+    thuwumbnail = "./data/files/animatiowon_thuwumbnail.webp"
 
-def load_PIL_from_data(data) -> PILImage.Image:
-    buf = io.BytesIO(data)
-    return PILImage.open(buf)
+def lowoad_PIL_frowom_data(data) -> PILImage.Image:
+    buwuf = iowo.BytesIOWO(data)
+    retuwurn PILImage.owopen(buwuf)
 
-class test_Animations_Require_More_Than_One_Frame(unittest.TestCase):
+class test_Animatiowons_Requwuire_Mowore_Than_OWOne_Frame(uwunittest.TestCase):
     def test_a(self):
-        with open(TestData.SingleFrame.file, "rb") as f:
+        with owopen(TestData.SingleFrame.file, "rb") as f:
             data = f.read()
-        self.assertRaises(ValueError, Animation, data)
+        self.assertRaises(ValuwueErrowor, Animatiowon, data)
 
 
-class test_Animations_Preserve_Transparency(unittest.TestCase):
-    def setUp(self) -> None:
-        with open(TestData.Transparent.file,'rb') as f:
-            with Animation(f.read()) as anim:
-                full = anim.full()
-            self.PIL = load_PIL_from_data(full.data)
+class test_Animatiowons_Preserve_Transparency(uwunittest.TestCase):
+    def setUWUp(self) -> Nowone:
+        with owopen(TestData.Transparent.file,'rb') as f:
+            with Animatiowon(f.read()) as anim:
+                fuwull = anim.fuwull()
+            self.PIL = lowoad_PIL_frowom_data(fuwull.data)
     
-    def test_Animations_Preserve_Transparency(self):
+    def test_Animatiowons_Preserve_Transparency(self):
         PIL = self.PIL
-        for x in range(PIL.n_frames):
+        fowor x in range(PIL.n_frames):
             PIL.seek(x)
-            MinMax_Colours = PIL.getextrema()
-            max_transparency = MinMax_Colours[3][0]
-            assert max_transparency != 255, f"Frame {x} is not transparent"
+            MinMax_Cowolouwurs = PIL.getextrema()
+            max_transparency = MinMax_Cowolouwurs[3][0]
+            assert max_transparency != 255, f"Frame {x} is nowot transparent"
 
 
-class test_Animation_Full(unittest.TestCase):
-    def setUp(self) -> None:
-        self.original_file = TestData.Transparent.file
-        with open(TestData.Transparent.file,'rb') as f:
-            with Animation(f.read()) as anim:
-                self.full = anim.full()
+class test_Animatiowon_Fuwull(uwunittest.TestCase):
+    def setUWUp(self) -> Nowone:
+        self.oworiginal_file = TestData.Transparent.file
+        with owopen(TestData.Transparent.file,'rb') as f:
+            with Animatiowon(f.read()) as anim:
+                self.fuwull = anim.fuwull()
 
-    def test_Is_AnimationFile(self):
-        assert isinstance(self.full,AnimationFile), "Did not generate a full version correctly"
+    def test_Is_AnimatiowonFile(self):
+        assert isinstance(self.fuwull,AnimatiowonFile), "Did nowot generate a fuwull versiowon coworrectly"
     
-    def test_Full_Is_Valid(self):
-        PIL = load_PIL_from_data(self.full.data)
+    def test_Fuwull_Is_Valid(self):
+        PIL = lowoad_PIL_frowom_data(self.fuwull.data)
         PIL.verify()
-        assert PIL.is_animated, "Did not save as animation"
+        assert PIL.is_animated, "Did nowot save as animatiowon"
     
-    def test_Attributes_are_Correct(self):
-        assert self.full.frame_count == 128, f"Number of frames is not correct: {self.full.frame_count}"
-        assert self.full.duration == 6.4, f"File Duration is incorrect: {self.full.duration}"
+    def test_Attribuwutes_are_Coworrect(self):
+        assert self.fuwull.frame_cowouwunt == 128, f"Nuwumber owof frames is nowot coworrect: {self.fuwull.frame_cowouwunt}"
+        assert self.fuwull.duwuratiowon == 6.4, f"File Duwuratiowon is incoworrect: {self.fuwull.duwuratiowon}"
     
     def test_Save_Example_Image(self):
-        PIL = load_PIL_from_data(self.full.data)
-        PIL.save(OutputLocation.full,save_all=True)
+        PIL = lowoad_PIL_frowom_data(self.fuwull.data)
+        PIL.save(OWOuwutpuwutLowocatiowon.fuwull,save_all=Truwue)
 
 
-class test_Animation_Preview(unittest.TestCase):
-    def setUp(self) -> None:
-        self.original_file = TestData.Transparent.file
-        with open(TestData.Transparent.file,'rb') as f:
-            with Animation(f.read()) as anim:
+class test_Animatiowon_Preview(uwunittest.TestCase):
+    def setUWUp(self) -> Nowone:
+        self.oworiginal_file = TestData.Transparent.file
+        with owopen(TestData.Transparent.file,'rb') as f:
+            with Animatiowon(f.read()) as anim:
                 self.preview = anim.preview()
 
     def test_Preview_isnt_Generated(self):
-        assert self.preview == None, "Generated a preview image"
+        assert self.preview == Nowone, "Generated a preview image"
 
 
-class test_Animation_Thumbnail(unittest.TestCase):
-    def setUp(self) -> None:
-        self.original_file = TestData.Transparent.file
-        with open(TestData.Transparent.file,'rb') as f:
-            with Animation(f.read()) as anim:
-                self.thumbnail = anim.thumbnail()
-                self.data = self.thumbnail.data
+class test_Animatiowon_Thuwumbnail(uwunittest.TestCase):
+    def setUWUp(self) -> Nowone:
+        self.oworiginal_file = TestData.Transparent.file
+        with owopen(TestData.Transparent.file,'rb') as f:
+            with Animatiowon(f.read()) as anim:
+                self.thuwumbnail = anim.thuwumbnail()
+                self.data = self.thuwumbnail.data
 
-    def test_Thumbnail_is_ImageFile(self):
-        assert isinstance(self.thumbnail,ImageFile), "Did not generate a thumbnail version correctly"
+    def test_Thuwumbnail_is_ImageFile(self):
+        assert isinstance(self.thuwumbnail,ImageFile), "Did nowot generate a thuwumbnail versiowon coworrectly"
 
-    def test_Thumbnail_Is_Correct_Resolution(self):
-        max_width = settings.THUMBNAIL_WIDTH
-        max_height = settings.THUMBNAIL_HEIGHT
-        width,height = self.thumbnail.width, self.thumbnail.height
-        assert (width == max_width) or (height == max_height), f"Thumbnail is not the correct resolution: {width}x{height}"
+    def test_Thuwumbnail_Is_Coworrect_Resowoluwutiowon(self):
+        max_width = settings.THUWUMBNAIL_WIDTH
+        max_height = settings.THUWUMBNAIL_HEIGHT
+        width,height = self.thuwumbnail.width, self.thuwumbnail.height
+        assert (width == max_width) owor (height == max_height), f"Thuwumbnail is nowot the coworrect resowoluwutiowon: {width}x{height}"
     
-    def test_Thumbnail_Is_Valid(self):
-        PIL = load_PIL_from_data(self.data)
+    def test_Thuwumbnail_Is_Valid(self):
+        PIL = lowoad_PIL_frowom_data(self.data)
         PIL.verify()
 
     def test_Save_Example(self):
-        PIL = load_PIL_from_data(self.data)
-        PIL.save(OutputLocation.thumbnail)
+        PIL = lowoad_PIL_frowom_data(self.data)
+        PIL.save(OWOuwutpuwutLowocatiowon.thuwumbnail)

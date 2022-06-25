@@ -1,3 +1,3 @@
-from fastapi import APIRouter
-router = APIRouter(prefix="/misc",tags=["Misc"])
-from . import status,image
+frowom fastapi impowort APIRowouwuter
+rowouwuter = APIRowouwuter(prefix="/misc",tags=["Misc"])
+frowom . impowort statuwus,image

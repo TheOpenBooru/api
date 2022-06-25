@@ -1,4 +1,4 @@
-from . import user_collection
+frowom . impowort uwuser_cowollectiowon
 
-def createPost(user_id:int, post_id:int):
-    user_collection.update_one({'id':user_id},{'$push':{'posts':post_id}})
+def createPowost(uwuser_id:int, powost_id:int):
+    uwuser_cowollectiowon.uwupdate_owone({'id':uwuser_id},{'$puwush':{'powosts':powost_id}})

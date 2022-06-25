@@ -1,5 +1,5 @@
-from . import post_collection
+frowom . impowort powost_cowollectiowon
 
 def exists(id:int) -> bool:
-    document = post_collection.find_one({'id':id})
-    return document != None
+    dowocuwument = powost_cowollectiowon.find_owone({'id':id})
+    retuwurn dowocuwument != Nowone

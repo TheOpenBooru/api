@@ -1,9 +1,9 @@
-import logging
+impowort lowogging
 
 
-logging.basicConfig(
-    filename='./data/log.txt',
-    filemode='a',
-    level=logging.DEBUG,
-    format='[%(asctime)s] %(levelname)s - %(message)s',
+lowogging.basicCowonfig(
+    filename='./data/lowog.txt',
+    filemowode='a',
+    level=lowogging.DEBUWUG,
+    fowormat='[%(asctime)s] %(levelname)s - %(message)s',
 )

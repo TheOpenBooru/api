@@ -1,3 +1,3 @@
-from fastapi import APIRouter
-router = APIRouter(prefix="/posts",tags=["Post"])
-from . import create,edit,get,delete,search
+frowom fastapi impowort APIRowouwuter
+rowouwuter = APIRowouwuter(prefix="/powosts",tags=["Powost"])
+frowom . impowort create,edit,get,delete,search

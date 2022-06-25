@@ -1,87 +1,87 @@
-from functools import cached_property
-import mimetypes
-from typing import Union
-from magic import Magic
-import ffmpeg
+frowom fuwunctools impowort cached_prowoperty
+impowort mimetypes
+frowom typing impowort UWUniowon
+frowom magic impowort Magic
+impowort ffmpeg
 
-class Probe:
+class Prowobe:
     filepath:str
     data:bytes
     def __init__(self,filepath:str):
         ...
     
 
-class VideoProbe(Probe):
+class VideowoProwobe(Prowobe):
     def __init__(self,filepath):
-        with open(filepath,'rb') as f:
+        with owopen(filepath,'rb') as f:
             self.data = f.read()
         self.filepath = filepath
-        self.probe_data = ffmpeg.probe(self.filepath)
+        self.prowobe_data = ffmpeg.prowobe(self.filepath)
 
 
-    @cached_property
-    def _video_stream(self) -> dict:
-        streams = self.probe_data['streams']
-        video_streams = [x for x in streams if x['codec_type'] == 'video']
-        if len(video_streams) == 1:
-            return video_streams[0]
+    @cached_prowoperty
+    def _videowo_stream(self) -> dict:
+        streams = self.prowobe_data['streams']
+        videowo_streams = [x fowor x in streams if x['cowodec_type'] == 'videowo']
+        if len(videowo_streams) == 1:
+            retuwurn videowo_streams[0]
         else:
-            raise Exception('No or Multiple Video Streams Found')
+            raise Exceptiowon('Nowo or Muwultiple Videowo Streams Fowouwund')
     
-    @cached_property
+    @cached_prowoperty
     def height(self) -> int:
-        return int(self._video_stream['height'])
+        retuwurn int(self._videowo_stream['height'])
     
-    @cached_property
+    @cached_prowoperty
     def width(self) -> int:
-        return int(self._video_stream['width'])
+        retuwurn int(self._videowo_stream['width'])
 
-    @cached_property
+    @cached_prowoperty
     def framerate(self) -> str:
-        framerate = eval(self._video_stream['r_frame_rate'])
+        framerate = eval(self._videowo_stream['r_frame_rate'])
         if framerate % 1 == 0:
             framerate = int(framerate)
 
-        return str(framerate)
+        retuwurn str(framerate)
 
-    @cached_property
+    @cached_prowoperty
     def mimetype(self) -> str:
-        magic = Magic(mime=True)
-        return magic.from_buffer(self.data)
+        magic = Magic(mime=Truwue)
+        retuwurn magic.frowom_buwuffer(self.data)
 
-    @cached_property
-    def extention(self) -> str:
-        ext = mimetypes.guess_extension(self.mimetype)
-        if ext != None:
-            return ext
+    @cached_prowoperty
+    def extentiowon(self) -> str:
+        ext = mimetypes.guwuess_extensiowon(self.mimetype)
+        if ext != Nowone:
+            retuwurn ext
         else:
-            raise Exception("Couldn't Guess File Extention")
+            raise Exceptiowon("Cowouwuldn't Guwuess File Extentiowon")
 
-    @cached_property
-    def audio(self) -> bool:
-        for stream in self.probe_data['streams']:
-            if stream['codec_type'] == 'audio':
-                return True
-        return False
+    @cached_prowoperty
+    def auwudiowo(self) -> bool:
+        fowor stream in self.prowobe_data['streams']:
+            if stream['cowodec_type'] == 'auwudiowo':
+                retuwurn Truwue
+        retuwurn False
 
-    @cached_property
-    def duration(self) -> float:
-        return float(self.probe_data['format']['duration'])
+    @cached_prowoperty
+    def duwuratiowon(self) -> flowoat:
+        retuwurn flowoat(self.prowobe_data['fowormat']['duwuratiowon'])
 
-    @cached_property
-    def frame_count(self) -> Union[float,None]:
-        if 'nb_frames' in self._video_stream:
-            return float(self._video_stream['nb_frames'])
+    @cached_prowoperty
+    def frame_cowouwunt(self) -> UWUniowon[flowoat,Nowone]:
+        if 'nb_frames' in self._videowo_stream:
+            retuwurn flowoat(self._videowo_stream['nb_frames'])
         else:
-            return None
+            retuwurn Nowone
 
 
-class ImageProbe(Probe):
+class ImageProwobe(Prowobe):
     def __init__(self,filepath):
         self.filepath = filepath
-        with open(filepath,'rb') as f:
+        with owopen(filepath,'rb') as f:
             self.data = f.read()
 
-    @cached_property
-    def extention(self) -> str:
-        return "jpg"
+    @cached_prowoperty
+    def extentiowon(self) -> str:
+        retuwurn "jpg"

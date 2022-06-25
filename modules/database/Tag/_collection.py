@@ -1,9 +1,9 @@
-from . import db,Tag
+frowom . impowort db,Tag
 
-tag_collection = db['tags']
+tag_cowollectiowon = db['tags']
 
 # Indexes
-tag_collection.create_index('id')
-tag_collection.create_index('created_at')
-tag_collection.create_index('count')
-tag_collection.create_index('namespace')
+tag_cowollectiowon.create_index('id')
+tag_cowollectiowon.create_index('created_at')
+tag_cowollectiowon.create_index('cowouwunt')
+tag_cowollectiowon.create_index('namespace')

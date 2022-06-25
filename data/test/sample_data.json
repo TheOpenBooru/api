@@ -1,45 +1,45 @@
 
 {
-    "video":{
+    "videowo":{
         "heavy":{
-            "file" : "./data/test/video/Heavy.mp4",
+            "file" : "./data/test/videowo/Heavy.mp4",
             "width" : 1280,
             "height" : 720,
-            "duration" : 13.83,
+            "duwuratiowon" : 13.83,
             "framerate" : "24",
-            "hasAudio" : true,
-            "mimetype" : "video/mp4"
+            "hasAuwudiowo" : truwue,
+            "mimetype" : "videowo/mp4"
         },
         "fire":{
-            "file" : "./data/test/video/Fire.webm",
+            "file" : "./data/test/videowo/Fire.webm",
             "width" : 492,
             "height" : 360,
-            "duration" : 10.00,
+            "duwuratiowon" : 10.00,
             "framerate" : "25",
-            "hasAudio" : true,
-            "mimetype" : "video/webm"
+            "hasAuwudiowo" : truwue,
+            "mimetype" : "videowo/webm"
         }
     },
-    "animation":{
+    "animatiowon":{
         "Transparent":{
-            "file" : "./data/test/animation/ricardo.gif",
+            "file" : "./data/test/animatiowon/ricardowo.gif",
             "width" : 241,
             "height" : 300,
-            "duration" : 6.40,
+            "duwuratiowon" : 6.40,
             "mimetype" : "image/gif"
         },
         "SingleFrame":{
-            "file" : "./data/test/animation/SingleFrame.gif",
+            "file" : "./data/test/animatiowon/SingleFrame.gif",
             "width" : 241,
             "height" : 300,
-            "duration" : 0.05,
+            "duwuratiowon" : 0.05,
             "mimetype" : "image/gif"
         },
         "FractalGIF":{
-            "file" : "./data/test/animation/fractal.gif",
+            "file" : "./data/test/animatiowon/fractal.gif",
             "width" : 500,
             "height" : 500,
-            "duration" : 0.6,
+            "duwuratiowon" : 0.6,
             "mimetype" : "image/gif"
         }
     },
@@ -56,8 +56,8 @@
             "height" : 5,
             "mimetype" : "image/webp"
         },
-        "Complex":{
-            "file":"data/test/image/Complex.webp",
+        "Cowomplex":{
+            "file":"data/test/image/Cowomplex.webp",
             "width" : 2000,
             "height" : 2000,
             "mimetype" : "image/webp"

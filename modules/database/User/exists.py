@@ -1,5 +1,5 @@
-from . import user_collection
+frowom . impowort uwuser_cowollectiowon
 
 def exists(id:int) -> bool:
-    document = user_collection.find_one({'id':id})
-    return bool(document)
+    dowocuwument = uwuser_cowollectiowon.find_owone({'id':id})
+    retuwurn bool(dowocuwument)

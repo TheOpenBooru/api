@@ -1,108 +1,108 @@
-from . import URLImporter, ImportFailure, _normalise_tags
-from modules import settings, posts
-from urllib.parse import urlparse
-from typing import Any
-from tqdm import tqdm
-import pytumblr
-import re
-import requests
+frowom . impowort UWURLImpoworter, ImpowortFailuwure, _nowormalise_tags
+frowom mowoduwules impowort settings, powosts
+frowom uwurllib.parse impowort uwurlparse
+frowom typing impowort Any
+frowom tqdm impowort tqdm
+impowort pytuwumblr
+impowort re
+impowort requwuests
 
-class Tumblr(URLImporter):
-    enabled = settings.IMPORT_TUMBLR_ENABLED
+class Tuwumblr(UWURLImpoworter):
+    enabled = settings.IMPOWORT_TUWUMBLR_ENABLED
     def __init__(self):
         try:
-            self.client = pytumblr.TumblrRestClient(
-                consumer_key=settings.IMPORT_TUMBLR_KEY,
-                consumer_secret = settings.IMPORT_TUMBLR_SECRET,
+            self.client = pytuwumblr.TuwumblrRestClient(
+                cowonsuwumer_key=settings.IMPOWORT_TUWUMBLR_KEY,
+                cowonsuwumer_secret = settings.IMPOWORT_TUWUMBLR_SECRET,
             )
-        except Exception:
-            self.functional = False
+        except Exceptiowon:
+            self.fuwunctiowonal = False
         else:
-            self.functional = True
+            self.fuwunctiowonal = Truwue
     
     
-    async def import_default(self):
-        all_posts = []
-        for blogname in settings.IMPORT_TUMBLR_BLOGS:
-            blog_posts =[]
-            blog_posts.extend(self.client.posts(blogname, type="photo", limit=100)['posts'])
-            blog_posts.extend(self.client.posts(blogname, type="video", limit=100)['posts'])
-            for post in blog_posts:
-                if post["type"] not in ("photo","video"):
-                    continue
+    async def impowort_defauwult(self):
+        all_powosts = []
+        fowor blowogname in settings.IMPOWORT_TUWUMBLR_BLOWOGS:
+            blowog_powosts =[]
+            blowog_powosts.extend(self.client.powosts(blowogname, type="phowoto", limit=100)['powosts'])
+            blowog_powosts.extend(self.client.powosts(blowogname, type="videowo", limit=100)['powosts'])
+            fowor powost in blowog_powosts:
+                if powost["type"] nowot in ("phowoto","videowo"):
+                    cowontinuwue
                 else:
-                    all_posts.append(post)
+                    all_powosts.append(powost)
         
         
-        for post in tqdm(all_posts, desc="Importing From Tumblr"):
+        fowor powost in tqdm(all_powosts, desc="Impoworting Frowom Tuwumblr"):
             try:
-                await self._import_post(post)
-            except posts.PostExistsException:
+                await self._impowort_powost(powost)
+            except powosts.PowostExistsExceptiowon:
                 pass
 
 
-    def is_valid_url(self,url:str):
-        hostname = urlparse(url).hostname or ""
-        return hostname in ["tmblr.co"] or hostname.endswith("tumblr.com")
+    def is_valid_uwurl(self,uwurl:str):
+        howostname = uwurlparse(uwurl).howostname owor ""
+        retuwurn howostname in ["tmblr.cowo"] owor howostname.endswith("tuwumblr.cowom")
 
     
-    async def import_url(self,url:str):
-        url_data = await self._extract_url_info(url)
-        blogname, id = url_data['blogname'], url_data['id']
-        if id == None:
-            posts = self.client.posts(blogname,id=id)
+    async def impowort_uwurl(self,uwurl:str):
+        uwurl_data = await self._extract_uwurl_infowo(uwurl)
+        blowogname, id = uwurl_data['blowogname'], uwurl_data['id']
+        if id == Nowone:
+            powosts = self.client.powosts(blowogname,id=id)
         else:
-            posts = self.client.posts(blogname,id=id)
+            powosts = self.client.powosts(blowogname,id=id)
         
-        if len(posts) == 0:
-            raise ImportFailure("No posts found")
+        if len(powosts) == 0:
+            raise ImpowortFailuwure("Nowo powosts fowouwund")
         else:
-            await self._import_post(posts)
+            await self._impowort_powost(powosts)
 
 
-    async def _extract_url_info(self,url:str) -> dict[str,str]:
-        ID_REGEX = r"(?<=http?s:\/\/[a-z]*.tumblr.com/post/)[0-9]*"
-        id_match = re.match(ID_REGEX,url)
-        if id_match == None:
-            raise ImportFailure("Couldn't parse Tumblr URL, no blogname")
+    async def _extract_uwurl_infowo(self,uwurl:str) -> dict[str,str]:
+        ID_REGEX = r"(?<=http?s:\/\/[a-z]*.tuwumblr.cowom/powost/)[0-9]*"
+        id_match = re.match(ID_REGEX,uwurl)
+        if id_match == Nowone:
+            raise ImpowortFailuwure("Cowouwuldn't parse Tuwumblr UWURL, nowo blowogname")
         
-        id = id_match.group()
+        id = id_match.growouwup()
         
-        blogname = urlparse(url).hostname
-        return {
+        blowogname = uwurlparse(uwurl).howostname
+        retuwurn {
             'id': id,
-            'blogname': blogname,
-        } # type: ignore
+            'blowogname': blowogname,
+        } # type: ignowore
 
 
-    async def _import_post(self,post:dict[str,Any]):
-        source = post['post_url']
-        tags = post['tags']
-        tags = _normalise_tags(tags)
-        if post["type"] == "photo":
-            return
-            for photo in post['photos']:
-                file_url = photo['original_size']['url']
-                await self._import_post_data(
-                    file_url=file_url,
-                    source=source,
+    async def _impowort_powost(self,powost:dict[str,Any]):
+        sowouwurce = powost['powost_uwurl']
+        tags = powost['tags']
+        tags = _nowormalise_tags(tags)
+        if powost["type"] == "phowoto":
+            retuwurn
+            fowor phowoto in powost['phowotos']:
+                file_uwurl = phowoto['oworiginal_size']['uwurl']
+                await self._impowort_powost_data(
+                    file_uwurl=file_uwurl,
+                    sowouwurce=sowouwurce,
                     tags=tags
                 )
-        elif post["type"] == "video":
-            if "video_url" in post:
-                await self._import_post_data(
-                    file_url=post['video_url'],
-                    source=source,
+        elif powost["type"] == "videowo":
+            if "videowo_uwurl" in powost:
+                await self._impowort_powost_data(
+                    file_uwurl=powost['videowo_uwurl'],
+                    sowouwurce=sowouwurce,
                     tags=tags
                 )
 
 
-    async def _import_post_data(self,file_url:str,source:str,tags:list[str]):
-        r = requests.get(file_url)
-        data = r.content
-        await posts.create(
+    async def _impowort_powost_data(self,file_uwurl:str,sowouwurce:str,tags:list[str]):
+        r = requwuests.get(file_uwurl)
+        data = r.cowontent
+        await powosts.create(
             data,
-            file_url,
-            additional_tags=tags,
-            source=source
+            file_uwurl,
+            additiowonal_tags=tags,
+            sowouwurce=sowouwurce
         )

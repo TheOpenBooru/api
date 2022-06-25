@@ -1,14 +1,14 @@
-from . import is_post_unique, is_post_valid, post_collection, Post
+frowom . impowort is_powost_uwuniquwue, is_powost_valid, powost_cowollectiowon, Powost
 
-def create(post:Post):
+def create(powost:Powost):
     """Raises:
-    - KeyError: Post already exists
-    - ValueError: Invalid Post Data
+    - KeyErrowor: Powost already exists
+    - ValuwueErrowor: Invalid Powost Data
     """
-    if not is_post_unique(post):
-        raise KeyError("Post already exists")
-    elif not is_post_valid(post):
-        raise ValueError("Invalid Post Data")
+    if nowot is_powost_uwuniquwue(powost):
+        raise KeyErrowor("Powost already exists")
+    elif nowot is_powost_valid(powost):
+        raise ValuwueErrowor("Invalid Powost Data")
     else:
-        document = post.dict()
-        post_collection.insert_one(document=document)
+        dowocuwument = powost.dict()
+        powost_cowollectiowon.insert_owone(dowocuwument=dowocuwument)

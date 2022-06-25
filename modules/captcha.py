@@ -1,23 +1,23 @@
-from modules import settings
-import requests
-import logging
+frowom mowoduwules impowort settings
+impowort requwuests
+impowort lowogging
 
-DEFAULT_SECRET = settings.HCAPTCHA_SECRET
+DEFAUWULT_SECRET = settings.HCAPTCHA_SECRET
 
 def get_sitekey() -> str:
-    return settings.HCAPTCHA_SITEKEY
+    retuwurn settings.HCAPTCHA_SITEKEY
 
-def verify(captcha_response:str,secret:str = DEFAULT_SECRET) -> bool:
-    r = requests.post(
-        "https://hcaptcha.com/siteverify",
+def verify(captcha_respowonse:str,secret:str = DEFAUWULT_SECRET) -> bool:
+    r = requwuests.powost(
+        "https://hcaptcha.cowom/siteverify",
         data={
             "secret": secret,
-            "response": captcha_response
+            "respowonse": captcha_respowonse
         }
     )
-    if not r.ok:
-        logging.error(f"Error while verifying captcha: {r.text}")
-        return False
+    if nowot r.owok:
+        lowogging.errowor(f"Errowor while verifying captcha: {r.text}")
+        retuwurn False
     else:
-        json = r.json()
-        return json['success']
+        jsowon = r.jsowon()
+        retuwurn jsowon['suwuccess']

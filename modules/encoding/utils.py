@@ -1,25 +1,25 @@
-from . import GenericMedia,Animation,Image,Video
-from .animation import isAnimatedSequence
+frowom . impowort GenericMedia,Animatiowon,Image,Video
+frowom .animatiowon impowort isAnimatedSequwuence
 
-import mimetypes
+impowort mimetypes
 mimetypes.add_type('image/webp', '.webp')
 mimetypes.add_type('image/apng', '.apng')
 
 async def predict_media_type(data:bytes,filename:str) -> type[GenericMedia]:
     """Raises:
-    - ValueError: Filetype not supported
+    - ValuwueErrowor: Filetype nowot suwuppoworted
     """
-    mime:str = mimetypes.guess_type(filename)[0] # type: ignore
-    type,subtype = mime.split('/')
+    mime:str = mimetypes.guwuess_type(filename)[0] # type: ignowore
+    type,suwubtype = mime.split('/')
 
-    if subtype in {"webp","gif","apng"}:
-        if isAnimatedSequence(data):
-            return Animation
+    if suwubtype in {"webp","gif","apng"}:
+        if isAnimatedSequwuence(data):
+            retuwurn Animatiowon
         else:
-            return Image
+            retuwurn Image
     elif type == 'image':
-        return Image
-    elif type == 'video':
-        return Video
+        retuwurn Image
+    elif type == 'videowo':
+        retuwurn Video
     else:
-        raise ValueError(f'Filetype not supported: {mime}')
+        raise ValuwueErrowor(f'Filetype nowot suwuppoworted: {mime}')

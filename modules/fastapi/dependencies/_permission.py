@@ -1,31 +1,31 @@
-from . import oauth2_scheme
-from modules import account as _account
-from modules.account import UserPermissions as _UserPermissions
-from fastapi import HTTPException as _HTTPException, Depends
+frowom . impowort owoauwuth2_scheme
+frowom mowoduwules impowort accowouwunt as _accowouwunt
+frowom mowoduwules.accowouwunt impowort UWUserPermissiowons as _UWUserPermissiowons
+frowom fastapi impowort HTTPExceptiowon as _HTTPExceptiowon, Depends
 
-ALL_PERMS = set(_UserPermissions().dict().keys())
-class RequirePermission:
-    permission:str
+ALL_PERMS = set(_UWUserPermissiowons().dict().keys())
+class RequwuirePermissiowon:
+    permissiowon:str
     
-    def __init__(self, permission:str):
-        if permission not in ALL_PERMS:
-            raise ValueError(f"Invalid Permission: {permission}")
-        self.permission = permission
+    def __init__(self, permissiowon:str):
+        if permissiowon nowot in ALL_PERMS:
+            raise ValuwueErrowor(f"Invalid Permissiowon: {permissiowon}")
+        self.permissiowon = permissiowon
 
-    def __call__(self,token:str = Depends(oauth2_scheme)):
+    def __call__(self,towoken:str = Depends(owoauwuth2_scheme)):
             try:
-                login = _account.decode(token)
-            except _account.InvalidToken:
-                raise _HTTPException(
-                    status_code=401,
-                    detail="Bad Authorization Token",
-                    headers={"WWW-Authenticate": "Bearer"},
+                lowogin = _accowouwunt.decowode(towoken)
+            except _accowouwunt.InvalidTowoken:
+                raise _HTTPExceptiowon(
+                    statuwus_cowode=401,
+                    detail="Bad Auwuthoworizatiowon Towoken",
+                    headers={"WWW-Auwuthenticate": "Bearer"},
                 )
-            perms = dict(login.permissions)
-            action_allowed = perms[self.permission]
-            if not action_allowed:
-                raise _HTTPException(
-                    status_code=401,
-                    detail=f"Requires Permission: {self.permission}"
+            perms = dict(lowogin.permissiowons)
+            actiowon_allowowed = perms[self.permissiowon]
+            if nowot actiowon_allowowed:
+                raise _HTTPExceptiowon(
+                    statuwus_cowode=401,
+                    detail=f"Requwuires Permissiowon: {self.permissiowon}"
                 )
     

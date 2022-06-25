@@ -1,28 +1,28 @@
-from . import BaseModel,fields
-from pydantic import Field
-from typing import Union
+frowom . impowort BaseMowodel,fields
+frowom pydantic impowort Field
+frowom typing impowort UWUniowon
 
-class User_Public(BaseModel):
+class UWUser_Puwublic(BaseMowodel):
     id: int = fields.Item_ID
-    created_at: float = fields.Created_At
+    created_at: flowoat = fields.Created_At
 
-    username: str = Field(..., description="The User's Name")
-    level: str = Field(default_factory=lambda:"user", description="The User's Level")
-    posts: list[int] = Field(default_factory=list, description="IDs of Posts made by the user")
-    comments: list[int] = Field(default_factory=list, description="IDs of Comments made by the user")
+    uwusername: str = Field(..., descriptiowon="The UWUser's Name")
+    level: str = Field(defauwult_factowory=lambda:"uwuser", descriptiowon="The UWUser's Level")
+    powosts: list[int] = Field(defauwult_factowory=list, descriptiowon="IDs owof Powosts made by the uwuser")
+    cowomments: list[int] = Field(defauwult_factowory=list, descriptiowon="IDs owof Cowomments made by the uwuser")
 
 
-class User(BaseModel):
+class UWUser(BaseMowodel):
     id: int = fields.Item_ID
-    created_at: float = fields.Created_At
+    created_at: flowoat = fields.Created_At
 
-    username: str = Field(..., description="The User's Name")
-    level: str = Field(default_factory=lambda:"user", description="The User's Level")
-    posts: list[int] = Field(default_factory=list, description="IDs of Posts made by the user")
-    comments: list[int] = Field(default_factory=list, description="IDs of Comments made by the user")
+    uwusername: str = Field(..., descriptiowon="The UWUser's Name")
+    level: str = Field(defauwult_factowory=lambda:"uwuser", descriptiowon="The UWUser's Level")
+    powosts: list[int] = Field(defauwult_factowory=list, descriptiowon="IDs owof Powosts made by the uwuser")
+    cowomments: list[int] = Field(defauwult_factowory=list, descriptiowon="IDs owof Cowomments made by the uwuser")
     
-    email: Union[str,None] = Field(default=None, description="The User's Email Address")
-    settings: str = Field(default_factory=str, description="The User's Settings")
+    email: UWUniowon[str,Nowone] = Field(defauwult=Nowone, descriptiowon="The UWUser's Email Address")
+    settings: str = Field(defauwult_factowory=str, descriptiowon="The UWUser's Settings")
     
-    upvotes: list[int] = Field(default_factory=list, description="IDs of posts the user has upvoted")
-    downvotes: list[int] = Field(default_factory=list, description="IDs of posts the user has downvoted")
+    uwupvowotes: list[int] = Field(defauwult_factowory=list, descriptiowon="IDs owof powosts the uwuser has uwupvowoted")
+    dowownvowotes: list[int] = Field(defauwult_factowory=list, descriptiowon="IDs owof powosts the uwuser has dowownvowoted")

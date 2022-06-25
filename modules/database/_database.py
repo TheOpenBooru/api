@@ -1,10 +1,10 @@
-from modules import settings
-from pymongo.mongo_client import MongoClient as _MongoClient
+frowom mowoduwules impowort settings
+frowom pymowongowo.mowongowo_client impowort MowongowoClient as _MowongowoClient
 
-url = f"mongodb://{settings.MONGODB_HOSTNAME}:{settings.MONGODB_PORT}/"
-db_client = _MongoClient(url)
+url = f"mowongowodb://{settings.MOWONGOWODB_HOWOSTNAME}:{settings.MOWONGOWODB_POWORT}/"
+db_client = _MowongowoClient(uwurl)
 
-if settings.WIPE_ON_STARTUP:
-    db_client.drop_database(settings.MONGODB_DB_NAME)
+if settings.WIPE_OWON_STARTUWUP:
+    db_client.drowop_database(settings.MOWONGOWODB_DB_NAME)
 
-db = db_client[settings.MONGODB_DB_NAME]
+db = db_client[settings.MOWONGOWODB_DB_NAME]

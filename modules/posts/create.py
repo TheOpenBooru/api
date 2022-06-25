@@ -1,10 +1,10 @@
-from modules import schemas,encoding,database,encoding,store
-import mimetypes
-import hashlib
-from typing import Union
+frowom mowoduwules impowort schemas,encowoding,database,encowoding,stowore
+impowort mimetypes
+impowort hashlib
+frowom typing impowort UWUniowon
 
 
-class PostExistsException(Exception):
+class PowostExistsExceptiowon(Exceptiowon):
     pass
 
 
@@ -12,24 +12,24 @@ async def create(
         data:bytes,
         filename:str,
         *,
-        user_id:Union[int,None] = None,
-        additional_tags:Union[list[str],None] = None,
-        source:Union[str,None] = None,
-        ) -> schemas.Post:
-    generator = _PostSchemaGenerator(data,filename)
-    schema = await generator.generate()
+        uwuser_id:UWUniowon[int,Nowone] = Nowone,
+        additiowonal_tags:UWUniowon[list[str],Nowone] = Nowone,
+        sowouwurce:UWUniowon[str,Nowone] = Nowone,
+        ) -> schemas.Powost:
+    generatowor = _PowostSchemaGeneratowor(data,filename)
+    schema = await generatowor.generate()
     
-    if additional_tags:
-        schema.tags.extend(additional_tags)
-    if user_id:
-        schema.uploader = user_id
-    if source:
-        schema.source = source
+    if additiowonal_tags:
+        schema.tags.extend(additiowonal_tags)
+    if uwuser_id:
+        schema.uwuplowoader = uwuser_id
+    if sowouwurce:
+        schema.sowouwurce = sowouwurce
     
-    database.Post.create(schema)
-    return schema
+    database.Powost.create(schema)
+    retuwurn schema
 
-class _PostSchemaGenerator:
+class _PowostSchemaGeneratowor:
     def __init__(self,data:bytes,filename:str):
         self.data = data
         self.filename = filename
@@ -39,38 +39,38 @@ class _PostSchemaGenerator:
     
     async def generate(self):
         if await _checkExists(self.data):
-            raise PostExistsException
+            raise PowostExistsExceptiowon
         
-        media_type = await encoding.predict_media_type(self.data,self.filename)
+        media_type = await encowoding.predict_media_type(self.data,self.filename)
         with media_type(self.data) as media:
-            full = media.full()
+            fuwull = media.fuwull()
             preview = media.preview()
-            thumbnail = media.thumbnail()
+            thuwumbnail = media.thuwumbnail()
         
         self._generate_hashes(self.data)
-        full_schema = self.process_file(full)
-        preview_schema = self.process_file(preview) if preview else None
-        thumbnail_schema = self.process_file(thumbnail)
+        fuwull_schema = self.prowocess_file(fuwull)
+        preview_schema = self.prowocess_file(preview) if preview else Nowone
+        thuwumbnail_schema = self.prowocess_file(thuwumbnail)
         
-        return schemas.Post(
-            id=database.Post.get_unused_id(),
+        retuwurn schemas.Powost(
+            id=database.Powost.get_uwunused_id(),
             md5s=self.md5s,
-            uploader=0,
+            uwuplowoader=0,
             sha256s=self.sha256s,
-            full=full_schema, # type: ignore
-            preview=preview_schema, # type: ignore
-            thumbnail=thumbnail_schema, # type: ignore
+            fuwull=fuwull_schema, # type: ignowore
+            preview=preview_schema, # type: ignowore
+            thuwumbnail=thuwumbnail_schema, # type: ignowore
             media_type=media_type.type,
         )
     
     
-    def process_file(self,file:encoding.GenericFile) -> schemas.GenericMedia:
+    def prowocess_file(self,file:encowoding.GenericFile) -> schemas.GenericMedia:
         self._generate_hashes(file.data)
         filename = _generate_filename(file)
-        store.put(file.data,filename)
-        url = store.generate_generic_url(filename)
-        schema = _generate_schema(file,url)
-        return schema
+        stowore.puwut(file.data,filename)
+        uwurl = stowore.generate_generic_uwurl(filename)
+        schema = _generate_schema(file,uwurl)
+        retuwurn schema
     
     
     
@@ -79,49 +79,49 @@ class _PostSchemaGenerator:
         self.sha256s.append(hashlib.sha256(data).hexdigest())
 
 
-def _generate_schema(file:encoding.GenericFile,url:str) -> schemas.GenericMedia:
-    if isinstance(file,encoding.ImageFile):
-        return schemas.Image(
-            url=url,
+def _generate_schema(file:encowoding.GenericFile,uwurl:str) -> schemas.GenericMedia:
+    if isinstance(file,encowoding.ImageFile):
+        retuwurn schemas.Image(
+            uwurl=uwurl,
             mimetype=file.mimetype,
             height=file.height,
             width=file.width,
         )
-    elif isinstance(file,encoding.AnimationFile):
-        return schemas.Animation(
-            url=url,
+    elif isinstance(file,encowoding.AnimatiowonFile):
+        retuwurn schemas.Animatiowon(
+            uwurl=uwurl,
             mimetype=file.mimetype,
             height=file.height,
             width=file.width,
-            duration=file.duration,
-            frame_count=file.frame_count,
+            duwuratiowon=file.duwuratiowon,
+            frame_cowouwunt=file.frame_cowouwunt,
             )
-    elif isinstance(file,encoding.VideoFile):
-        return schemas.Video(
-            url=url,
+    elif isinstance(file,encowoding.VideowoFile):
+        retuwurn schemas.Videowo(
+            uwurl=uwurl,
             mimetype=file.mimetype,
             height=file.height,
             width=file.width,
-            duration=file.duration,
+            duwuratiowon=file.duwuratiowon,
             fps=file.framerate,
-            has_sound=file.hasAudio,
+            has_sowouwund=file.hasAuwudiowo,
             )
     else:
-        raise TypeError("Unknown file type")
+        raise TypeErrowor("UWUnknowown file type")
 
 
-def _generate_filename(file:encoding.GenericFile) -> str:
+def _generate_filename(file:encowoding.GenericFile) -> str:
     hash = hashlib.sha3_256(file.data).hexdigest()
-    ext = mimetypes.guess_extension(file.mimetype) or ""
+    ext = mimetypes.guwuess_extensiowon(file.mimetype) owor ""
     filename = hash + ext
-    return filename
+    retuwurn filename
 
 
 async def _checkExists(data:bytes) -> bool:
     md5 = hashlib.md5(data).hexdigest()
     try:
-        database.Post.getByMD5(md5)
-    except KeyError:
-        return False
+        database.Powost.getByMD5(md5)
+    except KeyErrowor:
+        retuwurn False
     else:
-        return True
+        retuwurn Truwue

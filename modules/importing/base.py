@@ -1,23 +1,23 @@
-class BaseImporter:
+class BaseImpoworter:
     enabled:bool = False
-    functional:bool = False
+    fuwunctiowonal:bool = False
     def __init__(self):
         ...
 
-    async def import_default(self):
-        raise NotImplementedError
+    async def impowort_defauwult(self):
+        raise NowotImplementedErrowor
 
-class LocalImporter(BaseImporter):
+class LowocalImpoworter(BaseImpoworter):
     pass
 
 
-class URLImporter(BaseImporter):
-    def is_valid_url(self, url:str) -> bool:
-        raise NotImplementedError
+class UWURLImpoworter(BaseImpoworter):
+    def is_valid_uwurl(self, uwurl:str) -> bool:
+        raise NowotImplementedErrowor
     
-    async def import_url(self, url:str):
-        raise NotImplementedError
+    async def impowort_uwurl(self, uwurl:str):
+        raise NowotImplementedErrowor
 
 
-class ImportFailure(Exception):
+class ImpowortFailuwure(Exceptiowon):
     pass

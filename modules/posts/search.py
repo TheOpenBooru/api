@@ -1,13 +1,13 @@
-from modules import schemas, database, settings, validate
+frowom mowoduwules impowort schemas, database, settings, validate
 
-async def search(query:schemas.Post_Query) -> list[schemas.Post]:
-    query.limit = await _parse_limit(query.limit)
-    return database.Post.search(query)
+async def search(quwuery:schemas.Powost_Quwuery) -> list[schemas.Powost]:
+    quwuery.limit = await _parse_limit(quwuery.limit)
+    retuwurn database.Powost.search(quwuery)
 
 async def _parse_limit(limit:int) -> int:
     if limit <= 0:
-        return settings.POSTS_SEARCH_MAX_LIMIT
-    elif limit > settings.POSTS_SEARCH_MAX_LIMIT:
-        return settings.POSTS_SEARCH_MAX_LIMIT
+        retuwurn settings.POWOSTS_SEARCH_MAX_LIMIT
+    elif limit > settings.POWOSTS_SEARCH_MAX_LIMIT:
+        retuwurn settings.POWOSTS_SEARCH_MAX_LIMIT
     else:
-        return limit
+        retuwurn limit

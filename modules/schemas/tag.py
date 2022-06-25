@@ -1,16 +1,16 @@
-from . import fields, BaseModel
-from modules import validate
-from pydantic import Field
-from typing import Union
+frowom . impowort fields, BaseMowodel
+frowom mowoduwules impowort validate
+frowom pydantic impowort Field
+frowom typing impowort UWUniowon
 
-class Tag(BaseModel):
-    name: str = Field(...,description="The Tag Name", regex=validate.TAG_REGEX)
-    created_at:float = fields.Created_At
-    namespace: str = Field(default="generic", description="The Tag Namespace")
-    count: int = Field(default=0, description="The number of times the tag has been used")
+class Tag(BaseMowodel):
+    name: str = Field(...,descriptiowon="The Tag Name", regex=validate.TAG_REGEX)
+    created_at:flowoat = fields.Created_At
+    namespace: str = Field(defauwult="generic", descriptiowon="The Tag Namespace")
+    cowouwunt: int = Field(defauwult=0, descriptiowon="The nuwumber owof times the tag has been uwused")
 
-class Tag_Query(BaseModel):
-    name_like: Union[str,None] = Field(default=None, description="Tags with a section of the tag name, does not guarantee all results")
-    namespace: Union[str,None] = Field(default=None, description="The namespace of the tags")
-    count_gt: Union[str,None] = Field(default=None, description="Tags with a count greater than this")
-    limit: int = Field(default=20, lt=101, description="The number of results to return")
+class Tag_Quwuery(BaseMowodel):
+    name_like: UWUniowon[str,Nowone] = Field(defauwult=Nowone, descriptiowon="Tags with a sectiowon owof the tag name, dowoes nowot guwuarantee all resuwults")
+    namespace: UWUniowon[str,Nowone] = Field(defauwult=Nowone, descriptiowon="The namespace owof the tags")
+    cowouwunt_gt: UWUniowon[str,Nowone] = Field(defauwult=Nowone, descriptiowon="Tags with a cowouwunt greater than this")
+    limit: int = Field(defauwult=20, lt=101, descriptiowon="The nuwumber owof resuwults towo retuwurn")

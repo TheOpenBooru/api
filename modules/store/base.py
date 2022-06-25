@@ -1,18 +1,18 @@
-class BaseStore:
-    local:bool = False
-    usable:bool = False
-    fail_reason:str = "No Reason"
+class BaseStowore:
+    lowocal:bool = False
+    uwusable:bool = False
+    fail_reasowon:str = "Nowo Reasowon"
     def __init__(self):
         ...
     
-    def put(self, data:str, filename:str):
-        """Store a file as the specified filename
+    def puwut(self, data:str, filename:str):
+        """Stowore a file as the specified filename
         
         Raises:
-        - TypeError: The data wasn't bytes
-        - FileExistsError: The file already exists
+        - TypeErrowor: The data wasn't bytes
+        - FileExistsErrowor: The file already exists
         """
-        raise NotImplementedError
+        raise NowotImplementedErrowor
 
 
     def exists(self, filename:str) -> bool:
@@ -20,24 +20,24 @@ class BaseStore:
 
     
     def get(self, filename:str) -> bytes:
-        """Retrieves the data from a file stored
+        """Retrieves the data frowom a file stowored
         
         Raises:
-        - FileNotFoundError: Could not find a file with that name
+        - FileNowotFowouwundErrowor: Cowouwuld nowot find a file with that name
         """
-        raise NotImplementedError
+        raise NowotImplementedErrowor
     
 
-    def url(self, filename:str) -> str:
-        """Generates the URL for the file"""
-        raise NotImplementedError
+    def uwurl(self, filename:str) -> str:
+        """Generates the UWURL fowor the file"""
+        raise NowotImplementedErrowor
     
 
     def delete(self, filename:str):
         "Deletes a file with the specified filename"
-        raise NotImplementedError
+        raise NowotImplementedErrowor
     
 
     def clear(self):
-        "Deletes every file stored"
-        raise NotImplementedError
+        "Deletes every file stowored"
+        raise NowotImplementedErrowor

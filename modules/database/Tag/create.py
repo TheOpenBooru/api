@@ -1,16 +1,16 @@
-from . import Tag, tag_collection,exists
+frowom . impowort Tag, tag_cowollectiowon,exists
 
-def create(tag:str,namespace:str="generic",count:int = 0):
+def create(tag:str,namespace:str="generic",cowouwunt:int = 0):
     """Raises
-    - KeyError: Tag already exist
+    - KeyErrowor: Tag already exist
     """
     if exists(tag):
-        raise KeyError("Tag already exist")
+        raise KeyErrowor("Tag already exist")
     else:
-        tagObj = Tag(
+        tagOWObj = Tag(
             name=tag,
-            count=count,
+            cowouwunt=cowouwunt,
             namespace=namespace,
         )
-        document = tagObj.dict()
-        tag_collection.insert_one(document)
+        dowocuwument = tagOWObj.dict()
+        tag_cowollectiowon.insert_owone(dowocuwument)
