@@ -67,11 +67,18 @@ class _PostSchemaGenerator:
     def process_file(self,file:encoding.GenericFile) -> schemas.GenericMedia:
         self._generate_hashes(file.data)
         filename = _generate_filename(file)
-        store.put(file.data,filename)
+        self._save_file(file.data,filename)
         url = store.generate_generic_url(filename)
         schema = _generate_schema(file,url)
         return schema
-    
+
+    def _save_file(self,data:bytes,filename:str):
+        try:
+            store.put(data,filename)
+        except FileExistsError:
+            store.delete(filename)
+            store.put(data,filename)
+        
     
     
     def _generate_hashes(self,data:bytes):
