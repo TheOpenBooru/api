@@ -74,14 +74,3 @@ class VideoProbe(Probe):
             return float(self._video_stream['nb_frames'])
         else:
             return None
-
-
-class ImageProbe(Probe):
-    def __init__(self,filepath):
-        self.filepath = filepath
-        with open(filepath,'rb') as f:
-            self.data = f.read()
-
-    @cached_property
-    def extention(self) -> str:
-        return "jpg"
