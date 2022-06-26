@@ -1,6 +1,7 @@
 from . import router
-from modules import schemas, account
-from fastapi import Body
+from modules import account
+from modules.fastapi.dependencies import RateLimit
+from fastapi import Body, Depends
 from fastapi.responses import PlainTextResponse
 
 
@@ -10,6 +11,7 @@ from fastapi.responses import PlainTextResponse
         400:{"description":"Password does not meet requirements"},
         409:{"description":"Username already exists"},
     },
+    dependencies=[Depends(RateLimit("1/minute"))]
 )
 async def register(username: str = Body(), password: str = Body()):
     try:

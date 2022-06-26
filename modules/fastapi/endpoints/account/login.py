@@ -1,5 +1,6 @@
 from . import router
 from modules import account
+from modules.fastapi.dependencies import RateLimit
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import Response, Depends
 from fastapi.responses import JSONResponse, PlainTextResponse
@@ -12,7 +13,8 @@ from fastapi.encoders import jsonable_encoder
         200:{"description":"Successfully Signed in and Provided a Token"},
         401:{"description":"Invalid Username or Password"},
         406:{"description":"User's Password Was Reset"},
-    }
+    },
+    dependencies=[Depends(RateLimit("5/minute"))]
 )
 async def login(oauth:OAuth2PasswordRequestForm = Depends()):
     try:
