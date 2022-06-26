@@ -1,26 +1,23 @@
 from .. import router
-from modules import store, settings
+from modules import store
 from fastapi import Response, status
-from fastapi.responses import RedirectResponse, StreamingResponse
+from fastapi.responses import RedirectResponse, FileResponse
 
 
-@router.get("/image/{file}",
+@router.get("/image/{filename}",
     include_in_schema=False
 )
-def get_image(file:str):
+def get_image(filename:str):
     CACHE_HEADER = {
         "Cache-Control": "max-age=31536000, public"
     }
     if store.method.local == True:
         try:
-            data = store.get(file)
+            path = store.method.path(filename)
         except FileNotFoundError:
             return Response(status_code=status.HTTP_404_NOT_FOUND)
         else:
-            return StreamingResponse(
-                data,
-                headers=CACHE_HEADER
-            )
+            return FileResponse(path,headers=CACHE_HEADER)
     else:
-        url = store.url(file)
+        url = store.url(filename)
         return RedirectResponse(url=url)
