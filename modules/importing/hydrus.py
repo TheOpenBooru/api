@@ -1,5 +1,5 @@
 from . import LocalImporter, _normalise_tags
-from modules import posts, settings
+from modules import posts, settings, database
 from typing import Union
 import hydrus_api
 from tqdm import tqdm
@@ -28,6 +28,13 @@ class Hydrus(LocalImporter):
 
 
     async def _import_post(self,post_id:int,metadata:dict):
+        try:
+            database.Post.getBySHA256(metadata['hash'])
+        except KeyError:
+            pass
+        else:
+            return
+        
         raw_tags = await self._extract_tags(metadata)
         source = await self._extract_source(raw_tags)
         raw_tags = list(filter(lambda x:"source:" not in x,raw_tags))
@@ -59,6 +66,6 @@ class Hydrus(LocalImporter):
         sources = list(filter(lambda x: x.startswith("source:") , tags))
         if sources:
             source = sources[0].replace("source:","")
-            return sources[0]
+            return source
         else:
             return None
