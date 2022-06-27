@@ -1,3 +1,4 @@
+import logging
 from . import LocalImporter, _normalise_tags
 from modules import posts, settings, database
 from typing import Union
@@ -21,13 +22,16 @@ class Hydrus(LocalImporter):
     async def import_default(self):
         ids = self.client.search_files(
             settings.IMPORT_HYDRUS_TAGS,
-            file_sort_type=hydrus_api.FileSortType.RANDOM
+            file_sort_type=hydrus_api.FileSortType.IMPORT_TIME,
         )
         metadatas = self.client.get_file_metadata(file_ids=ids) # type: ignore
 
         zipped = list(zip(ids,metadatas))
         for id,metadata in tqdm(zipped, desc="Importing From Hydrus"):
-            await self._import_post(id,metadata)
+            try:
+                await self._import_post(id,metadata)
+            except Exception as e:
+                logging.info(f"Hydrus Failed Import [{metadata['hash']}]: {e}")
 
 
     async def _import_post(self,post_id:int,metadata:dict):
