@@ -21,6 +21,8 @@ config:
     hostname: "localhost"
     port: 27017
     name: "openbooru"
+    username: ""
+    password: ""
   smtp:
     email: ""
     password: ""

@@ -65,6 +65,8 @@ WIPE_ON_STARTUP:bool = get("config.wipe_on_startup")
 MONGODB_DB_NAME:str = get("config.mongodb.name")
 MONGODB_HOSTNAME:str = get("config.mongodb.hostname")
 MONGODB_PORT:int = get("config.mongodb.port")
+MONGODB_USERNAME:int = get("config.mongodb.username")
+MONGODB_PASSWORD:int = get("config.mongodb.password")
 
 # Import
 
