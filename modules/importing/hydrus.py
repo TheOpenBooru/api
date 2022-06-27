@@ -36,7 +36,10 @@ class Hydrus(LocalImporter):
             return
         
         raw_tags = await self._extract_tags(metadata)
-        source = await self._extract_source(raw_tags)
+        source = ""
+        if metadata['known_urls']:
+            source = metadata['known_urls'][0]
+        
         raw_tags = list(filter(lambda x:"source:" not in x,raw_tags))
         tags = _normalise_tags(raw_tags)
         
@@ -60,12 +63,3 @@ class Hydrus(LocalImporter):
         for tags in tag_lists.values():
             all_tags.extend(tags)
         return all_tags
-
-    
-    async def _extract_source(self,tags:list[str]) -> Union[str,None]:
-        sources = list(filter(lambda x: x.startswith("source:") , tags))
-        if sources:
-            source = sources[0].replace("source:","")
-            return source
-        else:
-            return None
