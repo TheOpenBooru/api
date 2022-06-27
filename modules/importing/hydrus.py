@@ -19,7 +19,10 @@ class Hydrus(LocalImporter):
 
 
     async def import_default(self):
-        ids = self.client.search_files(settings.IMPORT_HYDRUS_TAGS)
+        ids = self.client.search_files(
+            settings.IMPORT_HYDRUS_TAGS,
+            file_sort_type=hydrus_api.FileSortType.RANDOM
+        )
         metadatas = self.client.get_file_metadata(file_ids=ids) # type: ignore
 
         zipped = list(zip(ids,metadatas))
@@ -58,8 +61,11 @@ class Hydrus(LocalImporter):
 
 
     async def _extract_tags(self,metadata:dict) -> list[str]:
-        tag_lists = metadata['service_names_to_statuses_to_tags']['all known tags']
-        all_tags = []
-        for tags in tag_lists.values():
-            all_tags.extend(tags)
-        return all_tags
+        try:
+            tag_lists = metadata['service_names_to_statuses_to_tags']['all known tags']
+            all_tags = []
+            for tags in tag_lists.values():
+                all_tags.extend(tags)
+            return all_tags
+        except Exception:
+            return []
