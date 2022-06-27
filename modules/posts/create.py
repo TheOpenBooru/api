@@ -1,3 +1,4 @@
+import base64
 from modules import schemas,encoding,database,encoding,store
 import mimetypes
 import hashlib
@@ -118,7 +119,10 @@ def _generate_schema(file:encoding.GenericFile,url:str) -> schemas.GenericMedia:
 
 
 def _generate_filename(file:encoding.GenericFile) -> str:
-    hash = hashlib.sha3_256(file.data).hexdigest()
+    hash_bytes = hashlib.sha3_256(file.data).digest()
+    hash = base64.urlsafe_b64encode(hash_bytes).decode()
+    hash = hash[:10]
+    
     ext = mimetypes.guess_extension(file.mimetype) or ""
     filename = hash + ext
     return filename
