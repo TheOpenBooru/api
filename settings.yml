@@ -3,7 +3,7 @@ config:
   site:
     display_name: Open Booru
     hostname: "slate"
-    port: 8443
+    port: 443
   ssl:
     enabled: false
     key: ""
