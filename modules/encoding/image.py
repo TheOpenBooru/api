@@ -8,8 +8,6 @@ from dataclasses import dataclass
 from PIL import Image as PILImage
 import io
 
-# Prevent large images performance impact
-
 
 @dataclass
 class Image(BaseMedia):
@@ -37,6 +35,7 @@ class Image(BaseMedia):
             raise ValueError("Image is too big to process")
         except Exception as e:
             raise ValueError(str(e))
+        
         self._dimensions = Dimensions(pil_img.width,pil_img.height)
         self._PIL = pil_img
         return self
