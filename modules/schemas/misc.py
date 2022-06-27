@@ -2,9 +2,15 @@ from . import Image,fields,BaseModel
 from pydantic import Field
 
 
+
+class StatusConfig(BaseModel):
+    DefaultSort:str = Field(..., description="The post search default sort")
+    SearchLimit:int = Field(..., description="The post search post limit")
+    SiteName:str = Field(..., description="The API's Diplay Name")
+
 class Status(BaseModel):
     version: str = Field(..., description="The current API version")
-    status: bool = Field(..., description="Is the server up?")
+    config: StatusConfig = Field(..., description="The current server config")
 
 
 class Author(BaseModel):

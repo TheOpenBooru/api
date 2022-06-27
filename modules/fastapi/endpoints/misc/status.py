@@ -12,7 +12,5 @@ def get_status():
             "DefaultSort":settings.POSTS_SEARCH_DEFAULT_SORT,
             "SearchLimit":settings.POSTS_SEARCH_MAX_LIMIT,
             "SiteName":settings.SITE_NAME,
-            "Hostname":settings.HOSTNAME,
-            "Port":settings.PORT,
         }
     }
