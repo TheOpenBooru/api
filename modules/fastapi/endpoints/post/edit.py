@@ -9,8 +9,8 @@ from typing import Union
 
 @router.patch('/post/{id}',
     responses={
-        202:{"description":"Not Implemented"},
-        404:{"description":"The Post Could Not Be Found"},
+        400:{"description":"Post Edit Failure"},
+        404:{"description":"Post Could Not Be Found"},
     },
     response_model=schemas.Post,
     dependencies=[
