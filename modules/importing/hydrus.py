@@ -6,13 +6,15 @@ import hydrus_api
 from tqdm import tqdm
 
 class Hydrus(LocalImporter):
+    name = "Hydrus"
     enabled: bool = settings.IMPORT_HYDRUS_ENABLED
     def __init__(self):
         try:
             self.client = hydrus_api.Client(
                 access_key=settings.IMPORT_HYDRUS_KEY,
-                api_url=settings.IMPORT_HYDRUS_URL 
+                api_url=settings.IMPORT_HYDRUS_URL
             )
+            self.client.get_api_version()
         except Exception:
             self.functional = False
         else:

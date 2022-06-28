@@ -8,6 +8,7 @@ import re
 import requests
 
 class Tumblr(URLImporter):
+    name = "Tumblr"
     enabled = settings.IMPORT_TUMBLR_ENABLED
     def __init__(self):
         try:

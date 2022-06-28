@@ -1,4 +1,5 @@
 class BaseImporter:
+    name:str
     enabled:bool = False
     functional:bool = False
     def __init__(self):

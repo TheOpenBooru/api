@@ -7,6 +7,7 @@ import logging
 
 
 class Files(LocalImporter):
+    name = "Files"
     enabled = settings.IMPORT_FILES_ENABLED
     async def import_default(self):
         tag_files = {}

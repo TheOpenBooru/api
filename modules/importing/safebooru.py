@@ -10,6 +10,7 @@ import requests
 
 
 class Safebooru(URLImporter):
+    name = "Safebooru"
     enabled = settings.IMPORT_SAFEBOORU_ENABLED
     def __init__(self):
         try:
