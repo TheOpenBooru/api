@@ -27,6 +27,8 @@ class Hydrus(LocalImporter):
             file_sort_type=hydrus_api.FileSortType.IMPORT_TIME,
         )
         metadatas = self.client.get_file_metadata(file_ids=ids) # type: ignore
+        ids.reverse()
+        metadatas.reverse()
 
         zipped = list(zip(ids,metadatas))
         for id,metadata in tqdm(zipped, desc="Importing From Hydrus"):
