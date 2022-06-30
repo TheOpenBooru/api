@@ -51,7 +51,6 @@ class Hydrus(LocalImporter):
         if metadata['known_urls']:
             source = metadata['known_urls'][0]
         
-        raw_tags = list(filter(lambda x:"source:" not in x,raw_tags))
         tags = _normalise_tags(raw_tags)
         
         r = self.client.get_file(file_id=post_id)
