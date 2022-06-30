@@ -66,7 +66,7 @@ class test_Create(TestCase):
     def test_prevents_duplicates_md5s(self):
         post_a = generate_post()
         post_b = generate_post()
-        post_b.md5s = post_a.md5s = ['f'*32]
+        post_b.hashes.md5s = post_a.hashes.md5s = ['f'*32]
         Post.create(post_a)
         self.assertRaises(KeyError,Post.create,post_b)
     
@@ -121,7 +121,7 @@ class test_DatabasePosts_getByMD5(TestCase):
     def setUp(self):
         self.post = generate_post()
         self.md5 = "a"*32
-        self.post.md5s = [self.md5]
+        self.post.hashes.md5s = [self.md5]
         Post.create(self.post)
 
     def test_Retrieves_Successfully(self):

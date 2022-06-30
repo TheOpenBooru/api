@@ -52,12 +52,12 @@ class _PostSchemaGenerator:
         full_schema = self.process_file(full)
         preview_schema = self.process_file(preview) if preview else None
         thumbnail_schema = self.process_file(thumbnail)
-        
+
+        hashes = schemas.Hashes(md5s=self.md5s,sha256s=self.sha256s)
         return schemas.Post(
             id=database.Post.get_unused_id(),
-            md5s=self.md5s,
             uploader=0,
-            sha256s=self.sha256s,
+            hashes=hashes,
             full=full_schema, # type: ignore
             preview=preview_schema, # type: ignore
             thumbnail=thumbnail_schema, # type: ignore

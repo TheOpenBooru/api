@@ -13,8 +13,8 @@ with open('data/test/sample_data.json') as f:
 
 
 class OutputLocation:
-    full = "./data/files/animation_full.webp"
-    thumbnail = "./data/files/animation_thumbnail.webp"
+    full = "./data/storage/animation_full.webp"
+    thumbnail = "./data/storage/animation_thumbnail.webp"
 
 def load_PIL_from_data(data) -> PILImage.Image:
     buf = io.BytesIO(data)

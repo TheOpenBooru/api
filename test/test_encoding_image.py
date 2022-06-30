@@ -22,9 +22,9 @@ class TestData:
 
 
 class OutputLocation:
-    full = Path("./data/files/image_full.webp")
-    preview = Path("./data/files/image_preview.webp")
-    thumbnail = Path("./data/files/image_thumbnail.webp")
+    full = Path("./data/storage/image_full.webp")
+    preview = Path("./data/storage/image_preview.webp")
+    thumbnail = Path("./data/storage/image_thumbnail.webp")
 
 
 def load_image(path:Union[str,Path]) -> tuple[ImageFile,ImageFile,ImageFile]:

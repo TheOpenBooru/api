@@ -10,8 +10,8 @@ with open('data/test/sample_data.json') as f:
     test_data = Box(_json['video'])
 
 class OutputLocation:
-    full = Path("./data/files/video_full.mp4")
-    thumbnail = Path("./data/files/video_thumbnail.webp")
+    full = Path("./data/storage/video_full.mp4")
+    thumbnail = Path("./data/storage/video_thumbnail.webp")
 
 class test_Heavy(unittest.TestCase):
     def setUp(self):
