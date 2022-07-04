@@ -1,18 +1,18 @@
 from . import post_collection
 
-def getByID(id:int) -> bool:
+def exists(id:int) -> bool:
     """Raises
     - KeyError: Could not find post
     """
     return _exists_by_filter({'id':id})
 
-def getByMD5(md5:str) -> bool:
+def md5_exists(md5:str) -> bool:
     """Raises
     - KeyError: Could not find post
     """
     return _exists_by_filter({"hashes":{"md5s":{'$elemMatch':{"$eq":md5}}}})
 
-def getBySHA256(sha256:str) -> bool:
+def sha256_exists(sha256:str) -> bool:
     """Raises
     - KeyError: Could not find post
     """

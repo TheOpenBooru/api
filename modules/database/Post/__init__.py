@@ -2,7 +2,7 @@ from modules.schemas import Post
 from .. import db
 
 from ._collection import post_collection
-from .exists import exists
+from .exists import exists,md5_exists,sha256_exists
 from .misc import all,clear,count,get_unused_id
 from .validation import is_post_unique,is_post_valid
 from .get import get, getByMD5, getBySHA256
