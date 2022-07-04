@@ -4,11 +4,15 @@ import unittest
 import random
 import requests
 
-settings.STORAGE_S3_BUCKET = "testbucket"
-method = S3Store()
+bucket_name = "test-" + settings.STORAGE_S3_BUCKET
+method = S3Store(bucket_name)
 
-@unittest.skipUnless(method.usable, method.fail_reason)
+@unittest.skipIf(settings.AWS_ID == "", reason="No AWS Credentials")
 class TestCase(unittest.TestCase):
+    def setUp(self):
+        if not method.usable:
+            raise RuntimeError(method.fail_reason)
+            
     def tearDown(self):
         method.clear()
 

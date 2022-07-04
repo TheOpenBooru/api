@@ -5,7 +5,14 @@ import boto3
 from pathlib import Path
 
 class S3Store(BaseStore):
-    def __init__(self):
+    _bucket_name:str
+    def __init__(self, bucket_name = settings.STORAGE_S3_BUCKET):
+        self._bucket_name = bucket_name
+        if bucket_name == "":
+            self.usable = False
+            self.fail_reason = "S3 Bucket Name was not set in settings"
+            return
+        
         s3_resource = boto3.resource('s3',
             aws_access_key_id=settings.AWS_ID,
             aws_secret_access_key=settings.AWS_SECRET,
@@ -20,18 +27,18 @@ class S3Store(BaseStore):
         logged_in = self._check_login()
         if not logged_in:
             self.usable = False
-            self.fail_reason = "Could not connect to AWS, check your credentials"
+            self.fail_reason = "Could authenticate AWS correctly, check your credentials or permissions."
             return
 
         try:
-            self._create_bucket()
-        except Exception:
+            self._create_bucket(bucket_name)
+        except Exception as e:
             self.usable = False
-            self.fail_reason = "Could not create S3 Bucket"
+            self.fail_reason = f"Could not create S3 Bucket, A bucket with that name may already exist. Try changing it.\n {e}"
             return
         
         self.usable = True
-        self.bucket = s3_resource.Bucket(settings.STORAGE_S3_BUCKET)
+        self.bucket = s3_resource.Bucket(bucket_name)
 
     
     def _check_login(self) -> bool:
@@ -42,12 +49,12 @@ class S3Store(BaseStore):
         else:
             return True
 
-    def _create_bucket(self):
+    def _create_bucket(self,bucket_name:str):
         buckets = self.s3.list_buckets()
         bucket_names = [x['Name'] for x in buckets['Buckets']]
-        if settings.STORAGE_S3_BUCKET not in bucket_names:
+        if bucket_name not in bucket_names:
             self.s3.create_bucket(
-                Bucket=settings.STORAGE_S3_BUCKET,
+                Bucket=bucket_name,
                 ACL='public-read',
                 CreateBucketConfiguration={"LocationConstraint": settings.AWS_REGION}
             )
@@ -59,10 +66,12 @@ class S3Store(BaseStore):
         buf = io.BytesIO(data)
         try:
             self.s3.upload_fileobj(
-                buf, settings.STORAGE_S3_BUCKET,filename,
+                buf,
+                self._bucket_name,
+                filename,
                 ExtraArgs={"ACL":"public-read"}
             )
-        except Exception:
+        except Exception as e:
             raise FileExistsError("The file already exists")
 
 
@@ -70,7 +79,7 @@ class S3Store(BaseStore):
         buf = io.BytesIO()
         try:
             self.s3.download_fileobj(
-                settings.STORAGE_S3_BUCKET,
+                self._bucket_name,
                 filename,
                 buf
             )
@@ -93,7 +102,7 @@ class S3Store(BaseStore):
     def url(self, filename:str) -> str:
         TEMPLATE = "https://{bucket}.s3.{region}.amazonaws.com/{filename}"
         return TEMPLATE.format(
-            bucket=settings.STORAGE_S3_BUCKET,
+            bucket=self._bucket_name,
             region=settings.AWS_REGION,
             filename=filename,
         )
@@ -102,7 +111,7 @@ class S3Store(BaseStore):
     def delete(self, filename:str):
         try:
             self.s3.delete_object(
-                Bucket=settings.STORAGE_S3_BUCKET,
+                Bucket=self._bucket_name,
                 Key=filename,
             )
         except Exception:
