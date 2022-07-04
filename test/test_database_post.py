@@ -72,10 +72,10 @@ class test_Create(TestCase):
     
     def test_prevents_duplicates_sha256(self):
         post_a = generate_post()
-        post_a.sha256s = ['f'*64]
+        post_a.hashes.sha256s = ['f'*64]
         Post.create(post_a)
         post_b = generate_post()
-        post_b.sha256s = ['f'*64]
+        post_b.hashes.sha256s = ['f'*64]
         self.assertRaises(KeyError,Post.create,post_b)
 
 
@@ -128,17 +128,17 @@ class test_DatabasePosts_getByMD5(TestCase):
         assert Post.getByMD5(self.md5) == self.post
     
     def test_NonExistant_Raises_Error(self):
-        self.assertRaises(KeyError,Post.getByMD5,"f"*16)
+        self.assertRaises(KeyError,Post.getByMD5,"f"*32)
 
 class test_DatabasePosts_getBySHA256(TestCase):
     def setUp(self):
         self.post = generate_post()
         self.sha256 = "a"*64
-        self.post.sha256s = [self.sha256]
+        self.post.hashes.sha256s = [self.sha256]
         Post.create(self.post)
 
     def test_Retrieves_Successfully(self):
         assert Post.getBySHA256(self.sha256) == self.post
     
     def test_NonExistant_Raises_Error(self):
-        self.assertRaises(KeyError,Post.getBySHA256,"f"*32)
+        self.assertRaises(KeyError,Post.getBySHA256,"f"*64)

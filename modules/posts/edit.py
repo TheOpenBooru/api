@@ -3,7 +3,11 @@ from modules import database, schemas, validate
 from typing import Union
 
 
-def editPost(post_id:int, editter_id:int, tags:Union[list[str], None], source:Union[str, None]):
+def editPost(post_id:int, editter_id:int,
+             tags:Union[list[str], None] = None,
+             source:Union[str, None] = None,
+             rating:Union[str, None] = None,
+             ):
     if tags == None and source == None:
         raise PostEditFailure("Neither tags nor source were provided")
 
@@ -22,7 +26,7 @@ def editPost(post_id:int, editter_id:int, tags:Union[list[str], None], source:Un
         new_post.source = source
     
     try:
-        edit = schemas.PostEdit(
+        edit = schemas.Post_Edit(
             post_id=post_id,
             editter_id=editter_id,
             old_source=old_post.source,
@@ -40,9 +44,6 @@ def editPost(post_id:int, editter_id:int, tags:Union[list[str], None], source:Un
     except Exception as e:
         logging.exception(e)
         raise PostEditFailure("Failed to Update Post")
-
-    return new_post
-
 
 
 class PostEditFailure(Exception):

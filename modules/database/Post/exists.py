@@ -10,13 +10,13 @@ def md5_exists(md5:str) -> bool:
     """Raises
     - KeyError: Could not find post
     """
-    return _exists_by_filter({"hashes":{"md5s":{'$elemMatch':{"$eq":md5}}}})
+    return _exists_by_filter({"hashes.md5s":{'$elemMatch':{"$eq":md5}}})
 
 def sha256_exists(sha256:str) -> bool:
     """Raises
     - KeyError: Could not find post
     """
-    return _exists_by_filter({"hashes":{"sha256s":{'$elemMatch':{"$eq":sha256}}}})
+    return _exists_by_filter({"hashes.sha256s":{'$elemMatch':{"$eq":sha256}}})
 
 def _exists_by_filter(filter: dict) -> bool:
     document = post_collection.find_one(filter)

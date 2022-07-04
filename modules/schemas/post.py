@@ -1,7 +1,7 @@
 from . import fields,BaseModel,GenericMedia,Image
 from modules import settings,validate
 from pydantic import Field
-from typing import Union
+from typing import Union, Optional
 from enum import Enum
 
 
@@ -18,17 +18,22 @@ class Valid_Post_Ratings(str, Enum):
     sensitive = "sensitive"
     mature = "mature"
     explicit = "explicit"
-    
 
-class PostEdit(BaseModel):
+
+
+class Post_Edit(BaseModel):
     created_at: float = fields.Created_At
-    post_id: int = fields.Item_ID
-    editter_id: int = fields.Item_ID
+    post_id: int = Field(..., description="The ID of the post the edit was performed on")
+    editter_id: Union[int,None] = Field(default=None, description="The ID of the user who submitted this edit, None for system edits")
     
-    old_tags: list[str] = fields.Tags
-    new_tags: list[str] = fields.Tags
+    old_tags: list[str] = Field(default=None, description="The Tags added in this edit")
+    new_tags: list[str] = Field(default=None, description="The Tags added in this edit")
+    
     old_source: str = Field(default="", description="The previous source for the post")
     new_source: str = Field(default="", description="The new source for the post")
+    
+    old_rating: str = Field(default="", description="The previous source for the post")
+    new_rating: str = Field(default="", description="The new source for the post")
 
 
 class Post_Query(BaseModel):
@@ -53,6 +58,7 @@ class Hashes(BaseModel):
     sha256s: list[str] = Field(default_factory=list, description="A list of SHA2 256bit Hashes")
     phash: list[str] = Field(default_factory=list, description="A list of SHA2 256bit Hashes")
 
+
 class Post(BaseModel):
     id: int = fields.Item_ID
     created_at: float = fields.Created_At
@@ -71,7 +77,7 @@ class Post(BaseModel):
 
     tags: list[str] = fields.Tags
     comments: list[int] = fields.Comments
-    edits: list[PostEdit] = Field(default_factory=list, description="The edits made to the post")
+    edits: list[Post_Edit] = Field(default_factory=list, description="The edits made to the post")
 
     upvotes: int = Field(default=0, description="Number of upvotes on the Post")
     downvotes: int = Field(default=0, description="Number of downvotes on the Post")
