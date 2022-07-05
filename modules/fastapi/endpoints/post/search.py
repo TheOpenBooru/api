@@ -1,8 +1,6 @@
 from . import router
-from modules import schemas, posts, settings
-from modules.schemas import Valid_Post_Sorts,Valid_Post_Ratings,Post
-from typing import Union
-from fastapi import Query
+from modules import schemas, posts
+from fastapi import Depends
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
@@ -14,32 +12,7 @@ from fastapi.encoders import jsonable_encoder
         200:{"description":"Successfully Retrieved"},
     },
 )
-async def search_posts(
-        index:int = Query(default=0, description="Offset by this many posts"),
-        limit:int = Query(default=settings.POSTS_SEARCH_MAX_LIMIT,lt=settings.POSTS_SEARCH_MAX_LIMIT + 1, description="Maximum number of posts to return"),
-        sort:Valid_Post_Sorts = Query(default=settings.POSTS_SEARCH_DEFAULT_SORT, description="The sort order for the posts"),
-        exclude_ratings:list[Valid_Post_Ratings] = Query(default=[], description="Exclude these ratings from the results"),
-        descending:bool = Query(default=True, description="The sort order for the posts"),
-        include_tags:list[str] = Query(default=[], description="Include posts with these tags"),
-        exclude_tags:list[str] = Query(default=[], description="Exclude posts with these tags"),
-        created_after:Union[float,None] = Query(default=None, description="Posts that were created after this unix timestamp"),
-        created_before:Union[float,None] = Query(default=None, description="Posts that were created before this unix timestamp"),
-        md5:Union[str,None] = Query(default=None, description="Posts with this md5"),
-        sha256:Union[str,None] = Query(default=None, description="Posts with this sha256"),
-        ):
-    query = schemas.Post_Query(
-        index=index,
-        limit=limit,
-        sort=sort,
-        exclude_ratings=exclude_ratings,
-        descending=descending,
-        include_tags=include_tags,
-        exclude_tags=exclude_tags,
-        created_after=created_after,
-        created_before=created_before,
-        md5=md5,
-        sha256=sha256,
-    )
+async def search_posts(query: schemas.Post_Query = Depends()):
     searched_posts = await posts.search(query)
     return JSONResponse(
         content=jsonable_encoder(searched_posts),
