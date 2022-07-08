@@ -33,14 +33,14 @@ class test_Animations_Preserve_Transparency(unittest.TestCase):
             with Animation(f.read()) as anim:
                 full = anim.full()
             self.PIL = load_PIL_from_data(full.data)
-    
+
     def test_Animations_Preserve_Transparency(self):
         PIL = self.PIL
         for x in range(PIL.n_frames):
             PIL.seek(x)
-            MinMax_Colours = PIL.getextrema()
-            max_transparency = MinMax_Colours[3][0]
-            assert max_transparency != 255, f"Frame {x} is not transparent"
+            RGB_MinMax_Values = PIL.getextrema()
+            MaxTransparency = RGB_MinMax_Values[3][0]
+            assert MaxTransparency != 255, f"Frame {x} is not transparent"
 
 
 class test_Animation_Full(unittest.TestCase):

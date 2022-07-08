@@ -1,0 +1,1 @@
+VALID_PASSWORD = r"MZR}tmL{,#:vmC'__\BTw#x2aVq+\Q{)"

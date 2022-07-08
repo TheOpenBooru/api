@@ -1,15 +1,11 @@
+from . import VALID_PASSWORD
 from modules.account import auth
-import time
-from tqdm import tqdm
 import unittest
-import random
-
-VALID_PASSWORD = r"MZR}tmL{,#:vmC'__\BTw#x2aVq+\Q{)"
 
 class test_Register_and_Signin(unittest.TestCase):
     def tearDown(self):
         auth.delete('user1')
-    
+        
     def test_Register_and_Signin(self):
         auth.register('user1',VALID_PASSWORD)
         assert auth.login('user1',VALID_PASSWORD)
@@ -21,20 +17,20 @@ class test_Register_and_Signin(unittest.TestCase):
 class test_Register_and_Delete(unittest.TestCase):
     def tearDown(self):
         auth.delete('user1')
-    
-    
-    def test_Register_and_Signin(self):
+
+    def test_Register_and_Delete(self):
         auth.register('user1',VALID_PASSWORD)
         assert auth.login('user1',VALID_PASSWORD)
         assert auth.login('user1','abc') == False
+
 
 class test_Password_Changes_Updates_Password(unittest.TestCase):
     def setUp(self):
         auth.register('user1',VALID_PASSWORD)
     def tearDown(self):
         auth.delete('user1')
-    
-    def test_Register_and_Signin(self):
+
+    def test_Password_Changes_Updates_Password(self):
         new_password = VALID_PASSWORD + 'a'
         auth.change_password('user1',new_password)
         assert auth.login('user1',VALID_PASSWORD) == False
