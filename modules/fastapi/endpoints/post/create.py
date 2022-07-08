@@ -12,12 +12,13 @@ from fastapi.encoders import jsonable_encoder
     responses= {
         201:{"description":"Successfully Created"},
         400:{"description":"Failed To Create Post From Image"},
+        401:{"description":"Authorization Failure"},
         409:{"description":"Post Already Exists"},
     },
     dependencies=[
         Depends(RequirePermission("canCreatePosts")),
         Depends(RateLimit("3/minute")),
-        ],
+    ],
 )
 async def create_post(image:UploadFile, user:account.Account = Depends(DecodeToken)):
     try:
