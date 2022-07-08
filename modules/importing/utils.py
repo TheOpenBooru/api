@@ -17,8 +17,9 @@ def _normalise_tags(tags:list[str]) -> list[str]:
 
 
 def _normalise_tag(tag:str) -> str:
-    if ":" in tag:
-        _,tag = tag.split(':')
+    sections = tag.split(':')
+    if len(sections) == 2:
+        _,tag = sections
     
     tag = tag.strip('\n')
     tag = tag.replace(' ','_')
