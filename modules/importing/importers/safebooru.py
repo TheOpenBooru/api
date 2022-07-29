@@ -59,7 +59,6 @@ class Safebooru(URLImporter):
                 post = await post_from_soup(post)
                 database.Post.insert(post)
             except Exception as e:
-                print(e)
                 continue
 
 
