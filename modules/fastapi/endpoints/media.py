@@ -20,4 +20,4 @@ def get_media(filename:str):
             return FileResponse(path,headers=CACHE_HEADER)
     else:
         url = store.url(filename)
-        return RedirectResponse(url=url,status_code=309)
+        return RedirectResponse(url=url,status_code=308)
