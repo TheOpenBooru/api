@@ -5,6 +5,7 @@ numpy
 python-box
 tqdm
 anyio
+coloredlogs
 
 # Importing
 bs4
