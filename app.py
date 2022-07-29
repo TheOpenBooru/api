@@ -1,4 +1,4 @@
-from modules import database, settings, importing, logging
+from modules import database, settings, importing
 from modules.fastapi import main_router
 from modules.fastapi.middleware import middlewares
 
@@ -7,7 +7,7 @@ from fastapi import FastAPI,responses
 
 app = FastAPI(
     title="Open Booru",
-    version="Alpha",
+    version="Alpha", 
     docs_url='/docs',
     middleware=middlewares,
 )
@@ -37,5 +37,6 @@ if __name__ == "__main__":
         "app:app",
         host='0.0.0.0',
         port=settings.PORT,
+        log_config="./data/logging.conf",
         **ssl_params,
     )
