@@ -8,5 +8,5 @@ def get(name:str) -> Tag:
     if document == None:
         raise KeyError(f'Tag does not exist')
     else:
-        tag = Tag.parse_raw(document)
+        tag = Tag.parse_obj(document)
         return tag

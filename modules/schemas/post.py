@@ -26,31 +26,33 @@ class Post_Edit(BaseModel):
     post_id: int = Field(..., description="The ID of the post the edit was performed on")
     editter_id: Union[int,None] = Field(default=None, description="The ID of the user who submitted this edit, None for system edits")
     
-    old_tags: list[str] = Field(default=None, description="The Tags added in this edit")
-    new_tags: list[str] = Field(default=None, description="The Tags added in this edit")
+    old_tags: list[str] = Field(default=None, description="The tags for the post before edit", regex=validate.TAG_REGEX, unique_items=True)
+    new_tags: list[str] = Field(default=None, description="The Tags added in this edit", regex=validate.TAG_REGEX, unique_items=True)
     
-    old_source: str = Field(default="", description="The previous source for the post")
+    old_source: str = Field(default="", description="The source for the post before edit")
     new_source: str = Field(default="", description="The new source for the post")
     
-    old_rating: str = Field(default="", description="The previous source for the post")
-    new_rating: str = Field(default="", description="The new source for the post")
+    old_rating: str = Field(default="", description="The rating for the post before edit")
+    new_rating: str = Field(default="", description="The new rating for the post")
 
 
 class Post_Query(BaseModel):
     index: int = Field(default=0, description="Offset from the start of the results")
-    limit: int = Field(default=64, description="Maximum number of results to return")
+    limit: int = Field(default=settings.POSTS_SEARCH_MAX_LIMIT, description="Maximum number of results to return")
     sort: Valid_Post_Sorts = Field(default=settings.POSTS_SEARCH_DEFAULT_SORT, description="How to sort the posts")
-    exclude_ratings: list[Valid_Post_Ratings] = Field(default_factory=list, description="Ratings to exlucde from the results")
+    exclude_ratings: list[Valid_Post_Ratings] = Field(default=[], description="Ratings to exlucde from the results")
     descending: bool = Field(default=True, description="Should search be ordered descending")
     
-    include_tags: list[str] = Field(default_factory=list)
-    exclude_tags: list[str] = Field(default_factory=list)
+    include_tags: list[str] = Field(default=[])
+    exclude_tags: list[str] = Field(default=[])
     
-    created_after:Union[float,None] = Field(default=None)
-    created_before:Union[float,None] = Field(default=None)
+    created_after:Optional[float] = Field(default=None)
+    created_before:Optional[float] = Field(default=None)
     
-    md5:Union[str,None] = Field(default=None, regex=validate.MD5_REGEX)
-    sha256:Union[str,None] = Field(default=None, regex=validate.SHA256_REGEX)
+    ids:Optional[list[int]] = Field(default=None)
+    md5:Optional[str] = Field(default=None, regex=validate.MD5_REGEX)
+    sha256:Optional[str] = Field(default=None, regex=validate.SHA256_REGEX)
+    source:Optional[str] = Field(default=None, regex=validate.URL_REGEX)
 
 
 class Hashes(BaseModel):
@@ -60,9 +62,9 @@ class Hashes(BaseModel):
 
 
 class Post(BaseModel):
-    id: int = fields.Item_ID
+    id: int = Field(...,description="The Post's Unique Id")
     created_at: float = fields.Created_At
-    uploader: int = fields.Item_ID
+    uploader: Union[int, None] = Field(default=None, description="The user ID of the person who uploaded this post, null means no creator")
     deleted: bool = Field(default=False, description="Whether the post has been deleted")
     source: str = Field(default="", description="The original source for the post")
     rating: Valid_Post_Ratings = Field(default="unrated", description="The default rating for a post")

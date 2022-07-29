@@ -4,12 +4,14 @@ requests
 numpy
 python-box
 tqdm
+anyio
 
 # Importing
 bs4
 lxml
 hydrus_api
 pytumblr
+tweepy>=4.10.0
 
 # Validation
 iso639

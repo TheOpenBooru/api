@@ -1,9 +1,12 @@
-from . import db
-from . import create,exists
+from . import db, create, exists
+from tqdm import tqdm
+import logging, time
+from modules import settings
 
 post_collection = db['posts']
 
 def regenerate():
+    start = time.time()
     cur = post_collection.aggregate([
         {
             "$unwind":{
@@ -17,17 +20,21 @@ def regenerate():
             }
         }
     ])
-    
-    for doc in cur:
+    docs = list(cur)
+    for doc in tqdm(docs,"Regenerating Tags"):
         tag = doc['_id']
         count = doc['count']
+
+        if count <= settings.TAGS_MINIMUM_COUNT:
+            continue # Not important enough to be considered a tag
         
-        if ":" in tag:
-            namespace, tag = tag.split(":")
-        else:
-            namespace = "generic"
-            
         if not exists(tag):
-            create(tag,namespace,count)
+            create(tag,count=count)
         else:
-            post_collection.update_one({'name':tag},{'$set':{'count':count}})
+            post_collection.update_many(
+                filter={'name':tag},
+                update={'$set':{'count':count}}
+            )
+    
+    duration_ms = time.time() - start
+    logging.info(f"Tag Regeneration: tags:{len(docs)} time:{duration_ms:.3f}s")

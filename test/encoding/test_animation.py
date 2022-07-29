@@ -16,9 +16,11 @@ class OutputLocation:
     full = "./data/storage/animation_full.webp"
     thumbnail = "./data/storage/animation_thumbnail.webp"
 
+
 def load_PIL_from_data(data) -> PILImage.Image:
     buf = io.BytesIO(data)
     return PILImage.open(buf)
+
 
 class test_Animations_Require_More_Than_One_Frame(unittest.TestCase):
     def test_a(self):
@@ -27,6 +29,7 @@ class test_Animations_Require_More_Than_One_Frame(unittest.TestCase):
         self.assertRaises(ValueError, Animation, data)
 
 
+@unittest.skip("TODO")
 class test_Animations_Preserve_Transparency(unittest.TestCase):
     def setUp(self) -> None:
         with open(TestData.Transparent.file,'rb') as f:

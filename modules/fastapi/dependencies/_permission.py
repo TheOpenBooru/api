@@ -28,4 +28,3 @@ class RequirePermission:
                     status_code=401,
                     detail=f"Requires Permission: {self.permission}"
                 )
-    

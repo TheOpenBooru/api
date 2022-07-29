@@ -10,16 +10,18 @@ class PasswordRequirements:
     score:float
 
 def getPasswordRequirements() -> PasswordRequirements:
-    config = settings.PASSWORD_MIN_LENGTH
     return PasswordRequirements(
         min_length=settings.PASSWORD_MIN_LENGTH,
         max_length=settings.PASSWORD_MAX_LENGTH,
         score=settings.PASSWORD_REQUIRED_SCORE,
     )
 
-def isPasswordValid(password:str):
+def isPasswordValid(password:str) -> bool:
     requirements = getPasswordRequirements()
-    score = zxcvbn(password)['score']
+    try:
+        score = zxcvbn(password).get("score",0)
+    except Exception:
+        score = 0
     if len(password) < requirements.min_length:
         return False
     elif len(password) > requirements.max_length:

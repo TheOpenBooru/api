@@ -1,6 +1,6 @@
 from . import User, user_collection
 
-def create(user:User):
+def insert(user:User):
     """Raises:
     - KeyError: User already exists
     - ValueError: User is invalid

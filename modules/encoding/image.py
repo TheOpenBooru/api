@@ -40,6 +40,7 @@ class Image(BaseMedia):
         self._PIL = pil_img
         return self
 
+
     def __exit__(self, exception_type, exception_value, traceback):
         ...
 

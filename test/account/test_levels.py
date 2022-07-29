@@ -1,4 +1,4 @@
-from modules.account.levels import UserPermissions,permissions_from_level
+from modules.account.permissions import UserPermissions,permissions_from_level
 import unittest
 
 

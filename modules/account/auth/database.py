@@ -67,3 +67,8 @@ def delete(username:str):
             "DELETE FROM users WHERE username=?;",
             (username,)
         )
+
+
+def clear():
+    with conn:
+        conn.execute("DELETE FROM users;")

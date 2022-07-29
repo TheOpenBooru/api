@@ -13,7 +13,7 @@ class User_Public(BaseModel):
 
 
 class User(BaseModel):
-    id: int = fields.Item_ID
+    id: int = Field(..., description="The user's unique ID")
     created_at: float = fields.Created_At
 
     username: str = Field(..., description="The User's Name")

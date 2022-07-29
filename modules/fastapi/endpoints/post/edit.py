@@ -1,13 +1,13 @@
 from . import router
 from modules import schemas, posts, account
-from modules.fastapi.dependencies import DecodeToken,RequirePermission,RateLimit
+from modules.fastapi.dependencies import DecodeToken, RequirePermission, RateLimit, RequireCaptcha
 from modules.schemas import Valid_Post_Ratings
 
 from fastapi import Depends, Body, HTTPException, Response
 from typing import Union
 
 
-@router.patch('/post/{id}',
+@router.patch('/{id}',
     responses={
         202:{"description":"Post Edit Success"},
         400:{"description":"Post Edit Failure"},
@@ -15,8 +15,9 @@ from typing import Union
     },
     response_model=schemas.Post,
     dependencies=[
+        Depends(RequireCaptcha),
         Depends(RequirePermission("canEditPosts")),
-        Depends(RateLimit("5/minute")),
+        Depends(RateLimit("10/minute")),
     ],
 )
 async def edit_post(
@@ -27,7 +28,7 @@ async def edit_post(
         user:account.Account = Depends(DecodeToken)
         ):
     try:
-        posts.editPost(
+        posts.edit_post(
             post_id=id,
             editter_id=user.id,
             tags=tags,
@@ -35,6 +36,6 @@ async def edit_post(
             rating=rating
         )
     except posts.PostEditFailure as e:
-        raise HTTPException(status_code=400, detail=e.args[0])
+        raise HTTPException(status_code=400, detail=str(e))
     else:
         return Response(status_code=202)

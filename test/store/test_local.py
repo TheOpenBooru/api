@@ -3,7 +3,7 @@ import unittest
 import random
 from pathlib import Path
 
-method = store.LocalStore()
+method = store.LocalStore("./data/tmp")
 
 @unittest.skipUnless(method.usable, method.fail_reason)
 class TestCase(unittest.TestCase):

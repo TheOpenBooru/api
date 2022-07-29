@@ -2,10 +2,11 @@ from . import VALID_PASSWORD
 from modules.account import auth
 import unittest
 
+
 class test_Register_and_Signin(unittest.TestCase):
     def tearDown(self):
         auth.delete('user1')
-        
+    
     def test_Register_and_Signin(self):
         auth.register('user1',VALID_PASSWORD)
         assert auth.login('user1',VALID_PASSWORD)

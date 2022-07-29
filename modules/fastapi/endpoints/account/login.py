@@ -8,6 +8,7 @@ from fastapi.encoders import jsonable_encoder
 
 
 @router.post("/login",
+    operation_id="login",
     response_model=str,
     responses={
         200:{"description":"Successfully Signed in and Provided a Token"},
@@ -29,6 +30,4 @@ async def login(oauth:OAuth2PasswordRequestForm = Depends()):
             "token_type": "bearer"
         }
         json = jsonable_encoder(data)
-        return JSONResponse(
-            json
-        )
+        return JSONResponse(json)

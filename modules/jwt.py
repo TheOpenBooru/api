@@ -1,3 +1,4 @@
+from typing import Union
 from modules import settings as _settings
 import secrets as _secrets
 import time as _time
@@ -15,14 +16,16 @@ else:
 class BadTokenError(Exception):
     "The Token was Invalid, could be Corrupt, Invalid, Expired"
 
-def create(data:dict, expiration:int = _settings.DEFAULT_TOKEN_EXPIRATION) -> str:
+def create(data:dict, expiration:Union[int, None] = _settings.DEFAULT_TOKEN_EXPIRATION) -> str:
     """Raises:
     - ValueError: Data cannot contain the reserved field
     """
     if "exp" in data:
         raise ValueError(f"Data cannot contain a rerved field: 'exp'")
-
-    payload = data | {"exp": _time.time() + expiration}
+    
+    payload = data
+    if expiration != None:
+        payload = data | {"exp": _time.time() + expiration}
     return _jwt.encode(payload, _SECRET_KEY, algorithm="HS256")
 
 
@@ -35,5 +38,7 @@ def decode(token: str) -> dict:
     except Exception:
         raise BadTokenError("Malformed or Invalid Token")
     
-    data.pop("exp")
+    if "exp" in data:
+        data.pop("exp")
+    
     return data

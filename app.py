@@ -1,27 +1,18 @@
 from modules import database, settings, importing, logging
 from modules.fastapi import main_router
+from modules.fastapi.middleware import middlewares
 
 import uvicorn
 from fastapi import FastAPI,responses
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.middleware.gzip import GZipMiddleware
 
 app = FastAPI(
     title="Open Booru",
     version="Alpha",
     docs_url='/docs',
+    middleware=middlewares,
 )
-
-app.add_middleware(GZipMiddleware)
-app.add_middleware(CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-    allow_credentials=True,
-)
-
-
 app.include_router(main_router)
+
 
 @app.on_event("startup")
 async def startup_event():

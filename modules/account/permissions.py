@@ -9,6 +9,7 @@ class UserPermissions(_BaseModel):
     canDeleteUsers:bool = False
     
     canCreatePosts:bool = False
+    canVotePosts:bool = False
     canViewPosts:bool = False
     canSearchPosts:bool = False
     canEditPosts:bool = False

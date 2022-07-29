@@ -1,5 +1,5 @@
 from xml.etree.ElementInclude import include
-from . import Post, post_collection
+from . import Post, post_collection, parse_docs
 from modules import schemas
 import pymongo
 
@@ -12,14 +12,19 @@ def search(query:schemas.Post_Query = DEFAULT_QUERY) -> list[Post]:
         filters.append({'tags':{'$all':query.include_tags}})
     if query.exclude_tags:
         filters.append({'tags':{'$nin':query.exclude_tags}})
-    if query.md5:
-        filters.append({"hashes":{'md5s':{'$elemMatch':{"$eq":query.md5}}}})
-    if query.sha256:
-        filters.append({"hashes":{'sha256s':{'$elemMatch':{"$eq":query.sha256}}}})
     if query.created_after:
         filters.append({'created_at':{"$gt":query.created_after}})
     if query.created_before:
         filters.append({'created_at':{"$lt":query.created_before}})
+    
+    if query.ids:
+        filters.append({"id":{'$in':query.ids}})
+    if query.md5:
+        filters.append({"hashes":{'md5s':{'$elemMatch':{"$eq":query.md5}}}})
+    if query.sha256:
+        filters.append({"hashes":{'sha256s':{'$elemMatch':{"$eq":query.sha256}}}})
+    if query.source:
+        filters.append({"source":{'$elemMatch':{"$eq":query.source}}})
 
     direction = pymongo.DESCENDING if query.descending else pymongo.ASCENDING
     cursor = post_collection.find(
@@ -28,4 +33,4 @@ def search(query:schemas.Post_Query = DEFAULT_QUERY) -> list[Post]:
         limit=query.limit,
         sort=[(query.sort,direction)],
     )
-    return [Post.parse_obj(doc) for doc in cursor]
+    return parse_docs(cursor)

@@ -30,10 +30,10 @@ def generate_generic_url(filename:str) -> str:
     hostname = _settings.HOSTNAME
     port = _settings.PORT
     if port == 80:
-        return f"http://{hostname}/image/{filename}"
+        return f"http://{hostname}/media/{filename}"
     elif port == 443:
-        return f"https://{hostname}/image/{filename}"
+        return f"https://{hostname}/media/{filename}"
     elif _settings.SSL_ENABLED:
-        return f"https://{hostname}:{port}/image/{filename}"
+        return f"https://{hostname}:{port}/media/{filename}"
     else:
-        return f"http://{hostname}:{port}/image/{filename}"
+        return f"http://{hostname}:{port}/media/{filename}"

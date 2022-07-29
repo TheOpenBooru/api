@@ -1,0 +1,1 @@
+from .tagging_service import generate_ai_tags

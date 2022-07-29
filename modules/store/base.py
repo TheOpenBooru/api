@@ -16,7 +16,8 @@ class BaseStore:
 
 
     def exists(self, filename:str) -> bool:
-        ...
+        "Checks if a file exists"
+        raise NotImplementedError
 
     
     def get(self, filename:str) -> bytes:

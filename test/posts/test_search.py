@@ -1,15 +1,14 @@
 from modules import posts, schemas, importing, settings, database
 import unittest
 
-settings.STORAGE_METHOD = 'local'
-
 importer = importing.Safebooru()
 
 @unittest.skipUnless(importer.functional, "Could not import example data from SafeBooru")
 class test_Post_Search(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
-        await importer.import_default()
         settings.POSTS_SEARCH_MAX_LIMIT = 20
+        settings.IMPORT_SAFEBOORU_LIMIT = 100
+        await importer.load_default()
     
     async def asyncTearDown(self):
         database.Post.clear()

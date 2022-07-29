@@ -5,7 +5,7 @@ from modules.database import Post
 class test_get(TestCase):
     def setUp(self):
         self.post = generate_post()
-        Post.create(self.post)
+        Post.insert(self.post)
 
     def test_Retrieves_Successfully(self):
         assert Post.get(self.post.id) == self.post
@@ -19,7 +19,7 @@ class test_getByMD5(TestCase):
         self.post = generate_post()
         self.md5 = "a"*32
         self.post.hashes.md5s = [self.md5]
-        Post.create(self.post)
+        Post.insert(self.post)
 
     def test_Retrieves_Successfully(self):
         assert Post.getByMD5(self.md5) == self.post
@@ -33,7 +33,7 @@ class test_getBySHA256(TestCase):
         self.post = generate_post()
         self.sha256 = "a"*64
         self.post.hashes.sha256s = [self.sha256]
-        Post.create(self.post)
+        Post.insert(self.post)
 
     def test_Retrieves_Successfully(self):
         assert Post.getBySHA256(self.sha256) == self.post

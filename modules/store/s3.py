@@ -2,14 +2,13 @@ from modules import settings
 from .base import BaseStore
 import io
 import boto3
-from pathlib import Path
 
 class S3Store(BaseStore):
     _bucket_name:str
+    usable: bool = False
     def __init__(self, bucket_name = settings.STORAGE_S3_BUCKET):
         self._bucket_name = bucket_name
         if bucket_name == "":
-            self.usable = False
             self.fail_reason = "S3 Bucket Name was not set in settings"
             return
         
@@ -26,14 +25,12 @@ class S3Store(BaseStore):
         
         logged_in = self._check_login()
         if not logged_in:
-            self.usable = False
             self.fail_reason = "Could authenticate AWS correctly, check your credentials or permissions."
             return
 
         try:
             self._create_bucket(bucket_name)
         except Exception as e:
-            self.usable = False
             self.fail_reason = f"Could not create S3 Bucket, A bucket with that name may already exist. Try changing it.\n {e}"
             return
         

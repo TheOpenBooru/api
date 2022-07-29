@@ -29,13 +29,13 @@ class RateLimit:
         try:
             limit,per_timeunit = limit.split("/")
         except Exception:
-            raise ValueError("Bad Ratelimit String")
+            raise RuntimeError("Bad Ratelimit String")
 
         if per_timeunit not in TIMEUNIT_LOOKUP:
-            raise ValueError("Bad TimeUnit")
+            raise RuntimeError("Bad TimeUnit")
 
         if not limit.isdigit():
-            raise ValueError("Bad Per Value")
+            raise RuntimeError("Bad Per Value")
         
         self.limit = int(limit)
         self.per = TIMEUNIT_LOOKUP[per_timeunit]
@@ -49,18 +49,22 @@ class RateLimit:
             self.events[ip] = []
         
         if self.isBlocked(ip):
-            raise HTTPException(status.HTTP_429_TOO_MANY_REQUESTS)
+            time_left = int(time.time() - self.events[ip][-1])
+            raise HTTPException(
+                status.HTTP_429_TOO_MANY_REQUESTS,
+                headers={"Retry-After":str(time_left)}
+                )
         else:
             self.events[ip].append(time.time())
         
 
-    def isBlocked(self,key:str):
+    def isBlocked(self,ip:str):
         since = time.time() - self.per
 
         accesses = 0
-        for event in self.events[key]:
+        for event in self.events[ip]:
             if event < since:
-                self.events[key].remove(event)
+                self.events[ip].remove(event)
             else:
                 accesses += 1
 

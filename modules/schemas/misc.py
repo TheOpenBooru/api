@@ -3,14 +3,14 @@ from pydantic import Field
 
 
 
-class StatusConfig(BaseModel):
-    DefaultSort:str = Field(..., description="The post search default sort")
-    SearchLimit:int = Field(..., description="The post search post limit")
-    SiteName:str = Field(..., description="The API's Diplay Name")
-
 class Status(BaseModel):
     version: str = Field(..., description="The current API version")
-    config: StatusConfig = Field(..., description="The current server config")
+
+    default_sort:str = Field(..., description="The post search default sort")
+    search_limit:int = Field(..., description="The post search post limit")
+    sitename:str = Field(..., description="The API's Diplay Name")
+    
+    captcha_sitekey:str = Field(..., description="The HCaptcha Sitekey")
 
 
 class Author(BaseModel):

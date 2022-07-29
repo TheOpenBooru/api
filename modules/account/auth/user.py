@@ -14,9 +14,6 @@ def login(username:str,password:str) -> bool:
 
 
 def register(username:str,password:str):
-    """Raises:
-    - KeyError: User already exists
-    """
     if database.get(username) != None:
         database.delete(username) # Above system has priority, so deleting existing users is fine
     user = database.User(

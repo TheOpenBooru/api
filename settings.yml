@@ -2,17 +2,17 @@
 config:
   site:
     display_name: Open Booru
-    hostname: "slate"
-    port: 443
+    hostname: "localhost"
+    port: 8443
   ssl:
     enabled: false
-    key: ""
-    cert: ""
+    key: "./data/server.key"
+    cert: "./data/server.crt"
   password_pepper: ""
   hcaptcha:
-    enabled: false
-    sitekey: ""
-    secret: ""
+    enabled: true
+    sitekey: "10000000-ffff-ffff-ffff-000000000001"
+    secret: "0x0000000000000000000000000000000000000000"
   aws:
     id: ""
     secret: ""
@@ -30,6 +30,7 @@ config:
     port: 25
   wipe_on_startup: false
 
+
 database:
   choice: "mongodb"
 
@@ -44,46 +45,54 @@ posts:
   search:
     default_sort: "created_at"
     max_limit: 100
-  import:
-    local:
-      enabled: false
-      local_path: "./data/import"
-    hydrus:
-      enabled: false
-      access_key: ""
-      url: "http://localhost:45869/"
-      tags:
-        - "system:everything"
-    tumblr:
-      enabled: false
-      consumer_key: ""
-      consumer_secret: ""
-      blogs:
-        - pauladrawsnstuff
-    safebooru:
-      enabled: false
-      searches: [
-        "asami_sato yuri -bra -bikini",
-        "samus_aran yuri",
-        "pharah_(overwatch) mercy_(overwatch) yuri",
-        "widowmaker_(overwatch) tracer_(overwatch) yuri -underwear",
-        "sombra_(overwatch) -katya_volskaya yuri",
-      ]
-      limit: 100
+
+
+tags:
+  minimum_count: 0
+  tagging_service:
+    enabled: true
+    url: "http://localhost:4443"
+
+
+import:
+  local:
+    enabled: false
+    local_path: "./data/import"
+  hydrus:
+    enabled: false
+    access_key: ""
+    url: ""
+    tags:
+      - "system:everything"
+  safebooru:
+    enabled: false
+    limit: null
+    searches:
+      - rating:safe overwatch
+  twitter:
+    enabled: true
+    bearer_token: ""
+  tumblr:
+    enabled: false
+    consumer_key: ""
+    consumer_secret: ""
+
 
 storage:
   method: "local"
   local:
     path: "./data/storage"
   s3:
-    bucket-name: "openbooru"
+    bucket-name: ""
+
 
 authentication:
-  token_expiration: 86400
+  token_expiration: null
   password_requirements:
     min_length: 8
     max_length: 128
     score: 3 
+
 
 encoding:
   thumbnail:
@@ -111,12 +120,8 @@ encoding:
     max_height: 4000
 
   video:
-    full:
-      reencode: false #TODO: Not implemented
-    preview:
-      enabled: false #TODO: Not implemented
-      duration: 5 #TODO: Not implemented
-    thumbnail_offset: 10 #TODO: implemented
+    thumbnail_offset: 10
+
 
 permissions:
   annonymous:
@@ -128,6 +133,7 @@ permissions:
     - canSearchUsers
     
     - canCreatePosts
+    - canVotePosts
     - canViewPosts
     - canSearchPosts
     - canEditPosts
@@ -142,6 +148,7 @@ permissions:
     - canDeleteUsers
     
     - canCreatePosts
+    - canVotePosts
     - canViewPosts
     - canSearchPosts
     - canEditPosts

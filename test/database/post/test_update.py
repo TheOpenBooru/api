@@ -5,7 +5,7 @@ from modules.database import Post
 class test_Update(TestCase):
     def setUp(self) -> None:
         self.post = generate_post()
-        Post.create(self.post)
+        Post.insert(self.post)
     
     def test_Update_Doesnt_Affect_Object(self):
         post = self.post

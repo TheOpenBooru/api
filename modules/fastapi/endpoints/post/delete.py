@@ -3,7 +3,7 @@ from modules import database, fastapi
 from fastapi import Response, Depends
 
 
-@router.delete("/post/{id}",
+@router.delete("/{id}",
     responses={
         204:{"description":"Post Successfully Deleted"},
         401:{"description":"You Were Not Authorised To Delete This Post"},

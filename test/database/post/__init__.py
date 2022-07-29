@@ -16,7 +16,7 @@ def generate_post(id:Optional[int] = None) -> schemas.Post:
         height=100,width=100,
         mimetype='image/png'
     )
-    id = id or Post.get_unused_id()
+    id = id or Post.get_new_id()
     return schemas.Post(
         id=id,uploader=0,
         media_type="image",

@@ -1,5 +1,5 @@
-from . import LocalImporter, _normalise_tags
-from modules import database,posts,settings
+from . import LocalImporter, utils
+from modules import posts,settings
 from tqdm import tqdm
 from pathlib import Path
 from typing import Union
@@ -9,7 +9,7 @@ import logging
 class Files(LocalImporter):
     name = "Files"
     enabled = settings.IMPORT_FILES_ENABLED
-    async def import_default(self):
+    async def load_default(self):
         tag_files = {}
         data_files = {}
         IMPORT_DIR = Path(settings.IMPORT_FILES_BASEPATH)
@@ -30,22 +30,23 @@ class Files(LocalImporter):
                 tag_file = tag_files[name]
             
             try:
-                await self._import_file(data_file,tag_file)
+                await import_file(data_file,tag_file)
             except Exception as e:
                 logging.debug(f"Could not import {name}")
                 logging.debug(f"Reason {e}")
-    
-    async def _import_file(self,data_file:Path,tag_file:Union[Path,None]):
-        if tag_file == None:
-            tags = []
-        else:
-            with open(tag_file) as f:
-                tags = f.readlines()
-        tags = _normalise_tags(tags)
 
-        data = data_file.read_bytes()
-        await posts.create(
-            data,
-            data_file.name,
-            additional_tags=tags
-        )
+
+async def import_file(data_file:Path, tag_file:Union[Path,None]):
+    if tag_file == None:
+        tags = []
+    else:
+        with open(tag_file) as f:
+            tags = f.readlines()
+        tags = utils.normalise_tags(tags)
+
+    data = data_file.read_bytes()
+    await posts.create(
+        data,
+        data_file.name,
+        additional_tags=tags
+    )

@@ -55,5 +55,5 @@ python3.9 -m venv venv
 To run tests use this command:
 
 ```py
-./venv/bin/python -m unittest discover ./test -v -p  "test*.py"
+./venv/bin/python -m pytest"
 ```

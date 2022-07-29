@@ -9,8 +9,8 @@ def login(username:str,password:str) -> str:
     """
     _validate_username(username)
     
-    user = database.User.getByUsername(username)
     if auth.login(username,password):
+        user = database.User.getByUsername(username)
         return _generate_token(user)
     else:
         raise LoginFailure

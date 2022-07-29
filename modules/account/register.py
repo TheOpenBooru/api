@@ -28,4 +28,4 @@ def _create_account(username:str,password:str):
         username=username,
     )
     auth.register(username,password)
-    database.User.create(user)
+    database.User.insert(user)

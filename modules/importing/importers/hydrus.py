@@ -1,7 +1,7 @@
-import logging
-from . import LocalImporter, _normalise_tags
+from . import LocalImporter, utils
 from modules import posts, settings, database
-from typing import Union
+import logging
+import requests
 import hydrus_api
 from tqdm import tqdm
 
@@ -10,6 +10,7 @@ class Hydrus(LocalImporter):
     enabled: bool = settings.IMPORT_HYDRUS_ENABLED
     def __init__(self):
         try:
+            requests.get(settings.IMPORT_HYDRUS_URL,timeout=2)
             self.client = hydrus_api.Client(
                 access_key=settings.IMPORT_HYDRUS_KEY,
                 api_url=settings.IMPORT_HYDRUS_URL
@@ -21,7 +22,7 @@ class Hydrus(LocalImporter):
             self.functional = True
 
 
-    async def import_default(self):
+    async def load_default(self):
         ids = self.client.search_files(
             settings.IMPORT_HYDRUS_TAGS,
             file_sort_type=hydrus_api.FileSortType.IMPORT_TIME,
@@ -33,6 +34,7 @@ class Hydrus(LocalImporter):
         zipped = list(zip(ids,metadatas))
         for id,metadata in tqdm(zipped, desc="Importing From Hydrus"):
             try:
+                id = int(id)
                 await self._import_post(id,metadata)
             except Exception as e:
                 logging.info(f"Hydrus Failed Import [{metadata['hash']}]: {e}")
@@ -50,8 +52,11 @@ class Hydrus(LocalImporter):
         source = ""
         if metadata['known_urls']:
             source = metadata['known_urls'][0]
+            # Prevent tweet importer linking to the twitter image
+            if source.startswith("https://pbs.twimg.com"): 
+                source = metadata['known_urls'][1]
         
-        tags = _normalise_tags(raw_tags)
+        tags = utils.normalise_tags(raw_tags)
         
         r = self.client.get_file(file_id=post_id)
         data = r.content

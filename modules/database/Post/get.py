@@ -1,5 +1,5 @@
 from typing import Union
-from . import Post,post_collection
+from . import Post, post_collection, parse_doc
 
 def get(id:int) -> Post:
     """Raises
@@ -24,5 +24,4 @@ def _get_by_filter(filter: dict):
     if document == None:
         raise KeyError("Could not find post")
     else:
-        post = Post.parse_obj(document)
-        return post
+        return parse_doc(document)

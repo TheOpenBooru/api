@@ -2,12 +2,12 @@ from .base import BaseStore
 from modules import settings
 from pathlib import Path
 
-STORE_PATH = Path(settings.STORAGE_LOCAL_PATH)
-
 class LocalStore(BaseStore):
     local = True
-    def __init__(self):
-        if STORE_PATH.exists():
+    store_path:Path
+    def __init__(self, store_path: str = settings.STORAGE_LOCAL_PATH):
+        self.store_path = Path(store_path)
+        if self.store_path.exists():
             self.usable = True
         else:
             self.usable = False
@@ -26,12 +26,12 @@ class LocalStore(BaseStore):
 
 
     def exists(self, filename:str) -> bool:
-        return Path(STORE_PATH,filename).exists()
+        return Path(self.store_path,filename).exists()
 
 
     def get(self, filename:str) -> bytes:
         path = self.path(filename)
-        if path.parent != STORE_PATH:
+        if path.parent != self.store_path:
             raise FileNotFoundError("Path Traversal Detected")
         elif not path.exists():
             raise FileNotFoundError("Key doesn't exist")
@@ -59,10 +59,10 @@ class LocalStore(BaseStore):
 
 
     def clear(self):
-        for file in STORE_PATH.iterdir():
+        for file in self.store_path.iterdir():
             if file.name != '.gitignore':
                 file.unlink()
 
 
     def path(self,filename:str) -> Path:
-        return STORE_PATH / filename
+        return self.store_path / filename

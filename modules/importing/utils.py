@@ -1,12 +1,22 @@
+from modules import validate
 import string
+import mimetypes
+import requests
 import os
 import bs4
-from modules import validate
 
 
 _VALID_CHARS = string.ascii_lowercase + string.digits + '_()'
 
-def _normalise_tags(tags:list[str]) -> list[str]:
+filename = str
+def download_url(url:str) -> tuple[bytes, filename]:
+    r = requests.get(url)
+    data = r.content
+    _, ext = os.path.splitext(url)
+    filename = "example" + ext
+    return data, filename
+
+def normalise_tags(tags:list[str]) -> list[str]:
     if " " in tags:
         tags.remove(" ")
 
@@ -32,7 +42,7 @@ def _normalise_tag(tag:str) -> str:
     return tag
 
 
-def _predict_media_type(url:str):
+def predict_media_type(url:str):
     TYPE_LOOKUP = {
         ".mp4":"video",
         ".webm":"video",
@@ -44,6 +54,14 @@ def _predict_media_type(url:str):
     _,ext = os.path.splitext(url)
     media_type = TYPE_LOOKUP[ext]
     return media_type
+
+
+def guess_mimetype(filepath:str) -> str:
+    full, _  = mimetypes.guess_type(filepath)
+    if full == None:
+        raise ValueError("Could not guess mimetype")
+    else:
+        return full
 
 
 def _extract_images_from_html(html:str) -> list[str]:
