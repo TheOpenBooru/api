@@ -5,14 +5,19 @@ from typing import Union, Optional
 from enum import Enum
 
 
-class Valid_Post_Sorts(str, Enum):
+class Sort(str, Enum):
     id = "id"
     created_at = "created_at"
     upvotes = "upvotes"
     downvotes = "downvotes"
 
 
-class Valid_Post_Ratings(str, Enum):
+class Media_Type(str, Enum):
+    image = "image"
+    animation = "animation"
+    video = "video"
+
+class Ratings(str, Enum):
     unrated = "unrated"
     safe = "safe"
     sensitive = "sensitive"
@@ -39,8 +44,7 @@ class Post_Edit(BaseModel):
 class Post_Query(BaseModel):
     index: int = Field(default=0, description="Offset from the start of the results")
     limit: int = Field(default=settings.POSTS_SEARCH_MAX_LIMIT, description="Maximum number of results to return")
-    sort: Valid_Post_Sorts = Field(default=settings.POSTS_SEARCH_DEFAULT_SORT, description="How to sort the posts")
-    exclude_ratings: list[Valid_Post_Ratings] = Field(default=[], description="Ratings to exlucde from the results")
+    sort: Sort = Field(default=settings.POSTS_SEARCH_DEFAULT_SORT, description="How to sort the posts")
     descending: bool = Field(default=True, description="Should search be ordered descending")
     
     include_tags: list[str] = Field(default=[])
@@ -53,6 +57,8 @@ class Post_Query(BaseModel):
     md5:Optional[str] = Field(default=None, regex=validate.MD5_REGEX)
     sha256:Optional[str] = Field(default=None, regex=validate.SHA256_REGEX)
     source:Optional[str] = Field(default=None, regex=validate.URL_REGEX)
+    media_types:Optional[list[Media_Type]] = Field(default=None, regex=validate.URL_REGEX)
+    ratings: Optional[list[Ratings]] = Field(default=[], description="Ratings to exlucde from the results")
 
 
 class Hashes(BaseModel):
@@ -67,7 +73,7 @@ class Post(BaseModel):
     uploader: Union[int, None] = Field(default=None, description="The user ID of the person who uploaded this post, null means no creator")
     deleted: bool = Field(default=False, description="Whether the post has been deleted")
     source: str = Field(default="", description="The original source for the post")
-    rating: Valid_Post_Ratings = Field(default="unrated", description="The default rating for a post")
+    rating: Ratings = Field(default="unrated", description="The default rating for a post")
 
     full: GenericMedia = Field(..., description="The full scale media for the Post")
     preview: Union[GenericMedia, None] = Field(default=None,description="A Medium Scale Version for the image, for hi-res posts")

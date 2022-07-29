@@ -8,5 +8,5 @@ from . import fields
 from .media import GenericMedia, Animation, Video, Image
 from .misc import Author, Comment, Status
 from .tag import Tag, Tag_Query
-from .post import Post, Post_Edit, Post_Query, Valid_Post_Ratings, Valid_Post_Sorts, Hashes
+from .post import Post, Post_Edit, Post_Query, Ratings, Sort, Hashes, Media_Type
 from .user import User, User_Public

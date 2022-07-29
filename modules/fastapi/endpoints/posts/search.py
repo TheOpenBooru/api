@@ -18,13 +18,15 @@ from typing import Optional
     ]
 )
 async def search_posts(
-    query: schemas.Post_Query = Depends(),
-    exclude_ratings: list[schemas.Valid_Post_Ratings] = Query(default=[], description="Ratings to exclude from the results"),
-    include_tags: list[str] = Query(default=[]),
-    exclude_tags: list[str] = Query(default=[]),
-    ids:list[int] = Query(default=[]),
-    ):
-    query.exclude_ratings = exclude_ratings
+        query: schemas.Post_Query = Depends(),
+        media_types: list[schemas.Media_Type] = Query(default=[], description="Media Types to include"),
+        ratings: list[schemas.Ratings] = Query(default=[], description="Ratings to exclude from the results"),
+        include_tags: list[str] = Query(default=[]),
+        exclude_tags: list[str] = Query(default=[]),
+        ids:list[int] = Query(default=[]),
+        ):
+    query.media_types = media_types
+    query.ratings = ratings
     query.include_tags = include_tags
     query.exclude_tags = exclude_tags
     query.ids = ids
