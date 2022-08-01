@@ -8,6 +8,7 @@ from typing import Union
 
 
 @router.patch('/{id}',
+    status_code=202,
     responses={
         202:{"description":"Post Edit Success"},
         400:{"description":"Post Edit Failure"},

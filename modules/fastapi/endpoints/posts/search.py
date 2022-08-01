@@ -9,7 +9,6 @@ from typing import Optional
 
 @router.get("/search",
     response_model=list[schemas.Post],
-    status_code=200,
     responses={
         200:{"description":"Successfully Retrieved"},
     },

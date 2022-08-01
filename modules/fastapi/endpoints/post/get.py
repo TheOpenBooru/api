@@ -9,7 +9,6 @@ from fastapi.encoders import jsonable_encoder
 
 @router.get("/{id}",
     response_model=schemas.Post,
-    status_code=status.HTTP_200_OK,
     responses={
         200:{"description":"Successfully Retrieved Post"},
         404:{"description":"The Post Could Not Be Found"},
@@ -27,5 +26,4 @@ async def get_post(id:int):
         return JSONResponse(
             content=jsonable_encoder(post),
             headers=CACHE_HEADER,
-            status_code=status.HTTP_200_OK,
         )

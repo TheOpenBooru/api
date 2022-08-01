@@ -8,9 +8,8 @@ from fastapi.encoders import jsonable_encoder
 
 @router.post("/create",
     response_model=schemas.Post,
-    status_code=status.HTTP_201_CREATED,
     responses= {
-        201:{"description":"Successfully Created"},
+        200:{"description":"Successfully Created"},
         400:{"description":"Failed To Create Post From Image"},
         401:{"description":"Authorization Failure"},
         409:{"description":"Post Already Exists"},
@@ -31,5 +30,4 @@ async def create_post(image:UploadFile, user:account.Account = Depends(DecodeTok
     except Exception as e:
         return PlainTextResponse("Generic Error", 400)
     else:
-        json = jsonable_encoder(post)
-        return JSONResponse(json,201)
+        return JSONResponse(jsonable_encoder(post))

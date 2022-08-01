@@ -8,9 +8,8 @@ from fastapi.encoders import jsonable_encoder
 
 @router.post("/import",
     response_model=list[schemas.Post],
-    status_code=status.HTTP_201_CREATED,
     responses= {
-        201:{"description":"Successfully Created"},
+        200:{"description":"Successfully Created"},
         400:{"description":"FAIL REASON"},
         401:{"description":"Authorization Failure"},
         409:{"description":"Post already exists with that source"},
@@ -40,5 +39,5 @@ async def import_url(
             database.Post.insert(post)
             database.User.create_post(user.id,post.id)
         
-        return JSONResponse(jsonable_encoder(posts),201)
+        return JSONResponse(jsonable_encoder(posts))
 
