@@ -36,7 +36,8 @@ class Safebooru(URLImporter):
         url = "https://safebooru.org/index.php?page=dapi&s=post&q=index"
         r = requests.get(url,params={'id':id})
         soup = bs4.BeautifulSoup(r.text,'html.parser')
-        post = await post_from_soup(soup)
+        tag = soup.find('post')
+        post = await post_from_tag(tag)
         return [post]
 
 
@@ -56,7 +57,7 @@ class Safebooru(URLImporter):
         
         for post in tqdm(posts, desc="Importing From Safebooru"):
             try:
-                post = await post_from_soup(post)
+                post = await post_from_tag(post)
                 database.Post.insert(post)
             except Exception as e:
                 continue
@@ -85,7 +86,7 @@ async def run_safebooru_search(search:str,limit:Union[int,None]) -> list[bs4.Bea
     return found_posts
 
 
-async def post_from_soup(soup:bs4.BeautifulSoup) -> schemas.Post:
+async def post_from_tag(soup:bs4.BeautifulSoup) -> schemas.Post:
     attrs:dict[str,Any] = soup.attrs
     if database.Post.md5_exists(attrs['md5']):
         raise ImportFailure("Post Already Exists")
