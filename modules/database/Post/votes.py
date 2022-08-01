@@ -9,7 +9,7 @@ def add_upvote(id:int):
 
     post_collection.update_one(
         filter={'id':id},
-        update={"$inc": {'upvote':1}},
+        update={"$inc": {'upvotes':1}},
     )
 
 def remove_upvote(id:int):
@@ -21,7 +21,7 @@ def remove_upvote(id:int):
 
     post_collection.update_one(
         filter={'id':id},
-        update={"$inc": {'upvote':-1}},
+        update={"$inc": {'upvotes':-1}},
         # MongoDB has no decrement, so increment by -1
     )
 
@@ -34,7 +34,7 @@ def add_downvote(id:int):
 
     post_collection.update_one(
         filter={'id':id},
-        update={"$inc": {'downvote':1}},
+        update={"$inc": {'downvotes':1}},
     )
 
 def remove_downvote(id:int):
@@ -46,5 +46,5 @@ def remove_downvote(id:int):
 
     post_collection.update_one(
         filter={'id':id},
-        update={"$inc": {'downvote' : -1}},
+        update={"$inc": {'downvotes' : -1}},
     )
