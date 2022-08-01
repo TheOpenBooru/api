@@ -1,15 +1,16 @@
 from . import router
 from modules import account
+from modules.schemas import Token
 from modules.fastapi.dependencies import RateLimit
 from fastapi.security import OAuth2PasswordRequestForm
-from fastapi import Response, Depends
+from fastapi import Depends
 from fastapi.responses import JSONResponse, PlainTextResponse
 from fastapi.encoders import jsonable_encoder
 
 
 @router.post("/login",
     operation_id="login",
-    response_model=str,
+    response_model=Token,
     responses={
         200:{"description":"Successfully Signed in and Provided a Token"},
         401:{"description":"Invalid Username or Password"},
@@ -25,9 +26,7 @@ async def login(oauth:OAuth2PasswordRequestForm = Depends()):
     except account.PasswordWasReset:
         return PlainTextResponse("Please reset your password",406)
     else:
-        data = {
-            "access_token": token,
-            "token_type": "bearer"
-        }
-        json = jsonable_encoder(data)
-        return JSONResponse(json)
+        return Token(
+            access_token=token,
+            token_type="bearer"
+        )

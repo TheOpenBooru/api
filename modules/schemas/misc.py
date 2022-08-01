@@ -2,6 +2,10 @@ from . import Image,fields,BaseModel
 from pydantic import Field
 
 
+class Token(BaseModel):
+    access_token:str = Field(...)
+    token_type:str = Field(...)
+
 
 class Status(BaseModel):
     version: str = Field(..., description="The current API version")

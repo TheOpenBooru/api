@@ -1,5 +1,6 @@
 from . import router
 from modules import account
+from modules.schemas import Token
 from modules.fastapi.dependencies import RateLimit, RequireCaptcha
 from pydantic import BaseModel
 from fastapi import Body, Depends
@@ -14,6 +15,7 @@ from fastapi.encoders import jsonable_encoder
         400:{"description":"Password does not meet requirements"},
         409:{"description":"Username already exists"},
     },
+    response_model=Token,
     dependencies=[
         Depends(RequireCaptcha),
         Depends(RateLimit("10/minute")),
@@ -28,9 +30,7 @@ async def register(username: str = Body(), password: str = Body()):
         return PlainTextResponse("Password Does not meet requirements",400)
     else:
         token = account.login(username, password)
-        data = {
-            "token_type": "bearer",
-            "access_token": token,
-        }
-        json = jsonable_encoder(data)
-        return JSONResponse(json)
+        return Token(
+            access_token=token,
+            token_type="bearer"
+        )
