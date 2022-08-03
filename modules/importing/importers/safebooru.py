@@ -42,6 +42,9 @@ class Safebooru(URLImporter):
 
 
     async def load_default(self):
+        if settings.IMPORT_SAFEBOORU_IMPORT == False:
+            return
+        
         limit = settings.IMPORT_SAFEBOORU_LIMIT
         searches = settings.IMPORT_SAFEBOORU_SEARCHES
         
@@ -86,7 +89,7 @@ async def run_safebooru_search(search:str,limit:Union[int,None]) -> list[bs4.Bea
     return found_posts
 
 
-async def post_from_tag(soup:bs4.BeautifulSoup) -> schemas.Post:
+async def post_from_tag(soup:bs4.Tag) -> schemas.Post:
     attrs:dict[str,Any] = soup.attrs
     if database.Post.md5_exists(attrs['md5']):
         raise ImportFailure("Post Already Exists")

@@ -78,6 +78,7 @@ IMPORT_HYDRUS_URL:str = get("import.hydrus.url")
 IMPORT_HYDRUS_TAGS:str = get("import.hydrus.tags")
 
 IMPORT_SAFEBOORU_ENABLED:bool = get("import.safebooru.enabled")
+IMPORT_SAFEBOORU_IMPORT:bool = get("import.safebooru.import")
 IMPORT_SAFEBOORU_LIMIT:Union[int,None] = get("import.safebooru.limit")
 IMPORT_SAFEBOORU_SEARCHES:list[str] = get("import.safebooru.searches")
 

@@ -66,6 +66,7 @@ import:
       - "system:everything"
   safebooru:
     enabled: false
+    import: false
     limit: null
     searches:
       - rating:safe overwatch
