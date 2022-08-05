@@ -3,7 +3,6 @@ import pytest
 
 twitter = importing.Twitter()
 SkipCondition = pytest.mark.skipif(twitter.functional == False, reason="Twitter Not Functional")
-settings.TAGS_TAGGING_SERVICE_ENABLED = False
 
 
 @SkipCondition

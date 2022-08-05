@@ -70,8 +70,10 @@ import:
     limit: null
     searches:
       - rating:safe overwatch
-  twitter:
+  youtube:
     enabled: true
+  twitter:
+    enabled: false
     bearer_token: ""
   tumblr:
     enabled: false

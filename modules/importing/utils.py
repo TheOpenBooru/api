@@ -16,21 +16,25 @@ def download_url(url:str) -> tuple[bytes, filename]:
     filename = "example" + ext
     return data, filename
 
+
 def normalise_tags(tags:list[str]) -> list[str]:
     if " " in tags:
         tags.remove(" ")
 
-    tags = [_normalise_tag(tag) for tag in tags]
+
+    tags = [normalise_tag(tag) for tag in tags]
     tags = list(filter(validate.tag,tags))
     tags = list(set(tags))
     return tags
 
 
-def _normalise_tag(tag:str) -> str:
-    sections = tag.split(':')
-    if len(sections) == 2:
-        _,tag = sections
-    
+def normalise_tag(tag:str,*, possibly_namespaced:bool = True) -> str:
+    if possibly_namespaced:
+        sections = tag.split(':')
+        if len(sections) == 2:
+            _,tag = sections
+
+    tag = tag.lower()
     tag = tag.strip('\n')
     tag = tag.replace(' ','_')
     tag_chars = list(tag)
