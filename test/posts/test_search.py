@@ -1,7 +1,7 @@
-from modules import posts, schemas, importing, settings, database
+from modules import posts, schemas, downloaders, settings, database
 import unittest
 
-importer = importing.Safebooru()
+importer = downloaders.Safebooru()
 
 @unittest.skipUnless(importer.functional, "Could not import example data from SafeBooru")
 class test_Post_Search(unittest.IsolatedAsyncioTestCase):

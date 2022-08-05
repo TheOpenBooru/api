@@ -1,4 +1,4 @@
-from modules import database, importing
+from modules import database, downloaders
 import pytest
 
 """
@@ -6,7 +6,7 @@ import pytest
 - Can a tweet can be imported
 """
 
-safebooru = importing.Safebooru()
+safebooru = downloaders.Safebooru()
 SkipCondition = pytest.mark.skipif(safebooru.functional == False, reason="Safebooru Not Functional")
 
 @pytest.fixture
@@ -18,6 +18,6 @@ def ClearDatabase():
 @pytest.mark.asyncio
 async def test_Safebooru_Import_ID(ClearDatabase):
     url = "https://safebooru.org/index.php?page=post&s=view&id=1488313"
-    posts = await safebooru.import_url(url)
+    posts = await safebooru.download_url(url)
     assert len(posts) == 1
     post = posts[0]

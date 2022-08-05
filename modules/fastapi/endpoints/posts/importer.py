@@ -1,5 +1,5 @@
 from . import router
-from modules import schemas, account, importing, database
+from modules import schemas, account, downloaders, database
 from modules.fastapi.dependencies import DecodeToken, RequirePermission, RateLimit, RequireCaptcha
 from fastapi import status, Depends, Body
 from fastapi.responses import JSONResponse, PlainTextResponse
@@ -28,8 +28,8 @@ async def import_url(
         return PlainTextResponse("Post already exists with that source", 409)
     
     try:
-        posts = await importing.import_url(url)
-    except importing.ImportFailure as e:
+        posts = await downloaders.download_url(url)
+    except downloaders.ImportFailure as e:
         return PlainTextResponse(str(e), 400)
     except Exception:
         return PlainTextResponse("Generic Error", 400)

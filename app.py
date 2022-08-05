@@ -1,4 +1,4 @@
-from modules import database, settings, importing
+from modules import database, settings, downloaders
 from modules.fastapi import main_router
 from modules.fastapi.middleware import middlewares
 
@@ -16,7 +16,7 @@ app.include_router(main_router)
 
 @app.on_event("startup")
 async def startup_event():
-    await importing.import_all()
+    await downloaders.import_all()
     database.Tag.regenerate()
 
 

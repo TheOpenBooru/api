@@ -1,8 +1,8 @@
 from re import I
-from modules import importing, schemas
+from modules import downloaders, schemas
 import pytest
 
-youtube = importing.Youtube()
+youtube = downloaders.Youtube()
 SkipCondition = pytest.mark.skipif(youtube.functional == False, reason="Twitter Not Functional")
 
 
@@ -36,7 +36,7 @@ async def test_Valid_URL_Check():
 
 
 async def assertImport(url:str):
-    posts = await youtube.import_url(url)
+    posts = await youtube.download_url(url)
     
     assert len(posts) == 1
     post = posts[0]
