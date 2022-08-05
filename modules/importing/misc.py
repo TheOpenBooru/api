@@ -9,7 +9,7 @@ async def import_all():
         await importer.load_default()
 
 
-async def import_url(url:str) -> list[Post]:
+async def download_url(url:str) -> list[Post]:
     """Raises:
     - ImportFailure: **Description**
     """
@@ -19,10 +19,10 @@ async def import_url(url:str) -> list[Post]:
         elif not importer.is_valid_url(url):
             continue
         else:
-            posts = await importer.import_url(url)
+            posts = await importer.download_url(url)
             return posts
 
-    raise ImportFailure("No Importer")
+    raise ImportFailure("No Importer for that URL")
 
 
 @cache

@@ -1,7 +1,7 @@
 import mimetypes
 from typing import Union
 from . import utils, URLImporter, ImportFailure
-from modules import settings, schemas, posts, store
+from modules import settings, schemas, posts
 import pytube
 
 
@@ -23,20 +23,25 @@ class Youtube(URLImporter):
             url.startswith("https://youtu.be/"),
         ))
 
-    async def import_url(self,url:str) -> list[schemas.Post]:
+    async def download_url(self,url:str) -> list[schemas.Post]:
         video = pytube.YouTube(url)
-        
-        author = getAuthorName(video)
+
 
         try:
             stream = video.streams.get_highest_resolution()
             data, _ = utils.download_url(stream.url)
             filename = "example" + mimetypes.guess_extension(stream.mime_type)
         except Exception:
-            raise ImportError("Could not download Video")
+            raise ImportFailure("Could not download Video")
+
+        try:
+            post = await posts.generate(data, filename)
+        except Exception:
+            raise ImportFailure("Could not generate post from video")
         
-        post = await posts.generate(data, filename)
         post.source = video.watch_url
+
+        author = getAuthorName(video)
         if author:
             post.tags.append(author)
         

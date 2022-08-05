@@ -10,7 +10,6 @@ import requests
 
 
 class Safebooru(URLImporter):
-    name = "Safebooru"
     enabled = settings.IMPORT_SAFEBOORU_ENABLED
     def __init__(self):
         try:
@@ -25,7 +24,7 @@ class Safebooru(URLImporter):
         return url.startswith("https://safebooru.org/index.php?page=post&s=view&id=")
 
 
-    async def import_url(self,url:str) -> list[schemas.Post]:
+    async def download_url(self,url:str) -> list[schemas.Post]:
         try:
             parsed_url = urlparse(url)
             query = parse_qs(parsed_url.query)

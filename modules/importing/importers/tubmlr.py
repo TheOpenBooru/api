@@ -7,7 +7,6 @@ import re
 
 
 class Tumblr(URLImporter):
-    name = "Tumblr"
     enabled = settings.IMPORT_TUMBLR_ENABLED
     def __init__(self):
         try:
@@ -26,7 +25,7 @@ class Tumblr(URLImporter):
         return hostname in ["tmblr.co"] or hostname.endswith("tumblr.com")
 
 
-    async def import_url(self,url:str) -> list[schemas.Post]:
+    async def download_url(self,url:str) -> list[schemas.Post]:
         blogname, id = await extract_url_info(url)
         if id == None:
             raise ImportFailure("Cannot Import From Blog, need Post ID")

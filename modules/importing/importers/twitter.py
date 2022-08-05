@@ -22,7 +22,7 @@ class Twitter(URLImporter):
 
     ACCOUNT_REGEX = r"^https:\/\/twitter.com\/[a-zA-Z0-9_]*"
     ID_REGEX = r"^https:\/\/twitter.com\/[a-zA-Z0-9_]*\/status\/[0-9]*"
-    async def import_url(self, url:str) -> list[schemas.Post]:
+    async def download_url(self, url:str) -> list[schemas.Post]:
         account_match = re.match(self.ACCOUNT_REGEX, url)
         id_match = re.match(self.ID_REGEX, url)
         

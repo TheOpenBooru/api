@@ -19,7 +19,7 @@ class URLImporter(BaseImporter):
     def is_valid_url(self, url:str) -> bool:
         raise NotImplementedError
     
-    async def import_url(self, url:str) -> list[Post]:
+    async def download_url(self, url:str) -> list[Post]:
         raise NotImplementedError
 
 
