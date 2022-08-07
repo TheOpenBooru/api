@@ -20,11 +20,7 @@ Comments = _Field(
     default_factory=list,
     description="Comments on the post",
 )
-Post_Type:str = _Field(
-    ...,
-    description="Format of the post",
-    regex="^(image|animation|video)$",
-)
+
 Mimetype:str = _Field(
     ...,
     description="The MIME type for the File",

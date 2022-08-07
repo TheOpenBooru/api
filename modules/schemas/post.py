@@ -80,7 +80,7 @@ class Post(BaseModel):
     # qualities: list[GenericMedia] = Field(default_factory=list, description="List of all qualities of this post")
     thumbnail: Image = Field(..., description="A low quality image used for thumbnails")
 
-    media_type: str = fields.Post_Type
+    media_type: Media_Type = Field( ..., description="Format of the post", regex="^(image|animation|video)$",)
     hashes: Hashes = Field(default_factory=Hashes, description="A table of all the posts hashes")
 
     tags: list[str] = fields.Tags
