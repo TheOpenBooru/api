@@ -2,10 +2,11 @@ from modules import downloaders
 import pytest
 
 twitter = downloaders.Twitter()
-SkipCondition = pytest.mark.skipif(twitter.functional == False, reason="Twitter Not Functional")
+SkipCondition = pytest.mark.skipif((twitter.functional and twitter.functional) == False, reason="Twitter Not Functional")
 
 
 @SkipCondition
+@pytest.mark.skip("Not Implemented")
 @pytest.mark.asyncio
 async def test_Importing_Video_Tweet():
     tweet = "https://twitter.com/OpenBooru/status/1537464462063677441?s=20&t=oInfaI6U8aQCNJDivAK4mQ"
