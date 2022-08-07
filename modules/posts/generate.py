@@ -1,4 +1,5 @@
 from modules import schemas, encoding, database, encoding, store, settings
+from modules.downloaders.utils import normalise_tags
 from modules.tags import generate_ai_tags
 import base64
 import mimetypes
@@ -17,6 +18,7 @@ async def generate(data:bytes,filename:str,
     post = await generator.generate()
     
     if additional_tags:
+        additional_tags = normalise_tags(additional_tags)
         tags = set(post.tags + additional_tags)
         post.tags = list(tags)
     if uploader_id:
