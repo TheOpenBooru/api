@@ -26,26 +26,37 @@ class Youtube(URLImporter):
     async def download_url(self,url:str) -> list[schemas.Post]:
         video = pytube.YouTube(url)
 
-
         try:
             stream = video.streams.get_highest_resolution()
-            data, _ = utils.download_url(stream.url)
-            filename = "example" + mimetypes.guess_extension(stream.mime_type)
+            data, _ = utils.download_url(stream.url) # type: ignore
+            filename = "example" + mimetypes.guess_extension(stream.mime_type) # type: ignore
         except Exception:
             raise ImportFailure("Could not download Video")
 
         try:
-            post = await posts.generate(data, filename)
+            post = await posts.generate(data, filename,
+                additional_tags=getTags(video),
+                source=video.watch_url,
+            )
         except Exception:
             raise ImportFailure("Could not generate post from video")
         
-        post.source = video.watch_url
-
-        author = getAuthorName(video)
-        if author:
-            post.tags.append(author)
         
         return [post]
+
+
+
+def getTags(video: pytube.YouTube) -> list[str]:
+    tags = set()
+    keywords = video.vid_info['videoDetails']['keywords']
+    keywords = utils.normalise_tags(keywords)
+    tags.update(keywords)
+    
+    author = getAuthorName(video)
+    if author:
+        tags.add(author)
+    
+    return list(tags)
 
 
 def getAuthorName(video:pytube.YouTube) -> Union[str,None]:
