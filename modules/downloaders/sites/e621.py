@@ -1,14 +1,13 @@
 from typing import Union
 from . import URLImporter, utils, ImportFailure
-from modules import settings, schemas, database, posts
+from modules import settings, schemas, posts
 from e621.api import E621 as _E621
 import e621.models as e621Models
-import requests
 import re
 
 
 class E621(URLImporter):
-    enabled = True
+    enabled = settings.E621_ENABLED
     api:_E621
     def __init__(self):
         try:
