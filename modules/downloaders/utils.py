@@ -50,6 +50,7 @@ def predict_media_type(url:str):
     TYPE_LOOKUP = {
         ".mp4":"video",
         ".webm":"video",
+        ".webp":"image",
         ".png":"image",
         ".jpg":"image",
         ".jpeg":"image",
