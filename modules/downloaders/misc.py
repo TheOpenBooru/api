@@ -1,5 +1,5 @@
+from . import *
 from functools import cache
-from . import BaseImporter, URLImporter, ImportFailure, Files, Hydrus, Safebooru, Tumblr, Twitter, Youtube, E621
 from modules.schemas import Post
 import logging
 
@@ -27,7 +27,7 @@ async def download_url(url:str) -> list[Post]:
 
 @cache
 def _get_importers() -> list[BaseImporter]:
-    importers_classes = [Files, Hydrus, Safebooru, Tumblr, Twitter, Youtube, E621]
+    importers_classes = [Files, Hydrus, Safebooru, Tumblr, Twitter, Youtube, E621, Rule34]
     working_importers = []
 
     for importer_class in importers_classes:
