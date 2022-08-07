@@ -13,7 +13,7 @@ def all() -> list[Post]:
 def count() -> int:
     return post_collection.count_documents({})
 
-def get_new_id() -> int:
+def generate_id() -> int:
     id = random.randint(0,2**32)
     while post_collection.find_one({'id':id}): # Keep generating IDs until it doesn't eixst
         id = random.randint(0,2**32)

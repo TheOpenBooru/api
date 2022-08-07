@@ -55,7 +55,7 @@ class PostEncoder:
         thumbnail_schema = self.process_file(thumbnail)
         
         return schemas.Post(
-            id=database.Post.get_new_id(),
+            id=database.Post.generate_id(),
             tags=[media_type.type],
             hashes=self.hashes,
             full=full_schema, # type: ignore

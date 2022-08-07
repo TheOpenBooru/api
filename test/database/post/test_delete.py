@@ -8,7 +8,7 @@ class test_Delete(TestCase):
         Post.insert(post)
     
     def test_Allows_Deletion_of_NonExistant_Post(self):
-        Post.delete(Post.get_new_id())
+        Post.delete(Post.generate_id())
     
     def test_Deletes_Successfully_Removes_Entries(self):
         self.post = post = generate_post()
