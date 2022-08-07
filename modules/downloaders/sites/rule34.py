@@ -45,31 +45,6 @@ class Rule34(URLImporter):
         return [post]
 
 
-    async def load_default(self):
-        if settings.RULE34_IMPORT == False:
-            return
-        if settings.RULE34_DUMP_LOCATION == None:
-            logging.warning("Rule34 dump location not set, cannot import")
-            return
-        
-        dump_location:str = settings.RULE34_DUMP_LOCATION # type: ignore
-        limit = settings.RULE34_LIMIT
-        
-
-        with open(dump_location) as f:
-            posts = ujson.load(f)
-        
-        if limit:
-            posts = posts[:limit]
-        
-        for post in tqdm(posts, desc="Importing Rule34"):
-            try:
-                post = await post_from_dict(post)
-                database.Post.insert(post)
-            except Exception as e:
-                continue
-
-
 def post_from_id(id:str) -> dict:
     url = "https://rule34.xxx/index.php?page=dapi&s=post&q=index"
     r = requests.get(url,params={'id':id})
