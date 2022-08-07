@@ -1,5 +1,5 @@
 from functools import cache
-from . import BaseImporter, URLImporter, ImportFailure, Files, Hydrus, Safebooru, Tumblr, Twitter, Youtube
+from . import BaseImporter, URLImporter, ImportFailure, Files, Hydrus, Safebooru, Tumblr, Twitter, Youtube, E621
 from modules.schemas import Post
 import logging
 
@@ -27,7 +27,7 @@ async def download_url(url:str) -> list[Post]:
 
 @cache
 def _get_importers() -> list[BaseImporter]:
-    importers_classes = [Files, Hydrus, Safebooru, Tumblr, Twitter, Youtube]
+    importers_classes = [Files, Hydrus, Safebooru, Tumblr, Twitter, Youtube, E621]
     working_importers = []
 
     for importer_class in importers_classes:
@@ -36,10 +36,9 @@ def _get_importers() -> list[BaseImporter]:
         
         importer = importer_class()
         if not importer.functional:
-            logging.warning(f"Importer {importer.name} was not functional")
+            logging.warning(f"Importer {importer.__name__} was not functional")
             continue
         
         working_importers.append(importer)
     
     return working_importers
-
