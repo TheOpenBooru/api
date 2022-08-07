@@ -72,6 +72,8 @@ import:
       - rating:safe overwatch
   e621:
     enabled: true
+  rule34:
+    enabled: true
   youtube:
     enabled: true
   twitter:

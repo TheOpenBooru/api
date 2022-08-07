@@ -72,6 +72,10 @@ MONGODB_PASSWORD:int = get("config.mongodb.password")
 IMPORT_FILES_ENABLED:bool = get("import.local.enabled")
 IMPORT_FILES_BASEPATH:str = get("import.local.local_path")
 
+E621_ENABLED:bool = get("import.e621.enabled")
+RULE34_ENABLED:bool = get("import.rule34.enabled")
+YOUTUBE_ENABLED:bool = get("import.youtube.enabled")
+
 IMPORT_HYDRUS_ENABLED:bool = get("import.hydrus.enabled")
 IMPORT_HYDRUS_KEY:str = get("import.hydrus.access_key")
 IMPORT_HYDRUS_URL:str = get("import.hydrus.url")
@@ -81,10 +85,6 @@ IMPORT_SAFEBOORU_ENABLED:bool = get("import.safebooru.enabled")
 IMPORT_SAFEBOORU_IMPORT:bool = get("import.safebooru.import")
 IMPORT_SAFEBOORU_LIMIT:Union[int,None] = get("import.safebooru.limit")
 IMPORT_SAFEBOORU_SEARCHES:list[str] = get("import.safebooru.searches")
-
-E621_ENABLED:bool = get("import.e621.enabled")
-
-YOUTUBE_ENABLED:bool = get("import.youtube.enabled")
 
 IMPORT_TUMBLR_ENABLED:bool = get("import.tumblr.enabled")
 IMPORT_TUMBLR_KEY:str = get("import.tumblr.consumer_key")
