@@ -64,4 +64,5 @@ def combine_tags(post: e621Models.Post) -> list[str]:
     tags.extend(post.tags.general)
     tags.extend(post.tags.meta)
     tags.extend(post.tags.species)
+    tags = utils.normalise_tags(tags)
     return tags
