@@ -22,7 +22,10 @@ class Tumblr(URLImporter):
 
     def is_valid_url(self,url:str):
         hostname = urlparse(url).hostname or ""
-        return hostname in ["tmblr.co"] or hostname.endswith("tumblr.com")
+        return any((
+            hostname == ("tumblr.co"),
+            hostname.endswith("tumblr.com"),
+        ))
 
 
     async def download_url(self,url:str) -> list[schemas.Post]:
