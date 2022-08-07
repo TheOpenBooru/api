@@ -1,4 +1,4 @@
-from modules import downloaders, settings
+from modules import downloaders
 import pytest
 
 twitter = downloaders.Twitter()
@@ -17,6 +17,7 @@ async def test_Importing_Video_Tweet():
     assert post.source == tweet
     assert "openbooru" in post.tags
 
+
 @SkipCondition
 @pytest.mark.asyncio
 async def test_Importing_Image_Tweet():
@@ -28,6 +29,7 @@ async def test_Importing_Image_Tweet():
     assert post.media_type == "image"
     assert post.source == tweet
     assert "advosart" in post.tags
+
 
 @SkipCondition
 @pytest.mark.asyncio

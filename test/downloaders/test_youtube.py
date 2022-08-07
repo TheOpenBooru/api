@@ -1,5 +1,4 @@
-from re import I
-from modules import downloaders, schemas
+from modules import downloaders
 import pytest
 
 youtube = downloaders.Youtube()
