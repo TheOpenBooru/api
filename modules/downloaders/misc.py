@@ -36,7 +36,7 @@ def _get_importers() -> list[BaseImporter]:
         
         importer = importer_class()
         if not importer.functional:
-            logging.warning(f"Importer {importer.__name__} was not functional")
+            logging.warning(f"Importer {type(importer).__name__} was not functional")
             continue
         
         working_importers.append(importer)
