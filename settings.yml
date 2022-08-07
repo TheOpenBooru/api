@@ -70,6 +70,8 @@ import:
     limit: null
     searches:
       - rating:safe overwatch
+  e621:
+    enabled: true
   youtube:
     enabled: true
   twitter:

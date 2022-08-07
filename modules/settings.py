@@ -82,6 +82,8 @@ IMPORT_SAFEBOORU_IMPORT:bool = get("import.safebooru.import")
 IMPORT_SAFEBOORU_LIMIT:Union[int,None] = get("import.safebooru.limit")
 IMPORT_SAFEBOORU_SEARCHES:list[str] = get("import.safebooru.searches")
 
+E621_ENABLED:bool = get("import.e621.enabled")
+
 YOUTUBE_ENABLED:bool = get("import.youtube.enabled")
 
 IMPORT_TUMBLR_ENABLED:bool = get("import.tumblr.enabled")
