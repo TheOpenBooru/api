@@ -102,7 +102,7 @@ async def post_from_tag(soup:bs4.Tag) -> schemas.Post:
     full,preview,thumbnail = construct_images(attrs)
     hashes = schemas.Hashes(md5s=[attrs['md5']])
     post = schemas.Post(
-        id=database.Post.get_new_id(),
+        id=database.Post.generate_id(),
         created_at=get_date(attrs['created_at']),
         upvotes=int(attrs['score'] or "0"),
         tags=tags,
