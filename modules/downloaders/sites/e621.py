@@ -20,7 +20,7 @@ class E621(URLImporter):
 
 
     def is_valid_url(self,url:str) -> bool:
-        return url.startswith("https://e621.net/posts/")
+        return bool(re.match(r"^https:\/\/e621.net\/posts\/[0-9]+", url))
 
 
     async def download_url(self,url:str) -> list[schemas.Post]:
@@ -41,7 +41,7 @@ class E621(URLImporter):
 
 
 def id_from_url(url:str) -> int:
-    id_match = re.match(r"^https:\/\/e621.net\/posts\/[0-9]*$", url)
+    id_match = re.match(r"^https:\/\/e621.net\/posts\/[0-9]+", url)
     if id_match == None:
         raise ImportFailure("Could not find e621 ID in URL")
     id = id_match.group().split("/")[-1]
