@@ -105,7 +105,6 @@ DOWNLOADER_TWITTER_ENABLED:bool = get("downloaders.twitter.enabled")
 DOWNLOADER_TWITTER_KEY:str = get("downloaders.twitter.bearer_token")
 
 # Passwords
-PASSWORD_PEPPER:int = get("config.password_pepper")
 DEFAULT_TOKEN_EXPIRATION:int = get("authentication.token_expiration")
 PASSWORD_MIN_LENGTH:int = get("authentication.password_requirements.min_length")
 PASSWORD_MAX_LENGTH:int = get("authentication.password_requirements.max_length")
