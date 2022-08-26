@@ -9,13 +9,13 @@ from fastapi.encoders import jsonable_encoder
 @router.post("/create",
     response_model=schemas.Post,
     responses= {
-        200:{"description":"Successfully Created"},
-        400:{"description":"Failed To Create Post From Image"},
-        401:{"description":"Authorization Failure"},
-        409:{"description":"Post Already Exists"},
+        200:{"description": "Successfully Created"},
+        400:{"description": "Failed To Create Post From Image"},
+        401:{"description": "Authorization Failure"},
+        409:{"description": "Post Already Exists"},
     },
     dependencies=[
-        # Depends(RequireCaptcha),
+        Depends(RequireCaptcha),
         Depends(RequirePermission("canCreatePosts")),
         Depends(RateLimit("3/minute")),
     ],

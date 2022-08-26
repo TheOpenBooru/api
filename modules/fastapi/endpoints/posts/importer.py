@@ -7,6 +7,7 @@ from fastapi.encoders import jsonable_encoder
 
 
 @router.post("/import",
+    operation_id="import_post",
     response_model=list[schemas.Post],
     responses= {
         200:{"description":"Successfully Created"},
@@ -29,7 +30,7 @@ async def import_url(
     
     try:
         posts = await downloaders.download_url(url)
-    except downloaders.ImportFailure as e:
+    except downloaders.DownloadFailure as e:
         return PlainTextResponse(str(e), 400)
     except Exception:
         return PlainTextResponse("Generic Error", 400)
