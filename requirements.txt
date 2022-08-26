@@ -1,44 +1,24 @@
-# Core
 wheel
+fastapi
+uvicorn[standard]
+pydantic
 requests
 numpy
 python-box
 tqdm
 anyio
 coloredlogs
-
-# Importing
-bs4
-lxml
-hydrus_api
-pytumblr
-tweepy>=4.10.0
-
-# Validation
 iso639
-
-# Endpoints
-fastapi
-uvicorn[standard]
-pydantic
+ujson
+ijson
 python-multipart
-
-# Database
 cachetools
 pymongo
-
-# Encoding
 pillow
 ffmpeg-python
 python-magic
-
-# Email
 jinja2
-
-# Storage
 boto3
-
-# Auth
 cryptography
 pyotp
 pyjwt
@@ -46,3 +26,11 @@ passlib[argon2]>=1.7.4
 zxcvbn
 argon2-cffi
 password-strength
+
+bs4
+lxml
+hydrus_api
+pytumblr
+tweepy>=4.10.0
+e621==0.0.6 # 0.0.7 causes errors
+pytube
