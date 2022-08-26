@@ -231,14 +231,17 @@ cython_debug/
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,flask
 .vscode
-data/passwords.sqlite3
-data/example_data.json
 data/files/*
+data/import/*
+data/storage/*
 data/cert.pem
 data/key.pem
-data/import/*
 data/log.txt
-ffprobe.json
 config.yml
 data/auth.db
 data/tokensecret.key
+data/mongo
+scripts
+e621_pages
+r34_pages
+data/urls.txt
