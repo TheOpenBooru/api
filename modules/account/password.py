@@ -1,7 +1,7 @@
 from modules import settings
 from zxcvbn import zxcvbn
-
 from dataclasses import dataclass
+
 
 @dataclass(frozen=True)
 class PasswordRequirements:
@@ -9,12 +9,14 @@ class PasswordRequirements:
     max_length:int
     score:float
 
+
 def getPasswordRequirements() -> PasswordRequirements:
     return PasswordRequirements(
         min_length=settings.PASSWORD_MIN_LENGTH,
         max_length=settings.PASSWORD_MAX_LENGTH,
         score=settings.PASSWORD_REQUIRED_SCORE,
     )
+
 
 def isPasswordValid(password:str) -> bool:
     requirements = getPasswordRequirements()
