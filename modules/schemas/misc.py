@@ -1,10 +1,6 @@
 from . import Image,fields,BaseModel
+from typing import Optional
 from pydantic import Field
-
-
-class Token(BaseModel):
-    access_token:str = Field(...)
-    token_type:str = Field(...)
 
 
 class Status(BaseModel):
