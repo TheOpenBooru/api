@@ -1,4 +1,4 @@
-from . import Account, InvalidToken, permissions
+from . import Account, InvalidToken, Permissions
 from modules import jwt
 
 def decode(token:str) -> Account:
@@ -7,7 +7,7 @@ def decode(token:str) -> Account:
     """
     try:
         account = _generate_account(token)
-    except Exception as e:
+    except Exception:
         raise InvalidToken
     else:
         return account
@@ -15,6 +15,6 @@ def decode(token:str) -> Account:
 def _generate_account(token:str) -> Account:
     data = jwt.decode(token)
     id, username, level = data["id"], data["username"], data["level"]
-    perms = permissions.permissions_from_level(level)
+    perms = Permissions.from_level(level)
     account = Account(id, username, perms)
     return account

@@ -1,35 +1,56 @@
+from typing import Union
+from typing_extensions import Self, ClassVar
+from modules.schemas import Permission, UserPermissions
 import yaml as _yaml
-from pydantic import BaseModel as _BaseModel
 
 
-class UserPermissions(_BaseModel):
-    canViewUsers:bool = False
-    canSearchUsers:bool = False
-    canEditUsers:bool = False
-    canDeleteUsers:bool = False
+with open("./settings.yml") as f:
+    SETTING_LOOKUP = _yaml.full_load(f)['permissions']
+
+
+class Permissions:
+    permissions:UserPermissions
     
-    canCreatePosts:bool = False
-    canVotePosts:bool = False
-    canViewPosts:bool = False
-    canSearchPosts:bool = False
-    canEditPosts:bool = False
-    canDeletePosts:bool = False
-    
-    canCreateComments:bool = False
-    canViewComments:bool = False
-    canDeleteComments:bool = False
+    def __init__(self, permissions:UserPermissions):
+        self.permissions = permissions
 
 
-with open("./settings.yml") as _f:
-    _permission_lookup = _yaml.full_load(_f)['permissions']
+    @classmethod
+    def from_level(cls, level:str, lookup:dict = SETTING_LOOKUP) -> Self:
+        """Raises:
+        - KeyError: Invalid Level
+        """
+        if level not in lookup:
+            raise KeyError("Invalid Level")
 
-def permissions_from_level(level:str) -> UserPermissions:
-    """Raises:
-    - KeyError: Invalid Level
-    """
-    if level not in _permission_lookup:
-        raise KeyError("Invalid Level")
+        user_perms = {}
+        actions:dict = lookup[level]
+        for name, attributes in actions.items():
+            user_perms[name] = construct_permission(attributes)
+
+        permissions = UserPermissions.parse_obj(user_perms)
+        return cls(permissions)
+
+
+    def hasPermission(self, action:str) -> bool:
+        permission = getattr(self.permissions,action)
+        return permission.has_permission
+
+
+    def isCaptchaRequired(self, action:str) -> bool:
+        permission = getattr(self.permissions,action)
+        return permission.captcha
+
+
+    def getRateLimit(self, action:str) -> str:
+        permission = getattr(self.permissions,action)
+        return permission.ratelimit
+
+
+def construct_permission(attributes:Union[dict,None]) -> Permission:
+    if attributes == None:
+        permission = Permission()
     else:
-        valid_actions = _permission_lookup[level]
-        object_form = {action:True for action in valid_actions}
-        return UserPermissions.parse_obj(object_form)
+        permission = Permission.parse_obj(attributes)
+    permission.has_permission = True
+    return permission
