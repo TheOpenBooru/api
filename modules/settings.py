@@ -51,7 +51,9 @@ STORAGE_LOCAL_PATH:str = get("storage.local.path")
 STORAGE_S3_BUCKET:str = get("storage.s3.bucket-name")
 
 # Tags
+TAGS_REGENERATE_ON_BOOT:bool = get("tags.regenerate_on_startup")
 TAGS_MINIMUM_COUNT:int = get("tags.minimum_count")
+TAGS_NAMESPACES:list[str] = get("tags.valid_namespaces")
 TAGS_TAGGING_SERVICE_ENABLED:bool = get("tags.tagging_service.enabled")
 TAGS_TAGGING_SERVICE_URL:str = get("tags.tagging_service.url")
 
@@ -60,7 +62,6 @@ POSTS_SEARCH_DEFAULT_SORT:str = get("posts.search.default_sort")
 POSTS_SEARCH_MAX_LIMIT:int = get("posts.search.max_limit")
 
 # Database
-DATABASE_CHOICE:str = get("database.choice")
 WIPE_ON_STARTUP:bool = get("config.wipe_on_startup")
 MONGODB_DB_NAME:str = get("config.mongodb.name")
 MONGODB_HOSTNAME:str = get("config.mongodb.hostname")
@@ -68,30 +69,40 @@ MONGODB_PORT:int = get("config.mongodb.port")
 MONGODB_USERNAME:int = get("config.mongodb.username")
 MONGODB_PASSWORD:int = get("config.mongodb.password")
 
-# Import
-IMPORT_FILES_ENABLED:bool = get("import.local.enabled")
-IMPORT_FILES_BASEPATH:str = get("import.local.local_path")
+# Importers
+IMPORTER_FILES_ENABLED:bool = get("importers.local.enabled")
+IMPORTER_FILES_BASEPATH:str = get("importers.local.local_path")
 
-E621_ENABLED:bool = get("import.e621.enabled")
-RULE34_ENABLED:bool = get("import.rule34.enabled")
-YOUTUBE_ENABLED:bool = get("import.youtube.enabled")
+IMPORTER_HYDRUS_ENABLED:bool = get("importers.hydrus.enabled")
+IMPORTER_HYDRUS_KEY:str = get("importers.hydrus.access_key")
+IMPORTER_HYDRUS_URL:str = get("importers.hydrus.url")
+IMPORTER_HYDRUS_TAGS:str = get("importers.hydrus.tags")
 
-IMPORT_HYDRUS_ENABLED:bool = get("import.hydrus.enabled")
-IMPORT_HYDRUS_KEY:str = get("import.hydrus.access_key")
-IMPORT_HYDRUS_URL:str = get("import.hydrus.url")
-IMPORT_HYDRUS_TAGS:str = get("import.hydrus.tags")
+IMPORTER_SAFEBOORU_ENABLED:bool = get("importers.safebooru.enabled")
+IMPORTER_SAFEBOORU_REENCODE:bool = get("importers.safebooru.limit")
+IMPORTER_SAFEBOORU_LIMIT:Union[int,None] = get("importers.safebooru.limit")
+IMPORTER_SAFEBOORU_SEARCHES:list[str] = get("importers.safebooru.searches")
 
-IMPORT_SAFEBOORU_ENABLED:bool = get("import.safebooru.enabled")
-IMPORT_SAFEBOORU_IMPORT:bool = get("import.safebooru.import")
-IMPORT_SAFEBOORU_LIMIT:Union[int,None] = get("import.safebooru.limit")
-IMPORT_SAFEBOORU_SEARCHES:list[str] = get("import.safebooru.searches")
+IMPORTER_E621_ENABLED:bool = get("importers.e621.enabled")
+IMPORTER_E621_DUMP:str = get("importers.e621.dump_location")
 
-IMPORT_TUMBLR_ENABLED:bool = get("import.tumblr.enabled")
-IMPORT_TUMBLR_KEY:str = get("import.tumblr.consumer_key")
-IMPORT_TUMBLR_SECRET:str = get("import.tumblr.consumer_secret")
+IMPORTER_RULE34_ENABLED:bool = get("importers.rule34.enabled")
+IMPORTER_RULE34_DUMP:str = get("importers.rule34.dump_location")
+IMPORTER_RULE34_PROXY_FORMAT:str = get("importers.rule34.proxy_format")
 
-IMPORT_TWITTER_ENABLED:bool = get("import.twitter.enabled")
-IMPORT_TWITTER_KEY:str = get("import.twitter.bearer_token")
+# Downloader
+DOWNLOADER_SAFEBOORU_ENABLED:bool = get("downloaders.safebooru.enabled")
+DOWNLOADER_E621_ENABLED:bool = get("downloaders.e621.enabled")
+DOWNLOADER_RULE34_ENABLED:bool = get("downloaders.rule34.enabled")
+DOWNLOADER_YOUTUBE_ENABLED:bool = get("downloaders.youtube.enabled")
+DOWNLOADER_FILE_ENABLED:bool = get("downloaders.file.enabled")
+
+DOWNLOADER_TUMBLR_ENABLED:bool = get("downloaders.tumblr.enabled")
+DOWNLOADER_TUMBLR_KEY:str = get("downloaders.tumblr.consumer_key")
+DOWNLOADER_TUMBLR_SECRET:str = get("downloaders.tumblr.consumer_secret")
+
+DOWNLOADER_TWITTER_ENABLED:bool = get("downloaders.twitter.enabled")
+DOWNLOADER_TWITTER_KEY:str = get("downloaders.twitter.bearer_token")
 
 # Passwords
 PASSWORD_PEPPER:int = get("config.password_pepper")

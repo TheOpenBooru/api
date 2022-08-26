@@ -8,7 +8,6 @@ config:
     enabled: false
     key: "./data/server.key"
     cert: "./data/server.crt"
-  password_pepper: ""
   hcaptcha:
     enabled: true
     sitekey: "10000000-ffff-ffff-ffff-000000000001"
@@ -31,10 +30,6 @@ config:
   wipe_on_startup: false
 
 
-database:
-  choice: "mongodb"
-
-
 email:
   template_paths:
     email_verification: "./data/emails/email_verification.html"
@@ -48,13 +43,19 @@ posts:
 
 
 tags:
-  minimum_count: 0
+  regenerate_on_startup: true
+  minimum_count: 3
+  valid_namespaces:
+    - character
+    - creator
+    - meta
+    - series
   tagging_service:
-    enabled: true
-    url: "http://localhost:4443"
+    enabled: false
+    url: ""
 
 
-import:
+importers:
   local:
     enabled: false
     local_path: "./data/import"
@@ -66,23 +67,36 @@ import:
       - "system:everything"
   safebooru:
     enabled: false
-    import: false
     limit: null
     searches:
       - rating:safe overwatch
   e621:
+    enabled: false
+    dump_location: ""
+  rule34:
+    enabled: false
+    dump_location: ""
+    proxy_format: ""
+
+
+downloaders:
+  e621:
     enabled: true
   rule34:
     enabled: true
+  safebooru:
+    enabled: true
   youtube:
     enabled: true
+  file:
+    enabled: true
   twitter:
-    enabled: false
-    bearer_token: ""
+    enabled: true
+    bearer_token: "AAAAAAAAAAAAAAAAAAAAANBadAEAAAAAJJ5wXXWdv5oIy%2BLY7hRhyBWdluY%3DR4D2t5CCWGnvAUqEToij7nCku5tG76FBi1kWNgoANz9z4yBMKU"
   tumblr:
-    enabled: false
-    consumer_key: ""
-    consumer_secret: ""
+    enabled: true
+    consumer_key: "Zn28Tm00jW9eAMTPq8mBsVcsZW7CRpT7d1Ae1Bo9xwwx3c9teW"
+    consumer_secret: "nS2tA6dBj3T1kIgReAG30f0FIjKIA7U6wBBrwCpbuvy9j6JzMc"
 
 
 storage:
@@ -127,40 +141,40 @@ encoding:
     max_height: 4000
 
   video:
-    thumbnail_offset: 10
+    thumbnail_offset: 2
 
 
 permissions:
   annonymous:
-    - canViewPosts
-    - canSearchPosts
+    canViewPosts:
+    canSearchPosts:
 
   user:
-    - canViewUsers
-    - canSearchUsers
+    canViewUsers:
+    canSearchUsers:
     
-    - canCreatePosts
-    - canVotePosts
-    - canViewPosts
-    - canSearchPosts
-    - canEditPosts
+    canCreatePosts:
+    canVotePosts:
+    canViewPosts:
+    canSearchPosts:
+    canEditPosts:
     
-    - canCreateComments
-    - canViewComments
+    canCreateComments:
+    canViewComments:
 
   admin:
-    - canViewUsers
-    - canSearchUsers
-    - canEditUsers
-    - canDeleteUsers
+    canViewUsers:
+    canSearchUsers:
+    canEditUsers:
+    canDeleteUsers:
     
-    - canCreatePosts
-    - canVotePosts
-    - canViewPosts
-    - canSearchPosts
-    - canEditPosts
-    - canDeletePosts
+    canCreatePosts:
+    canVotePosts:
+    canViewPosts:
+    canSearchPosts:
+    canEditPosts:
+    canDeletePosts:
     
-    - canCreateComments
-    - canViewComments
-    - canDeleteComments
+    canCreateComments:
+    canViewComments:
+    canDeleteComments:
