@@ -12,10 +12,11 @@ def generate_ai_tags(data:bytes, filename:str, mimetype:str) -> list[str]:
         r = requests.post(
             url=settings.TAGS_TAGGING_SERVICE_URL,
             files=[('file', (filename, buf, mimetype))],
-            timeout=10,
+            timeout=20,
         )
     except Exception:
         logging.warning("Tagging Service Timed Out. Is it down?")
+        settings.TAGS_TAGGING_SERVICE_ENABLED = False
         return []
 
     try:
