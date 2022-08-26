@@ -16,7 +16,9 @@ from fastapi.encoders import jsonable_encoder
         401:{"description":"Invalid Username or Password"},
         406:{"description":"User's Password Was Reset"},
     },
-    dependencies=[Depends(RateLimit("5/minute"))]
+    dependencies=[
+        Depends(RateLimit("5/minute")),
+    ]
 )
 async def login(oauth:OAuth2PasswordRequestForm = Depends()):
     try:
