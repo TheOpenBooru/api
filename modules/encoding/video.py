@@ -1,18 +1,17 @@
-from datetime import datetime
 from . import BaseMedia,ImageFile,VideoFile,Image
 from .probe import VideoProbe
+from datetime import datetime
 from modules import settings
 import os
-import time
 import shutil
 import random
 import ffmpeg
-from pathlib import Path
+from typing import Union
 
 
 class Video(BaseMedia):
     type = "video"
-    _filepath: str
+    _filepath: Union[str,None] = None
     _probe: VideoProbe
     
     def __init__(self,data:bytes):
@@ -39,6 +38,9 @@ class Video(BaseMedia):
         """Raises:
         - FileNotFoundError: Didn't use `with` statement to create file
         """
+        if (self._filepath == None):
+            raise FileNotFoundError("Didn't use `with` statement to create file")
+            
         probe = self._probe
         return VideoFile(
             self._data,probe.mimetype,
@@ -53,6 +55,9 @@ class Video(BaseMedia):
         """Raises:
         - FileNotFoundError: Didn't use `with` statement to create file
         """
+        if (self._filepath == None):
+            raise FileNotFoundError("Didn't use `with` statement to create file")
+
         return None
 
 
@@ -61,6 +66,9 @@ class Video(BaseMedia):
         """Raises:
         - FileNotFoundError: Didn't use `with` statement to create file
         """
+        if (self._filepath == None):
+            raise FileNotFoundError("Didn't use `with` statement to create file")
+        
         offset_percentage = 0.01 * settings.VIDEO_THUMBNAIL_OFFSET
         offset_time = float(offset_percentage * self._probe.duration)
         offset_time = min(self._probe.duration, offset_time)
