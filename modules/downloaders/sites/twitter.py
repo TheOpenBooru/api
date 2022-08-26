@@ -1,15 +1,15 @@
-from . import URLImporter, ImportFailure, utils
+from . import Downloader, DownloadFailure, utils
 from modules import settings, posts, schemas
 import re
 import tweepy
 
 
-class Twitter(URLImporter):
-    enabled: bool = settings.IMPORT_TWITTER_ENABLED
+class Twitter(Downloader):
+    enabled: bool = settings.DOWNLOADER_TWITTER_ENABLED
     client: tweepy.Client
     def __init__(self):
         try:
-            self.client = tweepy.Client(bearer_token=settings.IMPORT_TWITTER_KEY)
+            self.client = tweepy.Client(bearer_token=settings.DOWNLOADER_TWITTER_KEY)
         except Exception:
             self.functional = False
         else:
@@ -32,9 +32,9 @@ class Twitter(URLImporter):
             posts = await self.import_tweet(id, url, account)
             return posts
         elif account_match:
-            raise ImportFailure("Importing Twitter Accounts not Supported, Please Import Single Tweets")
+            raise DownloadFailure("Importing Twitter Accounts not Supported, Please Import Single Tweets")
         else:
-            raise ImportFailure("Could Not Import Twitter URL")
+            raise DownloadFailure("Could Not Import Twitter URL")
 
     async def import_tweet(self, id:str, url:str, account:str) -> list[schemas.Post]:
         tweet = self.client.get_tweet(

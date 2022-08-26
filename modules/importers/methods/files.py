@@ -1,18 +1,16 @@
-from . import LocalImporter, utils
+from . import Importer, utils
 from modules import posts,settings
 from tqdm import tqdm
 from pathlib import Path
 from typing import Union
 import logging
 
-
-class Files(LocalImporter):
-    name = "Files"
-    enabled = settings.IMPORT_FILES_ENABLED
-    async def load_default(self):
+class Files(Importer):
+    enabled = settings.IMPORTER_FILES_ENABLED
+    async def load(self):
         tag_files = {}
         data_files = {}
-        IMPORT_DIR = Path(settings.IMPORT_FILES_BASEPATH)
+        IMPORT_DIR = Path(settings.IMPORTER_FILES_BASEPATH)
         for file in IMPORT_DIR.iterdir():
             if file.name == '.gitignore':
                 continue

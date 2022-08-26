@@ -1,13 +1,13 @@
 from typing import Union
-from . import URLImporter, utils, ImportFailure
+from . import Downloader, utils, DownloadFailure
 from modules import settings, schemas, posts
 from e621.api import E621 as _E621
 import e621.models as e621Models
 import re
 
 
-class E621(URLImporter):
-    enabled = settings.E621_ENABLED
+class E621(Downloader):
+    enabled = settings.DOWNLOADER_E621_ENABLED
     api:_E621
     def __init__(self):
         try:
@@ -28,7 +28,7 @@ class E621(URLImporter):
         try:
             e621_post = self.api.posts.get(id)
         except Exception:
-            raise ImportFailure("Could not find E621 Post")
+            raise DownloadFailure("Could not find E621 Post")
 
         data, filename = utils.download_url(e621_post.file.url) # type: ignore
         source = source_from_post(e621_post)
@@ -43,7 +43,7 @@ class E621(URLImporter):
 def id_from_url(url:str) -> int:
     id_match = re.match(r"^https:\/\/e621.net\/posts\/[0-9]+", url)
     if id_match == None:
-        raise ImportFailure("Could not find e621 ID in URL")
+        raise DownloadFailure("Could not find e621 ID in URL")
     id = id_match.group().split("/")[-1]
     id = int(id)
     return id

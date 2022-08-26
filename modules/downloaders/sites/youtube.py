@@ -1,12 +1,12 @@
 import mimetypes
 from typing import Union
-from . import utils, URLImporter, ImportFailure
+from . import utils, Downloader, DownloadFailure
 from modules import settings, schemas, posts
 import pytube
 
 
-class Youtube(URLImporter):
-    enabled = settings.YOUTUBE_ENABLED
+class Youtube(Downloader):
+    enabled = settings.DOWNLOADER_YOUTUBE_ENABLED
     def __init__(self):
         try:
             pytube.YouTube("https://youtu.be/GLlLQ3LmZWU")
@@ -31,7 +31,7 @@ class Youtube(URLImporter):
             data, _ = utils.download_url(stream.url) # type: ignore
             filename = "example" + mimetypes.guess_extension(stream.mime_type) # type: ignore
         except Exception:
-            raise ImportFailure("Could not download Video")
+            raise DownloadFailure("Could not download Video")
 
         try:
             post = await posts.generate(data, filename,
@@ -39,7 +39,7 @@ class Youtube(URLImporter):
                 source=video.watch_url,
             )
         except Exception:
-            raise ImportFailure("Could not generate post from video")
+            raise DownloadFailure("Could not generate post from video")
         
         
         return [post]

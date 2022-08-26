@@ -1,4 +1,5 @@
-from modules import validate
+from functools import cache
+from modules import validate, schemas
 import string
 import mimetypes
 import requests
@@ -9,8 +10,8 @@ import bs4
 _VALID_CHARS = string.ascii_lowercase + string.digits + '_()'
 
 filename = str
-def download_url(url:str) -> tuple[bytes, filename]:
-    r = requests.get(url)
+def download_url(url:str, timeout:int = 15) -> tuple[bytes, filename]:
+    r = requests.get(url,timeout=timeout)
     data = r.content
     _, ext = os.path.splitext(url)
     filename = "example" + ext
@@ -18,16 +19,13 @@ def download_url(url:str) -> tuple[bytes, filename]:
 
 
 def normalise_tags(tags:list[str]) -> list[str]:
-    if " " in tags:
-        tags.remove(" ")
-
-
     tags = [normalise_tag(tag) for tag in tags]
-    tags = list(filter(validate.tag,tags))
+    tags = list(filter(validate.tag, tags))
     tags = list(set(tags))
     return tags
 
 
+@cache
 def normalise_tag(tag:str,*, possibly_namespaced:bool = True) -> str:
     if possibly_namespaced:
         sections = tag.split(':')
@@ -46,7 +44,7 @@ def normalise_tag(tag:str,*, possibly_namespaced:bool = True) -> str:
     return tag
 
 
-def predict_media_type(url:str):
+def predict_media_type(url:str) -> str:
     TYPE_LOOKUP = {
         ".mp4":"video",
         ".webm":"video",
@@ -57,24 +55,22 @@ def predict_media_type(url:str):
         ".gif":"animation",
     }
     _,ext = os.path.splitext(url)
+    if ext not in TYPE_LOOKUP:
+        raise Exception(f"{ext} is not a valid media type")
     media_type = TYPE_LOOKUP[ext]
-    return media_type
+    return media_type # type: ignore
 
 
 def guess_mimetype(filepath:str) -> str:
+    _,ext = os.path.splitext(filepath)
+    filename = 'example' + ext
+    return _cachable_guess_mimetype(filename)
+
+
+@cache
+def _cachable_guess_mimetype(filepath:str) -> str:
     full, _  = mimetypes.guess_type(filepath)
     if full == None:
         raise ValueError("Could not guess mimetype")
     else:
         return full
-
-
-def _extract_images_from_html(html:str) -> list[str]:
-    soup = bs4.BeautifulSoup(html,'html.parser')
-
-    links = []
-    for img in soup.find_all('img'):
-        src = img.get('src')
-        if src:
-            links.append(src)
-    return links

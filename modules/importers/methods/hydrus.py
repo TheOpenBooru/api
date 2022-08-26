@@ -1,19 +1,19 @@
-from . import LocalImporter, utils
+from . import Importer, utils
 from modules import posts, settings, database
 import logging
 import requests
 import hydrus_api
 from tqdm import tqdm
 
-class Hydrus(LocalImporter):
-    name = "Hydrus"
-    enabled: bool = settings.IMPORT_HYDRUS_ENABLED
+
+class Hydrus(Importer):
+    enabled: bool = settings.IMPORTER_HYDRUS_ENABLED
     def __init__(self):
         try:
-            requests.get(settings.IMPORT_HYDRUS_URL,timeout=2)
+            requests.get(settings.IMPORTER_HYDRUS_URL,timeout=2)
             self.client = hydrus_api.Client(
-                access_key=settings.IMPORT_HYDRUS_KEY,
-                api_url=settings.IMPORT_HYDRUS_URL
+                access_key=settings.IMPORTER_HYDRUS_KEY,
+                api_url=settings.IMPORTER_HYDRUS_URL
             )
             self.client.get_api_version()
         except Exception:
@@ -22,9 +22,9 @@ class Hydrus(LocalImporter):
             self.functional = True
 
 
-    async def load_default(self):
+    async def load(self):
         ids = self.client.search_files(
-            settings.IMPORT_HYDRUS_TAGS,
+            settings.IMPORTER_HYDRUS_TAGS,
             file_sort_type=hydrus_api.FileSortType.IMPORT_TIME,
         )
         metadatas = self.client.get_file_metadata(file_ids=ids) # type: ignore
