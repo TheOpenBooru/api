@@ -8,8 +8,10 @@ def search(query:schemas.Tag_Query) -> list[Tag]:
         filters.append({'name':re.compile(query.name_like)})
     if query.namespace:
         filters.append({'namespace':query.namespace})
+    if query.count_lt:
+        filters.append({'count':{"$lt":query.count_lt}})
     if query.count_gt:
-        filters.append({'count':{"$lt":query.count_gt}})
+        filters.append({'count':{"$gt":query.count_gt}})
 
     kwargs = {}
     if query.limit:
