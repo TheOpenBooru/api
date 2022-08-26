@@ -8,9 +8,7 @@ from fastapi.responses import RedirectResponse, FileResponse
     include_in_schema=False
 )
 def get_media(filename:str):
-    CACHE_HEADER = {
-        "Cache-Control": "max-age=31536000, public"
-    }
+    CACHE_HEADER = { "Cache-Control": "max-age=31536000, public, immutable"}
     if isinstance(store.method,store.LocalStore):
         try:
             path = store.method.path(filename)

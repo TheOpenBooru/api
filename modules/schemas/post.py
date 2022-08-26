@@ -77,7 +77,6 @@ class Post(BaseModel):
 
     full: GenericMedia = Field(..., description="The full scale media for the Post")
     preview: Union[GenericMedia, None] = Field(default=None,description="A Medium Scale Version for the image, for hi-res posts")
-    # qualities: list[GenericMedia] = Field(default_factory=list, description="List of all qualities of this post")
     thumbnail: Image = Field(..., description="A low quality image used for thumbnails")
 
     media_type: Media_Type = Field( ..., description="Format of the post", regex="^(image|animation|video)$",)

@@ -6,6 +6,7 @@ from fastapi.encoders import jsonable_encoder
 
 
 @router.get("/search",
+    operation_id="tag_search",
     response_model=list[schemas.Tag],
     status_code=200,
     responses={

@@ -5,6 +5,7 @@ from fastapi.encoders import jsonable_encoder
 
 
 @router.get("/all",
+    operation_id="tag_all",
     response_model=list[schemas.Tag],
     status_code=200,
     responses={
