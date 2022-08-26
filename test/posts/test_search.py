@@ -1,14 +1,15 @@
-from modules import posts, schemas, downloaders, settings, database
+from modules import posts, schemas, importers, settings, database
 import unittest
 
-importer = downloaders.Safebooru()
+importer = importers.Safebooru()
 
 @unittest.skipUnless(importer.functional, "Could not import example data from SafeBooru")
 class test_Post_Search(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
+        database.Post.clear()
         settings.POSTS_SEARCH_MAX_LIMIT = 20
-        settings.IMPORT_SAFEBOORU_LIMIT = 100
-        await importer.load_default()
+        await importer.load(limit=100)
+        assert database.Post.count() == 100
     
     async def asyncTearDown(self):
         database.Post.clear()
@@ -25,12 +26,10 @@ class test_Post_Search(unittest.IsolatedAsyncioTestCase):
         assert len(searched_posts) == query.limit
     
     async def test_Index_Offsets_Post_Search(self):
-        query = schemas.Post_Query(limit=10)
-        index_0_posts = await posts.search(query)
-        query.index = 1
-        index_1_posts = await posts.search(query)
+        index_0_posts = await posts.search(schemas.Post_Query(limit=10))
+        index_1_posts = await posts.search(schemas.Post_Query(limit=10,index=1))
         assert index_0_posts[1:10] == index_1_posts[:9]
-        assert len(index_1_posts) == query.limit
+        assert len(index_1_posts) == 10
 
     async def test_Post_Search_Returns_Posts(self):
         query = schemas.Post_Query()

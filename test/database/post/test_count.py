@@ -4,9 +4,11 @@ from modules.database import Post
 
 class test_Count_Increments_With_Creation(TestCase):
     def test_Count_Increments_With_Creation(self):
-        Post.insert(generate_post())
+        post_1 = generate_post()
+        Post.insert(post_1)
         assert Post.count() == 1
-        Post.insert(generate_post())
+        post_2 = generate_post()
+        Post.insert(post_2)
         assert Post.count() == 2
 
 
