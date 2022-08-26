@@ -1,5 +1,7 @@
 from . import router
 from modules import schemas, database
+from modules.fastapi.dependencies import RateLimit
+from fastapi import Depends
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
@@ -11,6 +13,9 @@ from fastapi.encoders import jsonable_encoder
     responses={
         200:{"description":"Successfully Retrieved"},
     },
+    dependencies=[
+        Depends(RateLimit("2/day")),
+    ],
 )
 async def all_tags():
     tags = database.Tag.all()

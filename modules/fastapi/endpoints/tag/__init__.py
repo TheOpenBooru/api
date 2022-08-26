@@ -1,3 +1,3 @@
 from fastapi import APIRouter
 router = APIRouter(prefix="/tags",tags=["Tag"])
-from . import search
+from . import search, all
