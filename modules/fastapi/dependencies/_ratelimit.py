@@ -49,10 +49,11 @@ class RateLimit:
             self.events[ip] = []
         
         if self.isBlocked(ip):
-            time_left = int(time.time() - self.events[ip][-1])
+            time_left = time.time() - self.events[ip][-1]
+            time_left = round(time_left,2)
             raise HTTPException(
                 status.HTTP_429_TOO_MANY_REQUESTS,
-                headers={"Retry-After":str(time_left)}
+                headers={"Retry-After":time_left}
                 )
         else:
             self.events[ip].append(time.time())
