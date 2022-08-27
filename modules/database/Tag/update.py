@@ -1,11 +1,9 @@
+from dataclasses import replace
 from . import tag_collection, exists
 from typing import Union
-from modules import settings
+from modules import settings, schemas
 
-def update(
-        tag:str,
-        namespace:Union[str, None]=None
-    ):
+def update(tag:str,new_version:schemas.Tag):
     """Raises
     - KeyError: Tag doesn't exist
     - ValueError: Invalid Tag Namespace
@@ -13,11 +11,11 @@ def update(
     if not exists(tag):
         raise KeyError("Tag doesn't exist")
 
-    if namespace and namespace not in settings.TAGS_NAMESPACES:
+    if new_version.namespace not in settings.TAGS_NAMESPACES:
         raise ValueError("Invalid Tag Namespace")
-    
-    if namespace:
-        tag_collection.update_one(
-            filter={"name": tag},
-            update={"namespace": namespace}
-        )
+
+    doc = new_version.dict()
+    tag_collection.replace_one(
+        filter={"name": tag},
+        replacement=doc,
+    )

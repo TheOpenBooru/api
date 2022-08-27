@@ -1,1 +1,2 @@
-from .tagging_service import generate_ai_tags
+from .services import generate_ai_tags
+from .regenerate import regenerate

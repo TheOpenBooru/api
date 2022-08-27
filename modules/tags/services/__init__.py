@@ -1,0 +1,2 @@
+from .tagging_service import generate_ai_tags
+from .namespace_service import get_tag_namespace
