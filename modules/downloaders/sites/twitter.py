@@ -17,7 +17,7 @@ class Twitter(Downloader):
 
 
     def is_valid_url(self, url:str) -> bool:
-        return url.startswith("https://twitter.com")
+        return url.startswith("https://twitter.com/")
 
 
     ACCOUNT_REGEX = r"^https:\/\/twitter.com\/[a-zA-Z0-9_]+"

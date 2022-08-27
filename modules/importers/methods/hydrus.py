@@ -53,7 +53,7 @@ class Hydrus(Importer):
         if metadata['known_urls']:
             source = metadata['known_urls'][0]
             # Prevent tweet importer linking to the twitter image
-            if source.startswith("https://pbs.twimg.com"): 
+            if source.startswith("https://pbs.twimg.com/"): 
                 source = metadata['known_urls'][1]
         
         tags = utils.normalise_tags(raw_tags)

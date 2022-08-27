@@ -24,7 +24,8 @@ class Tumblr(Downloader):
         hostname = urlparse(url).hostname or ""
         return any((
             hostname == ("tumblr.co"),
-            hostname.endswith("tumblr.com"),
+            hostname == "tumblr.com",
+            hostname.endswith(".tumblr.com"),
         ))
 
 
