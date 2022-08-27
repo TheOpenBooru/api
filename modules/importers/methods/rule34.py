@@ -39,7 +39,7 @@ def guess_post_count() -> int:
     path = Path(settings.IMPORTER_E621_DUMP)
     stats = path.stat()
     size = stats.st_size
-    AVG_POST_SIZE = 1200
+    AVG_POST_SIZE = 1057
     return size // AVG_POST_SIZE
 
 
