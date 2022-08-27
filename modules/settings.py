@@ -1,21 +1,34 @@
 import yaml
 from typing import Any, Union
+from os import environ
 
 
 with open("./settings.yml") as f:
-    _config = yaml.full_load(f)
+    _config:dict = yaml.full_load(f)
+
+def _check_env(setting: str) -> Union[Any, None]:
+    env_name = (setting
+        .upper()
+        .replace(".","_")
+    )
+    return environ.get(env_name, default=None)
+
 
 def get(setting: str) -> Any:
     """Raises:
     - KeyError: Invalid Setting Name
     """
-    config = _config
-    for key in setting.split("."):
-        if key not in config:
-            raise KeyError(f"Invalid Setting: {setting}")
-        else:
-            config = config[key]
-    return config
+    env_setting = _check_env(setting)
+    if env_setting:
+        return env_setting
+    else:
+        config = _config.copy()
+        for key in setting.split("."):
+            if key not in config:
+                raise KeyError(f"Invalid Setting: {setting}")
+            else:
+                config = config[key]
+        return config
 
 # Webserver Config
 SITE_NAME:str = get("config.site.display_name")
