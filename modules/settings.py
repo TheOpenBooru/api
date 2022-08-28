@@ -119,9 +119,9 @@ DOWNLOADER_TWITTER_KEY:str = get("downloaders.twitter.bearer_token")
 
 # Passwords
 DEFAULT_TOKEN_EXPIRATION:int = get("authentication.token_expiration")
-PASSWORD_MIN_LENGTH:int = get("authentication.password_requirements.min_length")
-PASSWORD_MAX_LENGTH:int = get("authentication.password_requirements.max_length")
-PASSWORD_REQUIRED_SCORE:int = get("authentication.password_requirements.score")
+PASSWORD_MIN_LENGTH:int = get("authentication.password_policy.min_length")
+PASSWORD_MAX_LENGTH:int = get("authentication.password_policy.max_length")
+PASSWORD_REQUIRED_SCORE:int = get("authentication.password_policy.score")
 
 # Encoding
 THUMBNAIL_LOSSLESS:bool = get("encoding.thumbnail.lossless")

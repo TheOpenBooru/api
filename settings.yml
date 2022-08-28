@@ -92,11 +92,11 @@ downloaders:
     enabled: true
   twitter:
     enabled: true
-    bearer_token: "AAAAAAAAAAAAAAAAAAAAANBadAEAAAAAJJ5wXXWdv5oIy%2BLY7hRhyBWdluY%3DR4D2t5CCWGnvAUqEToij7nCku5tG76FBi1kWNgoANz9z4yBMKU"
+    bearer_token: ""
   tumblr:
     enabled: true
-    consumer_key: "Zn28Tm00jW9eAMTPq8mBsVcsZW7CRpT7d1Ae1Bo9xwwx3c9teW"
-    consumer_secret: "nS2tA6dBj3T1kIgReAG30f0FIjKIA7U6wBBrwCpbuvy9j6JzMc"
+    consumer_key: ""
+    consumer_secret: ""
 
 
 storage:
@@ -109,7 +109,7 @@ storage:
 
 authentication:
   token_expiration: null
-  password_requirements:
+  password_policy:
     min_length: 8
     max_length: 128
     score: 3 
