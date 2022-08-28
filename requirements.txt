@@ -4,21 +4,22 @@ uvicorn[standard]
 pydantic
 requests
 numpy
-python-box
 tqdm
 anyio
 coloredlogs
 iso639
-ujson
-ijson
 python-multipart
 cachetools
 pymongo
+jinja2
+boto3
+
+# Encoding
 pillow
 ffmpeg-python
 python-magic
-jinja2
-boto3
+
+# Cryptography
 cryptography
 pyotp
 pyjwt
@@ -27,6 +28,10 @@ zxcvbn
 argon2-cffi
 password-strength
 
+# Parsing
+python-box
+ujson
+ijson
 bs4
 lxml
 hydrus_api
@@ -34,3 +39,6 @@ pytumblr
 tweepy>=4.10.0
 e621==0.0.6 # 0.0.7 causes errors
 pytube
+
+# Testing
+pytest
