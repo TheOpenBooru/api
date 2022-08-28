@@ -1,4 +1,4 @@
-from . import Tag, tag_collection,exists
+from . import Tag, tag_collection, exists
 
 def create(tag:str,namespace:str="generic",count:int = 0):
     """Raises

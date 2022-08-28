@@ -1,4 +1,4 @@
-from . import Tag, tag_collection
+from . import Tag, tag_collection, parse_doc
 
 def get(name:str) -> Tag:
     """Raises
@@ -8,5 +8,5 @@ def get(name:str) -> Tag:
     if document == None:
         raise KeyError(f'Tag does not exist')
     else:
-        tag = Tag.parse_obj(document)
+        tag = parse_doc(document)
         return tag

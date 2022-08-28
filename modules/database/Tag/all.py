@@ -1,6 +1,6 @@
-from . import tag_collection,Tag
+from . import tag_collection, Tag, parse_docs
 
 def all() -> list[Tag]:
     docs = tag_collection.find({})
-    all_tags = [Tag.parse_obj(doc) for doc in docs]
+    all_tags = parse_docs(docs)
     return all_tags

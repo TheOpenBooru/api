@@ -1,6 +1,7 @@
 from modules.schemas import Tag
 from .. import db
 from ._collection import tag_collection
+from .misc import parse_doc, parse_docs
 
 from .exists import exists
 from .clear import clear

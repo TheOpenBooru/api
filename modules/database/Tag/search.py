@@ -1,4 +1,4 @@
-from . import Tag, tag_collection
+from . import Tag, tag_collection, parse_docs
 from modules import schemas
 import re
 
@@ -16,9 +16,10 @@ def search(query:schemas.Tag_Query) -> list[Tag]:
     kwargs = {}
     if query.limit:
         kwargs['limit'] = query.limit
-    cursor = tag_collection.find(
+    
+    docs = tag_collection.find(
         filter={'$and':filters} if filters else {},
         sort=[("count",-1)],
         **kwargs
     )
-    return [Tag.parse_obj(doc) for doc in cursor]
+    return parse_docs(docs)
