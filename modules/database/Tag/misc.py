@@ -9,12 +9,12 @@ def parse_doc(doc:dict) -> Tag:
 
 
 def parse_docs(docs:Union[list[dict], Cursor]) -> list[Tag]:
-    posts = []
+    tags = []
     for doc in docs:
         try:
-            post = Post.parse_obj(doc)
+            post = Tag.parse_obj(doc)
         except Exception:
             pass
         else:
-            posts.append(post)
-    return posts
+            tags.append(post)
+    return tags
