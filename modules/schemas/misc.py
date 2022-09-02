@@ -4,7 +4,7 @@ from pydantic import Field
 
 
 class Status(BaseModel):
-    version: str = Field(..., description="The current API version")
+    version: str = Field(default="Nitrogen", description="The current API version")
 
     default_sort:str = Field(..., description="The post search default sort")
     search_limit:int = Field(..., description="The post search post limit")
