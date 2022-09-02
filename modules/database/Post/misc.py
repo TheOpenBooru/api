@@ -10,8 +10,10 @@ def all() -> list[Post]:
     posts = [parse_doc(doc) for doc in docs]
     return posts
 
+
 def count() -> int:
     return post_collection.count_documents({})
+
 
 def generate_id() -> int:
     id = random.randint(0,2**32)
@@ -19,11 +21,14 @@ def generate_id() -> int:
         id = random.randint(0,2**32)
     return id
 
+
 def clear():
     post_collection.delete_many({})
 
+
 def parse_doc(doc:dict) -> Post:
     return Post.parse_obj(doc)
+
 
 def parse_docs(docs:Union[list[dict], Cursor]) -> list[Post]:
     posts = []
