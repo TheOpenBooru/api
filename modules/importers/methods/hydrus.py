@@ -27,14 +27,15 @@ class Hydrus(Importer):
             settings.IMPORTER_HYDRUS_TAGS,
             file_sort_type=hydrus_api.FileSortType.IMPORT_TIME,
         )
+        ids = [int(id) for id in ids]
+
         metadatas = self.client.get_file_metadata(file_ids=ids) # type: ignore
         ids.reverse()
         metadatas.reverse()
-
+        
         zipped = list(zip(ids,metadatas))
         for id,metadata in tqdm(zipped, desc="Importing From Hydrus"):
             try:
-                id = int(id)
                 await self._import_post(id,metadata)
             except Exception as e:
                 logging.info(f"Hydrus Failed Import [{metadata['hash']}]: {e}")
