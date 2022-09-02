@@ -47,8 +47,12 @@ class Post_Query(BaseModel):
     sort: Sort = Field(default=settings.POSTS_SEARCH_DEFAULT_SORT, description="How to sort the posts")
     descending: bool = Field(default=True, description="Should search be ordered descending")
     
+    
     include_tags: list[str] = Field(default=[])
     exclude_tags: list[str] = Field(default=[])
+    
+    upvotes_gt:int = Field(default=0, description="Score should be greater than")
+    upvotes_lt:int = Field(default=0, description="Score should be less than")
     
     created_after:Optional[float] = Field(default=None)
     created_before:Optional[float] = Field(default=None)
