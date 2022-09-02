@@ -1,6 +1,7 @@
 from . import Importer, utils
 from typing import Generator, Union
 from modules import settings, schemas, database
+from modules.importers.classes import ImportFailure
 from tqdm import tqdm
 from time import strptime, mktime
 from pathlib import Path
@@ -22,8 +23,21 @@ class E621(Importer):
             unit=" post",
         )
 
-        for post in progress:
-            await import_post(post)
+        for data in progress:
+            try:
+                await load_post(data)
+            except ImportFailure:
+                pass
+
+
+async def load_post(data:dict):
+    try:
+        md5 = data['file']['md5']
+        post = database.Post.getByMD5(md5)
+    except KeyError:
+        await import_post(data)
+    else:
+        await update_post(post, data)
 
 
 def iter_over_posts(limit:Union[int, None]) -> Generator[dict, None, None]:
@@ -86,38 +100,41 @@ def guess_post_count() -> int:
     return size // AVG_POST_SIZE
 
 
+async def update_post(post:schemas.Post, data:dict):
+    modified_post = post.copy()
+    
+    modified_post.upvotes = data['score']['up']
+    modified_post.downvotes = data['score']['down']
+    modified_post.source = get_source(data)
+    modified_post.tags = get_tags(data, post.full.type)
+    modified_post.source = get_source(data)
+
+    if modified_post != post:
+        database.Post.update(post.id, modified_post)
+
+
+
 async def import_post(data:dict):
-    md5 = data['file']['md5']
-    if database.Post.md5_exists(md5):
-        return
-
-    try:
-        post = await post_from_dict(data)
-        database.Post.insert(post)
-    except Exception as e:
-        pass
-
-
-async def post_from_dict(post:dict) -> schemas.Post:
-    full = construct_image(post['file'])
-    preview = construct_image(post['sample'])
-    thumbnail = construct_image(post['preview'])
+    full = construct_image(data['file'])
+    preview = construct_image(data['sample'])
+    thumbnail = construct_image(data['preview'])
     if full == None or thumbnail == None:
-        raise Exception("Failed to Generate Images from E621 Post")
+        raise ImportFailure("Failed to Generate Images from E621 Post")
 
-    return schemas.Post(
+    post = schemas.Post(
         id=database.Post.generate_id(),
-        created_at=get_date(post['created_at']),
-        media_type=utils.predict_media_type(post['file']['url']), # type: ignore
+        created_at=get_date(data['created_at']),
+        media_type=utils.predict_media_type(data['file']['url']), # type: ignore
         full=full,
         preview=preview,
         thumbnail=thumbnail,
-        tags=get_tags(post['tags']) + ["e621", full.type],
-        source=get_source(post),
-        upvotes=post['score']['up'],
-        downvotes=post['score']['down'],
-        hashes=schemas.Hashes(md5s=[post['file']['md5']]),
+        tags=get_tags(data, full.type),
+        source=get_source(data),
+        upvotes=data['score']['up'],
+        downvotes=data['score']['down'],
+        hashes=schemas.Hashes(md5s=[data['file']['md5']]),
     )
+    database.Post.insert(post)
 
 
 def construct_image(image:dict) -> Union[schemas.Image, None]:
@@ -129,13 +146,17 @@ def construct_image(image:dict) -> Union[schemas.Image, None]:
         url = f"https://static1.e621.net/data/{md5[0:2]}/{md5[2:4]}/{md5}.{ext}"
     else:
         return None
+    try:
+        media_type = utils.predict_media_type(url)
+    except Exception:
+        raise ImportFailure("Unsupported File Type")
     
     return schemas.Image(
         url=url,
         width=image["width"],
         height=image["height"],
         mimetype=utils.guess_mimetype(url),
-        type=utils.predict_media_type(url), # type: ignore
+        type=media_type, # type: ignore
     )
 
 
@@ -146,7 +167,8 @@ def get_source(post:dict) -> str:
         return f"https://e621.net/posts/{post['id']}"
 
 
-def get_tags(tag_data:dict) -> list[str]:
+def get_tags(data:dict, type:str) -> list[str]:
+    tag_data = data['tags']
     tags_set = set()
     tags_set.update(tag_data['general'])
     tags_set.update(tag_data['species'])
@@ -155,6 +177,8 @@ def get_tags(tag_data:dict) -> list[str]:
     tags_set.update(tag_data['artist'])
     tags_set.update(tag_data['lore'])
     tags_set.update(tag_data['meta'])
+    tags_set.add(type)
+    tags_set.add("e621")
     tags = utils.normalise_tags(list(tags_set))
     return tags
 

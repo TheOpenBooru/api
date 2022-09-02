@@ -1,6 +1,6 @@
-from functools import cache
 from . import Importer, ImportFailure, utils
 from modules import settings, schemas, database
+from functools import cache
 from tqdm import tqdm
 from datetime import datetime
 from pathlib import Path
@@ -20,26 +20,26 @@ class Rule34(Importer):
             iterable=posts,
             desc="Importing From Rule34 Dump",
             unit=" post",
-            total=guess_post_count(),
+            total=limit or guess_post_count(),
         )
-        post_count = 0
-        for post in progress:
-            post_count += 1
-            if limit and post_count > limit:
+        for i, post in enumerate(progress):
+            if post["height"] == "": # Empty Post
+                continue
+            
+            if limit and i > limit:
                 return
             
             try:
-                post = await post_from_dict(post)
-                database.Post.insert(post)
-            except Exception as e:
+                await load_post(post)
+            except ImportFailure:
                 continue
 
 
 def guess_post_count() -> int:
-    path = Path(settings.IMPORTER_E621_DUMP)
+    path = Path(settings.IMPORTER_RULE34_DUMP)
     stats = path.stat()
     size = stats.st_size
-    AVG_POST_SIZE = 1057
+    AVG_POST_SIZE = 800
     return size // AVG_POST_SIZE
 
 
@@ -59,16 +59,22 @@ def iter_over_posts():
                 yield post
 
 
-async def post_from_dict(data:dict) -> schemas.Post:
-    if database.Post.md5_exists(data['md5']):
-        raise ImportFailure("Post Already Exists")
-    
+async def load_post(data:dict):
+    try:
+        post = database.Post.getByMD5(data["md5"])
+    except KeyError:
+        import_post(data)
+    else:
+        update_post(post, data)
+
+
+def import_post(data:dict):
     full,preview,thumbnail = construct_images(data)
     post = schemas.Post(
         id=database.Post.generate_id(),
         created_at=get_date(data),
         upvotes=get_score(data["score"]),
-        tags=get_tags(data) + ["rule34xxx", full.type],
+        tags=get_tags(data, full.type),
         source=get_source(data),
         media_type=utils.predict_media_type(data['file_url']), # type: ignore
         hashes=get_hashes(data),
@@ -76,7 +82,18 @@ async def post_from_dict(data:dict) -> schemas.Post:
         preview=preview,
         thumbnail=thumbnail,
     )
-    return post
+    database.Post.insert(post)
+
+
+def update_post(post:schemas.Post, data:dict):
+    modified_post = post.copy()
+    
+    modified_post.upvotes = get_score(data["score"])
+    modified_post.source = get_source(data)
+    modified_post.tags = get_tags(data, post.full.type)
+
+    if modified_post != post:
+        database.Post.update(post.id, modified_post)
 
 
 def construct_image(url:str, width:str, height:str):
@@ -129,9 +146,11 @@ def get_source(post:dict) -> str:
         return f"https://rule34.xxx/index.php?page=post&s=view&id={post['id']}"
 
 
-def get_tags(post:dict):
-    tag_string = post['tags']
+def get_tags(post:dict, type:str):
+    tag_string:str = post['tags']
     tags = tag_string.split(' ')
+    tags.append(type)
+    tags.append("rule34xxx")
     tags = utils.normalise_tags(tags)
     return tags
 
