@@ -1,7 +1,6 @@
 from functools import cache
 import re as _re
 import iso639 as _iso639
-from modules import settings
 
 USERNAME_REGEX = r"^[a-z0-9_]{4,32}$"
 RATING_REGEX = r"^(safe|questionable|explicit)$"
