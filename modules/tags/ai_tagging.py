@@ -1,9 +1,8 @@
 from modules import settings
-from modules.downloaders.utils import normalise_tags
+from modules.normalisation import normalise_tags
 import logging
 import requests
 import io
-
 
 
 def generate_ai_tags(data:bytes, filename:str, mimetype:str) -> list[str]:
