@@ -1,25 +1,28 @@
 from . import router
+from cachetools import TTLCache, cached
 from modules import schemas, database
 from modules.fastapi.dependencies import RateLimit
 from fastapi import Depends
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
+import json
 
 
 @router.get("/all",
-    operation_id="tag_all",
     response_model=list[schemas.Tag],
-    status_code=200,
-    responses={
-        200:{"description":"Successfully Retrieved"},
-    },
     dependencies=[
-        Depends(RateLimit("2/day")),
+        Depends(RateLimit("1/second")),
     ],
 )
 async def all_tags():
-    tags = database.Tag.all()
+    data = get_data()
     return JSONResponse(
-        content=jsonable_encoder(tags),
-        headers={"Cache-Control": f"max-age={60*60*24}, public"},
+        content=data,
+        headers={"Cache-Control": "max-age=3600, public"},
     )
+
+
+@cached(TTLCache(maxsize=1,ttl=60*60))
+def get_data():
+    tags = database.Tag.all()
+    return jsonable_encoder(tags)

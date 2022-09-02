@@ -7,11 +7,6 @@ from fastapi.encoders import jsonable_encoder
 
 
 @router.get("",
-    responses={
-        200:{"description":"Profile Data Retrieved Successfully"},
-        401:{"description":"Not Logged In"},
-        404:{"description":"Unauthorised"},
-    },
     response_model=schemas.User,
 )
 async def get_profile(account:account.Account = Depends(fastapi.DecodeToken)):

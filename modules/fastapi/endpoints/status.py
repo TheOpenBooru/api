@@ -9,7 +9,6 @@ from modules.schemas import Status
 )
 def get_status():
     return Status(
-        version="Carbon",
         sitename=settings.SITE_NAME,
         default_sort=settings.POSTS_SEARCH_DEFAULT_SORT,
         search_limit=settings.POSTS_SEARCH_MAX_LIMIT,

@@ -9,9 +9,9 @@ from fastapi.encoders import jsonable_encoder
 @router.post("/create",
     response_model=schemas.Post,
     responses= {
-        200:{"description": "Successfully Created"},
         400:{"description": "Failed To Create Post From Image"},
-        401:{"description": "Authorization Failure"},
+        401:{},
+        403:{},
         409:{"description": "Post Already Exists"},
     },
     dependencies=[

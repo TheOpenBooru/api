@@ -6,7 +6,6 @@ from fastapi import Response, Depends, Body, status
 @router.put(
     "/settings",
     responses={
-        200:{"description":"Settings Successfully Saved"},
         400:{"description":"Settings is larger than 4096 Retrieved Successfully"},
         401:{"description":"Not Logged In"},
     },

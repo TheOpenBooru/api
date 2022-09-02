@@ -12,7 +12,6 @@ from fastapi.encoders import jsonable_encoder
     operation_id="login",
     response_model=Token,
     responses={
-        200:{"description":"Successfully Signed in and Provided a Token"},
         401:{"description":"Invalid Username or Password"},
         406:{"description":"User's Password Was Reset"},
     },

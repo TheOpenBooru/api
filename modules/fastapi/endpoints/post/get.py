@@ -1,6 +1,6 @@
 from . import router
 from modules import schemas
-from modules.fastapi.dependencies import RateLimit
+from modules.fastapi.dependencies import RateLimit, RequirePermission
 from modules.database import Post
 from fastapi import Response, status, Depends
 from fastapi.responses import JSONResponse
@@ -9,12 +9,9 @@ from fastapi.encoders import jsonable_encoder
 
 @router.get("/{id}",
     response_model=schemas.Post,
-    responses={
-        200:{"description":"Successfully Retrieved Post"},
-        404:{"description":"The Post Could Not Be Found"},
-    },
     dependencies=[
         Depends(RateLimit("2/second")),
+        Depends(RequirePermission("canViewPosts")),
     ]
 )
 async def get_post(id:int):

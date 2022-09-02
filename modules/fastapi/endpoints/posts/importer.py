@@ -10,9 +10,7 @@ from fastapi.encoders import jsonable_encoder
     operation_id="import_post",
     response_model=list[schemas.Post],
     responses= {
-        200:{"description":"Successfully Created"},
-        400:{"description":"FAIL REASON"},
-        401:{"description":"Authorization Failure"},
+        400:{"description":"Post Creation Failure"},
         409:{"description":"Post already exists with that source"},
     },
     dependencies=[

@@ -1,4 +1,4 @@
-from modules import database, settings, importers
+from modules import settings, importers, tags
 from modules.fastapi import main_router
 from modules.fastapi.middleware import middlewares
 
@@ -19,7 +19,7 @@ async def startup_event():
     await importers.import_all()
     if settings.TAGS_REGENERATE_ON_BOOT:
         try:
-            database.Tag.regenerate()
+            tags.regenerate()
         except KeyboardInterrupt:
             print("Manually Skippped Tag Regenerated")
 

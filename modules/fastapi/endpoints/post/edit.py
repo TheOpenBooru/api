@@ -8,12 +8,6 @@ from typing import Union
 
 
 @router.patch('/{id}',
-    status_code=202,
-    responses={
-        202:{"description":"Post Edit Success"},
-        400:{"description":"Post Edit Failure"},
-        404:{"description":"Post Could Not Be Found"},
-    },
     response_model=schemas.Post,
     dependencies=[
         Depends(RequireCaptcha),
@@ -39,4 +33,4 @@ async def edit_post(
     except posts.PostEditFailure as e:
         raise HTTPException(status_code=400, detail=str(e))
     else:
-        return Response(status_code=202)
+        return Response(status_code=200)

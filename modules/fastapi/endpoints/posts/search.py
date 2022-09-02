@@ -1,6 +1,6 @@
 from . import router
 from modules import schemas, posts
-from modules.fastapi.dependencies import RateLimit
+from modules.fastapi.dependencies import RateLimit, RequirePermission
 from fastapi import Depends, Query
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
@@ -9,11 +9,10 @@ from typing import Optional
 
 @router.get("/search",
     response_model=list[schemas.Post],
-    responses={
-        200:{"description":"Successfully Retrieved"},
-    },
     dependencies=[
-        Depends(RateLimit("2/second")),
+        Depends(RequirePermission("canSearchPosts")),
+        Depends(RateLimit("40/minute")),
+        Depends(RateLimit("3/second")),
     ]
 )
 async def search_posts(
