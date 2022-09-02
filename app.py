@@ -10,6 +10,13 @@ app = FastAPI(
     version="Alpha", 
     docs_url='/docs',
     middleware=middlewares,
+    responses={
+        200: {"description":"Success"},
+        401: {"description":"Not Authenticated"},
+        403: {"description":"Missing Permission"},
+        429: {"description":"Rate limitted"},
+    },
+    
 )
 app.include_router(main_router)
 
@@ -40,6 +47,7 @@ if __name__ == "__main__":
     uvicorn.run(
         "app:app",
         host='0.0.0.0',
+        debug=True,
         port=settings.PORT,
         log_config="./data/logging.conf",
         **ssl_params,
