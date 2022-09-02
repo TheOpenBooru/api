@@ -1,13 +1,11 @@
-from functools import cache
-from modules import validate, schemas
+from modules.normalisation import normalise_tag, normalise_tags
+from cachetools import cached, Cache
 import string
 import mimetypes
 import requests
 import os
 import bs4
 
-
-_VALID_CHARS = string.ascii_lowercase + string.digits + '_()'
 
 filename = str
 def download_url(url:str, timeout:int = 15) -> tuple[bytes, filename]:
@@ -16,32 +14,6 @@ def download_url(url:str, timeout:int = 15) -> tuple[bytes, filename]:
     _, ext = os.path.splitext(url)
     filename = "example" + ext
     return data, filename
-
-
-def normalise_tags(tags:list[str]) -> list[str]:
-    tags = [normalise_tag(tag) for tag in tags]
-    tags = list(filter(validate.tag, tags))
-    tags = list(set(tags))
-    return tags
-
-
-@cache
-def normalise_tag(tag:str,*, possibly_namespaced:bool = True) -> str:
-    if possibly_namespaced:
-        sections = tag.split(':')
-        if len(sections) == 2:
-            _,tag = sections
-
-    tag = tag.lower()
-    tag = tag.strip('\n')
-    tag = tag.replace(' ','_')
-    tag_chars = list(tag)
-    
-    filter_func = lambda chr: chr in _VALID_CHARS
-    filtered_chars = list(filter(filter_func,tag_chars))
-    tag = ''.join(filtered_chars)
-    
-    return tag
 
 
 def predict_media_type(url:str) -> str:
@@ -67,7 +39,7 @@ def guess_mimetype(filepath:str) -> str:
     return _cachable_guess_mimetype(filename)
 
 
-@cache
+@cached(cache=Cache(maxsize=10_000))
 def _cachable_guess_mimetype(filepath:str) -> str:
     full, _  = mimetypes.guess_type(filepath)
     if full == None:
