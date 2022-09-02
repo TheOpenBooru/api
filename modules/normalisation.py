@@ -6,6 +6,7 @@ def normalise_tags(tags:list[str]) -> list[str]:
     tags = [normalise_tag(tag) for tag in tags]
     tags = list(filter(validate.tag, tags))
     tags = list(set(tags))
+    tags.sort()
     return tags
 
 
