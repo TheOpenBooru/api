@@ -3,7 +3,6 @@ from typing import Generator, Union
 from modules import settings, schemas, database
 from tqdm import tqdm
 from time import strptime, mktime
-import asyncio
 from pathlib import Path
 import ijson
 
