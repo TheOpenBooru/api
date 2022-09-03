@@ -14,7 +14,7 @@ def guess_namespace(tag:str, lookup:dict[str,str]) -> Union[str, None]:
     return namespace
 
 
-def regen_namespaces():
+def regenerate_namespaces():
     progress = tqdm(
         iterable=database.Tag.all(),
         desc="Regenerating Tag Namespaces",
