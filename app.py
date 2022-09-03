@@ -1,7 +1,6 @@
-from modules import settings, importers, tags
+from modules import settings, daemon
 from modules.fastapi import main_router
 from modules.fastapi.middleware import middlewares
-
 import uvicorn
 from fastapi import FastAPI,responses
 
@@ -23,12 +22,7 @@ app.include_router(main_router)
 
 @app.on_event("startup")
 async def startup_event():
-    await importers.import_all()
-    if settings.TAGS_REGENERATE_ON_BOOT:
-        try:
-            tags.regenerate()
-        except KeyboardInterrupt:
-            print("Manually Skippped Tag Regenerated")
+    daemon.run_daemon()
 
 
 @app.get('/',include_in_schema=False)
