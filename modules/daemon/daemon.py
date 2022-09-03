@@ -1,26 +1,34 @@
 from . import schedule_task
 from modules import importers, tags, settings
-from datetime import timedelta
+from modules.importers import Hydrus, Files, Rule34, Safebooru, E621
+from datetime import timedelta, datetime
 import logging
 
 
 def run_daemon():
     logging.info("Starting Daemon Threads")
-    schedule_task(tags_thread, timedelta(seconds=settings.TAGS_TIME_BETWEEN_REGENERATION))
-    schedule_task(importer_thread, timedelta(days=1))
+    
+    schedule_task(tags.regenerate_count, timedelta(seconds=settings.TAGS_TIME_BETWEEN_REGENERATION))
+    schedule_task(tags.regenerate_namespaces, timedelta(seconds=settings.TAGS_TIME_BETWEEN_REGENERATION))
+    
+    schedule_importers()
 
 
-async def tags_thread():
+def schedule_importers():
+    importers = [Hydrus, Files, Rule34, Safebooru, E621]
     try:
-        tags.regenerate()
-    except KeyboardInterrupt:
-        print("Manually Skippped Tag Regenerated")
-    except Exception as e:
-        logging.exception(e)
+        for importer_class in importers:
+            name = importer_class.__name__
+            
+            if importer_class.enabled == False:
+                continue
 
-
-async def importer_thread():
-    try:
-        await importers.import_all()
+            try:
+                importer = importer_class()
+            except Exception:
+                logging.warning(f"Importer {name} was not functional")
+                continue
+            
+            schedule_task(importer.load, importer.time_between_runs)
     except Exception as e:
         logging.exception(e)

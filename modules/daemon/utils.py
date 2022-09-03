@@ -1,6 +1,6 @@
 import asyncio
 from threading import Thread
-from typing import Callable
+from typing import Callable, Union
 from datetime import timedelta
 from time import time
 
@@ -11,13 +11,16 @@ def run_async_thread(function: Callable):
         asyncio.set_event_loop(loop)
         loop.run_until_complete(function())
         loop.close()
-    
     Thread(target=inner, daemon=True).start()
 
 
-def schedule_task(function: Callable, time_between_runs:timedelta):
+def schedule_task(function: Callable, time_between_runs: Union[None, timedelta]):
     async def inner():
-        await scheduler(function, time_between_runs)
+        if time_between_runs == None:
+            await function()
+        else:
+            await scheduler(function, time_between_runs)
+    
     run_async_thread(inner)
 
 
