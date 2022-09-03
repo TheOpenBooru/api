@@ -1,9 +1,8 @@
 from . import router
 from modules import schemas, account
+from modules.fastapi import oauth2_scheme
 from modules.account.permissions import Permissions
-from fastapi import Header
-from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder
+from fastapi import Header, HTTPException
 from typing import Union
 
 
@@ -14,7 +13,15 @@ async def get_permissions(token: Union[str,None] = Header(None, alias="Authoriza
     if token == None:
         perms = Permissions.from_level("annonymous")
     else:
-        user = account.decode(token)
-        perms = user.permissions.permissions
+        try:
+            user = account.decode(token)
+        except account.InvalidToken:
+            raise HTTPException(
+                status_code=401,
+                detail="Bad Authorization Token",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        
+        perms = user.permissions
     
-    return JSONResponse(jsonable_encoder(perms))
+    return perms.permissions
