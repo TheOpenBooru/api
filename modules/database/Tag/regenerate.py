@@ -9,8 +9,7 @@ import time
 
 
 
-def regenerateCount(min_count:int = settings.TAGS_MINIMUM_COUNT):
-    logging.info("Started Regenerating Tags")
+def regenerate_count(min_count:int = settings.TAGS_MINIMUM_COUNT):
     start = time.time()
 
     tag_data = getTagData(min_count)
