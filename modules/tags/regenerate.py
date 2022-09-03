@@ -10,7 +10,7 @@ def user_cancelable_event(function, message):
         logging.info(message)
 
 def regenerate():
-    user_cancelable_event(database.Tag.regenerate, "Skipping Database Tag Regeneration")
+    user_cancelable_event(database.Tag.regenerateCount, "Skipping Database Tag Regeneration")
     
     logging.info("Started Namespace Regeneration")
     user_cancelable_event(regen_namespaces, "Skipping Namespace Regeneration")

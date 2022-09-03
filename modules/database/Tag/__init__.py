@@ -11,5 +11,5 @@ from .search import search
 from .update import update
 from .create import create
 from .delete import delete
-from .regenerate import regenerate
+from .regenerate import regenerateCount
 from .sibling import addSibling,removeSibling
