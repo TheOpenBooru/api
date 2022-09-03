@@ -64,7 +64,7 @@ STORAGE_LOCAL_PATH:str = get("storage.local.path")
 STORAGE_S3_BUCKET:str = get("storage.s3.bucket-name")
 
 # Tags
-TAGS_REGENERATE_ON_BOOT:bool = get("tags.regenerate_on_startup")
+TAGS_TIME_BETWEEN_REGENERATION:bool = get("tags.time_between_regenerations")
 TAGS_MINIMUM_COUNT:int = get("tags.minimum_count")
 TAGS_NAMESPACES:list[str] = get("tags.valid_namespaces")
 TAGS_TAGGING_SERVICE_ENABLED:bool = get("tags.tagging_service.enabled")

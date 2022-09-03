@@ -1,13 +1,13 @@
 from . import schedule_task
-from modules import importers, tags
+from modules import importers, tags, settings
 from datetime import timedelta
 import logging
 
 
 def run_daemon():
     logging.info("Starting Daemon Threads")
-    schedule_task(tags_thread, timedelta(seconds=5))
-    schedule_task(importer_thread, timedelta(hours=1))
+    schedule_task(tags_thread, timedelta(seconds=settings.TAGS_TIME_BETWEEN_REGENERATION))
+    schedule_task(importer_thread, timedelta(days=1))
 
 
 async def tags_thread():

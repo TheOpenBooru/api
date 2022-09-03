@@ -43,7 +43,7 @@ posts:
 
 
 tags:
-  regenerate_on_startup: true
+  time_between_regenerations: 86400
   minimum_count: 3
   valid_namespaces:
     - generic
