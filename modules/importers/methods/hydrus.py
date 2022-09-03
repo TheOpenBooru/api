@@ -9,17 +9,12 @@ from tqdm import tqdm
 class Hydrus(Importer):
     enabled: bool = settings.IMPORTER_HYDRUS_ENABLED
     def __init__(self):
-        try:
-            requests.get(settings.IMPORTER_HYDRUS_URL,timeout=2)
-            self.client = hydrus_api.Client(
-                access_key=settings.IMPORTER_HYDRUS_KEY,
-                api_url=settings.IMPORTER_HYDRUS_URL
-            )
-            self.client.get_api_version()
-        except Exception:
-            self.functional = False
-        else:
-            self.functional = True
+        requests.get(settings.IMPORTER_HYDRUS_URL,timeout=2)
+        self.client = hydrus_api.Client(
+            access_key=settings.IMPORTER_HYDRUS_KEY,
+            api_url=settings.IMPORTER_HYDRUS_URL
+        )
+        self.client.get_api_version()
 
 
     async def load(self):

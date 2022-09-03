@@ -12,12 +12,7 @@ import requests
 class Safebooru(Importer):
     enabled = settings.IMPORTER_SAFEBOORU_ENABLED
     def __init__(self):
-        try:
-            requests.get("https://safebooru.org/",timeout=2)
-        except Exception:
-            self.functional = False
-        else:
-            self.functional = True
+        requests.get("https://safebooru.org/",timeout=2)
 
 
     async def load(self, limit:Union[int, None] = settings.IMPORTER_SAFEBOORU_LIMIT):

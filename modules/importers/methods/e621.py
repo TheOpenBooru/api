@@ -12,7 +12,8 @@ class E621(Importer):
     enabled = settings.IMPORTER_E621_ENABLED
     def __init__(self):
         dump_path = Path(settings.IMPORTER_E621_DUMP)
-        self.functional = dump_path.exists()
+        if dump_path.exists() == False:
+            raise FileNotFoundError("Could not find e621 dump")
 
 
     async def load(self, limit:Union[int, None] = None):

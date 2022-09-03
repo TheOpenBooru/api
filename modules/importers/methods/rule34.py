@@ -11,7 +11,9 @@ import ijson
 class Rule34(Importer):
     enabled = settings.IMPORTER_RULE34_ENABLED
     def __init__(self):
-        self.functional = Path(settings.IMPORTER_RULE34_DUMP).exists()
+        dump_path = Path(settings.IMPORTER_RULE34_DUMP)
+        if dump_path.exists() == False:
+            raise FileNotFoundError("Could not find r34 dump")
 
 
     async def load(self, limit:Union[int, None] = None):
