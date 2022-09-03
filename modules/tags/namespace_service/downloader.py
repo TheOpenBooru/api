@@ -6,23 +6,15 @@ import json
 from pathlib import Path
 import csv
 
-CACHE_PATH = Path("./data/namespace_data.json")
-
 tag = str
 namespace = str
 def download_namespace_data() -> dict[tag, namespace]:
-    if CACHE_PATH.exists():
-        with open(CACHE_PATH) as f:
-            tags = json.load(f)
-        return tags
-    else:
-        url = _generate_url()
-        r = requests.get(url)
-        data = gzip.decompress(r.content)
-        text = data.decode()
-        tags = _parse_csv(text)
-        _cache(tags)
-        return tags
+    url = _generate_url()
+    r = requests.get(url)
+    data = gzip.decompress(r.content)
+    text = data.decode()
+    namespace_data = _parse_csv(text)
+    return namespace_data
 
 
 def _generate_url():
@@ -65,8 +57,3 @@ def _parse_category_id(id:str) -> str:
         "8": "lore",
     }
     return namespaces[id]
-
-
-def _cache(tags:dict):
-    with open(CACHE_PATH, "w") as f:
-        json.dump(tags, f)
