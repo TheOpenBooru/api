@@ -5,15 +5,20 @@ from datetime import timedelta
 from time import time
 
 
-def schedule_task(function: Callable, time_between_runs:timedelta):
+def run_async_thread(function: Callable):
     def inner():
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        schedule_function = scheduler(function, time_between_runs)
-        loop.run_until_complete(schedule_function)
+        loop.run_until_complete(function())
         loop.close()
     
     Thread(target=inner, daemon=True).start()
+
+
+def schedule_task(function: Callable, time_between_runs:timedelta):
+    async def inner():
+        await scheduler(function, time_between_runs)
+    run_async_thread(inner)
 
 
 async def scheduler(func: Callable, time_between_runs:timedelta):
