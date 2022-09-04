@@ -10,6 +10,7 @@ import ijson
 
 class Rule34(Importer):
     enabled = settings.IMPORTER_RULE34_ENABLED
+    time_between_runs = settings.IMPORTER_RULE34_RETRY_AFTER
     def __init__(self):
         dump_path = Path(settings.IMPORTER_RULE34_DUMP)
         if dump_path.exists() == False:

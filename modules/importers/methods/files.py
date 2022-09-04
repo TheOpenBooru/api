@@ -7,6 +7,7 @@ import logging
 
 class Files(Importer):
     enabled = settings.IMPORTER_FILES_ENABLED
+    time_between_runs = settings.IMPORTER_FILES_RETRY_AFTER
     async def load(self):
         tag_files = {}
         data_files = {}

@@ -8,6 +8,7 @@ from tqdm import tqdm
 
 class Hydrus(Importer):
     enabled: bool = settings.IMPORTER_HYDRUS_ENABLED
+    time_between_runs = settings.IMPORTER_HYDRUS_RETRY_AFTER
     def __init__(self):
         requests.get(settings.IMPORTER_HYDRUS_URL,timeout=2)
         self.client = hydrus_api.Client(

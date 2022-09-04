@@ -7,7 +7,7 @@ class ImportFailure(Exception): pass
 class Importer:
     enabled:bool = False
     functional:bool = False
-    time_between_runs:Union[None, timedelta] = timedelta(days=1)
+    time_between_runs:Union[None, float] = None
     def __init__(self):
         pass
 

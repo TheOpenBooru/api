@@ -43,7 +43,7 @@ posts:
 
 
 tags:
-  time_between_regenerations: 86400
+  time_between_count_regen: 86400
   minimum_count: 3
   valid_namespaces:
     - generic
@@ -59,23 +59,28 @@ tags:
 importers:
   local:
     enabled: false
+    run_every: null
     local_path: "./data/import"
   hydrus:
     enabled: false
+    run_every: null
     access_key: ""
     url: ""
     tags:
       - "system:everything"
   safebooru:
     enabled: false
+    run_every: null
     limit: null
     searches:
       - rating:safe overwatch
   e621:
     enabled: false
+    run_every: null
     dump_location: ""
   rule34:
     enabled: false
+    run_every: null
     dump_location: ""
     proxy_format: ""
 
@@ -105,7 +110,7 @@ storage:
   local:
     path: "./data/storage"
   s3:
-    bucket-name: ""
+    bucket-name: "openbooru"
 
 
 authentication:

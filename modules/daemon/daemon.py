@@ -8,9 +8,9 @@ import logging
 def run_daemon():
     logging.info("Starting Daemon Threads")
     
-    schedule_task(tags.regenerate_count, timedelta(seconds=settings.TAGS_TIME_BETWEEN_REGENERATION))
-    schedule_task(tags.regenerate_namespaces, timedelta(seconds=settings.TAGS_TIME_BETWEEN_REGENERATION))
-    
+    schedule_task(tags.regenerate_count, settings.TAGS_REGEN_COUNT_EVERY)
+    # e621 namespace dumps only regen every day
+    schedule_task(tags.regenerate_namespaces, timedelta(days=1).total_seconds())
     schedule_importers()
 
 

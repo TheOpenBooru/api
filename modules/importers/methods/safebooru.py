@@ -11,6 +11,7 @@ import requests
 
 class Safebooru(Importer):
     enabled = settings.IMPORTER_SAFEBOORU_ENABLED
+    time_between_runs = settings.IMPORTER_SAFEBOORU_RETRY_AFTER
     def __init__(self):
         requests.get("https://safebooru.org/",timeout=2)
 

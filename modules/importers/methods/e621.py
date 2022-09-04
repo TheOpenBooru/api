@@ -10,6 +10,7 @@ import ijson
 
 class E621(Importer):
     enabled = settings.IMPORTER_E621_ENABLED
+    time_between_runs = settings.IMPORTER_E621_RETRY_AFTER
     def __init__(self):
         dump_path = Path(settings.IMPORTER_E621_DUMP)
         if dump_path.exists() == False:

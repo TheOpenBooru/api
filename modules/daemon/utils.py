@@ -14,7 +14,7 @@ def run_async_thread(function: Callable):
     Thread(target=inner, daemon=True).start()
 
 
-def schedule_task(function: Callable, time_between_runs: Union[None, timedelta]):
+def schedule_task(function:Callable, time_between_runs:Union[None, float]):
     async def inner():
         if time_between_runs == None:
             await function()
@@ -24,10 +24,10 @@ def schedule_task(function: Callable, time_between_runs: Union[None, timedelta])
     run_async_thread(inner)
 
 
-async def scheduler(func: Callable, time_between_runs:timedelta):
+async def scheduler(func:Callable, time_between_runs:float):
     last_run = 0
     while True:
-        next_run_time = last_run + time_between_runs.total_seconds()
+        next_run_time = last_run + time_between_runs
         time_til_next_run = next_run_time - time()
         await asyncio.sleep(time_til_next_run)
         last_run = time()
