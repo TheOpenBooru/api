@@ -35,7 +35,7 @@ class Youtube(Downloader):
 
         try:
             post = await posts.generate(data, filename,
-                additional_tags=getTags(video),
+                additional_tags=await getTags(video),
                 source=video.watch_url,
             )
         except Exception:
@@ -46,20 +46,20 @@ class Youtube(Downloader):
 
 
 
-def getTags(video: pytube.YouTube) -> list[str]:
+async def getTags(video: pytube.YouTube) -> list[str]:
     tags = set()
     keywords = video.vid_info['videoDetails']['keywords']
     keywords = utils.normalise_tags(keywords)
     tags.update(keywords)
     
-    author = getAuthorName(video)
+    author = await getAuthorName(video)
     if author:
         tags.add(author)
     
     return list(tags)
 
 
-def getAuthorName(video:pytube.YouTube) -> Union[str,None]:
+async def getAuthorName(video:pytube.YouTube) -> Union[str,None]:
     channel = pytube.Channel(video.channel_url)
     try:
         name = channel.initial_data['header']['c4TabbedHeaderRenderer']['title'] #type: ignore
