@@ -79,8 +79,9 @@ def import_post(data:dict):
         upvotes=get_score(data["score"]),
         tags=get_tags(data, full.type),
         source=get_source(data),
-        media_type=utils.predict_media_type(data['file_url']), # type: ignore
+        media_type=utils.predict_media_type(data['file_url']),
         hashes=get_hashes(data),
+        rating=schemas.Ratings.explicit,
         full=full,
         preview=preview,
         thumbnail=thumbnail,
