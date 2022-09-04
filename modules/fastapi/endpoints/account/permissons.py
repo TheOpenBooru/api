@@ -13,6 +13,7 @@ async def get_permissions(token: Union[str,None] = Header(None, alias="Authoriza
     if token == None:
         perms = Permissions.from_level("annonymous")
     else:
+        token = token[len("Bearer "):]
         try:
             user = account.decode(token)
         except account.InvalidToken:
