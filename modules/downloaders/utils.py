@@ -1,3 +1,4 @@
+from modules import schemas
 from modules.normalisation import normalise_tag, normalise_tags
 from cachetools import cached, Cache
 import string
@@ -16,15 +17,15 @@ def download_url(url:str, timeout:int = 15) -> tuple[bytes, filename]:
     return data, filename
 
 
-def predict_media_type(url:str) -> str:
+def predict_media_type(url:str) -> schemas.Media_Type:
     TYPE_LOOKUP = {
-        ".mp4":"video",
-        ".webm":"video",
-        ".webp":"image",
-        ".png":"image",
-        ".jpg":"image",
-        ".jpeg":"image",
-        ".gif":"animation",
+        ".mp4": schemas.Media_Type.video,
+        ".webm": schemas.Media_Type.video,
+        ".webp": schemas.Media_Type.image,
+        ".png": schemas.Media_Type.image,
+        ".jpg": schemas.Media_Type.image,
+        ".jpeg": schemas.Media_Type.image,
+        ".gif": schemas.Media_Type.animation,
     }
     _,ext = os.path.splitext(url)
     if ext not in TYPE_LOOKUP:
