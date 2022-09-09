@@ -1,5 +1,5 @@
 from fastapi.security import OAuth2PasswordBearer as _OAuth2PasswordBearer
-oauth2_scheme = _OAuth2PasswordBearer(tokenUrl="/account/login")
+oauth2_scheme = _OAuth2PasswordBearer(tokenUrl="/account/login", auto_error=False)
 
 from modules.account import Account
 from ._decodeToken import DecodeToken
