@@ -1,42 +1,17 @@
 import asyncio
 from threading import Thread
 from typing import Callable, Union
-from datetime import timedelta
 from time import time
 import inspect
 
-
-def run_async_thread(function: Callable):
+def run_async_thread(function: Callable) -> Thread:
     def inner():
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         loop.run_until_complete(function())
         loop.close()
-    Thread(target=inner, daemon=True).start()
 
+    thread = Thread(target=inner, daemon=True)
+    thread.start()
+    return thread
 
-def schedule_task(function:Callable, time_between_runs:Union[None, float]):
-    async def inner():
-        isAsync = inspect.iscoroutinefunction(function)
-        if time_between_runs == None:
-            if isAsync:
-                await function()
-            else:
-                function()
-        else:
-            await scheduler(function, time_between_runs, _async=isAsync)
-    
-    run_async_thread(inner)
-
-
-async def scheduler(func:Callable, time_between_runs:float, _async:bool):
-    last_run = 0
-    while True:
-        next_run_time = last_run + time_between_runs
-        time_til_next_run = next_run_time - time()
-        await asyncio.sleep(time_til_next_run)
-        last_run = time()
-        if _async:
-            await func()
-        else:
-            func()
