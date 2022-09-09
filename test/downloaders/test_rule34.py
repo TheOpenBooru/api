@@ -1,22 +1,22 @@
 from modules import downloaders
 import pytest
 
-r34 = downloaders.Rule34()
-SkipCondition = pytest.mark.skipif(r34.functional == False, reason="Twitter Not Functional")
+
+@pytest.fixture
+def r34():
+    return downloaders.Rule34()
 
 
-@SkipCondition
 @pytest.mark.asyncio
-async def test_Rule34_Check_URL():
+async def test_Rule34_Check_URL(r34: downloaders.Rule34):
     assert r34.is_valid_url("https://rule34.xxx/index.php?page=post&s=view&id=5198120")
     assert r34.is_valid_url("https://rule34.xxx/index.php?page=post&s=view&id=5198120&test=1")
     assert not r34.is_valid_url("https://rule34.xxx/index.php?page=post&s=list")
     assert not r34.is_valid_url("https://rule34.xxx/index.php?page=pool&s=show&id=21185")
 
 
-@SkipCondition
 @pytest.mark.asyncio
-async def test_Importing_Image():
+async def test_Importing_Image(r34: downloaders.Rule34):
     url = "https://rule34.xxx/index.php?page=post&s=view&id=5198120"
     posts = await r34.download_url(url)
     assert len(posts) == 1
@@ -27,9 +27,8 @@ async def test_Importing_Image():
     assert len(post.tags) > 10
 
 
-@SkipCondition
 @pytest.mark.asyncio
-async def test_Importing_Animation():
+async def test_Importing_Animation(r34: downloaders.Rule34):
     url = "https://rule34.xxx/index.php?page=post&s=view&id=4138445"
     posts = await r34.download_url(url)
     assert len(posts) == 1
@@ -40,9 +39,8 @@ async def test_Importing_Animation():
     assert len(post.tags) > 10
 
 
-@SkipCondition
 @pytest.mark.asyncio
-async def test_Importing_Video():
+async def test_Importing_Video(r34: downloaders.Rule34):
     url = "https://rule34.xxx/index.php?page=post&s=view&id=3506721"
     posts = await r34.download_url(url)
     assert len(posts) == 1

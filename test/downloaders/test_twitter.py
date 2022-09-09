@@ -1,14 +1,15 @@
 from modules import downloaders
 import pytest
 
-twitter = downloaders.Twitter()
-SkipCondition = pytest.mark.skipif((twitter.functional and twitter.functional) == False, reason="Twitter Not Functional")
+
+@pytest.fixture
+def twitter():
+    return downloaders.Twitter()
 
 
-@SkipCondition
 @pytest.mark.skip("Not Implemented")
 @pytest.mark.asyncio
-async def test_Importing_Video_Tweet():
+async def test_Importing_Video_Tweet(twitter: downloaders.Twitter):
     tweet = "https://twitter.com/OpenBooru/status/1537464462063677441?s=20&t=oInfaI6U8aQCNJDivAK4mQ"
     posts = await twitter.download_url(tweet)
     
@@ -19,9 +20,8 @@ async def test_Importing_Video_Tweet():
     assert "openbooru" in post.tags
 
 
-@SkipCondition
 @pytest.mark.asyncio
-async def test_Importing_Image_Tweet():
+async def test_Importing_Image_Tweet(twitter: downloaders.Twitter):
     tweet = "https://twitter.com/AdvosArt/status/1551131534723547136"
     posts = await twitter.download_url(tweet)
     
@@ -32,18 +32,16 @@ async def test_Importing_Image_Tweet():
     assert "advosart" in post.tags
 
 
-@SkipCondition
 @pytest.mark.asyncio
-async def test_Importing_Text_Tweet():
+async def test_Importing_Text_Tweet(twitter: downloaders.Twitter):
     tweet = "https://twitter.com/OpenBooru/status/1552791748925161472?s=20"
     posts = await twitter.download_url(tweet)
     
     assert len(posts) == 0
 
 
-@SkipCondition
 @pytest.mark.asyncio
-async def test_Importing_Tweet_Grabs_All_Image():
+async def test_Importing_Tweet_Grabs_All_Image(twitter: downloaders.Twitter):
     tweet = "https://twitter.com/OpenBooru/status/1531028668667121665"
     posts = await twitter.download_url(tweet)
     assert len(posts) == 2

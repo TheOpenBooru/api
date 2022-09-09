@@ -1,23 +1,20 @@
 from modules import downloaders
 import pytest
 
-e621 = downloaders.E621()
-SkipCondition = pytest.mark.skipif(e621.functional == False, reason="Twitter Not Functional")
+@pytest.fixture
+def e621():
+    return downloaders.E621()
 
 
-
-
-@SkipCondition
 @pytest.mark.asyncio
-async def test_E621_is_valid_url():
+async def test_E621_is_valid_url(e621: downloaders.E621):
     assert e621.is_valid_url("https://e621.net/posts/2294957")
     assert e621.is_valid_url("https://e621.net/posts/2294957?q=test")
     assert not e621.is_valid_url("https://e621.net/posts/")
 
 
-@SkipCondition
 @pytest.mark.asyncio
-async def test_Importing_Image():
+async def test_Importing_Image(e621: downloaders.E621):
     url = "https://e621.net/posts/2294957"
     posts = await e621.download_url(url)
     assert len(posts) == 1
@@ -28,9 +25,8 @@ async def test_Importing_Image():
     assert len(post.tags) > 10
 
 
-@SkipCondition
 @pytest.mark.asyncio
-async def test_Importing_Image_With_Parameters():
+async def test_Importing_Image_With_Parameters(e621: downloaders.E621):
     url = "https://e621.net/posts/2294957?q=order%3Ascore+comic"
     posts = await e621.download_url(url)
     assert len(posts) == 1
@@ -41,9 +37,8 @@ async def test_Importing_Image_With_Parameters():
     assert len(post.tags) > 10
 
 
-@SkipCondition
 @pytest.mark.asyncio
-async def test_Importing_Animation():
+async def test_Importing_Animation(e621: downloaders.E621):
     url = "https://e621.net/posts/1047489"
     posts = await e621.download_url(url)
     assert len(posts) == 1
@@ -54,9 +49,8 @@ async def test_Importing_Animation():
     assert len(post.tags) > 10
 
 
-@SkipCondition
 @pytest.mark.asyncio
-async def test_Importing_Video():
+async def test_Importing_Video(e621: downloaders.E621):
     url = "https://e621.net/posts/2972352"
     posts = await e621.download_url(url)
     assert len(posts) == 1
