@@ -3,7 +3,7 @@ from modules.schemas import Post
 class Downloader:
     name:str
     enabled:bool = False
-    functional:bool = False
+    functional:bool = True
     def __init__(self):
         pass
 
