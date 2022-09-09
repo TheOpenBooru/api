@@ -27,7 +27,10 @@ class Youtube(Downloader):
         video = pytube.YouTube(url)
 
         try:
-            stream = video.streams.get_highest_resolution()
+            stream = video.streams.get_by_resolution("720p")
+            if stream == None:
+                stream = video.streams.get_highest_resolution()
+            
             data, _ = utils.download_url(stream.url) # type: ignore
             filename = "example" + mimetypes.guess_extension(stream.mime_type) # type: ignore
         except Exception:
