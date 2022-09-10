@@ -55,8 +55,8 @@ async def test_Importing_Individual_Image(twitter: downloaders.Twitter):
     post = posts[0]
     assert post.media_type == "image"
     assert post.source == tweet
-    assert post.full.width == 1920
-    assert post.full.height == 927
+    assert post.full.width == 1199
+    assert post.full.height == 579
     assert "openbooru" in post.tags
 
 
