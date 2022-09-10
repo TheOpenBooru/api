@@ -3,7 +3,6 @@ import unittest
 
 importer = importers.Safebooru()
 
-@unittest.skipUnless(importer.functional, "Could not import example data from SafeBooru")
 class test_Post_Search(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
         database.Post.clear()

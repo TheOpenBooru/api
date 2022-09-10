@@ -1,7 +1,6 @@
-from modules import posts,schemas
 import json
 
-with open('./data/test/sample_data.json','r') as f:
+with open('data/test/sample_data.json','r') as f:
     TESTDATA = json.load(f)
 
 TEST_VIDEO = TESTDATA['video']['heavy']

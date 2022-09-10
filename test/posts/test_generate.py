@@ -1,11 +1,7 @@
 from . import TEST_ANIMATION, TEST_IMAGE, TEST_VIDEO, TESTDATA
-from modules import database, store, schemas, posts
-import json
+from modules import schemas, posts
 import pytest
 from pathlib import Path
-from unittest import IsolatedAsyncioTestCase as AsyncTestCase
-
-
 
 
 async def generate_post(file:str) -> schemas.Post:
