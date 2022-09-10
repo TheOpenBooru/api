@@ -3,6 +3,7 @@ fastapi
 uvicorn[standard]
 pydantic
 requests
+requests-futures
 numpy
 tqdm
 anyio
@@ -42,3 +43,4 @@ pytube
 
 # Testing
 pytest
+pytest-asyncio
