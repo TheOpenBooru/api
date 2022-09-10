@@ -1,5 +1,5 @@
 from . import router
-from modules import schemas, database
+from modules import schemas, database, fastapi
 from fastapi import Depends
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
@@ -7,6 +7,9 @@ from fastapi.encoders import jsonable_encoder
 
 @router.get("/search",
     response_model=list[schemas.Tag],
+    dependencies=[
+        Depends(fastapi.RequirePermission("canSearchTags")),
+    ],
 )
 async def search_tags(query:schemas.Tag_Query = Depends()):
     tags = database.Tag.search(query)

@@ -9,6 +9,9 @@ from fastapi import Response, Depends, Body, status
         400:{"description":"Settings is larger than 4096 Retrieved Successfully"},
         401:{"description":"Not Logged In"},
     },
+    dependencies=[
+        Depends(fastapi.RequirePermission("canUpdateSettings")),
+    ],
 )
 async def update_settings(
         settings:str = Body(description="Settings to be stored on the user's profile, 4096 characters max"),

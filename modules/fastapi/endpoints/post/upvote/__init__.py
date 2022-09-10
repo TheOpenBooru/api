@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends
-from modules.fastapi import RequirePermission
+from modules.fastapi import hasPermission
 
 router = APIRouter(
     dependencies=[
-        Depends(RequirePermission("canVotePosts")),
+        Depends(hasPermission("canVotePosts")),
     ],
     responses={
         404: {"description": "Post Not Found"}

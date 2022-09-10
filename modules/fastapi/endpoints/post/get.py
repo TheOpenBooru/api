@@ -10,7 +10,6 @@ from fastapi.encoders import jsonable_encoder
 @router.get("/{id}",
     response_model=schemas.Post,
     dependencies=[
-        Depends(RateLimit("2/second")),
         Depends(RequirePermission("canViewPosts")),
     ]
 )

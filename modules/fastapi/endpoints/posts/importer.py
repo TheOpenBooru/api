@@ -1,6 +1,6 @@
 from . import router
 from modules import schemas, account, downloaders, database
-from modules.fastapi.dependencies import DecodeToken, RequirePermission, RateLimit, RequireCaptcha
+from modules.fastapi.dependencies import DecodeToken, RequirePermission
 from fastapi import status, Depends, Body
 from fastapi.responses import JSONResponse, PlainTextResponse
 from fastapi.encoders import jsonable_encoder
@@ -14,15 +14,10 @@ from fastapi.encoders import jsonable_encoder
         409:{"description":"Post already exists with that source"},
     },
     dependencies=[
-        Depends(RequireCaptcha),
         Depends(RequirePermission("canCreatePosts")),
-        Depends(RateLimit("3/minute")),
     ],
 )
-async def import_url(
-        url:str = Body(...),
-        user:account.Account = Depends(DecodeToken)
-        ):
+async def import_url(url:str = Body(...), account:DecodeToken = Depends()):
     if database.Post.source_exists(url):
         return PlainTextResponse("Post already exists with that source", 409)
     
@@ -34,9 +29,10 @@ async def import_url(
         return PlainTextResponse("Generic Error", 400)
     else:
         for post in posts:
-            post.uploader = user.id
+            post.uploader = account.id
             database.Post.insert(post)
-            database.User.create_post(user.id,post.id)
+            if account.user_id:
+                database.User.create_post(account.user_id,post.id)
         
         return JSONResponse(jsonable_encoder(posts))
 

@@ -3,6 +3,7 @@ oauth2_scheme = _OAuth2PasswordBearer(tokenUrl="/account/login", auto_error=Fals
 
 from modules.account import Account
 from ._decodeToken import DecodeToken
+from ._manager import RequirePermission
 from ._captcha import RequireCaptcha
-from ._permission import RequirePermission
+from ._hasPermission import hasPermission
 from ._ratelimit import RateLimit

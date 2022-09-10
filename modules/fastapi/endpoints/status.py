@@ -1,11 +1,15 @@
 from . import router
-from modules import schemas, settings
+from modules import settings, fastapi
 from modules.schemas import Status
+from fastapi import Depends
 
 
 @router.get('/status',
     operation_id="status",
     response_model=Status,
+    dependencies=[
+        Depends(fastapi.RateLimit("1/second")),
+    ],
 )
 def get_status():
     return Status(

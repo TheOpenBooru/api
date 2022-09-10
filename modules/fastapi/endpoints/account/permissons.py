@@ -1,27 +1,15 @@
 from . import router
-from modules import schemas, account
-from modules.fastapi import oauth2_scheme
-from modules.account.permissions import Permissions
-from fastapi import Header, HTTPException
+from modules import schemas, fastapi
+from fastapi import Depends
 from typing import Union
 
 
 @router.get("/permissions",
+    operation_id="permissions",
     response_model=schemas.UserPermissions,
+    dependencies=[
+        Depends(fastapi.RateLimit("1/second")),
+    ],
 )
-async def get_permissions(token: Union[str,None] = Header(None, alias="Authorization")):
-    if token == None:
-        perms = Permissions.from_level("annonymous")
-    else:
-        try:
-            user = account.decode(token)
-        except account.InvalidToken:
-            raise HTTPException(
-                status_code=401,
-                detail="Bad Authorization Token",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-        
-        perms = user.permissions
-    
-    return perms.permissions
+async def get_permissions(account: fastapi.DecodeToken = Depends()):
+    return account.permissions.permissions

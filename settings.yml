@@ -6,11 +6,11 @@ config:
     port: 8443
   ssl:
     enabled: false
-    key: "./data/server.key"
-    cert: "./data/server.crt"
+    key: ./data/server.key
+    cert: ./data/server.crt
   hcaptcha:
     enabled: false
-    sitekey: "10000000-ffff-ffff-ffff-000000000001"
+    sitekey: 10000000-ffff-ffff-ffff-000000000001
     secret: "0x0000000000000000000000000000000000000000"
   aws:
     id: ""
@@ -32,19 +32,18 @@ config:
 
 email:
   template_paths:
-    email_verification: "./data/emails/email_verification.html"
-    password_reset: "./data/emails/password_reset.html"
+    email_verification: ./data/emails/email_verification.html
+    password_reset: ./data/emails/password_reset.html
 
 
 posts:
   search:
-    default_sort: "created_at"
+    default_sort: created_at
     max_limit: 100
-
 
 tags:
   time_between_count_regen: 86400
-  minimum_count: 3
+  minimum_count: 0
   valid_namespaces:
     - generic
     - character
@@ -60,14 +59,14 @@ importers:
   local:
     enabled: false
     run_every: null
-    local_path: "./data/import"
+    local_path: ./data/import
   hydrus:
     enabled: false
     run_every: null
-    access_key: ""
-    url: ""
+    access_key: null
+    url: null
     tags:
-      - "system:everything"
+      - system:everything
   safebooru:
     enabled: false
     run_every: null
@@ -106,11 +105,11 @@ downloaders:
 
 
 storage:
-  method: "local"
+  method: local
   local:
-    path: "./data/storage"
+    path: ./data/storage
   s3:
-    bucket-name: "openbooru"
+    bucket-name: ""
 
 
 authentication:
@@ -125,8 +124,8 @@ encoding:
   thumbnail:
     lossless: false
     quality: 80
-    max_width: 200
-    max_height: 300
+    max_width: 160
+    max_height: 240
 
   image:
     full:
@@ -137,8 +136,8 @@ encoding:
     preview:
       lossless: false
       quality: 85
-      max_width: 1200
-      max_height: 900
+      max_width: 1000
+      max_height: 750
 
   animation:
     lossless: true
@@ -153,34 +152,72 @@ encoding:
 permissions:
   annonymous:
     canViewPosts:
+      ratelimit: "2/second"
     canSearchPosts:
+      ratelimit: "2/second"
+    
+    canLogin:
+      ratelimit: "5/second"
+
+    canRegister:
+      ratelimit: "1/second"
+      captcha: true
+    
+    canRecieveAllTags:
+      ratelimit: "1/minute"
+    canSearchTags:
+      ratelimit: "1/second"
 
   user:
-    canViewUsers:
-    canSearchUsers:
-    
     canCreatePosts:
-    canVotePosts:
-    canViewPosts:
-    canSearchPosts:
+      ratelimit: "4/minute"
     canEditPosts:
+      ratelimit: "4/minute"
+    canVotePosts:
+      ratelimit: "1/second"
+    canViewPosts:
+      ratelimit: "1/second"
+    canSearchPosts:
+      ratelimit: "1/second"
+
+    canRecieveAllTags:
+      ratelimit: "1/minute"
+    canSearchTags:
+      ratelimit: "1/second"
     
-    canCreateComments:
-    canViewComments:
+    canViewProfile:
+      ratelimit: "1/second"
+    canUpdateSettings:
+      ratelimit: "5/minute"
+
+  server:
+    canViewUsers:
+      ratelimit: null
+    canSearchUsers:
+      ratelimit: null
+    canViewPosts:
+      ratelimit: null
+    canSearchPosts:
+      ratelimit: null
 
   admin:
-    canViewUsers:
-    canSearchUsers:
-    canEditUsers:
-    canDeleteUsers:
+    canLogin:
+    canRegister:
     
-    canCreatePosts:
-    canVotePosts:
     canViewPosts:
     canSearchPosts:
     canEditPosts:
     canDeletePosts:
     
-    canCreateComments:
-    canViewComments:
-    canDeleteComments:
+    canRecieveAllTags:
+    canSearchTags:
+    
+    canViewUsers:
+    canSearchUsers:
+    canEditUsers:
+    canDeleteUsers:
+    canCreatePosts:
+    canVotePosts:
+    
+    canViewProfile:
+    canUpdateSettings:

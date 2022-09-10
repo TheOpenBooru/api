@@ -1,5 +1,6 @@
+from modules.account import decode
 import time
-from fastapi import Request, HTTPException, status
+from fastapi import Request, HTTPException, status, Header
 
 TIMEUNIT_LOOKUP = {
     "second":1,
@@ -42,21 +43,25 @@ class RateLimit:
         self.events = {}
 
 
-    def __call__(self,request: Request):
-        ip = request.client.host #type: ignore
+    def __call__(self, request: Request, token:str|None = Header(default=None, alias="Authorization")):
+        if token:
+            account = decode(token)
+            id = str(account.id)
+        else:
+            id = str(request.client.host) #type: ignore
 
-        if ip not in self.events:
-            self.events[ip] = []
+        if id not in self.events:
+            self.events[id] = []
         
-        if self.isBlocked(ip):
-            time_left = time.time() - self.events[ip][-1]
+        if self.isBlocked(id):
+            time_left = time.time() - self.events[id][-1]
             retry_string = str(round(time_left,2))
             raise HTTPException(
                 status.HTTP_429_TOO_MANY_REQUESTS,
                 headers={"Retry-After": retry_string}
                 )
         else:
-            self.events[ip].append(time.time())
+            self.events[id].append(time.time())
         
 
     def isBlocked(self,ip:str):
