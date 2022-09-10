@@ -12,12 +12,12 @@ class Sort(str, Enum):
     downvotes = "downvotes"
 
 
-class Media_Type(str, Enum):
+class MediaType(str, Enum):
     image = "image"
     animation = "animation"
     video = "video"
 
-class Ratings(str, Enum):
+class Rating(str, Enum):
     unrated = "unrated"
     safe = "safe"
     sensitive = "sensitive"
@@ -61,8 +61,8 @@ class Post_Query(BaseModel):
     md5:Optional[str] = Field(default=None, regex=validate.MD5_REGEX)
     sha256:Optional[str] = Field(default=None, regex=validate.SHA256_REGEX)
     source:Optional[str] = Field(default=None, regex=validate.URL_REGEX)
-    media_types:Optional[list[Media_Type]] = Field(default=None, regex=validate.URL_REGEX)
-    ratings: Optional[list[Ratings]] = Field(default=[], description="Ratings to exlucde from the results")
+    media_types:Optional[list[MediaType]] = Field(default=None, regex=validate.URL_REGEX)
+    ratings: Optional[list[Rating]] = Field(default=[], description="Ratings to exlucde from the results")
 
 
 class Hashes(BaseModel):
@@ -77,13 +77,13 @@ class Post(BaseModel):
     uploader: Union[int, None] = Field(default=None, description="The user ID of the person who uploaded this post, null means no creator")
     deleted: bool = Field(default=False, description="Whether the post has been deleted")
     source: str = Field(default="", description="The original source for the post")
-    rating: Ratings = Field(default="unrated", description="The default rating for a post")
+    rating: Rating = Field(default="unrated", description="The default rating for a post")
 
     full: GenericMedia = Field(..., description="The full scale media for the Post")
     preview: Union[GenericMedia, None] = Field(default=None,description="A Medium Scale Version for the image, for hi-res posts")
     thumbnail: Image = Field(..., description="A low quality image used for thumbnails")
 
-    media_type: Media_Type = Field( ..., description="Format of the post", regex="^(image|animation|video)$",)
+    media_type: MediaType = Field( ..., description="Format of the post", regex="^(image|animation|video)$",)
     hashes: Hashes = Field(default_factory=Hashes, description="A table of all the posts hashes")
 
     tags: list[str] = fields.Tags

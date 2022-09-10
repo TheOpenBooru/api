@@ -81,7 +81,7 @@ async def import_post(data:dict):
         upvotes=data['score']['up'],
         downvotes=data['score']['down'],
         hashes=schemas.Hashes(md5s=[data['file']['md5']]),
-        rating=schemas.Ratings.explicit,
+        rating=schemas.Rating.explicit,
     )
     database.Post.insert(post)
 

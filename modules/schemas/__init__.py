@@ -9,5 +9,5 @@ from .media import GenericMedia, Animation, Video, Image
 from .account import Permission, UserPermissions, Token
 from .misc import Author, Comment, Status
 from .tag import Tag, Tag_Query
-from .post import Post, Post_Edit, Post_Query, Ratings, Sort, Hashes, Media_Type
+from .post import Post, Post_Edit, Post_Query, Rating, Sort, Hashes, MediaType
 from .user import User, User_Public

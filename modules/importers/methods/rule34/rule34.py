@@ -45,7 +45,7 @@ async def import_post(data:dict):
         source=parsing.get_source(data),
         media_type=utils.predict_media_type(data['file_url']),
         hashes=parsing.get_hashes(data),
-        rating=schemas.Ratings.explicit,
+        rating=schemas.Rating.explicit,
         full=full,
         preview=preview,
         thumbnail=thumbnail,
