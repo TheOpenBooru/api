@@ -5,13 +5,13 @@ from typing import Union
 
 def edit_post(
         post_id:int,
-        editter_id:int,
+        editter_id:Union[int, None],
         tags:Union[list[str], None] = None,
         source:Union[str, None] = None,
-        rating:Union[str, None] = None,
+        rating:Union[schemas.Rating, None] = None,
         ):
     if tags == None and source == None and rating == None:
-        raise PostEditFailure("Neither tags, nor source, nor rating was provided")
+        raise PostEditFailure("No Changes Were Provided")
 
     if source and not validate.url(source):
         raise PostEditFailure("Source is not a valid URL")
@@ -43,13 +43,13 @@ def edit_post(
         new_post.edits.append(edit)
     except Exception as e:
         logging.exception(e)
-        raise PostEditFailure("Invalid Edit")
+        raise PostEditFailure("Attempted Edit was Invalid")
 
     try:
         database.Post.update(post_id,new_post)
     except Exception as e:
         logging.exception(e)
-        raise PostEditFailure("Failed to Update Post")
+        raise PostEditFailure("Couldn't Update Post")
 
 
 class PostEditFailure(Exception):

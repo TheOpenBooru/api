@@ -14,8 +14,8 @@ async def generate(data:bytes,filename:str,
         source:Union[str,None] = None,
         rating:Union[str,None] = None,
         ) -> schemas.Post:
-    generator = PostEncoder(data,filename)
-    post = await generator.generate()
+    post = await encode_post(data,filename)
+    
     
     if additional_tags:
         additional_tags = normalise_tags(additional_tags)
@@ -37,56 +37,51 @@ async def generate(data:bytes,filename:str,
     return post
 
 
-class PostEncoder:
-    def __init__(self,data:bytes,filename:str):
-        self.data = data
-        self.filename = filename
-        self.hashes = schemas.Hashes()
+async def encode_post(data:bytes,filename:str):
+    hashes = schemas.Hashes()
     
+    media_type = await encoding.predict_media_type(data,filename)
+    with media_type(data) as media:
+        full = media.full()
+        preview = media.preview()
+        thumbnail = media.thumbnail()
     
-    async def generate(self):
-        media_type = await encoding.predict_media_type(self.data,self.filename)
-        with media_type(self.data) as media:
-            full = media.full()
-            preview = media.preview()
-            thumbnail = media.thumbnail()
-        
-        self._generate_hashes(self.data)
-        full_schema = self.process_file(full)
-        preview_schema = self.process_file(preview) if preview else None
-        thumbnail_schema = self.process_file(thumbnail)
-        
-        return schemas.Post(
-            id=database.Post.generate_id(),
-            tags=[media_type.type],
-            hashes=self.hashes,
-            full=full_schema, # type: ignore
-            preview=preview_schema, # type: ignore
-            thumbnail=thumbnail_schema, # type: ignore
-            media_type=media_type.type,
-        )
+    _generate_hashes(hashes, data)
+    full_schema = process_file(full, hashes)
+    preview_schema = process_file(preview, hashes) if preview else None
+    thumbnail_schema = process_file(thumbnail, hashes)
     
-    
-    def process_file(self,file:encoding.GenericFile) -> schemas.GenericMedia:
-        self._generate_hashes(file.data)
-        filename = _generate_filename(file)
-        self._save_file(file.data,filename)
-        url = store.generate_generic_url(filename)
-        schema = _generate_schema(file,url)
-        return schema
+    return schemas.Post(
+        id=database.Post.generate_id(),
+        tags=[media_type.type],
+        hashes=hashes,
+        full=full_schema, # type: ignore
+        preview=preview_schema, # type: ignore
+        thumbnail=thumbnail_schema, # type: ignore
+        media_type=media_type.type,
+    )
 
 
-    def _save_file(self,data:bytes,filename:str):
-        try:
-            store.put(data,filename)
-        except FileExistsError:
-            store.delete(filename)
-            store.put(data,filename)
-    
-    
-    def _generate_hashes(self,data:bytes):
-        self.hashes.md5s.append(hashlib.md5(data).hexdigest())
-        self.hashes.sha256s.append(hashlib.sha256(data).hexdigest())
+def process_file(file:encoding.GenericFile, hashes: schemas.Hashes) -> schemas.GenericMedia:
+    _generate_hashes(hashes, file.data)
+    filename = _generate_filename(file)
+    _save_file(file.data,filename)
+    url = store.generate_generic_url(filename)
+    schema = _generate_schema(file,url)
+    return schema
+
+
+def _save_file(data:bytes,filename:str):
+    try:
+        store.put(data,filename)
+    except FileExistsError:
+        store.delete(filename)
+        store.put(data,filename)
+
+
+def _generate_hashes(hashes: schemas.Hashes, data:bytes):
+    hashes.md5s.append(hashlib.md5(data).hexdigest())
+    hashes.sha256s.append(hashlib.sha256(data).hexdigest())
 
 
 def _generate_schema(file:encoding.GenericFile,url:str) -> schemas.GenericMedia:
