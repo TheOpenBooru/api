@@ -1,7 +1,7 @@
 from . import iter_over_posts, guess_post_count, parsing
 from .. import Importer, ImportFailure, utils
 from modules import settings, schemas, database
-from tqdm import tqdm
+from tqdm.asyncio import tqdm
 from typing import Union
 from itertools import islice
 
@@ -18,7 +18,7 @@ class Rule34(Importer):
             unit=" post",
             total=limit or guess_post_count(),
         )
-        for post in progress:
+        async for post in progress:
             try:
                 await load_post(post)
             except ImportFailure:
@@ -30,12 +30,12 @@ async def load_post(data:dict):
     try:
         post = database.Post.getByMD5(parsing.get_md5(data))
     except KeyError:
-        import_post(data)
+        await import_post(data)
     else:
-        update_post(post, data)
+        await update_post(post, data)
 
 
-def import_post(data:dict):
+async def import_post(data:dict):
     full,preview,thumbnail = parsing.construct_images(data)
     post = schemas.Post(
         id=database.Post.generate_id(),
@@ -53,7 +53,7 @@ def import_post(data:dict):
     database.Post.insert(post)
 
 
-def update_post(post:schemas.Post, data:dict):
+async def update_post(post:schemas.Post, data:dict):
     modified_post = post.copy()
     
     modified_post.upvotes = parsing.get_score(data["score"])
