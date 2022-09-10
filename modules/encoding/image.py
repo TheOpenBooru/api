@@ -1,5 +1,5 @@
 from . import BaseMedia,ImageFile,Dimensions
-from modules import settings
+from modules import settings, schemas
 from typing_extensions import Self
 from dataclasses import dataclass
 from PIL import Image as PILImage
@@ -8,7 +8,7 @@ import io
 
 @dataclass
 class Image(BaseMedia):
-    type="image"
+    type = schemas.MediaType.image
     _PIL:PILImage.Image
     _dimensions:Dimensions
 

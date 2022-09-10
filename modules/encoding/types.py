@@ -1,3 +1,4 @@
+from modules import schemas
 from dataclasses import dataclass
 from functools import cache, cached_property
 from typing import Union
@@ -40,7 +41,7 @@ class VideoFile:
 GenericFile = Union[ImageFile,AnimationFile,VideoFile]
 
 class BaseMedia:
-    type:str
+    type:schemas.MediaType
     def __init__(self,data:bytes):
         """Raises:
         - ValueError: Could not Parse Data

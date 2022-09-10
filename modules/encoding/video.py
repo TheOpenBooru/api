@@ -1,7 +1,6 @@
 from . import BaseMedia,ImageFile,VideoFile,Image
 from .probe import VideoProbe
-from datetime import datetime
-from modules import settings
+from modules import settings, schemas
 import os
 import shutil
 import random
@@ -10,7 +9,7 @@ from typing import Union
 
 
 class Video(BaseMedia):
-    type = "video"
+    type = schemas.MediaType.video
     _filepath: Union[str,None] = None
     _probe: VideoProbe
     

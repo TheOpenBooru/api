@@ -1,11 +1,11 @@
-from typing_extensions import Self
 from . import BaseMedia,AnimationFile,ImageFile,Image
-from functools import cache, cached_property
+from modules import schemas
 import io
+from typing_extensions import Self
 from PIL import Image as PILImage
 
 class Animation(BaseMedia):
-    type="animation"
+    type = schemas.MediaType.animation
     _data:bytes
     _PIL:PILImage.Image
     _height:int
