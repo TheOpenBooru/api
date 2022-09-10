@@ -1,11 +1,10 @@
 from . import Account, InvalidToken, Permissions
 from modules import jwt
 
-def decode(token:str) -> Account:
+def decode(token: str) -> Account:
     """Raises:
     - InvalidToken: Invalid Token
     """
-    
     try:
         if token.startswith("Bearer "):
             token = token[len("Bearer "):]
@@ -15,6 +14,7 @@ def decode(token:str) -> Account:
         raise InvalidToken
     else:
         return account
+
 
 def _generate_account(token:str) -> Account:
     data = jwt.decode(token)

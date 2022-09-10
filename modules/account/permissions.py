@@ -42,7 +42,7 @@ class Permissions:
         return permission.captcha
 
 
-    def getRateLimit(self, action:str) -> str:
+    def getRateLimit(self, action:str) -> Union[str, None]:
         permission = getattr(self.permissions,action)
         return permission.ratelimit
 
