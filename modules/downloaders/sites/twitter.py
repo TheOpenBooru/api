@@ -17,7 +17,7 @@ class Twitter(Downloader):
 
 
     def is_valid_url(self, url:str) -> bool:
-        return url.startswith("https://twitter.com/")
+        return bool(re.match(r"^https:\/\/twitter.com\/[a-zA-Z0-9_]+", url))
 
 
     ACCOUNT_REGEX = r"^https:\/\/twitter.com\/[a-zA-Z0-9_]+"
@@ -52,6 +52,8 @@ class Twitter(Downloader):
             for media in tweet.includes['media']:
                 if media.type == "video":
                     continue # Videos need to be handled differently
+                if media.type == "animated_gif":
+                    continue # Gifs need to be handled differently
                 else:
                     post = await generate_image(media)
                 post.source = url
