@@ -21,7 +21,7 @@ class Permissions:
         - KeyError: Invalid Level
         """
         if level not in lookup:
-            raise KeyError("Invalid Level")
+            raise KeyError(f"Level: {level} not defined in settings ")
 
         user_perms = {}
         actions:dict = lookup[level]
@@ -51,6 +51,10 @@ def construct_permission(attributes:Union[dict,None]) -> Permission:
     if attributes == None:
         permission = Permission()
     else:
-        permission = Permission.parse_obj(attributes)
+        try:
+            permission = Permission.parse_obj(attributes)
+        except Exception:
+            raise RuntimeError(f"Invalid Permission Specified in settings.yml\n{attributes}")
+    
     permission.has_permission = True
     return permission

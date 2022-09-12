@@ -25,7 +25,7 @@ def get(setting: str) -> Any:
         config = _config.copy()
         for key in setting.split("."):
             if key not in config:
-                raise KeyError(f"Invalid Setting: {setting}")
+                raise KeyError(f"Invalid Setting in settings.yml: {setting}")
             else:
                 config = config[key]
         return config
