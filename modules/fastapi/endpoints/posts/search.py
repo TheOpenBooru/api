@@ -8,6 +8,7 @@ from typing import Optional
 
 
 @router.get("/search",
+    operation_id="search_posts",
     response_model=list[schemas.Post],
     dependencies=[
         Depends(RequirePermission("canSearchPosts")),

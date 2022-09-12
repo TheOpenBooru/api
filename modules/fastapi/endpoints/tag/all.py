@@ -7,6 +7,7 @@ from fastapi.encoders import jsonable_encoder
 
 
 @router.get("/all",
+    operation_id="all_tags",
     response_model=list[schemas.Tag],
     dependencies=[
         Depends(fastapi.RequirePermission("canRecieveAllTags")),

@@ -5,6 +5,7 @@ from fastapi import Response, Depends
 
 
 @router.post("/{id}/downvote/add",
+    operation_id="add_downvote",
     dependencies=[
         Depends(RequirePermission("canVotePosts")),
     ],

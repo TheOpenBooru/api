@@ -5,7 +5,7 @@ from fastapi import Response, Depends
 
 
 @router.delete("/{id}",
-    status_code=200,
+    operation_id="delete_post",
     responses={},
     dependencies=[
         Depends(RequirePermission("canDeletePosts"))

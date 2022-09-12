@@ -8,6 +8,7 @@ from typing import Union
 
 
 @router.patch('/{id}',
+    operation_id="edit_post",
     response_model=schemas.Post,
     dependencies=[
         Depends(RequirePermission("canEditPosts")),
