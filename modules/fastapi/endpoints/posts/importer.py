@@ -1,5 +1,5 @@
 from . import router
-from modules import schemas, account, downloaders, database
+from modules import schemas, downloaders, database, posts
 from modules.fastapi.dependencies import DecodeToken, RequirePermission
 from fastapi import status, Depends, Body
 from fastapi.responses import JSONResponse, PlainTextResponse
@@ -22,17 +22,14 @@ async def import_url(url:str = Body(...), account:DecodeToken = Depends()):
         return PlainTextResponse("Post already exists with that source", 409)
     
     try:
-        posts = await downloaders.download_url(url)
+        new_posts = await downloaders.download_url(url)
     except downloaders.DownloadFailure as e:
         return PlainTextResponse(str(e), 400)
     except Exception:
-        return PlainTextResponse("Generic Error", 400)
+        return PlainTextResponse("Failed to Import URL", 400)
     else:
-        for post in posts:
-            post.uploader = account.id
-            database.Post.insert(post)
-            if account.user_id:
-                database.User.create_post(account.user_id,post.id)
+        for post in new_posts:
+            post.uploader = account.user_id
+            posts.insert(post)
         
-        return JSONResponse(jsonable_encoder(posts))
-
+        return new_posts

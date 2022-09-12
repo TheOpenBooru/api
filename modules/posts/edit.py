@@ -1,5 +1,6 @@
-import logging
+from . import PostEditFailure
 from modules import database, schemas, validate
+import logging
 from typing import Union
 
 
@@ -52,5 +53,3 @@ def edit_post(
         raise PostEditFailure("Couldn't Update Post")
 
 
-class PostEditFailure(Exception):
-    pass
