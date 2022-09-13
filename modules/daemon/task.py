@@ -57,7 +57,10 @@ class Task:
 
     def stop(self):
         self.running = False
-        self._thread.join()
+        try:
+            self._thread.join()
+        except RuntimeError:
+            pass
 
 
     async def _scheduler(self):
