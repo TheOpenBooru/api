@@ -8,6 +8,7 @@ def insert(post: schemas.Post, validate=True):
     if validate:
         _validate_post(post)
 
+    database.Post.insert(post)
     if post.uploader:
         database.User.create_post(post.uploader, post.id)
 
