@@ -1,4 +1,4 @@
-from . import Post, exists, post_collection
+from . import Post, post_collection
 from typing import Union
 from pymongo.cursor import Cursor
 from modules.schemas import Post
@@ -26,15 +26,23 @@ def clear():
     post_collection.delete_many({})
 
 
+def encode_post(post: Post) -> dict:
+    return post.dict()
+
+
 def parse_doc(doc:dict) -> Post:
-    return Post.parse_obj(doc)
+    post = Post.parse_obj(doc)
+    post.hashes.md5s = [bytes.fromhex(b'ff'.decode('utf-8')) for x in post.hashes.md5s]
+    post.hashes.sha256s = [bytes.fromhex(b'ff'.decode('utf-8')) for x in post.hashes.md5s]
+    post.hashes.md5s = [bytes.fromhex(b'ff'.decode('utf-8')) for x in post.hashes.md5s]
+    return post
 
 
 def parse_docs(docs:Union[list[dict], Cursor]) -> list[Post]:
     posts = []
     for doc in docs:
         try:
-            post = Post.parse_obj(doc)
+            post = parse_doc(doc)
         except Exception:
             pass
         else:

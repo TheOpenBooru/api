@@ -33,8 +33,11 @@ def search(query:schemas.Post_Query = DEFAULT_QUERY) -> list[Post]:
     if query.sha256:
         filters.append({"hashes":{'sha256s':{'$elemMatch':{"$eq":query.sha256}}}})
     if query.source:
-        filters.append({"source":query.source})
-        # filters.append({"source":{'$elemMatch':{"$eq":query.source}}})
+        filters.append({"$or": [
+            {"source": query.source},
+            {"source": {'$elemMatch':{"$eq": query.source}}},
+            ]
+        })
 
     direction = pymongo.DESCENDING if query.descending else pymongo.ASCENDING
     cursor = post_collection.find(

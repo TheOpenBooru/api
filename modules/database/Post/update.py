@@ -1,10 +1,10 @@
-from . import Post, exists, post_collection
+from . import Post, post_collection, encode_post
 
 def update(id:int,new_version:Post):
     """Raises:
     - KeyError: Post not found
     """
-    document = new_version.dict()
+    document = encode_post(new_version)
     res = post_collection.find_one_and_replace(
         filter={'id':id},
         replacement=document,

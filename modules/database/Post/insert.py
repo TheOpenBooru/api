@@ -1,11 +1,11 @@
-from . import is_post_unique, post_collection, Post
+from . import post_collection, Post, encode_post
 import pymongo.errors
 
 def insert(post:Post):
     """Raises:
     - KeyError: Post already exists
     """
-    document = post.dict()
+    document = encode_post(post)
     try:
         post_collection.insert_one(document=document)
     except pymongo.errors.DuplicateKeyError:

@@ -2,6 +2,7 @@ from pydantic import BaseModel as _PydanticBaseModel
 class BaseModel(_PydanticBaseModel):
     class Config:
         smart_union = True
+        json_encoders = { bytes: lambda _bytes: _bytes.hex() }
 
 
 from . import fields

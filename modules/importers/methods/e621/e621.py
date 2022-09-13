@@ -1,6 +1,6 @@
 from . import iter_over_posts, parsing
 from .. import Importer, utils
-from modules import settings, schemas, database
+from modules import settings, schemas, database, posts
 from modules.importers.classes import ImportFailure
 from typing import Union
 from itertools import islice
@@ -36,7 +36,7 @@ class E621(Importer):
 
 async def load_post(data:dict):
     try:
-        md5 = data['file']['md5']
+        md5 = bytes.fromhex(data['file']['md5'])
         post = database.Post.getByMD5(md5)
     except KeyError:
         await import_post(data)
@@ -83,8 +83,8 @@ async def import_post(data:dict):
         source=parsing.get_source(data),
         upvotes=data['score']['up'],
         downvotes=data['score']['down'],
-        hashes=schemas.Hashes(md5s=[data['file']['md5']]),
+        hashes=schemas.Hashes(md5s=[bytes.fromhex(data['file']['md5'])]),
         rating=schemas.Rating.explicit,
     )
-    database.Post.insert(post)
+    posts.insert(post, validate=False)
 

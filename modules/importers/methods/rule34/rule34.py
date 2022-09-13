@@ -1,6 +1,6 @@
 from . import iter_over_posts, guess_post_count, parsing
 from .. import Importer, ImportFailure, utils
-from modules import settings, schemas, database
+from modules import settings, schemas, database, posts
 from tqdm.asyncio import tqdm
 from typing import Union
 import logging
@@ -52,7 +52,7 @@ async def import_post(data:dict):
         preview=preview,
         thumbnail=thumbnail,
     )
-    database.Post.insert(post)
+    posts.insert(post, validate=False)
 
 
 async def update_post(post:schemas.Post, data:dict):

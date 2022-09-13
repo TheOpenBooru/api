@@ -66,9 +66,9 @@ class Post_Query(BaseModel):
 
 
 class Hashes(BaseModel):
-    md5s: list[str] = Field(default_factory=list, description="A list of MD5 Hashes")
-    sha256s: list[str] = Field(default_factory=list, description="A list of SHA2 256bit Hashes")
-    phash: list[str] = Field(default_factory=list, description="A list of SHA2 256bit Hashes")
+    md5s: list[bytes] = Field(default_factory=list, description="A list of MD5 Hashes")
+    sha256s: list[bytes] = Field(default_factory=list, description="A list of SHA2 256bit Hashes")
+    phash: list[bytes] = Field(default_factory=list, description="A list of SHA2 256bit Hashes")
 
 
 class Post(BaseModel):

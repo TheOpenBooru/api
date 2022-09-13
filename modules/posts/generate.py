@@ -80,8 +80,8 @@ def _save_file(data:bytes,filename:str):
 
 
 def _generate_hashes(hashes: schemas.Hashes, data:bytes):
-    hashes.md5s.append(hashlib.md5(data).hexdigest())
-    hashes.sha256s.append(hashlib.sha256(data).hexdigest())
+    hashes.md5s.append(hashlib.md5(data).digest())
+    hashes.sha256s.append(hashlib.sha256(data).digest())
 
 
 def _generate_schema(file:encoding.GenericFile,url:str) -> schemas.GenericMedia:

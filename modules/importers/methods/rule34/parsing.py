@@ -40,13 +40,13 @@ def get_date(post:dict) -> int:
     return timestamp
 
 
-def get_md5(post:dict) -> str:
-    return post["md5"]
+def get_md5(post:dict) -> bytes:
+    return bytes.fromhex(post["md5"])
 
 
 def get_hashes(post:dict) -> schemas.Hashes:
     return schemas.Hashes(
-        md5s=[post["md5"]]
+        md5s=[get_md5(post)]
     )
 
 
