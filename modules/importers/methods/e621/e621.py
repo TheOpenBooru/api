@@ -6,6 +6,7 @@ from typing import Union
 from itertools import islice
 from tqdm import tqdm
 from pathlib import Path
+import logging
 import requests
 
 
@@ -29,6 +30,8 @@ class E621(Importer):
                 await load_post(data)
             except ImportFailure:
                 pass
+            except Exception as e:
+                logging.exception(e)
 
 
 async def load_post(data:dict):

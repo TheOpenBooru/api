@@ -8,10 +8,10 @@ import pickledb
 
 DB_PATH = Path("./data/tasks.json")
 try:
-    db = pickledb.load(DB_PATH, False)
+    db = pickledb.load(DB_PATH, True)
 except Exception:
     DB_PATH.unlink()
-    db = pickledb.load(DB_PATH, False)
+    db = pickledb.load(DB_PATH, True)
 
 
 def create_background_task(

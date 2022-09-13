@@ -14,6 +14,7 @@ cachetools
 pymongo
 jinja2
 boto3
+pickledb
 
 # Encoding
 pillow
