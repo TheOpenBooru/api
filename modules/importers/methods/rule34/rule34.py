@@ -3,7 +3,7 @@ from .. import Importer, ImportFailure, utils
 from modules import settings, schemas, database
 from tqdm.asyncio import tqdm
 from typing import Union
-from itertools import islice
+import logging
 
 
 class Rule34(Importer):
@@ -23,6 +23,8 @@ class Rule34(Importer):
                 await load_post(post)
             except ImportFailure:
                 continue
+            except Exception as e:
+                logging.exception(e)
 
 
 
