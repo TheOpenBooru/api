@@ -1,7 +1,7 @@
 from .parsing import get_date, get_hashes, get_source, get_score, get_tags, construct_images
 from .iterable import safebooru_search
 from .. import utils, Importer
-from modules import settings, schemas, database
+from modules import settings, schemas, database, posts
 from typing import Union
 from tqdm import tqdm
 import requests
@@ -29,7 +29,8 @@ class Safebooru(Importer):
                 return
 
             try:
-                post = database.Post.getByMD5(data['md5'])
+                md5 = bytes.fromhex(data['md5'])
+                post = database.Post.getByMD5(md5)
             except KeyError:
                 await insert_post(data)
             else:

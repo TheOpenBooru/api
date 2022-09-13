@@ -21,7 +21,7 @@ def get_source(post:dict) -> str:
 
 
 def get_hashes(post:dict) -> schemas.Hashes:
-    md5 = post['md5']
+    md5 = bytes.fromhex(post['md5'])
     return schemas.Hashes(md5s=[md5])
 
 
