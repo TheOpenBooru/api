@@ -247,3 +247,4 @@ data/urls.txt
 data/namespace_data.json
 *.prof
 settings.yml
+data/tasks.json
