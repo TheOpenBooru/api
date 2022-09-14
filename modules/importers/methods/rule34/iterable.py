@@ -31,13 +31,16 @@ def iter_over_posts(limit: Union[int, None]):
                 posts = parse_page(r.text)
             except OutOfPostsException:
                 return
-            else:
-                for post in posts:
-                    count += 1
-                    if limit and count > limit:
-                        return
-                    else:
-                        yield post
+            
+            for post in posts:
+                if post['width'] == '':
+                    continue
+                
+                count += 1
+                if limit and count > limit:
+                    return
+                
+                yield post
 
 
 def _get_top_id() -> int:
