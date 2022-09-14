@@ -7,17 +7,18 @@ import logging
 
 def run_daemon():
     logging.info("Starting Daemon Threads")
-    create_background_task(
-        id="Regen Tag Count",
-        function=tags.regenerate_count,
-        retry_after=settings.TAGS_REGEN_COUNT_EVERY,
-    )
-    create_background_task(
-        id="Updated Namespaces",
-        function=tags.regenerate_namespaces,
-        # e621 namespace dumps only regen every day
-        retry_after=timedelta(days=1).total_seconds(), 
-    )
+    if settings.TAGS_REGEN_COUNT_EVERY:
+        create_background_task(
+            id="Regen Tag Count",
+            function=tags.regenerate_count,
+            retry_after=settings.TAGS_REGEN_COUNT_EVERY,
+        )
+        create_background_task(
+            id="Updated Namespaces",
+            function=tags.regenerate_namespaces,
+            # e621 namespace dumps only regen every day
+            retry_after=timedelta(days=1).total_seconds(), 
+        )
     schedule_importers()
 
 
