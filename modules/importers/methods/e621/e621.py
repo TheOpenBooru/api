@@ -37,7 +37,7 @@ class E621(Importer):
 async def load_post(data:dict):
     try:
         md5 = bytes.fromhex(data['file']['md5'])
-        post = database.Post.getByMD5(md5)
+        post = database.Post.md5_get(md5)
     except KeyError:
         await import_post(data)
     else:

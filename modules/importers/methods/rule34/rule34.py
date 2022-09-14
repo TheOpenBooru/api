@@ -30,7 +30,7 @@ class Rule34(Importer):
 
 async def load_post(data:dict):
     try:
-        post = database.Post.getByMD5(parsing.get_md5(data))
+        post = database.Post.md5_get(parsing.get_md5(data))
     except KeyError:
         await import_post(data)
     else:

@@ -39,7 +39,7 @@ class Hydrus(Importer):
 
     async def _import_post(self,post_id:int,metadata:dict):
         try:
-            database.Post.getBySHA256(metadata['hash'])
+            database.Post.sha256_get(metadata['hash'])
         except KeyError:
             pass
         else:

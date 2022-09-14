@@ -17,7 +17,7 @@ def duplicate_images() -> tuple[Image.Image, Image.Image]:
 
 
 def test_Phash_Returns_Correct_Type(sample_image):
-    hash = phash.phash(sample_image)
+    hash = phash.hash(sample_image)
     assert type(hash) == bytes
     assert len(hash) == 8
 
@@ -26,9 +26,9 @@ def test_PHash_Matches_Similar_Images(duplicate_images, sample_image):
     image_a, image_b = duplicate_images
     image_c = sample_image
     
-    hash_a = phash.phash(image_a)
-    hash_b = phash.phash(image_b)
-    hash_c = phash.phash(image_c)
+    hash_a = phash.hash(image_a)
+    hash_b = phash.hash(image_b)
+    hash_c = phash.hash(image_c)
     
     assert hash_a == hash_b
     assert hash_a != hash_c

@@ -9,7 +9,7 @@ import io
 @dataclass
 class Image(BaseMedia):
     type = schemas.MediaType.image
-    _PIL:PILImage.Image
+    pillow:PILImage.Image
     _dimensions:Dimensions
 
 
@@ -34,7 +34,7 @@ class Image(BaseMedia):
             raise ValueError(str(e))
         
         self._dimensions = Dimensions(pil_img.width,pil_img.height)
-        self._PIL = pil_img
+        self.pillow = pil_img
         return self
 
 
@@ -79,7 +79,7 @@ class Image(BaseMedia):
         output_buf = io.BytesIO()
         res = _calculate_downscale(self._dimensions,target)
         (
-            self._PIL
+            self.pillow
             .resize((res.width,res.height),PILImage.LANCZOS)
             .save(output_buf,format='webp',quality=quality,lossless=lossless)
         )

@@ -9,18 +9,25 @@ def get(id:int) -> Post:
     return _get_by_filter({'id':id})
 
 
-def getByMD5(md5:bytes) -> Post:
+def md5_get(md5:bytes) -> Post:
     """Raises
     - KeyError: Could not find post
     """
     return _get_by_filter({"hashes.md5s":{'$elemMatch':{"$eq":md5}}})
 
 
-def getBySHA256(sha256:bytes) -> Post:
+def sha256_get(sha256:bytes) -> Post:
     """Raises
     - KeyError: Could not find post
     """
     return _get_by_filter({"hashes.sha256s":{'$elemMatch':{"$eq":sha256}}})
+
+
+def phash_get(phash:bytes) -> Post:
+    """Raises
+    - KeyError: Could not find post
+    """
+    return _get_by_filter({"hashes.phashes":{'$elemMatch':{"$eq":phash}}})
 
 
 def _get_by_filter(filter: dict):

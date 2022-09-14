@@ -1,6 +1,7 @@
-from modules import schemas, encoding, database, encoding, store, settings
+from modules import schemas, encoding, database, encoding, store, settings, phash
 from modules.downloaders.utils import normalise_tags
 from modules.tags import generate_ai_tags
+from PIL.Image import Image
 import base64
 import mimetypes
 import hashlib
@@ -46,7 +47,10 @@ async def encode_post(data:bytes,filename:str):
         preview = media.preview()
         thumbnail = media.thumbnail()
     
-    _generate_hashes(hashes, data)
+    generate_hashes(hashes, data)
+    if isinstance(media, encoding.Image):
+        generate_phash(hashes, media.pillow)
+    
     full_schema = process_file(full, hashes)
     preview_schema = process_file(preview, hashes) if preview else None
     thumbnail_schema = process_file(thumbnail, hashes)
@@ -63,15 +67,15 @@ async def encode_post(data:bytes,filename:str):
 
 
 def process_file(file:encoding.GenericFile, hashes: schemas.Hashes) -> schemas.GenericMedia:
-    _generate_hashes(hashes, file.data)
+    generate_hashes(hashes, file.data)
     filename = _generate_filename(file)
-    _save_file(file.data,filename)
+    save_file(file.data,filename)
     url = store.generate_generic_url(filename)
-    schema = _generate_schema(file,url)
+    schema = generate_schema(file,url)
     return schema
 
 
-def _save_file(data:bytes,filename:str):
+def save_file(data:bytes,filename:str):
     try:
         store.put(data,filename)
     except FileExistsError:
@@ -79,12 +83,18 @@ def _save_file(data:bytes,filename:str):
         store.put(data,filename)
 
 
-def _generate_hashes(hashes: schemas.Hashes, data:bytes):
-    hashes.md5s.append(hashlib.md5(data).digest())
-    hashes.sha256s.append(hashlib.sha256(data).digest())
+def generate_hashes(hashes: schemas.Hashes, data:bytes):
+    md5 = hashlib.md5(data).digest()
+    sha256 = hashlib.sha256(data).digest()
+    hashes.md5s.append(md5)
+    hashes.sha256s.append(sha256)
 
 
-def _generate_schema(file:encoding.GenericFile,url:str) -> schemas.GenericMedia:
+def generate_phash(hashes: schemas.Hashes, image:Image):
+    p_hash = phash.hash(image) # type: ignore, pillow only appears after __enter__
+    hashes.phashes.append(p_hash)
+
+def generate_schema(file:encoding.GenericFile,url:str) -> schemas.GenericMedia:
     if isinstance(file,encoding.ImageFile):
         return schemas.Image(
             url=url,

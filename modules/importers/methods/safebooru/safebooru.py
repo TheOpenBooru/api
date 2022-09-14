@@ -30,7 +30,7 @@ class Safebooru(Importer):
 
             try:
                 md5 = bytes.fromhex(data['md5'])
-                post = database.Post.getByMD5(md5)
+                post = database.Post.md5_get(md5)
             except KeyError:
                 await insert_post(data)
             else:

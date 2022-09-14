@@ -31,11 +31,7 @@ def encode_post(post: Post) -> dict:
 
 
 def parse_doc(doc:dict) -> Post:
-    post = Post.parse_obj(doc)
-    post.hashes.md5s = [bytes.fromhex(b'ff'.decode('utf-8')) for x in post.hashes.md5s]
-    post.hashes.sha256s = [bytes.fromhex(b'ff'.decode('utf-8')) for x in post.hashes.md5s]
-    post.hashes.md5s = [bytes.fromhex(b'ff'.decode('utf-8')) for x in post.hashes.md5s]
-    return post
+    return Post.parse_obj(doc)
 
 
 def parse_docs(docs:Union[list[dict], Cursor]) -> list[Post]:

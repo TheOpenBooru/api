@@ -22,10 +22,11 @@ class test_getByMD5(TestCase):
         Post.insert(self.post)
 
     def test_Retrieves_Successfully(self):
-        assert Post.getByMD5(self.md5) == self.post
+        post = Post.md5_get(self.md5)
+        assert post == self.post
     
     def test_NonExistant_Raises_Error(self):
-        self.assertRaises(KeyError,Post.getByMD5,"f"*32)
+        self.assertRaises(KeyError,Post.md5_get,"f"*32)
 
 
 class test_getBySHA256(TestCase):
@@ -36,7 +37,7 @@ class test_getBySHA256(TestCase):
         Post.insert(self.post)
 
     def test_Retrieves_Successfully(self):
-        assert Post.getBySHA256(self.sha256) == self.post
+        assert Post.sha256_get(self.sha256) == self.post
     
     def test_NonExistant_Raises_Error(self):
-        self.assertRaises(KeyError,Post.getBySHA256,"f"*64)
+        self.assertRaises(KeyError,Post.sha256_get,"f"*64)
