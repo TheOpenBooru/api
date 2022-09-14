@@ -1,4 +1,4 @@
-from . import fields,BaseModel,GenericMedia,Image
+from . import fields, BaseModel, GenericMedia, Image, MediaType
 from modules import settings,validate
 from pydantic import Field
 from typing import Union, Optional
@@ -12,18 +12,12 @@ class Sort(str, Enum):
     downvotes = "downvotes"
 
 
-class MediaType(str, Enum):
-    image = "image"
-    animation = "animation"
-    video = "video"
-
 class Rating(str, Enum):
     unrated = "unrated"
     safe = "safe"
     sensitive = "sensitive"
     mature = "mature"
     explicit = "explicit"
-
 
 
 class Post_Edit(BaseModel):
