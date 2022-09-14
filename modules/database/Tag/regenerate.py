@@ -1,5 +1,5 @@
-from . import tag_collection, insert, exists
-from modules import settings
+from . import tag_collection, create, exists
+from modules import settings, schemas
 from modules.database.Post import post_collection
 from typing import Union
 from tqdm import tqdm
@@ -17,7 +17,7 @@ def regenerate_count(min_count:int = settings.TAGS_MINIMUM_COUNT):
         name, count = doc
         
         if not exists(name):
-            insert(name,count=count)
+            create(name,count=count)
         else:
             tag_collection.update_one(
                 filter={'name':name},

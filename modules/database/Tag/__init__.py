@@ -9,6 +9,7 @@ from .get import get
 from .all import all
 from .search import search
 from .update import update
+from .create import create
 from .insert import insert
 from .delete import delete
 from .regenerate import regenerate_count
