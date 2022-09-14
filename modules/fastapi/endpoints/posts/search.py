@@ -15,7 +15,7 @@ from typing import Optional
     ]
 )
 async def search_posts(
-        query: schemas.Post_Query = Depends(),
+        query: schemas.PostQuery = Depends(),
         media_types: list[schemas.MediaType] = Query(default=[], description="Media Types to include"),
         ratings: list[schemas.Rating] = Query(default=[], description="Ratings to exclude from the results"),
         include_tags: list[str] = Query(default=[]),

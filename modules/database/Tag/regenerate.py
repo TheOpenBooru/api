@@ -1,4 +1,4 @@
-from . import tag_collection, create, exists
+from . import tag_collection, insert, exists
 from modules import settings
 from modules.database.Post import post_collection
 from typing import Union
@@ -17,7 +17,7 @@ def regenerate_count(min_count:int = settings.TAGS_MINIMUM_COUNT):
         name, count = doc
         
         if not exists(name):
-            create(name,count=count)
+            insert(name,count=count)
         else:
             tag_collection.update_one(
                 filter={'name':name},

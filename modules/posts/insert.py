@@ -1,4 +1,4 @@
-from modules.schemas.post import Post_Query
+from modules.schemas.post import PostQuery
 from . import PostExistsException
 from modules import database, schemas
 

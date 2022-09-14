@@ -35,7 +35,7 @@ class Post_Edit(BaseModel):
     new_rating: str = Field(default="", description="The new rating for the post")
 
 
-class Post_Query(BaseModel):
+class PostQuery(BaseModel):
     index: int = Field(default=0, description="Offset from the start of the results")
     limit: int = Field(default=settings.POSTS_SEARCH_MAX_LIMIT, description="Maximum number of results to return")
     sort: Sort = Field(default=settings.POSTS_SEARCH_DEFAULT_SORT, description="How to sort the posts")
