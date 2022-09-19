@@ -47,7 +47,7 @@ class Twitter(Downloader):
         tweet = self.client.get_tweet(
             id=id,
             expansions="attachments.media_keys",
-            media_fields="url",
+            media_fields="url,variants",
             tweet_fields="attachments,author_id",
         )
         if "media" not in tweet.includes:
@@ -68,10 +68,8 @@ class Twitter(Downloader):
 
 
 async def generate_from_media(media: tweepy.Media, url:str, account:str) -> schemas.Post:
-    if media.type == "video":
+    if media.type == "video" or media.type == "animated_gif":
         post = await generate_video(media)
-    elif media.type == "animated_gif":
-        post = await generate_gif(media)
     else:
         post = await generate_image(media)
 
@@ -83,14 +81,16 @@ async def generate_from_media(media: tweepy.Media, url:str, account:str) -> sche
 
 
 async def generate_image(media: tweepy.Media) -> schemas.Post:
-    data, filename = utils.download_url(media["url"])
-    post = await posts.generate(data,filename)
-    return post
-
-
-async def generate_gif(media: tweepy.Media) -> schemas.Post:
-    raise DownloadFailure("Twitter Gifs Not Supported")
+    url = media["url"]
+    return await generate_from_url(url)
 
 
 async def generate_video(media: tweepy.Media) -> schemas.Post:
-    raise DownloadFailure("Twitter Video Not Supported")
+    url = media.data['variants'][0]['url']
+    return await generate_from_url(url)
+
+
+async def generate_from_url(url: str) -> schemas.Post:
+    data, filename = utils.download_url(url)
+    post = await posts.generate(data,filename)
+    return post

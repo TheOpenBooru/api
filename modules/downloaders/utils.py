@@ -1,3 +1,4 @@
+from urllib.parse import urlparse
 from modules import schemas
 from modules.normalisation import normalise_tag, normalise_tags
 from cachetools import cached, Cache
@@ -10,7 +11,8 @@ filename = str
 def download_url(url:str, timeout:int = 15) -> tuple[bytes, filename]:
     r = requests.get(url,timeout=timeout)
     data = r.content
-    _, ext = os.path.splitext(url)
+    url_format = urlparse(url)
+    _, ext = os.path.splitext(url_format.path)
     filename = "example" + ext
     return data, filename
 
