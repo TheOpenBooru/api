@@ -91,7 +91,7 @@ def generate_hashes(hashes: schemas.Hashes, data:bytes):
 
 
 def generate_phash(hashes: schemas.Hashes, image:Image):
-    p_hash = phash.hash(image) # type: ignore, pillow only appears after __enter__
+    p_hash = phash.hash(image)
     hashes.phashes.append(p_hash)
 
 def generate_schema(file:encoding.GenericFile,url:str) -> schemas.GenericMedia:
