@@ -2,41 +2,37 @@ from . import Post, post_collection, parse_docs
 from .. import Tag
 from modules import schemas
 import pymongo
+from pymongo import DESCENDING, ASCENDING
 
 
 DEFAULT_QUERY = schemas.PostQuery()
 def search(query:schemas.PostQuery = DEFAULT_QUERY) -> list[Post]:
     "Warning: Not-always consistent, implements caching"
-    direction = pymongo.DESCENDING if query.descending else pymongo.ASCENDING
-    cursor = post_collection.find(
-        filter=build_filter(query),
-        skip=query.index,
-        limit=query.limit,
-        sort=[(query.sort,direction)],
-    )
-    return parse_docs(cursor)
+    pipeline = build_pipeline(query)
+    pipeline.append({"$skip": query.index})
+    pipeline.append({"$limit": query.limit})
+    pipeline.append({"$sort":{
+        query.sort: DESCENDING if query.descending else ASCENDING
+    }})
+    
+    cursor = post_collection.aggregate(pipeline=pipeline)
+    docs = [x for x in cursor]
+    return parse_docs(docs)
 
 
-def build_filter(query:schemas.PostQuery) -> dict:
+def build_pipeline(query:schemas.PostQuery) -> list[dict]:
     filters = []
     
     if query.media_types:
         filters.append({'media_type':{'$in': query.media_types}})
     if query.ratings:
         filters.append({'rating':{'$in': query.ratings}})
+
     
     if query.include_tags:
-        include_groups = construct_tag_groups(query.include_tags)
-        filters.append({'$and':[
-            {"tags": {"$in": group}}
-            for group in include_groups
-        ]})
+        filters.append({"tags": {"$in": query.include_tags}})
     if query.exclude_tags:
-        exclude_groups = construct_tag_groups(query.exclude_tags)
-        filters.append({'$and':[
-            {"tags": {"$nin": group}}
-            for group in exclude_groups
-        ]})
+        filters.append({"tags": {"$nin": query.exclude_tags}})
     
     if query.upvotes_gt:
         filters.append({"upvotes":{"$gt": query.upvotes_gt}})
@@ -61,52 +57,61 @@ def build_filter(query:schemas.PostQuery) -> dict:
             ]
         })
 
-    if filters:
-        return {'$and':filters}
-    else:
-        return {}
+    return [{"$match": filter} for filter in filters]
 
-
-def construct_tag_groups(tags:list[str]) -> list[list[str]]:
-    sibling_groups = construct_sibling_groups(tags)
-    parent_groups = construct_parent_groups(tags)
-    
-    tag_groups = [a + b for a,b in zip(sibling_groups, parent_groups)]
-    tag_groups = [list(set(x)) for x in tag_groups]
-    
-    return tag_groups
-
-
-def construct_sibling_groups(tags:list[str]) -> list[list[str]]:
-    docs = Tag.tag_collection.find(
-        filter={"siblings": {"$in": tags}}
-    )
-    sibling_groups = []
-    for tag in tags:
-        group = []
-        group.append(tag)
-        for doc in docs:
-            if tag in doc["siblings"]:
-                group.append(doc["name"])
-                group.extend(doc["siblings"])
-        sibling_groups.append(group)
-    
-    return sibling_groups
-
-
-def construct_parent_groups(tags:list[str]) -> list[list[str]]:
-    docs = Tag.tag_collection.find(
-        filter={"parents": {"$elemMatch": {"$in": tags}}}
-    )
-    
-    parent_groups = []
-    for tag in tags:
-        group = []
-        group.append(tag)
-        for doc in docs:
-            if tag in doc["parents"]:
-                group.append(doc["name"])
-        parent_groups.append(group)
-
-    
-    return parent_groups
+APPEND_TAG_SIBLINGS_AND_PARENTS = [
+    {
+        '$lookup': {
+            'from': 'tags', 
+            'localField': 'tags', 
+            'foreignField': 'name', 
+            'as': 'tag_objects'
+        }
+    },
+    {
+        '$set': {
+            'tags': {
+                '$setUnion': [
+                    '$tags', '$tag_objects.siblings', '$tag_objects.parents'
+                ]
+            }
+        }
+    },
+    {
+        '$unset': 'tag_objects'
+    },
+    {
+        '$unwind': {
+            'path': '$tags', 
+            'preserveNullAndEmptyArrays': False
+        }
+    },
+    {
+        '$unwind': {
+            'path': '$tags', 
+            'preserveNullAndEmptyArrays': False
+        }
+    },
+    {
+        '$group': {
+            '_id': '$_id', 
+            'tags': {
+                '$push': '$tags'
+            }, 
+            'doc': {
+                '$first': '$$ROOT'
+            }
+        }
+    },
+    {
+        '$replaceRoot': {
+            'newRoot': {
+                '$mergeObjects': [
+                    '$doc', {
+                        'tags': '$tags'
+                    }
+                ]
+            }
+        }
+    }
+]
