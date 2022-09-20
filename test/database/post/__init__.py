@@ -10,6 +10,7 @@ class TestCase(unittest.TestCase):
     def tearDown(self):
         Post.clear()
 
+
 def generate_post(id:Optional[int] = None) -> schemas.Post:
     EXAMPLE_IMAGE = schemas.Image(
         url="https://example.com/image.png",

@@ -3,9 +3,7 @@ from modules import database, schemas, posts
 
 
 def test_Tag_Parents_Search(ClearDatabase, ExamplePost: schemas.Post):
-    database.Tag.insert(schemas.Tag(
-        name="mario", parents=["super_mario_bros"]
-    ))
+    database.Tag.insert(schemas.Tag(name="mario", parents=["super_mario_bros"]))
     post = ExamplePost.copy()
     post.tags = ["mario"]
     database.Post.insert(post)
@@ -16,12 +14,8 @@ def test_Tag_Parents_Search(ClearDatabase, ExamplePost: schemas.Post):
 
 
 def test_Tag_Parents_Chained_Search(ClearDatabase, ExamplePost: schemas.Post):
-    database.Tag.insert(schemas.Tag(
-        name="mario", parents=["super_mario_bros"]
-    ))
-    database.Tag.insert(schemas.Tag(
-        name="super_mario_bros", parents=["nintendo"]
-    ))
+    database.Tag.insert(schemas.Tag(name="mario", parents=["super_mario_bros"]))
+    database.Tag.insert(schemas.Tag(name="super_mario_bros", parents=["nintendo"]))
     post = ExamplePost.copy()
     post.tags = ["mario"]
     database.Post.insert(post)
