@@ -1,36 +1,33 @@
+from . import ClearDatabase, ExamplePost, ExampleTag
 from modules import database, schemas
 
 
-def test_Tag_Parents_Search():
-    database.Tag.clear()
-    database.Tag.insert(schemas.Tag(
-        name="super_mario", parents=[]
-    ))
-    database.Tag.insert(schemas.Tag(
-        name="peach", parents=["super_mario"]
-    ))
-    database.Tag.insert(schemas.Tag(
-        name="mario", parents=["super_mario"]
-    ))
-    image = schemas.Image(
-        width=1,
-        height=1,
-        mimetype="image/png",
-        url=""
-    )
-    post = schemas.Post(
-        id=database.Post.generate_id(),
-        media_type=schemas.MediaType.image,
-        full=image,
-        thumbnail=image,
-        tags=["mario","peach"]
-    )
-    database.Post.insert(post)
+def test_Add_Parent(ClearDatabase, ExampleTag:schemas.Tag):
+    tagName = ExampleTag.name
+    database.Tag.insert(ExampleTag)
+    database.Tag.addParent(tagName, "parent")
+    assert database.Tag.get("test").parents == ["parent"]
 
-    assert post in database.Post.search(schemas.PostQuery(
-        include_tags=["super_mario"]
-    ))
-    
-    assert post in database.Post.search(schemas.PostQuery(
-        include_tags=["mario"]
-    ))
+
+def test_Remove_Parent(ClearDatabase, ExampleTag:schemas.Tag):
+    tagName = ExampleTag.name
+    database.Tag.insert(ExampleTag)
+    database.Tag.addParent(tagName,"parent")
+    database.Tag.removeParent(tagName,"parent")
+    assert database.Tag.get("test").parents == []
+
+
+def test_Adding_Sibling_Is_Idempotent(ClearDatabase, ExampleTag:schemas.Tag):
+    tagName = ExampleTag.name
+    database.Tag.insert(ExampleTag)
+    database.Tag.addParent(tagName, "parent")
+    database.Tag.addParent(tagName, "parent")
+    assert database.Tag.get("test").parents == ["parent"]
+
+
+def test_Removing_Sibling_Is_Idempotent(ClearDatabase, ExampleTag:schemas.Tag):
+    tagName = ExampleTag.name
+    database.Tag.insert(ExampleTag)
+    database.Tag.removeSibling(tagName, "parent")
+    assert database.Tag.get("test").parents == []
+
