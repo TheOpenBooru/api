@@ -1,6 +1,5 @@
 from . import Post, post_collection
-from typing import Union
-from pymongo.cursor import Cursor
+from typing import Any, Union
 from modules.schemas import Post
 import random
 
@@ -34,7 +33,7 @@ def parse_doc(doc:dict) -> Post:
     return Post.parse_obj(doc)
 
 
-def parse_docs(docs:Union[list[dict], Cursor]) -> list[Post]:
+def parse_docs(docs:Union[list[dict], Any]) -> list[Post]:
     posts = []
     for doc in docs:
         try:
