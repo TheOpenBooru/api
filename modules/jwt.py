@@ -1,22 +1,17 @@
 from typing import Union
-from modules import settings as _settings
-import secrets as _secrets
-import time as _time
-import jwt as _jwt
-from pathlib import Path
-
-_SECRET_PATH = Path("./data/tokensecret.key")
-if not _SECRET_PATH.exists():
-    _SECRET_KEY = _secrets.token_hex(64)
-    _SECRET_PATH.write_text(_SECRET_KEY)
-else:
-    _SECRET_KEY = _SECRET_PATH.read_text()
+from modules import settings, secrets
+import time
+import jwt
 
 
 class BadTokenError(Exception):
     "The Token was Invalid, could be Corrupt, Invalid, Expired"
 
-def create(data:dict, expiration:Union[int, None] = _settings.DEFAULT_TOKEN_EXPIRATION) -> str:
+
+SECRET_KEY = secrets.get_secret("jwt")
+
+
+def create(data:dict, expiration:Union[int, None] = settings.DEFAULT_TOKEN_EXPIRATION) -> str:
     """Raises:
     - ValueError: Data cannot contain the reserved field
     """
@@ -25,8 +20,8 @@ def create(data:dict, expiration:Union[int, None] = _settings.DEFAULT_TOKEN_EXPI
     
     payload = data
     if expiration != None:
-        payload = data | {"exp": _time.time() + expiration}
-    return _jwt.encode(payload, _SECRET_KEY, algorithm="HS256")
+        payload = data | {"exp": time.time() + expiration}
+    return jwt.encode(payload, SECRET_KEY, algorithm="HS256")
 
 
 def decode(token: str) -> dict:
@@ -34,7 +29,7 @@ def decode(token: str) -> dict:
     - BadTokenError: Malformed or Invalid Token
     """
     try:
-        data: dict = _jwt.decode(token, _SECRET_KEY, algorithms=["HS256"])
+        data: dict = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
     except Exception:
         raise BadTokenError("Malformed or Invalid Token")
     
