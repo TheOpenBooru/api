@@ -16,7 +16,7 @@ class DecodeToken:
         if token == None:
             self._generate_annonomous_account(request)
         else:
-            self._genetae_account(token)
+            self._generate_account(token)
 
 
     def _generate_annonomous_account(self, request:Request):
@@ -27,7 +27,7 @@ class DecodeToken:
         self.permissions = Permissions.from_level("annonymous")
 
     
-    def _genetae_account(self, token:str):
+    def _generate_account(self, token:str):
         try:
             login = account.decode(token)
         except account.InvalidToken:

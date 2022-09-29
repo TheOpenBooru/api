@@ -1,5 +1,5 @@
 from . import oauth2_scheme
-from modules import account, schemas, captcha, ratelimit
+from modules import schemas, captcha, ratelimit, settings
 from modules.fastapi.dependencies import DecodeToken
 from modules.account.permissions import Permissions
 from fastapi import HTTPException, Depends, status, Header, Request
@@ -30,19 +30,24 @@ class RequirePermission:
 
 
     def check_captcha(self, request: Request, permissions: Permissions):
-        if permissions.isCaptchaRequired(self.action):
-            response = request.query_params.get("h-captcha-response", default=None)
-            if response == None:
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail=f"H-Captcha Required",
-                )
-            
-            if captcha.verify(response) == False:
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail=f"Bad H-Captcha Response",
-                )
+        if not settings.HCAPTCHA_ENABLE:
+            return
+        
+        if not permissions.isCaptchaRequired(self.action):
+            return
+        
+        response = request.query_params.get("h-captcha-response", default=None)
+        if response == None:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"H-Captcha Required",
+            )
+        
+        if captcha.verify(response) == False:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Bad H-Captcha Response",
+            )
 
     
     def check_ratelimit(self, account: DecodeToken):
