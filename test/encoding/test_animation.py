@@ -29,7 +29,7 @@ class test_Animations_Require_More_Than_One_Frame(unittest.TestCase):
         self.assertRaises(ValueError, Animation, data)
 
 
-@unittest.skip("TODO")
+@unittest.skip("TODO: https://trello.com/c/p5Fv7jne/106-bug-fix-gif-encoding-strips-transparency")
 class test_Animations_Preserve_Transparency(unittest.TestCase):
     def setUp(self) -> None:
         with open(TestData.Transparent.file,'rb') as f:
@@ -78,7 +78,7 @@ class test_Animation_Preview(unittest.TestCase):
                 self.preview = anim.preview()
 
     def test_Preview_isnt_Generated(self):
-        assert self.preview == None, "Generated a preview image"
+        assert isinstance(self.preview, ImageFile), "Animation Preview is not an Image"
 
 
 class test_Animation_Thumbnail(unittest.TestCase):
