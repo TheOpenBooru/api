@@ -1,2 +1,2 @@
-from .tagging_service import generate_ai_tags
-from .namespace_service import guess_namespace, regenerate_namespaces
+from .tagging import generate_ai_tags
+from .e621_exports import import_e621_tag_data

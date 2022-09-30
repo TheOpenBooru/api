@@ -1,5 +1,5 @@
 from modules import settings
-from modules.normalisation import normalise_tags
+from modules.normalise import normalise_tags
 import logging
 import requests
 import io
