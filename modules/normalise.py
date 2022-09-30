@@ -10,7 +10,7 @@ def normalise_tags(tags:list[str]) -> list[str]:
     return tags
 
 
-_VALID_TAG_CHARS = string.ascii_lowercase + string.digits + '_()'
+_VALID_TAG_CHARS = set(string.ascii_lowercase + string.digits + '_()')
 
 @cache
 def normalise_tag(tag:str, *, possibly_namespaced:bool = True) -> str:
