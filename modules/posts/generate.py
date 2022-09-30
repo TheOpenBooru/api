@@ -8,7 +8,9 @@ import hashlib
 from typing import Union
 
 
-async def generate(data:bytes,filename:str,
+async def generate(
+        data:bytes,
+        filename:str,
         use_ai_tags:bool=settings.TAGS_TAGGING_SERVICE_ENABLED,
         uploader_id:Union[int,None] = None,
         additional_tags:Union[list[str],None] = None,
