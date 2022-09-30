@@ -65,4 +65,4 @@ def get_upvotes(data) -> int:
 
 
 def get_downvotes(data) -> int:
-    return data['score']['down']
+    return data['score']['down'] * -1
