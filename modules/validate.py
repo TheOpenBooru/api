@@ -3,8 +3,6 @@ import re as _re
 import iso639 as _iso639
 
 USERNAME_REGEX = r"^[a-z0-9_]{4,32}$"
-RATING_REGEX = r"^(safe|questionable|explicit)$"
-TYPE_REGEX = r"^(image|animation|video)$"
 TAG_REGEX = r"^[_()a-z0-9]{1,32}$"
 URL_REGEX = r"^http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+$"
 EMAIL_REGEX = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
@@ -20,16 +18,6 @@ def language(country_code:str) -> bool:
 @cache
 def username(name: str) -> bool:
     return bool(_re.match(USERNAME_REGEX, name))
-
-
-@cache
-def rating(rating:str) -> bool:
-    return bool(_re.match(RATING_REGEX, rating))
-
-
-@cache
-def post_type(type:str) -> bool:
-    return bool(_re.match(TYPE_REGEX, type))
 
 
 @cache
