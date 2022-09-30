@@ -10,7 +10,6 @@ class RateLimitException(Exception):
         ...
 
 
-
 Actions:dict[str, list[float]] = defaultdict(list)
 def ratelimit(id:str, limit:str):
     """
