@@ -86,5 +86,5 @@ async def import_post(data:dict):
         hashes=schemas.Hashes(md5s=[bytes.fromhex(data['file']['md5'])]),
         rating=schemas.Rating.explicit,
     )
-    posts.insert(post, validate=False)
+    await posts.insert(post, validate=False)
 

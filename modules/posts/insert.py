@@ -3,8 +3,11 @@ from . import PostExistsException
 from modules import database, schemas
 
 async def insert(post: schemas.Post, validate=True):
-    """Insert post into the database, but check it exists
-    Warning: Extremely slow compared to direct insert
+    """Insert post into the database
+    Warning: Slow compared to direct insert
+    
+    Raises:
+        - PostExistsException
     """
     if validate:
         await _validate_post(post)
@@ -15,6 +18,9 @@ async def insert(post: schemas.Post, validate=True):
 
 
 async def _validate_post(post: schemas.Post):
+    if database.Post.id_exists(post.id):
+        raise PostExistsException
+
     for md5 in post.hashes.md5s:
         if database.Post.md5_exists(md5):
             raise PostExistsException
