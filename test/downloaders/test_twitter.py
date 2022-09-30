@@ -27,7 +27,6 @@ async def test_Importing_Animation_Tweet(twitter: downloaders.Twitter):
     assert len(posts) == 1
     post = posts[0]
     assert post.media_type == "video"
-    assert post.media_type == "video"
     assert post.source == tweet
     assert "lykeisland" in post.tags
 
@@ -53,8 +52,7 @@ async def test_Importing_Individual_Image(twitter: downloaders.Twitter):
     post = posts[0]
     assert post.media_type == "image"
     assert post.source == tweet
-    assert post.full.width == 1199
-    assert post.full.height == 579
+    assert int(post.full.width / post.full.height) == 2
     assert "openbooru" in post.tags
 
 

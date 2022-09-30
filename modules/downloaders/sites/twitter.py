@@ -1,8 +1,10 @@
-from typing import Union
 from . import Downloader, DownloadFailure, utils
 from modules import settings, posts, schemas
+from typing import Union
+from collections import namedtuple
 import re
 import tweepy
+from tweepy.client import Response
 
 
 class Twitter(Downloader):
@@ -21,24 +23,16 @@ class Twitter(Downloader):
         return bool(re.match(r"^https:\/\/twitter.com\/[a-zA-Z0-9_]+", url))
 
 
-    ACCOUNT_REGEX = r"^https:\/\/twitter.com\/[a-zA-Z0-9_]+"
-    ID_REGEX = r"^https:\/\/twitter.com\/[a-zA-Z0-9_]*\/status\/[0-9]+"
-    IMAGE_REGEX = r"^^https:\/\/twitter.com\/[a-zA-Z0-9_]*\/status\/[0-9]+\/photo\/[0-9]+"
     async def download_url(self, url:str) -> list[schemas.Post]:
-        account_match = re.match(self.ACCOUNT_REGEX, url)
-        id_match = re.match(self.ID_REGEX, url)
-        image_match = re.match(self.IMAGE_REGEX, url)
+        account, id, photo = await parse_url(url)
         
-        if id_match and account_match:
-            id = id_match.group().split('/')[-1]
-            account = account_match.group().split('/')[-1]
-            
-            if image_match:
-                index_string = image_match.group().split('/')[-1]
-                photo_index = int(index_string) - 1
-                return await self.import_tweet(id, url, account, photo_index)
+        if account and id:
+            if photo:
+                photo_index = int(photo) - 1
             else:
-                return await self.import_tweet(id, url, account)
+                photo_index = None
+            
+            return await self.import_tweet(id, url, account, photo_index)
         else:
             raise DownloadFailure("Could Not Import Twitter URL")
 
@@ -53,44 +47,49 @@ class Twitter(Downloader):
         if "media" not in tweet.includes:
             raise DownloadFailure("Post Doesn't Have Media")
 
-        medias = tweet.includes["media"]
+        media_items = tweet.includes["media"]
         if index:
-            media = medias[index]
+            media = media_items[index]
+            media_items = [media]
+        
+        new_posts = []
+        for media in media_items:
             post = await generate_from_media(media, url, account)
-            return [post]
-        else:
-            new_posts = []
-            for media in medias:
-                post = await generate_from_media(media, url, account)
-                new_posts.append(post)
+            new_posts.append(post)
 
-            return new_posts
+        return new_posts
+
+
+
+UrlData = namedtuple("UrlData", ["account", "id", "photo"])
+async def parse_url(url:str) -> UrlData:
+    ACCOUNT_REGEX = r"^https:\/\/twitter.com\/[a-zA-Z0-9_]+"
+    ID_REGEX = ACCOUNT_REGEX + r"\/status\/[0-9]+"
+    IMAGE_REGEX = ID_REGEX + r"\/photo\/[0-9]+"
+    
+    values = []
+    for regex in (ACCOUNT_REGEX, ID_REGEX, IMAGE_REGEX):
+        match =re.match(regex, url)
+        if match == None:
+            values.append(None)
+        else:
+            value = match.group().split('/')[-1]
+            values.append(value)
+    
+    return UrlData(*values)
 
 
 async def generate_from_media(media: tweepy.Media, url:str, account:str) -> schemas.Post:
-    if media.type == "video" or media.type == "animated_gif":
-        post = await generate_video(media)
+    if media.type == "photo":
+        media_url = media["url"]
     else:
-        post = await generate_image(media)
+        media_url = media.data['variants'][0]['url']
+    
+    data, filename = utils.download_url(media_url)
+    post = await posts.generate(data,filename)
 
     post.source = url
     if account not in post.tags:
         post.tags.append(account.lower())
 
-    return post
-
-
-async def generate_image(media: tweepy.Media) -> schemas.Post:
-    url = media["url"]
-    return await generate_from_url(url)
-
-
-async def generate_video(media: tweepy.Media) -> schemas.Post:
-    url = media.data['variants'][0]['url']
-    return await generate_from_url(url)
-
-
-async def generate_from_url(url: str) -> schemas.Post:
-    data, filename = utils.download_url(url)
-    post = await posts.generate(data,filename)
     return post

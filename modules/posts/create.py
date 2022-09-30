@@ -17,5 +17,5 @@ async def create(data:bytes,filename:str,
         raise PostExistsException
     
     post = await generate(data,filename,use_ai_tags,uploader_id,additional_tags,source,rating)
-    insert(post, validate=True)
+    await insert(post, validate=True)
     return post
