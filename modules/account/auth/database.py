@@ -1,3 +1,4 @@
+"Password db need to be seperate to reduce attack surface"
 from dataclasses import dataclass
 import sqlite3
 from typing import Union

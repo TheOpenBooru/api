@@ -1,29 +1,32 @@
 from . import router
-from modules import account, schemas, fastapi
+from modules import account, schemas, fastapi, users
 from pydantic import BaseModel
-from fastapi import Body, Depends
-from fastapi.responses import PlainTextResponse, JSONResponse
-from fastapi.encoders import jsonable_encoder
+from fastapi import Body, Depends, HTTPException
+from fastapi.responses import PlainTextResponse
 
 
 @router.post("/register",
     operation_id="register",
     response_model=schemas.Token,
     responses={
-        400:{"description":"Password does not meet requirements"},
-        409:{"description":"Username already exists"},
+        400:{
+            "description":"Creation Failure with Error Message",
+            "content": {"text/plain": {}},
+        },
     },
     dependencies=[
-        Depends(fastapi.RequirePermission("canRegister")),
+        Depends(fastapi.PermissionManager("canRegister")),
     ],
 )
 async def register(username: str = Body(), password: str = Body()):
     try:
-        account.register(username, password)
-    except account.AccountAlreadyExists:
-        return PlainTextResponse("User already exists",409)
-    except account.InvalidPassword:
-        return PlainTextResponse("Password Does not meet requirements",400)
+        users.create(username, password)
+    except users.UsernameAlreadyExists:
+        raise HTTPException(400, "A User with that name already exists")
+    except users.InvalidPassword:
+        raise HTTPException(400, "Password Does not meet requirements")
+    except users.InvalidUsername:
+        raise HTTPException(400, "Username Does not meet requirements")
     else:
         token = account.login(username, password)
         return schemas.Token(

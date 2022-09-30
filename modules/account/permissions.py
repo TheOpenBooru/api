@@ -9,10 +9,10 @@ with open("./settings.yml") as f:
 
 
 class Permissions:
-    permissions:UserPermissions
+    schema:UserPermissions
     
     def __init__(self, permissions:UserPermissions):
-        self.permissions = permissions
+        self.schema = permissions
 
 
     @classmethod
@@ -33,17 +33,17 @@ class Permissions:
 
 
     def hasPermission(self, action:str) -> bool:
-        permission = getattr(self.permissions,action)
+        permission = getattr(self.schema,action)
         return permission.has_permission
 
 
     def isCaptchaRequired(self, action:str) -> bool:
-        permission = getattr(self.permissions,action)
+        permission = getattr(self.schema,action)
         return permission.captcha
 
 
     def getRateLimit(self, action:str) -> Union[str, None]:
-        permission = getattr(self.permissions,action)
+        permission = getattr(self.schema,action)
         return permission.ratelimit
 
 

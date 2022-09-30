@@ -20,10 +20,10 @@ def getPasswordRequirements() -> PasswordRequirements:
 
 def isPasswordValid(password:str) -> bool:
     requirements = getPasswordRequirements()
-    try:
-        score = zxcvbn(password).get("score",0)
-    except Exception:
-        score = 0
+    if password == "":
+        return False
+    
+    score = zxcvbn(password).get("score",0)
     if len(password) < requirements.min_length:
         return False
     elif len(password) > requirements.max_length:
