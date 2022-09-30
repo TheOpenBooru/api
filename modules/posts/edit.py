@@ -18,7 +18,7 @@ def edit_post(
         raise PostEditFailure("Source is not a valid URL")
     
     try:
-        old_post = database.Post.get(post_id)
+        old_post = database.Post.get_id(post_id)
     except KeyError:
         raise PostEditFailure("Post does not exist")
 
