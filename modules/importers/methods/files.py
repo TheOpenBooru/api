@@ -5,6 +5,8 @@ from pathlib import Path
 from typing import Union
 import logging
 
+
+# TODO: Refactor
 class Files(Importer):
     enabled = settings.IMPORTER_FILES_ENABLED
     time_between_runs = settings.IMPORTER_FILES_RETRY_AFTER

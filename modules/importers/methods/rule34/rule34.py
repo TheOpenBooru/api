@@ -52,7 +52,7 @@ async def import_post(data:dict):
         preview=preview,
         thumbnail=thumbnail,
     )
-    posts.insert(post, validate=False)
+    await posts.insert(post, validate=False)
 
 
 async def update_post(post:schemas.Post, data:dict):
