@@ -4,6 +4,7 @@ class BaseModel(_PydanticBaseModel):
         smart_union = True
         json_encoders = { bytes: lambda _bytes: _bytes.hex() }
 
+MAX_NUMBER = 2**63
 
 from . import fields
 from .media import GenericMedia, Animation, Video, Image, MediaType

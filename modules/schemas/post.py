@@ -1,4 +1,4 @@
-from . import fields, BaseModel, GenericMedia, Image, MediaType
+from . import fields, BaseModel, GenericMedia, Image, MediaType, MAX_NUMBER
 from modules import settings,validate
 from pydantic import Field
 from typing import Union, Optional
@@ -30,14 +30,14 @@ class Post_Edit(BaseModel):
     
     old_source: str = Field(default="", description="The source for the post before edit")
     new_source: str = Field(default="", description="The new source for the post")
-    
+     
     old_rating: str = Field(default="", description="The rating for the post before edit")
     new_rating: str = Field(default="", description="The new rating for the post")
 
 
 class PostQuery(BaseModel):
-    index: int = Field(default=0, description="Offset from the start of the results")
-    limit: int = Field(default=settings.POSTS_SEARCH_MAX_LIMIT, description="Maximum number of results to return")
+    index: int = Field(default=0, ge=0, lt=MAX_NUMBER, description="Offset from the start of the results")
+    limit: int = Field(default=settings.POSTS_SEARCH_MAX_LIMIT, ge=0, lt=MAX_NUMBER, description="Maximum number of results to return")
     sort: Sort = Field(default=settings.POSTS_SEARCH_DEFAULT_SORT, description="How to sort the posts")
     descending: bool = Field(default=True, description="Should search be ordered descending")
     
@@ -45,13 +45,13 @@ class PostQuery(BaseModel):
     include_tags: list[str] = Field(default=[])
     exclude_tags: list[str] = Field(default=[])
     
-    upvotes_gt:int = Field(default=0, description="Score should be greater than")
-    upvotes_lt:int = Field(default=0, description="Score should be less than")
+    upvotes_gt: int = Field(default=0, ge=0, lt=MAX_NUMBER, description="Score should be greater than")
+    upvotes_lt: int = Field(default=0, ge=0, lt=MAX_NUMBER, description="Score should be less than")
     
     created_after:Optional[float] = Field(default=None)
     created_before:Optional[float] = Field(default=None)
     
-    ids:Optional[list[int]] = Field(default=None)
+    ids:Optional[list[int]] = Field(default=None, ge=0, lt=MAX_NUMBER)
     md5:Optional[str] = Field(default=None, regex=validate.MD5_REGEX)
     sha256:Optional[str] = Field(default=None, regex=validate.SHA256_REGEX)
     source:Optional[str] = Field(default=None, regex=validate.URL_REGEX)
@@ -66,7 +66,7 @@ class Hashes(BaseModel):
 
 
 class Post(BaseModel):
-    id: int = Field(...,description="The Post's Unique Id")
+    id: int = Field(..., lt=2**64, description="The Post's Unique Id")
     created_at: float = fields.Created_At
     uploader: Union[int, None] = Field(default=None, description="The user ID of the person who uploaded this post, null means no creator")
     deleted: bool = Field(default=False, description="Whether the post has been deleted")
@@ -77,7 +77,7 @@ class Post(BaseModel):
     preview: Union[GenericMedia, None] = Field(default=None,description="A Medium Scale Version for the image, for hi-res posts")
     thumbnail: Image = Field(..., description="A low quality image used for thumbnails")
 
-    media_type: MediaType = Field( ..., description="Format of the post", regex="^(image|animation|video)$",)
+    media_type: MediaType = Field( ..., description="Format of the post")
     hashes: Hashes = Field(default_factory=Hashes, description="A table of all the posts hashes")
 
     tags: list[str] = fields.Tags

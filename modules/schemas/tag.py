@@ -1,7 +1,8 @@
-from . import fields, BaseModel
+from . import fields, BaseModel, MAX_NUMBER
 from modules import validate
 from pydantic import Field
 from typing import Union
+
 
 class Tag(BaseModel):
     name: str = Field(...,description="The Tag Name", regex=validate.TAG_REGEX)
@@ -15,6 +16,6 @@ class Tag(BaseModel):
 class Tag_Query(BaseModel):
     name_like: Union[str,None] = Field(default=None, description="Tags with a section of the tag name, does not guarantee all results")
     namespace: Union[str,None] = Field(default=None, description="The namespace of the tags")
-    count_lt: Union[int,None] = Field(default=None, description="Tags with a count less than this")
-    count_gt: Union[int,None] = Field(default=None, description="Tags with a count greater than this")
+    count_lt: Union[int,None] = Field(default=None, ge=0, lt=MAX_NUMBER, description="Tags with a count less than this")
+    count_gt: Union[int,None] = Field(default=None, ge=0, lt=MAX_NUMBER, description="Tags with a count greater than this")
     limit: int = Field(default=10, lt=51, description="The number of results to return")
