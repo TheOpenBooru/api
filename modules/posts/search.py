@@ -1,8 +1,10 @@
 from modules import schemas, database, settings, validate
 
-async def search(query:schemas.PostQuery) -> list[schemas.Post]:
-    query.limit = _parse_limit(query.limit)
-    return database.Post.search(query)
+DEFAULT_QUERY = schemas.PostQuery()
+async def search(query:schemas.PostQuery = DEFAULT_QUERY) -> list[schemas.Post]:
+    parsed_query = query.copy()
+    parsed_query.limit = _parse_limit(parsed_query.limit)
+    return database.Post.search(parsed_query)
 
 def _parse_limit(limit:int) -> int:
     if limit <= 0:
