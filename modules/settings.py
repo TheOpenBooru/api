@@ -73,6 +73,7 @@ TAGS_TAGGING_SERVICE_URL:str = get("tags.tagging_service.url")
 # Posts
 POSTS_SEARCH_DEFAULT_SORT:str = get("posts.search.default_sort")
 POSTS_SEARCH_MAX_LIMIT:int = get("posts.search.max_limit")
+POSTS_SEARCH_USE_SIBLINGS_AND_PARENTS:bool = False
 
 # Database
 WIPE_ON_STARTUP:bool = get("config.wipe_on_startup")

@@ -1,5 +1,7 @@
-from . import ClearDatabase, ExamplePost
-from modules import database, schemas
+from . import ClearDatabase, ExamplePost, assertPostInSearch
+from modules import database, schemas, settings
+
+settings.POSTS_SEARCH_USE_SIBLINGS_AND_PARENTS = True
 
 
 def test_Tag_Siblings_Search(ClearDatabase, ExamplePost: schemas.Post):
@@ -11,9 +13,11 @@ def test_Tag_Siblings_Search(ClearDatabase, ExamplePost: schemas.Post):
     post.tags = ["mario"]
     database.Post.insert(post)
 
-    assert post in database.Post.search(schemas.PostQuery(
+    search_response = database.Post.search(schemas.PostQuery(
         include_tags=["mario_(super_mario_bros)"]
     ))
+    
+    assertPostInSearch(post.id, search_response)
 
 
 def test_Tag_Siblings_Backwards(ClearDatabase, ExamplePost: schemas.Post):
@@ -25,9 +29,10 @@ def test_Tag_Siblings_Backwards(ClearDatabase, ExamplePost: schemas.Post):
     post.tags = ["mario_(super_mario_bros)"]
     database.Post.insert(post)
 
-    assert post in database.Post.search(schemas.PostQuery(
+    search_response = database.Post.search(schemas.PostQuery(
         include_tags=["mario"]
     ))
+    assertPostInSearch(post.id, search_response)
 
  
 def test_Tag_Chained_Siblings_Search(ClearDatabase, ExamplePost: schemas.Post):
@@ -39,6 +44,8 @@ def test_Tag_Chained_Siblings_Search(ClearDatabase, ExamplePost: schemas.Post):
     post = ExamplePost.copy()
     post.tags = ["princess_zelda"]
     database.Post.insert(post)
-    assert post == database.Post.search(schemas.PostQuery(
+    
+    search_response = database.Post.search(schemas.PostQuery(
         include_tags=["zelda_(legend_of_zelda)"]
     ))
+    assertPostInSearch(post.id, search_response)

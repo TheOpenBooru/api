@@ -26,3 +26,7 @@ def ExamplePost() -> schemas.Post:
         thumbnail=image
     )
     return post
+
+
+def assertPostInSearch(post_id:int, search_response:list[schemas.Post]):
+    assert post_id in [x.id for x in search_response]

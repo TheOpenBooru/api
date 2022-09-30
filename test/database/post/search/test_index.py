@@ -1,7 +1,5 @@
 from . import ClearDatabase, ExamplePost
 from modules import posts, schemas, database
-import pytest
-
 
 def test_Index_Offsets_Post_Search(ClearDatabase, ExamplePost: schemas.Post):
     post_1 = ExamplePost.copy()
