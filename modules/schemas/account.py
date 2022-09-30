@@ -25,6 +25,7 @@ class UserPermissions(BaseModel):
     
     canRecieveAllTags:Permission = Field(description="Getting a list of every tag", default_factory=Permission)
     canSearchTags:Permission = Field(description="Can search for tags", default_factory=Permission)
+    canEditTags:Permission = Field(description="Can search for tags", default_factory=Permission)
     
     canViewUsers:Permission = Field(description="Viewing other user's account", default_factory=Permission)
     canSearchUsers:Permission = Field(description="Searching for other users", default_factory=Permission)
