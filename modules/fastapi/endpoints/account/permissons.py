@@ -1,7 +1,8 @@
 from . import router
 from modules import schemas, fastapi
 from fastapi import Depends
-from typing import Union
+from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 
 
 @router.get("/permissions",
@@ -12,4 +13,5 @@ from typing import Union
     ],
 )
 async def get_permissions(account: fastapi.DecodeToken = Depends()):
-    return account.permissions.permissions
+    perms = account.permissions.schema
+    return JSONResponse(content=jsonable_encoder(perms))

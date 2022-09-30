@@ -1,6 +1,6 @@
 from . import router
 from modules import schemas, database, fastapi, tags
-from fastapi import Depends, Body
+from fastapi import Depends, Body, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
@@ -8,8 +8,11 @@ from fastapi.encoders import jsonable_encoder
 @router.post("/edit",
     operation_id="edit_tag",
     response_model=schemas.Tag,
+    responses={
+        400: { "description": "Post Not Found"}
+    },
     dependencies=[
-        Depends(fastapi.RequirePermission("canEditTags")),
+        Depends(fastapi.PermissionManager("canEditTags")),
     ],
 )
 async def edit_tag(
@@ -18,5 +21,9 @@ async def edit_tag(
         parents:list[str]|None = Body(default=None),
         siblings:list[str]|None = Body(default=None),
     ):
-    new_tag = await tags.edit(tag, namespace, parents, siblings)
-    return new_tag
+    try:
+        new_tag = await tags.edit(tag, namespace, parents, siblings)
+    except tags.TagEditFailure as e:
+        raise HTTPException(400, e.message)
+    else:
+        return new_tag

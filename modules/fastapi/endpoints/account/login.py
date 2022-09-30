@@ -14,7 +14,7 @@ from fastapi.encoders import jsonable_encoder
         406:{"description":"User's Password Was Reset"},
     },
     dependencies=[
-        Depends(fastapi.RequirePermission("canLogin")),
+        Depends(fastapi.PermissionManager("canLogin")),
     ]
 )
 async def login(oauth:OAuth2PasswordRequestForm = Depends()):

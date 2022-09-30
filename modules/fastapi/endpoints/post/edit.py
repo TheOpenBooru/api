@@ -1,18 +1,21 @@
 from . import router
 from modules import schemas, posts
-from modules.fastapi import DecodeToken, RequirePermission
+from modules.fastapi import DecodeToken, PermissionManager
 from modules.schemas import Rating
-
 from fastapi import Depends, Body, HTTPException, Response
 from typing import Union
+import logging
 
 
 @router.patch('/{id}',
     operation_id="edit_post",
     response_model=schemas.Post,
     dependencies=[
-        Depends(RequirePermission("canEditPosts")),
+        Depends(PermissionManager("canEditPosts")),
     ],
+    responses={
+        400:{"description":"Post Edit Failure"},
+    }
 )
 async def edit_post(
         id:int,
@@ -31,5 +34,9 @@ async def edit_post(
         )
     except posts.PostEditFailure as e:
         raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logging.exception(e)
+        raise HTTPException(status_code=400)
+    
     else:
         return Response(status_code=200)

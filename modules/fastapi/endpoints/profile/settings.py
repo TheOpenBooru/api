@@ -10,7 +10,8 @@ from fastapi import Response, Depends, Body, status
         401:{"description":"Not Logged In"},
     },
     dependencies=[
-        Depends(fastapi.RequirePermission("canUpdateSettings")),
+        Depends(fastapi.PermissionManager("canUpdateSettings")),
+        Depends(fastapi.RequireAccount),
     ],
 )
 async def update_settings(

@@ -10,18 +10,17 @@ from fastapi.encoders import jsonable_encoder
     operation_id="all_tags",
     response_model=list[schemas.Tag],
     dependencies=[
-        Depends(fastapi.RequirePermission("canRecieveAllTags")),
+        Depends(fastapi.PermissionManager("canRecieveAllTags")),
     ],
 )
 async def all_tags():
-    data = get_data()
     return JSONResponse(
-        content=data,
+        content=cached_get_tags(),
         headers={"Cache-Control": "max-age=3600, public"},
     )
 
 
 @cached(TTLCache(maxsize=1,ttl=60*60))
-def get_data():
+def cached_get_tags():
     tags = database.Tag.all()
     return jsonable_encoder(tags)

@@ -1,7 +1,7 @@
 from . import router
-from modules import schemas, posts, account, database
-from modules.fastapi.dependencies import DecodeToken, RequirePermission
-from fastapi import status, UploadFile, Depends
+from modules import schemas, posts
+from modules.fastapi.dependencies import DecodeToken, PermissionManager
+from fastapi import UploadFile, Depends, HTTPException
 from fastapi.responses import JSONResponse, PlainTextResponse
 from fastapi.encoders import jsonable_encoder
 
@@ -14,7 +14,7 @@ from fastapi.encoders import jsonable_encoder
         409:{"description": "Post Already Exists"},
     },
     dependencies=[
-        Depends(RequirePermission("canCreatePosts")),
+        Depends(PermissionManager("canCreatePosts")),
     ],
 )
 async def create_post(image:UploadFile, account:DecodeToken = Depends()):
@@ -23,8 +23,8 @@ async def create_post(image:UploadFile, account:DecodeToken = Depends()):
         filename = image.filename
         post = await posts.create(data,filename,uploader_id=account.user_id)
     except posts.PostExistsException:
-        return PlainTextResponse("Post Already Exists", 409)
+        raise HTTPException(409, "Post Already Exists")
     except Exception as e:
-        return PlainTextResponse("Generic Error", 400)
+        raise HTTPException(400, "Generic Error")
     else:
         return JSONResponse(jsonable_encoder(post))

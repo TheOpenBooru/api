@@ -1,6 +1,6 @@
 from . import router
 from modules import database, fastapi
-from modules.fastapi import RequirePermission
+from modules.fastapi import PermissionManager
 from fastapi import Response, Depends
 
 
@@ -8,7 +8,7 @@ from fastapi import Response, Depends
     operation_id="delete_post",
     responses={},
     dependencies=[
-        Depends(RequirePermission("canDeletePosts"))
+        Depends(PermissionManager("canDeletePosts"))
     ],
 )
 async def delete_post(id:int):

@@ -5,7 +5,7 @@ from modules.account.permissions import Permissions
 from fastapi import HTTPException, Depends, status, Header, Request
 
 VALID_PERMISSION = set(schemas.UserPermissions().dict().keys())
-class RequirePermission:
+class PermissionManager:
     action:str
 
     def __init__(self, permission:str):

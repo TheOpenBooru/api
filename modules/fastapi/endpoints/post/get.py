@@ -1,8 +1,8 @@
 from . import router
 from modules import schemas
-from modules.fastapi.dependencies import RateLimit, RequirePermission
+from modules.fastapi.dependencies import RateLimit, PermissionManager
 from modules.database import Post
-from fastapi import Response, status, Depends, Query
+from fastapi import Response, status, Depends, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
@@ -11,7 +11,7 @@ from fastapi.encoders import jsonable_encoder
     operation_id="get_post",
     response_model=schemas.Post,
     dependencies=[
-        Depends(RequirePermission("canViewPosts")),
+        Depends(PermissionManager("canViewPosts")),
     ]
 )
 async def get_post(id:int):
@@ -19,7 +19,7 @@ async def get_post(id:int):
     try:
         post = Post.get(id)
     except KeyError:
-        return Response(status_code=status.HTTP_404_NOT_FOUND)
+        raise HTTPException(404, "Post Does Not Exist")
     else:
         return JSONResponse(
             content=jsonable_encoder(post),
