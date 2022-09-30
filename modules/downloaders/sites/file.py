@@ -6,9 +6,6 @@ from urllib.parse import urlparse
 VALID_FILE_EXTENTIONS = {'.png', '.jpg', '.jpef', '.webp', '.gif', '.webm' ,'.mp4'}
 class File(Downloader):
     enabled = settings.DOWNLOADER_FILE_ENABLED
-    functional = True
-    def __init__(self):
-        pass
     
     def is_valid_url(self,url:str) -> bool:
         url_struct = urlparse(url)

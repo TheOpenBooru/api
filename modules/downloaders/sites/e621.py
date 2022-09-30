@@ -10,13 +10,8 @@ class E621(Downloader):
     enabled = settings.DOWNLOADER_E621_ENABLED
     api:_E621
     def __init__(self):
-        try:
-            self.api = _E621()
-            self.api.posts.search()
-        except Exception:
-            self.functional = False
-        else:
-            self.functional = True
+        self.api = _E621()
+        self.api.posts.search() # Test E621 Post Search
 
 
     def is_valid_url(self,url:str) -> bool:

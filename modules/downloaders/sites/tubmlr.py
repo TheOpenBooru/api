@@ -9,22 +9,16 @@ import re
 class Tumblr(Downloader):
     enabled = settings.DOWNLOADER_TUMBLR_ENABLED
     def __init__(self):
-        try:
-            self.client = pytumblr.TumblrRestClient(
-                consumer_key=settings.DOWNLOADER_TUMBLR_KEY,
-                consumer_secret = settings.DOWNLOADER_TUMBLR_SECRET,
-            )
-        except Exception:
-            self.functional = False
-        else:
-            self.functional = True
+        self.client = pytumblr.TumblrRestClient(
+            consumer_key=settings.DOWNLOADER_TUMBLR_KEY,
+            consumer_secret = settings.DOWNLOADER_TUMBLR_SECRET,
+        )
 
 
     def is_valid_url(self,url:str):
         hostname = urlparse(url).hostname or ""
         return any((
-            hostname == ("tumblr.co"),
-            hostname == "tumblr.com",
+            hostname in {"tumblr.co", "tumblr.com"},
             hostname.endswith(".tumblr.com"),
         ))
 

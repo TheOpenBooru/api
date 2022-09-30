@@ -1,15 +1,14 @@
 from . import Downloader, DownloadFailure
 from . import Safebooru, Tumblr, Twitter, Youtube, E621, Rule34, File
-from functools import cache
 from modules.schemas import Post
 import logging
 
+importers = []
 
 async def download_url(url:str) -> list[Post]:
     """Raises:
     - ImportFailure: **Description**
     """
-    importers = _get_importers()
     for importer in importers:
         if not isinstance(importer, Downloader):
             continue
@@ -22,20 +21,22 @@ async def download_url(url:str) -> list[Post]:
     raise DownloadFailure("No Importer for that URL")
 
 
-@cache
-def _get_importers() -> list[Downloader]:
+def load_importers() -> list[Downloader]:
     importers_classes = [Safebooru, Tumblr, Twitter, Youtube, E621, Rule34, File]
-    working_importers = []
 
     for importer_class in importers_classes:
         if not importer_class.enabled:
             continue
         
-        importer = importer_class()
-        if not importer.functional:
-            logging.warning(f"Downloader {type(importer).__name__} was not functional")
-            continue
-        
-        working_importers.append(importer)
+        try:
+            importer = importer_class()
+        except Exception as e:
+            downloader_name = importer_class.__name__.title()
+            logging.exception(
+                f"Downloader {downloader_name} Failed To Start",
+                exc_info=e,
+            )
+        else:
+            importers.append(importer)
     
-    return working_importers
+    return importers

@@ -12,12 +12,8 @@ import ujson
 class Rule34(Downloader):
     enabled = settings.DOWNLOADER_RULE34_ENABLED
     def __init__(self):
-        try:
-            requests.get("https://rule34.xxx/",timeout=2)
-        except Exception:
-            self.functional = False
-        else:
-            self.functional = True
+        # Test Rule34 Connection
+        requests.get("https://rule34.xxx/",timeout=2)
 
 
     def is_valid_url(self,url:str) -> bool:

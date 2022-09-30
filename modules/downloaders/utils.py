@@ -1,6 +1,6 @@
 from urllib.parse import urlparse
 from modules import schemas
-from modules.normalisation import normalise_tag, normalise_tags
+from modules.normalise import normalise_tag, normalise_tags
 from cachetools import cached, Cache
 import mimetypes
 import requests

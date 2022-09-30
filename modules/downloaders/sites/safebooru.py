@@ -8,12 +8,8 @@ import requests
 class Safebooru(Downloader):
     enabled = settings.DOWNLOADER_SAFEBOORU_ENABLED
     def __init__(self):
-        try:
-            requests.get("https://safebooru.org/",timeout=2)
-        except Exception:
-            self.functional = False
-        else:
-            self.functional = True
+        # Test Connection to Safebooru
+        requests.get("https://safebooru.org/",timeout=2)
 
 
     def is_valid_url(self,url:str) -> bool:

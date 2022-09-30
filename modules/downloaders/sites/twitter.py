@@ -11,12 +11,7 @@ class Twitter(Downloader):
     enabled: bool = settings.DOWNLOADER_TWITTER_ENABLED
     client: tweepy.Client
     def __init__(self):
-        try:
-            self.client = tweepy.Client(bearer_token=settings.DOWNLOADER_TWITTER_KEY)
-        except Exception:
-            self.functional = False
-        else:
-            self.functional = True
+        self.client = tweepy.Client(bearer_token=settings.DOWNLOADER_TWITTER_KEY)
 
 
     def is_valid_url(self, url:str) -> bool:

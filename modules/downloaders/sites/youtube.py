@@ -8,12 +8,8 @@ import pytube
 class Youtube(Downloader):
     enabled = settings.DOWNLOADER_YOUTUBE_ENABLED
     def __init__(self):
-        try:
-            pytube.YouTube("https://youtu.be/GLlLQ3LmZWU")
-        except Exception:
-            self.functional = False
-        else:
-            self.functional = True
+        # Test Connection to Youtube
+        pytube.YouTube("https://youtu.be/GLlLQ3LmZWU")
 
 
     def is_valid_url(self,url:str) -> bool:
