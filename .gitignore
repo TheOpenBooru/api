@@ -238,7 +238,7 @@ data/cert.pem
 data/key.pem
 data/log.txt
 data/auth.db
-data/tokensecret.key
+*.key
 data/mongo
 scripts
 e621_pages
