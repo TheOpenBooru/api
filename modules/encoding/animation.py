@@ -1,13 +1,18 @@
 from . import BaseMedia,AnimationFile,ImageFile,Image
 from modules import schemas
 import io
+import warnings
 from typing_extensions import Self
 from PIL import Image as PILImage
 
+warnings.simplefilter ('ignore', PILImage.DecompressionBombWarning)
+PILImage.MAX_IMAGE_PIXELS = (5000 * 5000) * 2
+# x2 max pixels, warning is raised on MAX_IMAGE_PIXELS
+
 class Animation(BaseMedia):
     type = schemas.MediaType.animation
+    pillow:PILImage.Image
     _data:bytes
-    _PIL:PILImage.Image
     _height:int
     _width:int
     _frame_count:int
@@ -20,39 +25,31 @@ class Animation(BaseMedia):
         - ValueError: Animation was too large
         - ValueError: Has Only 1 Frame
         """
-        PILImage.MAX_IMAGE_PIXELS = (5000*5000)*2
-        # x2 becasue actual max pixels is half
         buf = io.BytesIO(data)
+        
         try:
-            # formats=None:attempt to load all formats
             pillow = PILImage.open(buf,formats=None)
+            # formats=None attempt to load all formats
         except PILImage.DecompressionBombError:
             raise ValueError("Animation was too large")
         except Exception:
             raise ValueError("Could not Load Animation")
         if pillow.n_frames == 1:
-            raise ValueError("Has Only 1 Frame")
+            raise ValueError("Animation Only Has 1 Frame")
         
         frame_durations = _get_frame_durations(pillow)
         duration = sum(frame_durations) / 1000
 
         self._data = data
-        self._PIL = pillow
+        self.pillow = pillow
         self._height = pillow.height
         self._width = pillow.width
         self._frame_count = pillow.n_frames
         self._duration = duration
 
-
-    def __enter__(self) -> Self:
-        return self
-
-    def __exit__(self, exception_type, exception_value, traceback):
-        ...
-
-
+    
     def full(self) -> AnimationFile:
-        data = _pillow_animation_to_bytes(self._PIL)
+        data = _pillow_animation_to_bytes(self.pillow)
         return AnimationFile(
             data=data,
             mimetype='image/webp',
@@ -63,10 +60,21 @@ class Animation(BaseMedia):
         )
 
 
-
-    def preview(self) -> None:
-        return None
-
+    def preview(self) -> ImageFile:
+        buf = io.BytesIO()
+        self.pillow.seek(0)
+        self.pillow.save(
+            buf,
+            format='webp',
+            quality=100,
+            lossless=True
+        )
+        return ImageFile(
+            data=buf.read(),
+            mimetype="image/webp",
+            height=self.pillow.height,
+            width=self.pillow.width,
+        )
 
 
     def thumbnail(self) -> ImageFile:

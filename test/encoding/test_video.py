@@ -31,7 +31,6 @@ class test_Heavy(unittest.TestCase):
     def test_Thumbnail_is_Image(self):
         assert type(self.thumbnail) == ImageFile
 
-
     
     def test_Video_Metadata_Is_Correct(self):
         full = self.full

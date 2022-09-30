@@ -47,11 +47,11 @@ class BaseMedia:
         - ValueError: Could not Parse Data
         """
 
-    def __enter__(self):
-        ...
+    def __enter__(self, *args):
+        return self
 
-    def __exit__(self):
-        ...
+    def __exit__(self, *args):
+        pass
 
     @cache
     def full(self) -> GenericFile:

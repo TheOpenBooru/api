@@ -11,12 +11,10 @@ class Image(BaseMedia):
     type = schemas.MediaType.image
     pillow:PILImage.Image
     _dimensions:Dimensions
+    _data:bytes
 
 
     def __init__(self,data:bytes):
-        self._data = data
-
-    def __enter__(self) -> Self:
         """Raises:
         - ValueError: Image is too big to process
         - ValueError: Could not Load Image
@@ -24,7 +22,7 @@ class Image(BaseMedia):
         # Set max acceptable image size to prevent DOS
         PILImage.MAX_IMAGE_PIXELS = (settings.IMAGE_FULL_HEIGHT * settings.IMAGE_FULL_HEIGHT)
         
-        buf = io.BytesIO(self._data)
+        buf = io.BytesIO(data)
         try:
             # formats=None means attempt to load all formats
             pil_img = PILImage.open(buf,formats=None)
@@ -33,14 +31,9 @@ class Image(BaseMedia):
         except Exception as e:
             raise ValueError(str(e))
         
-        self._dimensions = Dimensions(pil_img.width,pil_img.height)
         self.pillow = pil_img
-        return self
-
-
-    def __exit__(self, exception_type, exception_value, traceback):
-        ...
-
+        self._dimensions = Dimensions(pil_img.width,pil_img.height)
+        self._data = data
 
     def full(self) -> ImageFile:
         return self._process(
