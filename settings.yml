@@ -39,10 +39,11 @@ email:
 posts:
   search:
     default_sort: created_at
-    max_limit: 100
+    max_limit: 250
 
 tags:
-  time_between_count_regen: 86400
+  time_between_count_regen: 7200
+  time_between_data_import: 0
   minimum_count: 0
   valid_namespaces:
     - generic
@@ -184,6 +185,8 @@ permissions:
       ratelimit: "1/minute"
     canSearchTags:
       ratelimit: "1/second"
+    canEditTags:
+      ratelimit: "4/minute"
     
     canViewProfile:
       ratelimit: "1/second"
@@ -211,6 +214,7 @@ permissions:
     
     canRecieveAllTags:
     canSearchTags:
+    canEditTags:
     
     canViewUsers:
     canSearchUsers:

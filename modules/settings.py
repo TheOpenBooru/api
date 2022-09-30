@@ -65,6 +65,7 @@ STORAGE_S3_BUCKET:str = get("storage.s3.bucket-name")
 
 # Tags
 TAGS_REGEN_COUNT_EVERY:Union[int, None] = get("tags.time_between_count_regen")
+TAGS_IMPORT_TAG_DATA_EVERY:Union[int, None] = get("tags.time_between_data_import")
 TAGS_MINIMUM_COUNT:int = get("tags.minimum_count")
 TAGS_NAMESPACES:list[str] = get("tags.valid_namespaces")
 TAGS_TAGGING_SERVICE_ENABLED:bool = get("tags.tagging_service.enabled")
