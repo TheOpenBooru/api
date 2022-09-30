@@ -87,7 +87,6 @@ class S3Store(BaseStore):
 
 
     def exists(self, filename:str):
-        """TODO: Don't donwload files to check existance"""
         try:
             self.get(filename)
         except FileNotFoundError:
