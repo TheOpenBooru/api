@@ -24,10 +24,8 @@ class Safebooru(Importer):
             if limit and len(posts) > limit:
                 break
 
+        posts = posts[:limit]
         for i, data in enumerate(tqdm(posts, desc="Importing From Safebooru")):
-            if limit and i >= limit:
-                return
-
             try:
                 md5 = bytes.fromhex(data['md5'])
                 post = database.Post.md5_get(md5)
