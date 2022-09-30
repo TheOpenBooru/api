@@ -1,8 +1,8 @@
-from modules import settings, daemon
+from modules import settings, daemon, account, errors
 from modules.fastapi import main_router
 from modules.fastapi.middleware import middlewares
 import uvicorn
-from fastapi import FastAPI,responses
+from fastapi import FastAPI, responses, Request, Response
 
 app = FastAPI(
     title="Open Booru",
@@ -11,12 +11,13 @@ app = FastAPI(
     middleware=middlewares,
     responses={
         200: {"description":"Success"},
-        401: {"description":"Not Authenticated"},
+        401: {"description":"Account Required"},
         403: {"description":"Missing Permission"},
         429: {"description":"Rate limitted"},
     },
-    
 )
+
+
 app.include_router(main_router)
 
 
@@ -30,18 +31,12 @@ def docs_redirect():
     return responses.RedirectResponse('/docs')
 
 
-ssl_params = {}
-if settings.SSL_ENABLED:
-    ssl_params |= {
-        "ssl_keyfile":settings.SSL_KEY_STORE,
-        "ssl_certfile":settings.SSL_CERT_STORE,
-    }
-
 if __name__ == "__main__":
     uvicorn.run(
         "app:app",
         host='0.0.0.0',
         port=settings.PORT,
         log_config="./data/logging.conf",
-        **ssl_params,
+        ssl_keyfile=settings.SSL_KEY_STORE if settings.SSL_ENABLED else None,
+        ssl_certfile=settings.SSL_CERT_STORE if settings.SSL_ENABLED else None,
     )
