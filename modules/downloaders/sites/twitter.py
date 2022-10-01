@@ -45,14 +45,9 @@ class Twitter(Downloader):
         media_items = tweet.includes["media"]
         if index:
             media = media_items[index]
-            media_items = [media]
-        
-        new_posts = []
-        for media in media_items:
-            post = await generate_from_media(media, url, account)
-            new_posts.append(post)
-
-        return new_posts
+            return [await generate_from_media(media, url, account)]
+        else:
+            return [await generate_from_media(media, url, account) for media in media_items]
 
 
 
@@ -74,16 +69,16 @@ async def parse_url(url:str) -> UrlData:
     return UrlData(*values)
 
 
-async def generate_from_media(media: tweepy.Media, url:str, account:str) -> schemas.Post:
+async def generate_from_media(media: tweepy.Media, source:str, account:str) -> schemas.Post:
     if media.type == "photo":
-        media_url = media["url"]
+        file_url = media["url"]
     else:
-        media_url = media.data['variants'][0]['url']
+        file_url = media.data['variants'][0]['url']
     
-    data, filename = utils.download_url(media_url)
+    data, filename = utils.download_url(file_url)
     post = await posts.generate(data,filename)
 
-    post.source = url
+    post.source = source
     if account not in post.tags:
         post.tags.append(account.lower())
 
