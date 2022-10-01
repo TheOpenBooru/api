@@ -16,7 +16,6 @@ def search(query:schemas.PostQuery = DEFAULT_QUERY) -> list[Post]:
     }})
     pipeline.append({"$skip": query.index})
     pipeline.append({"$limit": query.limit})
-    pipeline.append({"$unset": "search_tags"})
     cursor = post_collection.aggregate(pipeline=pipeline)
     return parse_docs(cursor)
 
@@ -30,9 +29,9 @@ def build_pipeline(query:schemas.PostQuery) -> list[dict]:
         filters.append({'rating':{'$in': query.ratings}})
     
     if query.include_tags and query.include_tags != []:
-        filters.append({"search_tags":{'$in': query.include_tags}})
+        filters.append({"tags":{'$in': query.include_tags}})
     if query.exclude_tags and query.exclude_tags != []:
-        filters.append({"search_tags":{'$nin': query.exclude_tags}})
+        filters.append({"tags":{'$nin': query.exclude_tags}})
     
     if query.upvotes_gt:
         filters.append({"upvotes":{"$gt": query.upvotes_gt}})
@@ -94,19 +93,19 @@ APPEND_TAG_SIBLINGS_AND_PARENTS = [
         ]
     }, {
         '$unwind': {
-            'path': '$search_tags', 
+            'path': '$tags', 
             'preserveNullAndEmptyArrays': True
         }
     }, {
         '$unwind': {
-            'path': '$search_tags', 
+            'path': '$tags', 
             'preserveNullAndEmptyArrays': True
         }
     }, {
         '$group': {
             '_id': '$_id', 
-            'search_tags': {
-                '$push': '$search_tags'
+            'tags': {
+                '$push': '$tags'
             }, 
             'doc': {
                 '$first': '$$ROOT'
@@ -117,7 +116,7 @@ APPEND_TAG_SIBLINGS_AND_PARENTS = [
             'newRoot': {
                 '$mergeObjects': [
                     '$doc', {
-                        'search_tags': '$search_tags'
+                        'tags': '$tags'
                     }
                 ]
             }
