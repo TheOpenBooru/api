@@ -9,6 +9,9 @@ async def download_url(url:str) -> list[Post]:
     """Raises:
     - ImportFailure: **Description**
     """
+    if importers == []:
+        await load_importers()
+    
     for importer in importers:
         if not isinstance(importer, Downloader):
             continue
@@ -21,7 +24,7 @@ async def download_url(url:str) -> list[Post]:
     raise DownloadFailure("No Importer for that URL")
 
 
-def load_importers() -> list[Downloader]:
+async def load_importers() -> list[Downloader]:
     importers_classes = [Safebooru, Tumblr, Twitter, Youtube, E621, Rule34, File]
 
     for importer_class in importers_classes:
