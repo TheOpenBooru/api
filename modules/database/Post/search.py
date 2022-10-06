@@ -28,10 +28,10 @@ def build_pipeline(query:schemas.PostQuery) -> list[dict]:
     if query.ratings:
         filters.append({'rating':{'$in': query.ratings}})
 
-    if query.include_tags and query.include_tags != []:
-        filters.append({"tags":{'$all': query.include_tags}})
-    if query.exclude_tags and query.exclude_tags != []:
-        filters.append({"tags":{'$not': {'$all': query.exclude_tags}}})
+    if query.include_tags:
+        filters.append({'tags':{'$all': query.include_tags}})
+    if query.exclude_tags:
+        filters.append({'tags':{'$nin': query.exclude_tags}})
     
     if query.upvotes_gt:
         filters.append({"upvotes":{"$gt": query.upvotes_gt}})
@@ -75,7 +75,7 @@ APPEND_TAG_SIBLINGS_AND_PARENTS = [
         }
     }, {
         '$set': {
-            'search_tags': {
+            'tags': {
                 '$setUnion': [
                     '$tags',
                     '$tag_objects.name',
