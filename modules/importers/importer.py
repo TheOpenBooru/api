@@ -1,5 +1,5 @@
 from modules import database, posts, schemas
-from modules.importers import utils
+from modules.importers import utils, DownloadFailure
 from modules.schemas import GenericMedia, Image
 from typing import Callable, TypeVar, AsyncIterable, Iterable
 import inspect
@@ -65,6 +65,8 @@ async def run_importer(
     async def handle_post(data: V):
         try:
             await process_post(data)
+        except DownloadFailure:
+            pass # Explicit Exception, downloader could not import post
         except Exception as e:
             logging.exception(e)
         else:
