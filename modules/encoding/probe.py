@@ -2,16 +2,14 @@ from functools import cached_property
 import mimetypes
 from typing import Union
 from magic import Magic
+from PIL import Image as PILImage
 import ffmpeg
+import io
 
-class Probe:
+
+class VideoProbe:
     filepath:str
     data:bytes
-    def __init__(self,filepath:str):
-        ...
-    
-
-class VideoProbe(Probe):
     def __init__(self,filepath):
         with open(filepath,'rb') as f:
             self.data = f.read()
@@ -20,7 +18,7 @@ class VideoProbe(Probe):
 
 
     @cached_property
-    def _video_stream(self) -> dict:
+    def video_stream(self) -> dict:
         streams = self.probe_data['streams']
         video_streams = [x for x in streams if x['codec_type'] == 'video']
         if len(video_streams) == 1:
@@ -30,15 +28,15 @@ class VideoProbe(Probe):
     
     @cached_property
     def height(self) -> int:
-        return int(self._video_stream['height'])
+        return int(self.video_stream['height'])
     
     @cached_property
     def width(self) -> int:
-        return int(self._video_stream['width'])
+        return int(self.video_stream['width'])
 
     @cached_property
     def framerate(self) -> str:
-        framerate = eval(self._video_stream['r_frame_rate'])
+        framerate = eval(self.video_stream['r_frame_rate'])
         if framerate % 1 == 0:
             framerate = int(framerate)
 
@@ -70,7 +68,13 @@ class VideoProbe(Probe):
 
     @cached_property
     def frame_count(self) -> Union[float,None]:
-        if 'nb_frames' in self._video_stream:
-            return float(self._video_stream['nb_frames'])
+        if 'nb_frames' in self.video_stream:
+            return float(self.video_stream['nb_frames'])
         else:
             return None
+
+
+def isAnimatedSequence(data:bytes) -> bool:
+    buf = io.BytesIO(data)
+    pil_img = PILImage.open(buf,formats=None)
+    return pil_img.is_animated

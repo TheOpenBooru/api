@@ -6,12 +6,9 @@ from PIL import Image as PILImage
 import io
 
 
-@dataclass
 class Image(BaseMedia):
     type = schemas.MediaType.image
     pillow:PILImage.Image
-    _dimensions:Dimensions
-    _data:bytes
 
 
     def __init__(self,data:bytes):
@@ -32,11 +29,11 @@ class Image(BaseMedia):
             raise ValueError(str(e))
         
         self.pillow = pil_img
-        self._dimensions = Dimensions(pil_img.width,pil_img.height)
-        self._data = data
+
 
     def full(self) -> ImageFile:
-        return self._process(
+        return process(
+            self.pillow,
             Dimensions(settings.IMAGE_FULL_WIDTH,settings.IMAGE_FULL_HEIGHT),
             settings.IMAGE_FULL_QUALITY,
             settings.IMAGE_FULL_LOSSLESS,
@@ -44,7 +41,8 @@ class Image(BaseMedia):
 
 
     def preview(self) -> ImageFile:
-        return self._process(
+        return process(
+            self.pillow,
             Dimensions(settings.IMAGE_PREVIEW_WIDTH,settings.IMAGE_PREVIEW_HEIGHT),
             settings.IMAGE_PREVIEW_QUALITY,
             settings.IMAGE_PREVIEW_LOSSLESS,
@@ -52,44 +50,44 @@ class Image(BaseMedia):
 
 
     def thumbnail(self) -> ImageFile:
-        return self._process(
+        return process(
+            self.pillow,
             Dimensions(settings.THUMBNAIL_WIDTH,settings.THUMBNAIL_HEIGHT),
             settings.THUMBNAIL_QUALITY,
             settings.THUMBNAIL_LOSSLESS,
         )
 
 
-    def _process_using_config(self,config:dict) -> ImageFile:
-        dimensions = Dimensions(config['max_width'],config['max_height'])
-        return self._process(
-            dimensions,
-            config['quality'],
-            config['lossless'],
+def process(pillow:PILImage.Image,target:Dimensions,quality:int,lossless:bool=False) -> ImageFile:
+    output_buf = io.BytesIO()
+    dimensions = Dimensions(pillow.width, pillow.height)
+    output_res = calculate_downscale(dimensions,target)
+    (
+        pillow
+        .resize(output_res, PILImage.LANCZOS)
+        .save(output_buf,
+              format='webp',
+              quality=quality,
+              lossless=lossless
         )
+    )
+    return ImageFile(
+        data=output_buf.getvalue(),
+        mimetype='image/webp',
+        width=output_res.x,
+        height=output_res.y,
+    )
 
 
-    def _process(self,target:Dimensions,quality:int,lossless:bool=False) -> ImageFile:
-        output_buf = io.BytesIO()
-        res = _calculate_downscale(self._dimensions,target)
-        (
-            self.pillow
-            .resize((res.width,res.height),PILImage.LANCZOS)
-            .save(output_buf,format='webp',quality=quality,lossless=lossless)
-        )
-        return ImageFile(
-            data=output_buf.getvalue(),
-            mimetype='image/webp',
-            width=res.width,
-            height=res.height
-        )
-
-def _calculate_downscale(resolution:Dimensions,target:Dimensions) -> Dimensions:
+def calculate_downscale(resolution: Dimensions,target: Dimensions) -> Dimensions:
     downscale_factors = (
         1.0,
-        resolution.width / target.width,
-        resolution.height / target.height,
+        resolution.x / target.x,
+        resolution.y / target.y,
     )
     limiting_factor = max(downscale_factors)
-    output_width = int(resolution.width / limiting_factor)
-    output_height = int(resolution.height / limiting_factor)
+    
+    output_width = int(resolution.x / limiting_factor)
+    output_height = int(resolution.y / limiting_factor)
+    
     return Dimensions(output_width,output_height)

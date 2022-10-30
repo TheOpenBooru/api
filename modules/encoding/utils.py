@@ -1,11 +1,12 @@
-from . import GenericMedia,Animation,Image,Video
-from .animation import isAnimatedSequence
+from modules.encoding.probe import isAnimatedSequence
+from . import GenericMedia,Animation,Image,Video, isAnimatedSequence
 
 import mimetypes
 mimetypes.add_type('image/webp', '.webp')
 mimetypes.add_type('image/apng', '.apng')
 
-async def predict_media_type(data:bytes,filename:str) -> type[GenericMedia]:
+
+async def generate_media(data:bytes,filename:str) -> GenericMedia:
     """Raises:
     - ValueError: Filetype not supported
     """
@@ -14,12 +15,12 @@ async def predict_media_type(data:bytes,filename:str) -> type[GenericMedia]:
 
     if subtype in {"webp","gif","apng"}:
         if isAnimatedSequence(data):
-            return Animation
+            return Animation(data)
         else:
-            return Image
+            return Image(data)
     elif type == 'image':
-        return Image
+        return Image(data)
     elif type == 'video':
-        return Video
+        return Video(data)
     else:
         raise ValueError(f'Filetype not supported: {mime}')

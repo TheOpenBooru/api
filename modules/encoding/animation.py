@@ -91,7 +91,8 @@ def _pillow_animation_to_bytes(pillow:PILImage.Image) -> bytes:
         save_all=True, # Save as an animation
         transparency=0,
         duration=frame_durations,
-        background=(0,0,0,0),# RGBA
+        background=(0,0,0,0),# RGBA,
+        disposal=2,
     )
     return buf.getvalue()
 
@@ -104,7 +105,3 @@ def _get_frame_durations(pillow:PILImage.Image) -> list:
         frame_durations.append(duration)
     return frame_durations
 
-def isAnimatedSequence(data:bytes) -> bool:
-    buf = io.BytesIO(data)
-    pil_img = PILImage.open(buf,formats=None)
-    return pil_img.is_animated

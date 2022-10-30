@@ -1,13 +1,11 @@
+from collections import namedtuple
 from modules import schemas
 from dataclasses import dataclass
 from functools import cache, cached_property
 from typing import Union
 
 
-@dataclass(frozen=True)
-class Dimensions:
-    width:int
-    height:int
+Dimensions = namedtuple("Dimensions", ["x", "y"])
 
 
 @dataclass(frozen=True)
