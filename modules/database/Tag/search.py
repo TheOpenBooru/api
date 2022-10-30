@@ -2,7 +2,7 @@ from . import Tag, tag_collection, parse_docs
 from modules import schemas
 import re
 
-def search(query:schemas.Tag_Query) -> list[Tag]:
+def search(query:schemas.TagQuery) -> list[Tag]:
     filters = []
     if query.name_like:
         filters.append({'name':re.compile(query.name_like)})

@@ -1,19 +1,19 @@
 from . import Post, post_collection, parse_docs
 from .. import Tag
 from modules import schemas, settings
-from pymongo import DESCENDING, ASCENDING
 
 
 DEFAULT_QUERY = schemas.PostQuery()
 def search(query:schemas.PostQuery = DEFAULT_QUERY) -> list[Post]:
     "Warning: Not-always consistent, implements caching"
+
     pipeline = []
+
     if settings.POSTS_SEARCH_USE_SIBLINGS_AND_PARENTS:
         pipeline.extend(APPEND_TAG_SIBLINGS_AND_PARENTS)
+
     pipeline.extend(build_pipeline(query))
-    pipeline.append({"$sort":{
-        query.sort: DESCENDING if query.descending else ASCENDING
-    }})
+    pipeline.append({"$sort":{query.sort: -1 if query.descending else 1}})
     pipeline.append({"$skip": query.index})
     pipeline.append({"$limit": query.limit})
     cursor = post_collection.aggregate(pipeline=pipeline)
@@ -45,6 +45,8 @@ def build_pipeline(query:schemas.PostQuery) -> list[dict]:
     
     if query.ids:
         filters.append({"id":{'$in': query.ids}})
+    if query.creators:
+        filters.append({"uploader":{'$in': query.creators}})
     if query.md5:
         filters.append({"hashes":{'md5s':{'$elemMatch':{"$eq":query.md5}}}})
     if query.sha256:
