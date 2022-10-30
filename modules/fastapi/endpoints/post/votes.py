@@ -16,7 +16,7 @@ votes_router = APIRouter(
 router.include_router(votes_router)
 
 def assert_post_exists(post_id:int):
-    if not database.Post.exists(post_id):
+    if not database.Post.exists(id=post_id):
         raise HTTPException(404, "Post Not Found")
 
 
