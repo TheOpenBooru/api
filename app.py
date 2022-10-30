@@ -1,8 +1,8 @@
-from modules import settings, daemon, account, errors
+from modules import settings, daemon
 from modules.fastapi import main_router
 from modules.fastapi.middleware import middlewares
 import uvicorn
-from fastapi import FastAPI, responses, Request, Response
+from fastapi import FastAPI, responses
 
 app = FastAPI(
     title="Open Booru",
@@ -16,8 +16,6 @@ app = FastAPI(
         429: {"description":"Rate limitted"},
     },
 )
-
-
 app.include_router(main_router)
 
 
