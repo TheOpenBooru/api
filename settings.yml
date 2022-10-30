@@ -43,7 +43,7 @@ posts:
 
 tags:
   time_between_count_regen: 7200
-  time_between_data_import: 0
+  time_between_data_import: null
   minimum_count: 0
   valid_namespaces:
     - generic
@@ -68,39 +68,26 @@ importers:
     url: null
     tags:
       - system:everything
-  safebooru:
-    enabled: false
-    run_every: null
-    limit: null
-    searches:
-      - rating:safe overwatch
   e621:
     enabled: false
-    run_every: null
-    dump_location: ""
+    run_every: 259200
+  e926:
+    enabled: false
+    run_every: 259200
   rule34:
     enabled: false
-    run_every: null
-    dump_location: ""
-    proxy_format: ""
+    run_every: 259200
+    limit: 500
+  safebooru:
+    enabled: false
+    run_every: 259200
+    limit: 500
 
 
 downloaders:
-  e621:
-    enabled: true
-  rule34:
-    enabled: true
-  safebooru:
-    enabled: true
-  youtube:
-    enabled: true
-  file:
-    enabled: true
   twitter:
-    enabled: true
     bearer_token: ""
   tumblr:
-    enabled: true
     consumer_key: ""
     consumer_secret: ""
 
@@ -172,8 +159,10 @@ permissions:
   user:
     canCreatePosts:
       ratelimit: "4/minute"
+      captcha: true
     canEditPosts:
       ratelimit: "4/minute"
+      captcha: true
     canVotePosts:
       ratelimit: "1/second"
     canViewPosts:
@@ -182,11 +171,11 @@ permissions:
       ratelimit: "1/second"
 
     canRecieveAllTags:
-      ratelimit: "1/minute"
+      ratelimit: "4/minute"
     canSearchTags:
       ratelimit: "1/second"
     canEditTags:
-      ratelimit: "4/minute"
+      ratelimit: "10/minute"
     
     canViewProfile:
       ratelimit: "1/second"
@@ -207,6 +196,7 @@ permissions:
     canLogin:
     canRegister:
     
+    canCreatePosts:
     canViewPosts:
     canSearchPosts:
     canEditPosts:
@@ -219,9 +209,12 @@ permissions:
     canViewUsers:
     canSearchUsers:
     canEditUsers:
-    canDeleteUsers:
-    canCreatePosts:
+    canDeleteUsers: 
     canVotePosts:
     
     canViewProfile:
     canUpdateSettings:
+    
+    canCreateSubscriptions:
+    canSearchSubscriptions:
+    canDeleteSubscriptions:

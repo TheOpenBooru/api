@@ -71,6 +71,9 @@ TAGS_NAMESPACES:list[str] = get("tags.valid_namespaces")
 TAGS_TAGGING_SERVICE_ENABLED:bool = get("tags.tagging_service.enabled")
 TAGS_TAGGING_SERVICE_URL:str = get("tags.tagging_service.url")
 
+# Subscriptions
+SUBSCRIPTIONS_TRY_AFTER: int = 60 * 60 * 24
+
 # Posts
 POSTS_SEARCH_DEFAULT_SORT:str = get("posts.search.default_sort")
 POSTS_SEARCH_MAX_LIMIT:int = get("posts.search.max_limit")
@@ -95,33 +98,26 @@ IMPORTER_HYDRUS_KEY:str = get("importers.hydrus.access_key")
 IMPORTER_HYDRUS_URL:str = get("importers.hydrus.url")
 IMPORTER_HYDRUS_TAGS:str = get("importers.hydrus.tags")
 
-IMPORTER_SAFEBOORU_ENABLED:bool = get("importers.safebooru.enabled")
-IMPORTER_SAFEBOORU_RETRY_AFTER:Union[int, None] = get("importers.safebooru.run_every")
-IMPORTER_SAFEBOORU_REENCODE:bool = get("importers.safebooru.limit")
-IMPORTER_SAFEBOORU_LIMIT:Union[int,None] = get("importers.safebooru.limit")
-IMPORTER_SAFEBOORU_SEARCHES:list[str] = get("importers.safebooru.searches")
-
 IMPORTER_E621_ENABLED:bool = get("importers.e621.enabled")
 IMPORTER_E621_RETRY_AFTER:Union[int, None] = get("importers.e621.run_every")
-IMPORTER_E621_DUMP:str = get("importers.e621.dump_location")
+IMPORTER_E621_LIMIT:Union[int,None] = get("importers.rule34.limit")
+
+IMPORTER_E926_ENABLED:bool = get("importers.e926.enabled")
+IMPORTER_E926_RETRY_AFTER:Union[int, None] = get("importers.e926.run_every")
+IMPORTER_E926_LIMIT:Union[int,None] = get("importers.rule34.limit")
 
 IMPORTER_RULE34_ENABLED:bool = get("importers.rule34.enabled")
 IMPORTER_RULE34_RETRY_AFTER:Union[int, None] = get("importers.rule34.run_every")
-IMPORTER_RULE34_DUMP:str = get("importers.rule34.dump_location")
-IMPORTER_RULE34_PROXY_FORMAT:str = get("importers.rule34.proxy_format")
+IMPORTER_RULE34_LIMIT:Union[int,None] = get("importers.rule34.limit")
+
+IMPORTER_SAFEBOORU_ENABLED:bool = get("importers.safebooru.enabled")
+IMPORTER_SAFEBOORU_RETRY_AFTER:Union[int, None] = get("importers.safebooru.run_every")
+IMPORTER_SAFEBOORU_LIMIT:Union[int,None] = get("importers.safebooru.limit")
 
 # Downloader
-DOWNLOADER_SAFEBOORU_ENABLED:bool = get("downloaders.safebooru.enabled")
-DOWNLOADER_E621_ENABLED:bool = get("downloaders.e621.enabled")
-DOWNLOADER_RULE34_ENABLED:bool = get("downloaders.rule34.enabled")
-DOWNLOADER_YOUTUBE_ENABLED:bool = get("downloaders.youtube.enabled")
-DOWNLOADER_FILE_ENABLED:bool = get("downloaders.file.enabled")
-
-DOWNLOADER_TUMBLR_ENABLED:bool = get("downloaders.tumblr.enabled")
 DOWNLOADER_TUMBLR_KEY:str = get("downloaders.tumblr.consumer_key")
 DOWNLOADER_TUMBLR_SECRET:str = get("downloaders.tumblr.consumer_secret")
 
-DOWNLOADER_TWITTER_ENABLED:bool = get("downloaders.twitter.enabled")
 DOWNLOADER_TWITTER_KEY:str = get("downloaders.twitter.bearer_token")
 
 # Passwords
