@@ -2,7 +2,7 @@ from . import router
 from pathlib import Path
 from typing import Union
 from modules import store
-from modules.downloaders.utils import guess_mimetype
+from modules.importers.utils import guess_mimetype
 from fastapi import Response, status, Header, HTTPException
 from fastapi.responses import RedirectResponse, FileResponse
 
