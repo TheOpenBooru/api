@@ -2,7 +2,7 @@ from functools import cache
 import re as _re
 import iso639 as _iso639
 
-USERNAME_REGEX = r"^[a-z0-9_]{4,32}$"
+USERNAME_REGEX = r"^[a-zA-Z0-9_]{4,32}$"
 TAG_REGEX = r"^[_()a-z0-9]{1,32}$"
 URL_REGEX = r"^http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+$"
 EMAIL_REGEX = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"

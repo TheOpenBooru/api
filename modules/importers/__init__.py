@@ -1,3 +1,5 @@
-from modules.downloaders import utils
-from .classes import Importer, ImportFailure
-from .methods import Hydrus, Files, Rule34, Safebooru, E621
+from . import utils
+from .classes import Importer, Downloader, DownloadFailure
+from .importer import run_importer
+from .sites import *
+from .downloader import download_url

@@ -1,0 +1,84 @@
+from modules import posts, settings, database, normalise
+from modules.importers import Importer, utils
+import logging
+import requests
+import hydrus_api
+from tqdm import tqdm
+
+
+class HydrusImporter(Importer):
+    enabled: bool = settings.IMPORTER_HYDRUS_ENABLED
+    time_between_runs = settings.IMPORTER_HYDRUS_RETRY_AFTER
+    def __init__(self):
+        requests.get(settings.IMPORTER_HYDRUS_URL,timeout=2)
+        self.client = hydrus_api.Client(
+            access_key=settings.IMPORTER_HYDRUS_KEY,
+            api_url=settings.IMPORTER_HYDRUS_URL
+        )
+        self.client.get_api_version()
+
+
+    async def load(self, limit: int|None = None):
+        tags = settings.IMPORTER_HYDRUS_TAGS
+        if type(limit) == int:
+            tags += f" system:limit is {limit}"
+        
+        ids = self.client.search_files(
+            tags,
+            file_sort_type=hydrus_api.FileSortType.IMPORT_TIME,
+        )
+        ids = [int(id) for id in ids]
+
+        metadatas = self.client.get_file_metadata(file_ids=ids) # type: ignore
+        ids.reverse()
+        metadatas.reverse()
+        
+        zipped = list(zip(ids,metadatas))
+        for id,metadata in tqdm(zipped, desc="Importing From Hydrus"):
+            try:
+                await self._import_post(id,metadata)
+            except Exception as e:
+                logging.info(f"Hydrus Failed Import [{metadata['hash']}]: {e}")
+
+
+    async def _import_post(self,post_id:int,metadata:dict):
+        try:
+            database.Post.sha256_get(metadata['hash'])
+        except KeyError:
+            pass
+        else:
+            return
+        
+        raw_tags = await self._extract_tags(metadata)
+        source = ""
+        if metadata['known_urls']:
+            source = metadata['known_urls'][0]
+            # Prevent tweet importer linking to the twitter image
+            if source.startswith("https://pbs.twimg.com/"): 
+                source = metadata['known_urls'][1]
+        
+        tags = normalise.normalise_tags(raw_tags)
+        
+        r = self.client.get_file(file_id=post_id)
+        data = r.content
+        filename = "example" + metadata['ext']
+        try:
+            await posts.create(
+                data,
+                filename,
+                additional_tags=tags,
+                source=source,
+            )
+        except posts.PostExistsException:
+            pass
+
+
+    async def _extract_tags(self,metadata:dict) -> list[str]:
+        try:
+            tag_lists = metadata['service_names_to_statuses_to_tags']['all known tags']
+            all_tags = []
+            for tags in tag_lists.values():
+                all_tags.extend(tags)
+            return all_tags
+        except Exception:
+            return []
