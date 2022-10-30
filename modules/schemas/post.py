@@ -20,7 +20,7 @@ class Rating(str, Enum):
     explicit = "explicit"
 
 
-class Post_Edit(BaseModel):
+class PostEdit(BaseModel):
     created_at: float = fields.Created_At
     post_id: int = Field(..., description="The ID of the post the edit was performed on")
     editter_id: Union[int,None] = Field(default=None, description="The ID of the user who submitted this edit, None for system edits")
@@ -38,9 +38,8 @@ class Post_Edit(BaseModel):
 class PostQuery(BaseModel):
     index: int = Field(default=0, ge=0, lt=MAX_NUMBER, description="Offset from the start of the results")
     limit: int = Field(default=settings.POSTS_SEARCH_MAX_LIMIT, ge=0, lt=MAX_NUMBER, description="Maximum number of results to return")
-    sort: Sort = Field(default=settings.POSTS_SEARCH_DEFAULT_SORT, description="How to sort the posts")
+    sort: Sort = Field(default=Sort.created_at, description="How to sort the posts")
     descending: bool = Field(default=True, description="Should search be ordered descending")
-    
     
     include_tags: list[str] = Field(default=[])
     exclude_tags: list[str] = Field(default=[])
@@ -51,6 +50,7 @@ class PostQuery(BaseModel):
     created_after:Optional[float] = Field(default=None)
     created_before:Optional[float] = Field(default=None)
     
+    creators:Optional[list[int]] = Field(default=None, ge=0, lt=MAX_NUMBER)
     ids:Optional[list[int]] = Field(default=None, ge=0, lt=MAX_NUMBER)
     md5:Optional[str] = Field(default=None, regex=validate.MD5_REGEX)
     sha256:Optional[str] = Field(default=None, regex=validate.SHA256_REGEX)
@@ -70,19 +70,20 @@ class Post(BaseModel):
     created_at: float = fields.Created_At
     uploader: Union[int, None] = Field(default=None, description="The user ID of the person who uploaded this post, null means no creator")
     deleted: bool = Field(default=False, description="Whether the post has been deleted")
-    source: str = Field(default="", description="The original source for the post")
-    rating: Rating = Field(default="unrated", description="The default rating for a post")
+    sources: list[str] = Field(default_factory=list, description="The original source for the post")
+    rating: Rating = Field(default=Rating.unrated, description="The default rating for a post")
 
     full: GenericMedia = Field(..., description="The full scale media for the Post")
     preview: Union[GenericMedia, None] = Field(default=None,description="A Medium Scale Version for the image, for hi-res posts")
+    media: list[GenericMedia] = Field(default_factory=list, description="All media related to this post")
     thumbnail: Image = Field(..., description="A low quality image used for thumbnails")
 
-    media_type: MediaType = Field( ..., description="Format of the post")
+    type: MediaType = Field( ..., description="Format of the post")
     hashes: Hashes = Field(default_factory=Hashes, description="A table of all the posts hashes")
 
     tags: list[str] = fields.Tags
     comments: list[int] = fields.Comments
-    edits: list[Post_Edit] = Field(default_factory=list, description="The edits made to the post")
+    edits: list[PostEdit] = Field(default_factory=list, description="The edits made to the post")
 
     upvotes: int = Field(default=0, description="Number of upvotes on the Post")
     downvotes: int = Field(default=0, description="Number of downvotes on the Post")

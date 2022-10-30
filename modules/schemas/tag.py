@@ -13,7 +13,7 @@ class Tag(BaseModel):
     parents: list[str] = Field(default_factory=list, description="All the tag parents of this tag")
 
 
-class Tag_Query(BaseModel):
+class TagQuery(BaseModel):
     name_like: Union[str,None] = Field(default=None, description="Tags with a section of the tag name, does not guarantee all results")
     namespace: Union[str,None] = Field(default=None, description="The namespace of the tags")
     count_lt: Union[int,None] = Field(default=None, ge=0, lt=MAX_NUMBER, description="Tags with a count less than this")

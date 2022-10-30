@@ -4,11 +4,7 @@ import time as _time
 
 Created_At:float = _Field(
     default_factory=_time.time,
-    description="The Unix timestamp for when the Post was created",
-)
-Email:str = _Field(
-    ...,
-    description="The Unix timestamp for when the Post was created",
+    description="The Unix timestamp for when this was created",
 )
 Tags:list[str] = _Field(
     default_factory=list,

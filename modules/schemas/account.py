@@ -33,6 +33,10 @@ class UserPermissions(BaseModel):
     canDeleteUsers:Permission = Field(description="Delete other users accounts", default_factory=Permission)
     canCreatePosts:Permission = Field(description="Creating new posts", default_factory=Permission)
     canVotePosts:Permission = Field(description="Voting on other posts", default_factory=Permission)
+
+    canCreateSubscriptions:Permission = Field(description="Can create new subscriptions", default_factory=Permission)
+    canSearchSubscriptions:Permission = Field(description="Can search subscriptions", default_factory=Permission)
+    canDeleteSubscriptions:Permission = Field(description="Can remove subscriptions", default_factory=Permission)
     
     canViewProfile:Permission = Field(description="Viewing Own Profile", default_factory=Permission)
     canUpdateSettings:Permission = Field(description="Updaing Profile Settings", default_factory=Permission)

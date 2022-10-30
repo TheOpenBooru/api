@@ -22,15 +22,15 @@ class Image(BaseMedia):
 
 
 class Animation(BaseMedia):
-    duration: float = Field(..., description="The Animation's Duration in framerate")
-    frame_count: int = Field(..., description="The Animation's Number of frames")
-    duration:float = Field(..., description="The Animation's Duration")
+    duration: float|None = Field(default=None, description="The Animation's Duration in framerate")
+    frame_count: int|None = Field(default=None, description="The Animation's Number of frames")
+    duration: float|None = Field(default=None, description="The Animation's Duration")
     type:MediaType = Field(default=MediaType.animation, description="The type of media")
 
 class Video(BaseMedia):
-    has_sound: bool = Field(..., description="Does the video contain sound?")
-    duration: float = Field(..., description="The Video's Duration in framerate")
-    fps: str = Field(..., description="The Video's Framerate in frames per second")
+    has_sound: bool|None = Field(default=None, description="Does the video contain sound?")
+    duration: float|None = Field(default=None, description="The Video's Duration in framerate")
+    fps: str|None = Field(default=None, description="The Video's Framerate in frames per second")
     type:MediaType = Field(default=MediaType.video, description="The type of media")
 
 GenericMedia = Union[Image,Animation,Video]

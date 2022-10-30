@@ -7,9 +7,10 @@ class BaseModel(_PydanticBaseModel):
 MAX_NUMBER = 2**63
 
 from . import fields
+from .subscription import Subscription, SubscriptionQuery
 from .media import GenericMedia, Animation, Video, Image, MediaType
 from .account import Permission, UserPermissions, Token
 from .misc import Author, Comment, Status
-from .tag import Tag, Tag_Query
-from .post import Post, Post_Edit, PostQuery, Rating, Sort, Hashes
-from .user import User, User_Public
+from .tag import Tag, TagQuery
+from .post import Post, PostEdit, PostQuery, Rating, Sort, Hashes
+from .user import User, UserPublic
