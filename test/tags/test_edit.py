@@ -11,10 +11,16 @@ def ExampleTag() -> schemas.Tag:
 
 
 @pytest.mark.asyncio
+async def test_Invalid_Tag_Raises_Error(ExampleTag: schemas.Tag):
+    with pytest.raises(tags.TagEditFailure):
+        await tags.edit("Invalid",namespace="meta")
+
+
+@pytest.mark.asyncio
 async def test_Empty_Edit_Raises_Error(ExampleTag: schemas.Tag):
     with pytest.raises(tags.TagEditFailure):
         await tags.edit(ExampleTag.name)
- 
+
 
 @pytest.mark.asyncio
 async def test_Copied_Edit_Raises_Error(ExampleTag: schemas.Tag):
@@ -32,9 +38,7 @@ async def test_Bad_Namespace_Raises_Error(ExampleTag: schemas.Tag):
     with pytest.raises(tags.TagEditFailure):
         await tags.edit(
             ExampleTag.name,
-            namespace=ExampleTag.namespace,
-            parents=ExampleTag.parents,
-            siblings=ExampleTag.siblings,
+            namespace="INVALID",
         )
 
 

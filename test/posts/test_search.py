@@ -4,7 +4,7 @@ import unittest
 class test_Posts_Search(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
         database.Post.clear()
-        importer = importers.Safebooru()
+        importer = importers.SafebooruImporter()
         await importer.load(limit=100)
         assert database.Post.count() == 100
         

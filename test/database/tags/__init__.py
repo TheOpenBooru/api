@@ -8,11 +8,6 @@ def ExampleTag() -> schemas.Tag:
 
 
 @pytest.fixture
-def ClearDatabase():
-    database.clear()
-
-
-@pytest.fixture
 def ExamplePost() -> schemas.Post:
     image = schemas.Image(
         width=1,
@@ -22,7 +17,7 @@ def ExamplePost() -> schemas.Post:
     )
     post = schemas.Post(
         id=database.Post.generate_id(),
-        media_type=schemas.MediaType.image,
+        type=schemas.MediaType.image,
         full=image,
         thumbnail=image
     )

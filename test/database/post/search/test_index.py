@@ -1,7 +1,8 @@
-from . import ClearDatabase, ExamplePost
+from . import ExamplePost
 from modules import posts, schemas, database
 
-def test_Index_Offsets_Post_Search(ClearDatabase, ExamplePost: schemas.Post):
+def test_Index_Offsets_Post_Search(ExamplePost: schemas.Post):
+    database.clear()
     post_1 = ExamplePost.copy()
     post_2 = ExamplePost.copy()
     post_1.id = 1

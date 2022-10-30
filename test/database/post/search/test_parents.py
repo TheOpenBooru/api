@@ -1,10 +1,10 @@
-from . import ClearDatabase, ExamplePost, assertPostInSearch
-from modules import database, schemas, settings
+from . import ExamplePost, assertPostInSearch
+from modules import database, schemas
 import pytest
 
-settings.POSTS_SEARCH_USE_SIBLINGS_AND_PARENTS = True
 
-def test_Tag_Parents_Search(ClearDatabase, ExamplePost: schemas.Post):
+def test_Tag_Parents_Search(ExamplePost: schemas.Post):
+    database.clear()
     database.Tag.insert(schemas.Tag(name="mario", parents=["super_mario_bros"]))
     post = ExamplePost.copy()
     post.tags = ["mario"]
@@ -17,7 +17,8 @@ def test_Tag_Parents_Search(ClearDatabase, ExamplePost: schemas.Post):
 
 
 @pytest.mark.skip("TODO: Fix Chained Parents Search")
-def test_Tag_Parents_Chained_Search(ClearDatabase, ExamplePost: schemas.Post):
+def test_Tag_Parents_Chained_Search(ExamplePost: schemas.Post):
+    database.clear()
     database.Tag.insert(schemas.Tag(name="mario", parents=["super_mario_bros"]))
     database.Tag.insert(schemas.Tag(name="super_mario_bros", parents=["nintendo"]))
     

@@ -1,18 +1,13 @@
 import pytest
-from modules import database, schemas
+from modules import database, schemas, settings
+settings.POSTS_SEARCH_USE_SIBLINGS_AND_PARENTS = True
 
 @pytest.fixture
 def ExampleTag() -> schemas.Tag:
     return schemas.Tag(name="test")
 
 
-@pytest.fixture
-def ClearDatabase():
-    database.clear()
-
-
-@pytest.fixture
-def ExamplePost() -> schemas.Post:
+def generate_post() -> schemas.Post:
     image = schemas.Image(
         width=1,
         height=1,
@@ -21,11 +16,16 @@ def ExamplePost() -> schemas.Post:
     )
     post = schemas.Post(
         id=database.Post.generate_id(),
-        media_type=schemas.MediaType.image,
+        type=schemas.MediaType.image,
         full=image,
         thumbnail=image
     )
     return post
+
+
+@pytest.fixture
+def ExamplePost() -> schemas.Post:
+    return generate_post()
 
 
 def assertPostInSearch(post_id:int, search_response:list[schemas.Post]):

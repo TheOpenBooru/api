@@ -1,10 +1,10 @@
-from . import ClearDatabase, ExamplePost, assertPostInSearch
-from modules import database, schemas, settings
+from . import ExamplePost, assertPostInSearch
+from modules import database, schemas
+import pytest
 
-settings.POSTS_SEARCH_USE_SIBLINGS_AND_PARENTS = True
 
-
-def test_Tag_Siblings_Search(ClearDatabase, ExamplePost: schemas.Post):
+def test_Tag_Siblings_Search(ExamplePost: schemas.Post):
+    database.clear()
     database.Tag.insert(schemas.Tag(
         name="mario", siblings=["mario_(super_mario_bros)"]
     ))
@@ -20,7 +20,9 @@ def test_Tag_Siblings_Search(ClearDatabase, ExamplePost: schemas.Post):
     assertPostInSearch(post.id, search_response)
 
 
-def test_Tag_Siblings_Backwards(ClearDatabase, ExamplePost: schemas.Post):
+@pytest.mark.skip("Sibling Not Optimised Implemented")
+def test_Tag_Siblings_Backwards(ExamplePost: schemas.Post):
+    database.clear()
     database.Tag.insert(schemas.Tag(
         name="mario", siblings=["mario_(super_mario_bros)"]
     ))
@@ -34,8 +36,10 @@ def test_Tag_Siblings_Backwards(ClearDatabase, ExamplePost: schemas.Post):
     ))
     assertPostInSearch(post.id, search_response)
 
- 
-def test_Tag_Chained_Siblings_Search(ClearDatabase, ExamplePost: schemas.Post):
+
+@pytest.mark.skip("Sibling Not Implemented")
+def test_Tag_Chained_Siblings_Search(ExamplePost: schemas.Post):
+    database.clear()
     database.Tag.insert(schemas.Tag(
         name="zelda",
         siblings=["princess_zelda", "zelda_(legend_of_zelda)"]

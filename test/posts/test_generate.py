@@ -36,7 +36,7 @@ async def test_image():
     data,filepath = load_testdata(attrs)
     post_obj = await posts.generate(data,filepath)
     
-    assert post_obj.media_type == "image"
+    assert post_obj.type == "image"
     assert isinstance(post_obj.full,schemas.Image)
     assert isinstance(post_obj.thumbnail,schemas.Image)
     assert_attributes(post_obj,attrs)
@@ -48,7 +48,7 @@ async def test_animation():
     data,filepath = load_testdata(attrs)
     post_obj = await posts.generate(data,filepath)
     
-    assert post_obj.media_type == "animation"
+    assert post_obj.type == "animation"
     assert isinstance(post_obj.full,schemas.Animation)
     assert isinstance(post_obj.thumbnail,schemas.Image)
     assert_attributes(post_obj,attrs)
@@ -60,7 +60,7 @@ async def test_video():
     data,filepath = load_testdata(attrs)
     post_obj = await posts.generate(data,filepath)
     
-    assert post_obj.media_type == "video"
+    assert post_obj.type == "video"
     assert isinstance(post_obj.full,schemas.Video)
     assert isinstance(post_obj.thumbnail,schemas.Image)
     assert_attributes(post_obj,attrs)

@@ -2,7 +2,8 @@ import json
 import asyncio
 import unittest
 from box import Box
-from modules.encoding import predict_media_type,Animation,Image,Video,BaseMedia
+from modules import schemas
+from modules.encoding import generate_media,Animation,Image,Video,BaseMedia
 
 with open('data/test/sample_data.json') as f:
     _json = json.load(f)
@@ -17,43 +18,43 @@ class TestData:
 
 
 class test_Detect_Format(unittest.TestCase):
-    def assertFormat(self,fp:str,type:type,message:str):
-        with open(fp,'rb') as f:
-            coroutine = predict_media_type(f.read(),fp)
-            media_class = asyncio.run(coroutine)
-        assert media_class == type, f"message: {media_class.__name__}"
+    def assertFormat(self, filepath:str, intended_type:schemas.MediaType, message:str):
+        with open(filepath,'rb') as f:
+            data = f.read()
+        media = asyncio.run(generate_media(data,filepath))
+        assert media.type == intended_type, message
     
     def test_webp_animation(self):
         self.assertFormat(
             TestData.WEBP_Animation,
-            Animation,
+            schemas.MediaType.animation,
             "WEBP Animation not recognised"
         )
     
     def test_webp_picture(self):
         self.assertFormat(
             TestData.WEBP_Image,
-            Image,
+            schemas.MediaType.image,
             "WEBP Picutre not recognised",
         )
     
     def test_gif_animation(self):
         self.assertFormat(
             TestData.GIF_Animation,
-            Animation,
+            schemas.MediaType.animation,
             "GIF Animation not recognised",
         )
     
     def test_gif_picture(self):
         self.assertFormat(
             TestData.GIF_Image,
-            Image,
+            schemas.MediaType.image,
             "GIF Image not recognised",
         )
     
     def test_mp4_video(self):
         self.assertFormat(
             TestData.MP4_Video,
-            Video,
+            schemas.MediaType.video,
             "MP4 Video not recognised",
         )

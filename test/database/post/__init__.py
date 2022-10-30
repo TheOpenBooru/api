@@ -1,3 +1,4 @@
+from .. import ExamplePost
 import unittest
 from typing import Optional
 from modules import schemas
@@ -20,7 +21,7 @@ def generate_post(id:Optional[int] = None) -> schemas.Post:
     id = id or Post.generate_id()
     return schemas.Post(
         id=id,uploader=0,
-        media_type="image",
+        type=schemas.MediaType.image,
         thumbnail=EXAMPLE_IMAGE,
         full=EXAMPLE_IMAGE,
     )
