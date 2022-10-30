@@ -12,7 +12,7 @@ from fastapi.encoders import jsonable_encoder
         Depends(fastapi.PermissionManager("canSearchTags")),
     ],
 )
-async def search_tags(query:schemas.Tag_Query = Depends()):
+async def search_tags(query:schemas.TagQuery = Depends()):
     tags = database.Tag.search(query)
     return JSONResponse(
         content=jsonable_encoder(tags),
