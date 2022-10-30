@@ -41,14 +41,14 @@ class LocalStore(BaseStore):
 
 
     def url(self, filename:str) -> str:
-        hostname = settings.HOSTNAME
-        port = settings.PORT
+        hostname, port = settings.HOSTNAME, settings.PORT
         if port == 80:
             return f"http://{hostname}/image/{filename}"
-        elif port == 443:
-            return f"https://{hostname}/image/{filename}"
         elif settings.SSL_ENABLED:
-            return f"https://{hostname}:{port}/image/{filename}"
+            if port == 443:
+                return f"https://{hostname}/image/{filename}"
+            else:
+                return f"https://{hostname}:{port}/image/{filename}"
         else:
             return f"http://{hostname}:{port}/image/{filename}"
 
