@@ -1,5 +1,14 @@
-from modules import schemas, encoding, database, encoding, store, settings, phash
-from modules.downloaders.utils import normalise_tags
+from modules import (
+    schemas,
+    encoding,
+    database,
+    encoding,
+    store,
+    settings,
+    phash,
+    normalise,
+    tags,
+)
 from modules.tags import generate_ai_tags
 from PIL.Image import Image
 import base64
@@ -9,67 +18,68 @@ from typing import Union
 
 
 async def generate(
-        data:bytes,
-        filename:str,
-        use_ai_tags:bool=settings.TAGS_TAGGING_SERVICE_ENABLED,
-        uploader_id:Union[int,None] = None,
-        additional_tags:Union[list[str],None] = None,
-        source:Union[str,None] = None,
-        rating:Union[str,None] = None,
+        data :bytes,
+        filename :str,
+        use_ai_tags :bool=settings.TAGS_TAGGING_SERVICE_ENABLED,
+        uploader_id :Union[int, None] = None,
+        additional_tags :Union[list[str], None] = None,
+        sources :Union[list[str], None] = None,
+        rating :Union[str, None] = None,
         ) -> schemas.Post:
     post = await encode_post(data,filename)
     
     
     if additional_tags:
-        additional_tags = normalise_tags(additional_tags)
+        additional_tags = normalise.normalise_tags(additional_tags)
         tags = set(post.tags + additional_tags)
         post.tags = list(tags)
     if uploader_id:
         post.uploader = uploader_id
-    if source:
-        post.source = source
+    if sources:
+        post.sources = sources
     if rating:
         post.rating = rating # type: ignore
 
     if use_ai_tags:
         mimetype,_ = mimetypes.guess_type(filename)
         if mimetype != None:
-            tags = generate_ai_tags(data,filename,mimetype)
+            tags = generate_ai_tags(data,filename, mimetype)
             post.tags = list(set(post.tags + tags))
     
     return post
 
 
-async def encode_post(data:bytes,filename:str):
+async def encode_post(data: bytes, filename: str) -> schemas.Post:
     hashes = schemas.Hashes()
     
-    media_type = await encoding.predict_media_type(data,filename)
-    with media_type(data) as media:
+    with await encoding.generate_media(data,filename) as media:
         full = media.full()
+        full_schema = process_file(full, hashes)
+        
         preview = media.preview()
+        preview_schema = process_file(preview, hashes) if preview else None
+        
         thumbnail = media.thumbnail()
-    
-    generate_hashes(hashes, data)
+        thumbnail_schema = process_file(thumbnail, hashes)
+
+    add_hashes(hashes, data)
     if isinstance(media, encoding.Image):
         generate_phash(hashes, media.pillow)
     
-    full_schema = process_file(full, hashes)
-    preview_schema = process_file(preview, hashes) if preview else None
-    thumbnail_schema = process_file(thumbnail, hashes)
-    
-    return schemas.Post(
+    post = schemas.Post(
         id=database.Post.generate_id(),
-        tags=[media_type.type],
         hashes=hashes,
-        full=full_schema, # type: ignore
-        preview=preview_schema, # type: ignore
+        full=full_schema,
+        preview=preview_schema,
         thumbnail=thumbnail_schema, # type: ignore
-        media_type=media_type.type,
+        type=media.type,
     )
+    post.tags = generate_meta_tags(post)
+    return post
 
 
 def process_file(file:encoding.GenericFile, hashes: schemas.Hashes) -> schemas.GenericMedia:
-    generate_hashes(hashes, file.data)
+    add_hashes(hashes, file.data)
     filename = _generate_filename(file)
     save_file(file.data,filename)
     url = store.generate_generic_url(filename)
@@ -85,7 +95,7 @@ def save_file(data:bytes,filename:str):
         store.put(data,filename)
 
 
-def generate_hashes(hashes: schemas.Hashes, data:bytes):
+def add_hashes(hashes: schemas.Hashes, data:bytes):
     md5 = hashlib.md5(data).digest()
     sha256 = hashlib.sha256(data).digest()
     hashes.md5s.append(md5)
@@ -135,3 +145,13 @@ def _generate_filename(file:encoding.GenericFile) -> str:
     ext = mimetypes.guess_extension(file.mimetype) or ""
     filename = hash + ext
     return filename
+
+
+def generate_meta_tags(post:schemas.Post) -> list[str]:
+    tags = post.tags.copy()
+    
+    tags.append(post.full.type)
+    if isinstance(post.full, schemas.Video) and post.full.has_sound:
+        tags.append("sound")
+    
+    return tags

@@ -1,5 +1,5 @@
+from . import PostExistsException, exists_post
 from modules.schemas.post import PostQuery
-from . import PostExistsException
 from modules import database, schemas
 
 async def insert(post: schemas.Post, validate=True):
@@ -9,26 +9,11 @@ async def insert(post: schemas.Post, validate=True):
     Raises:
         - PostExistsException
     """
-    if validate:
-        await _validate_post(post)
+    if validate and exists_post(post):
+        raise PostExistsException
 
     database.Post.insert(post)
     if post.uploader:
         database.User.create_post(post.uploader, post.id)
 
 
-async def _validate_post(post: schemas.Post):
-    if database.Post.id_exists(post.id):
-        raise PostExistsException
-
-    for md5 in post.hashes.md5s:
-        if database.Post.md5_exists(md5):
-            raise PostExistsException
-
-    for sha256 in post.hashes.sha256s:
-        if database.Post.sha256_exists(sha256):
-            raise PostExistsException
-    
-    for phash in post.hashes.phashes:
-        if database.Post.phash_exists(phash):
-            raise PostExistsException

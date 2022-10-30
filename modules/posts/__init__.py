@@ -1,6 +1,6 @@
 from .errors import *
+from .exists import exists, exists_post, exists_data, exists_hashes
 from .insert import insert
-from .exists import exists_hash
 from .generate import generate
 from .create import create
 from .Import import Import

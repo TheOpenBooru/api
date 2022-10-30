@@ -1,4 +1,4 @@
-from . import generate, exists_hash, insert, PostExistsException
+from . import generate, exists_data, insert, PostExistsException
 from modules import database, settings
 from modules.tags import generate_ai_tags
 import hashlib
@@ -13,7 +13,7 @@ async def create(data:bytes,filename:str,
         source:Union[str,None] = None,
         rating:Union[str,None] = None,
         ):
-    if exists_hash(data):
+    if exists_data(data):
         raise PostExistsException
     
     post = await generate(data,filename,use_ai_tags,uploader_id,additional_tags,source,rating)

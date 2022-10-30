@@ -31,7 +31,7 @@ def edit_post(
         new_post.rating = rating
     
     try:
-        edit = schemas.Post_Edit(
+        edit = schemas.PostEdit(
             post_id=post_id,
             editter_id=editter_id,
             old_source=old_post.source,
