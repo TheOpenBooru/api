@@ -45,3 +45,5 @@ pytube
 # Testing
 pytest
 pytest-asyncio
+pytest-cov
+pytest-timeout
