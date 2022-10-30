@@ -1,6 +1,6 @@
 from . import create_background_task
-from modules import importers, tags, settings
-from modules.importers import Hydrus, Files, Rule34, Safebooru, E621
+from modules import importers, tags, settings, subscription
+from modules.importers import IMPORTERS
 from datetime import timedelta, datetime
 import logging
 
@@ -16,21 +16,25 @@ def run_daemon():
         )
     if settings.TAGS_IMPORT_TAG_DATA_EVERY:
         create_background_task(
-            id="Regen Tag Count",
+            id="Regen Tag Data",
             function=tags.import_e621_tag_data,
             retry_after=settings.TAGS_IMPORT_TAG_DATA_EVERY,
         )
+    create_background_task(
+        id="Check URL Subscriptions",
+        function=subscription.check_subscriptions,
+        retry_after=settings.SUBSCRIPTIONS_TRY_AFTER,
+    )
 
     
-    importers = [Hydrus, Files, Rule34, Safebooru, E621]
-    for importer_class in importers:
-        if importer_class.enabled == False:
+    for _class in IMPORTERS:
+        if _class.enabled == False:
             continue
 
-        name = importer_class.__name__.title()
+        name = _class.__name__.title()
         try:
-            importer = importer_class()
-        except Exception:
+            importer = _class()
+        except Exception as e:
             logging.warning(f"Importer {name} was not functional")
         else:
             create_background_task(
