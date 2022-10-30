@@ -21,12 +21,15 @@ async def search_posts(
         include_tags: list[str] = Query(default=[]),
         exclude_tags: list[str] = Query(default=[]),
         ids:list[int] = Query(default=[]),
+        creators:list[int] = Query(default=[]),
         ):
-    query.media_types = media_types
-    query.ratings = ratings
     query.include_tags = include_tags
     query.exclude_tags = exclude_tags
     query.ids = ids
+    query.creators = creators
+    query.ratings = ratings
+    query.media_types = media_types
+    
     searched_posts = await posts.search(query)
     return JSONResponse(
         content=jsonable_encoder(searched_posts),
