@@ -20,6 +20,7 @@ pickledb
 pillow
 ffmpeg-python
 python-magic
+imagehash
 
 # Cryptography
 cryptography
