@@ -38,7 +38,7 @@ class PostEdit(BaseModel):
 class PostQuery(BaseModel):
     index: int = Field(default=0, ge=0, lt=MAX_NUMBER, description="Offset from the start of the results")
     limit: int = Field(default=settings.POSTS_SEARCH_MAX_LIMIT, ge=0, lt=MAX_NUMBER, description="Maximum number of results to return")
-    sort: Sort = Field(default=Sort.created_at, description="How to sort the posts")
+    sort: Sort = Field(default=settings.POSTS_SEARCH_DEFAULT_SORT, description="How to sort the posts")
     descending: bool = Field(default=True, description="Should search be ordered descending")
     
     include_tags: list[str] = Field(default=[])
