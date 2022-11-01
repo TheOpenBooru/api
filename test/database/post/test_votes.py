@@ -1,10 +1,17 @@
 from . import ExamplePost
-from modules import database, schemas
+from modules import schemas
+from modules.database import Post
+from . import TestCase, generate_post
 
 
-def test_Upvotes(ExamplePost: schemas.Post):
-    database.clear()
-    database.Post.add_upvote(ExamplePost.id)
-    assert database.Post.get_id(ExamplePost.id).upvotes == 1
-    database.Post.add_upvote(ExamplePost.id)
-    assert database.Post.get_id(ExamplePost.id).upvotes == 2
+class test_Votes(TestCase):
+    def setUp(self) -> None:
+        self.post = generate_post()
+        Post.insert(self.post)
+
+    def test_Update_Doesnt_Affect_Object(self):
+        post = self.post
+        Post.add_upvote(post.id)
+        assert Post.get_id(post.id).upvotes == 1
+        Post.add_upvote(post.id)
+        assert Post.get_id(post.id).upvotes == 2
