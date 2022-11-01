@@ -16,7 +16,7 @@ def search(query:schemas.PostQuery = DEFAULT_QUERY) -> list[Post]:
     pipeline.append({"$sort":{query.sort: -1 if query.descending else 1}})
     pipeline.append({"$skip": query.index})
     pipeline.append({"$limit": query.limit})
-    cursor = post_collection.aggregate(pipeline=pipeline)
+    cursor = post_collection.aggregate(pipeline=pipeline, maxTimeMS=5000)
     return parse_docs(cursor)
 
 
