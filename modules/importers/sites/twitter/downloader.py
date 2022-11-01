@@ -77,7 +77,7 @@ async def generate_from_media(media: tweepy.Media, source:str, account:str) -> s
     data, filename = await utils.download_url(file_url)
     post = await posts.generate(data,filename)
 
-    post.source = source
+    post.sources = [source, file_url]
     if account not in post.tags:
         post.tags.append(account.lower())
 

@@ -39,7 +39,7 @@ async def assertImport(youtube: YoutubeDownloader, url:str):
     assert len(posts) == 1
     post = posts[0]
     assert post.type == "video"
-    assert post.full.width == 1280
-    assert post.full.height == 720
-    assert post.source == "https://youtube.com/watch?v=YlLn5DXTRxI"
+    assert post.full.width in (1280, 640)
+    assert post.full.height in (720, 358)
+    assert "https://youtube.com/watch?v=YlLn5DXTRxI" in post.sources
     assert "kawaguchi_ingen" in post.tags

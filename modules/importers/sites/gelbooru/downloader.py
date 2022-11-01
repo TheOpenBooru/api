@@ -19,15 +19,16 @@ class GelbooruDownloader(Downloader):
 
     async def download_url(self, url:str) -> list[schemas.Post]:
         id = await self.extract_id(url)
-        data = await self.download_post(id)
+        post_data = await self.download_post(id)
         
-        image_data, filename = await utils.download_url(url)
+        file_url = post_data["file_url"]
+        data, filename = await utils.download_url(file_url)
         post = await posts.generate(
-            data=image_data,
+            data=data,
             filename=filename,
-            additional_tags=parsing.get_tags(data),
-            sources=parsing.get_sources(data),
-            rating=parsing.get_rating(data),
+            additional_tags=parsing.get_tags(post_data),
+            sources=parsing.get_sources(post_data),
+            rating=parsing.get_rating(post_data),
         )
         return [post]
 
@@ -51,7 +52,7 @@ class GelbooruDownloader(Downloader):
         except Exception:
             raise DownloadFailure("")
         
-        soup = bs4.BeautifulSoup(r.text,'html.parser')
+        soup = bs4.BeautifulSoup(r.text, 'xml')
         tag = soup.find('post')
         if not isinstance(tag, bs4.Tag):
             raise DownloadFailure("Gelbooru API Error")
@@ -69,5 +70,5 @@ class SafebooruDownloader(GelbooruDownloader):
 
 
 class Rule34Downloader(GelbooruDownloader):
-    _hostname = "api.rule34.xxx"
+    _hostname = "rule34.xxx"
     _api_hostname = "api.rule34.xxx"

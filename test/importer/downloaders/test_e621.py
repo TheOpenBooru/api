@@ -1,25 +1,24 @@
 from modules import importers
 import pytest
 
+
 @pytest.fixture
 def e621():
     return importers.E621Downloader()
 
 
-@pytest.mark.asyncio
-async def test_E621_is_valid_url(e621: importers.E621Downloader):
+def test_E621_is_valid_url(e621: importers.E621Downloader):
     assert e621.is_valid_url("https://e621.net/posts/2294957")
     assert e621.is_valid_url("https://e621.net/posts/2294957?q=test")
-    assert not e621.is_valid_url("https://e621.net/posts/")
+    assert not e621.is_valid_url("https://e621.pics/posts/2294957")
+    assert not e621.is_valid_url("http://e621.net/posts/2294957")
 
 
-@pytest.mark.asyncio
 async def test_Nonexistant_Post_Raises_DownloadFailure(e621: importers.E621Downloader):
     with pytest.raises(importers.DownloadFailure):
         await e621.download_url("https://e621.net/posts/1")
 
 
-@pytest.mark.asyncio
 async def test_Importing_Image(e621: importers.E621Downloader):
     url = "https://e621.net/posts/2294957"
     posts = await e621.download_url(url)
@@ -32,7 +31,6 @@ async def test_Importing_Image(e621: importers.E621Downloader):
     assert len(post.tags) > 10
 
 
-@pytest.mark.asyncio
 async def test_Importing_Image_With_Parameters(e621: importers.E621Downloader):
     url = "https://e621.net/posts/2294957?q=order%3Ascore+comic"
     posts = await e621.download_url(url)
@@ -45,7 +43,6 @@ async def test_Importing_Image_With_Parameters(e621: importers.E621Downloader):
     assert len(post.tags) > 10
 
 
-@pytest.mark.asyncio
 async def test_Importing_Animation(e621: importers.E621Downloader):
     url = "https://e621.net/posts/1047489"
     posts = await e621.download_url(url)
@@ -58,7 +55,6 @@ async def test_Importing_Animation(e621: importers.E621Downloader):
     assert len(post.tags) > 10
 
 
-@pytest.mark.asyncio
 async def test_Importing_Video(e621: importers.E621Downloader):
     url = "https://e621.net/posts/2972352"
     posts = await e621.download_url(url)

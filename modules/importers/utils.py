@@ -38,10 +38,11 @@ def predict_media_type(url:str) -> schemas.MediaType:
 def guess_mimetype(filepath:str) -> str:
     _,ext = os.path.splitext(filepath)
     filename = 'example' + ext
-    return _cachable_guess_mimetype(filename)
+    mime = _cachable_guess_mimetype(filename)
+    return mime
 
 
-@cached(cache=Cache(maxsize=10_000))
+@cached(Cache(maxsize=100))
 def _cachable_guess_mimetype(filepath:str) -> str:
     full, _  = mimetypes.guess_type(filepath)
     if full == None:

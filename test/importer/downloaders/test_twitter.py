@@ -27,7 +27,7 @@ async def test_Importing_Video_Tweet(twitter: importers.TwitterDownloader):
     assert len(posts) == 1
     post = posts[0]
     assert post.type == "video"
-    assert post.source == tweet
+    assert tweet in post.sources
     assert "openbooru" in post.tags
 
 
@@ -39,7 +39,7 @@ async def test_Importing_Animation_Tweet(twitter: importers.TwitterDownloader):
     assert len(posts) == 1
     post = posts[0]
     assert post.type == "video"
-    assert post.source == tweet
+    assert tweet in post.sources
     assert "lykeisland" in post.tags
 
 
@@ -51,7 +51,7 @@ async def test_Importing_Image_Tweet(twitter: importers.TwitterDownloader):
     assert len(posts) == 1
     post = posts[0]
     assert post.type == "image"
-    assert post.source == tweet
+    assert tweet in post.sources
     assert "advosart" in post.tags
 
 
@@ -63,7 +63,7 @@ async def test_Importing_Individual_Image(twitter: importers.TwitterDownloader):
     assert len(posts) == 1
     post = posts[0]
     assert post.type == "image"
-    assert post.source == tweet
+    assert tweet in post.sources
     assert int(post.full.width / post.full.height) == 2
     assert "openbooru" in post.tags
 

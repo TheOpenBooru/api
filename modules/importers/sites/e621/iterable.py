@@ -1,16 +1,16 @@
+from . import USER_AGENT
 from typing import Union, Generator
 from itertools import count
 import requests
 
-USER_AGENT = "Openbooru/1.0 (by NoHomoZone)"
 
 def guess_post_count(hostname: str) -> int:
     POST_DELETION_RATIO = 1.16
 
     r = requests.get(
         f"https://{hostname}/posts.json",
-        params={"limit":1},
-        headers={ "User-Agent": USER_AGENT}
+        params={"limit": 1},
+        headers={"User-Agent": USER_AGENT},
     )
     json = r.json()
     posts = json["posts"]
@@ -23,7 +23,7 @@ def iter_over_posts(hostname: str) -> Generator[dict, None, None]:
         posts = download_page(hostname, x)
         if len(posts) == 0:
             return
-        
+
         for post in posts:
             yield post
 
@@ -32,14 +32,14 @@ def download_page(hostname: str, page: int) -> list[dict]:
     LIMIT = 320
     start_id = LIMIT * page
     end_id = LIMIT * (page + 1)
-    
+
     r = requests.get(
         f"https://{hostname}/posts.json",
         params={
-            "tags":["order:id", f"id:{start_id}..{end_id}"],
-            "limit":LIMIT,
+            "tags": ["order:id", f"id:{start_id}..{end_id}"],
+            "limit": LIMIT,
         },
-        headers={ "User-Agent": USER_AGENT}
+        headers={"User-Agent": USER_AGENT},
     )
     json = r.json()
     posts = json["posts"]
