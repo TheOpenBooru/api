@@ -1,7 +1,7 @@
 from . import post_collection
 
 
-def exists(
+def exists(*,
         id: int|None = None,
         sources: list[str]|None = [],
         md5s: list[bytes] |None= [],
@@ -9,7 +9,7 @@ def exists(
         phashes: list[bytes]|None = [],
     ):
     filters = []
-    if id and (id) > 2**63:
+    if id:
         filters.append({"id":{"$eq":id}})
     if sources:
         filters.append({"hashes.sources":{'$elemMatch':{"$in":sources}}})
