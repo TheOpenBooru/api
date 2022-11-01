@@ -15,7 +15,7 @@ from fastapi.encoders import jsonable_encoder
     ]
 )
 async def get_post(id:int):
-    CACHE_HEADER = {"Cache-Control": "max-age=60, public"}
+    CACHE_HEADER = {"Cache-Control": "max-age=300, public"}
     try:
         post = Post.get(id)
     except KeyError:

@@ -16,5 +16,5 @@ async def search_tags(query:schemas.TagQuery = Depends()):
     tags = database.Tag.search(query)
     return JSONResponse(
         content=jsonable_encoder(tags),
-        headers={"Cache-Control": "max-age=3600, public"},
+        headers={"Cache-Control": "max-age=300, public"},
     )
