@@ -10,6 +10,10 @@ def all() -> list[Post]:
     return posts
 
 
+def ids() -> list[int]:
+    return []
+
+
 def count() -> int:
     return post_collection.count_documents({})
 
