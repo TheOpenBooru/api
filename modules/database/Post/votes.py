@@ -4,7 +4,7 @@ def add_upvote(id:int):
     """Raises:
     - KeyError: Post not found
     """
-    if not exists(id):
+    if not exists(id=id):
         raise KeyError("Post not found")
 
     post_collection.update_one(
@@ -16,7 +16,7 @@ def remove_upvote(id:int):
     """Raises:
     - KeyError: Post not found
     """
-    if not exists(id):
+    if not exists(id=id):
         raise KeyError("Post not found")
 
     post_collection.update_one(
@@ -29,7 +29,7 @@ def add_downvote(id:int):
     """Raises:
     - KeyError: Post not found
     """
-    if not exists(id):
+    if not exists(id=id):
         raise KeyError("Post not found")
 
     post_collection.update_one(
@@ -41,7 +41,7 @@ def remove_downvote(id:int):
     """Raises:
     - KeyError: Post not found
     """
-    if not exists(id):
+    if not exists(id=id):
         raise KeyError("Post not found")
 
     post_collection.update_one(
