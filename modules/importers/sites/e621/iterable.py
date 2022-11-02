@@ -15,17 +15,21 @@ def guess_post_count(hostname: str) -> int:
     json = r.json()
     posts = json["posts"]
     first_id = posts[0]["id"]
-    return first_id / POST_DELETION_RATIO
+    return first_id // POST_DELETION_RATIO
 
 
 def iter_over_posts(hostname: str) -> Generator[dict, None, None]:
     for x in count():
-        posts = download_page(hostname, x)
-        if len(posts) == 0:
-            return
+        try:
+            posts = download_page(hostname, x)
+        except Exception:
+            continue
+        else:
+            if len(posts) == 0:
+                return
 
-        for post in posts:
-            yield post
+            for post in posts:
+                yield post
 
 
 def download_page(hostname: str, page: int) -> list[dict]:

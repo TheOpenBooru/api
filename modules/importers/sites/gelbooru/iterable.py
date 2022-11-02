@@ -1,7 +1,7 @@
 from __future__ import annotations
-from typing import Union
 import bs4
 import requests
+import logging
 from requests_futures.sessions import FuturesSession
 from concurrent.futures._base import Future
 
@@ -26,8 +26,13 @@ def iter_over_posts(hostname:str):
         reqs = [download_page(x, hostname, session) for x in range(start, end)]
 
         for req in reqs:
-            req:Future
-            r = req.result()
+            try:
+                req:Future
+                r = req.result()
+            except Exception:
+                logging.warning(f"{hostname}, Failed to Retrieved Posts")
+                continue
+            
             posts = parse_page(r.text)
 
             if len(posts) == 0:
