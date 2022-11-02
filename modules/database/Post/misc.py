@@ -11,7 +11,10 @@ def all() -> list[Post]:
 
 
 def ids() -> list[int]:
-    return []
+    pipeline = [{'$project': {'id': 1}}]
+    cur = post_collection.aggregate(pipeline)
+    ids = [x["id"] for x in cur]
+    return ids
 
 
 def count() -> int:
