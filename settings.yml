@@ -154,7 +154,7 @@ permissions:
     canRecieveAllTags:
       ratelimit: "1/minute"
     canSearchTags:
-      ratelimit: "1/second"
+      ratelimit: "30/minute"
 
   user:
     canCreatePosts:
@@ -173,7 +173,7 @@ permissions:
     canRecieveAllTags:
       ratelimit: "4/minute"
     canSearchTags:
-      ratelimit: "1/second"
+      ratelimit: "30/minute"
     canEditTags:
       ratelimit: "10/minute"
     
