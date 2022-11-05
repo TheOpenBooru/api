@@ -1,7 +1,8 @@
 from fastapi import APIRouter
 
 router = APIRouter()
-from . import account, profile, posts, post, tag, media, status, subscription
+from . import media, status, index
+from . import account, profile, posts, post, tag, subscription
 
 router.include_router(subscription.router)
 router.include_router(account.router)
