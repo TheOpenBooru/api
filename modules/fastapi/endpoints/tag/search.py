@@ -1,7 +1,7 @@
 from . import router
 from modules import schemas, database, fastapi
-from fastapi import Depends, status
-from fastapi.responses import JSONResponse, Response
+from fastapi import Depends
+from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi_cache.decorator import cache
 
@@ -17,7 +17,7 @@ async def search_tags(query:schemas.TagQuery = Depends()):
     try:
         tags = database.Tag.search(query)
     except TimeoutError:
-        return Response("The Search Timed Out", 500)
+        raise HTTPException(500, "The Search Timed Out")
     else:
         return JSONResponse(
             content=jsonable_encoder(tags),

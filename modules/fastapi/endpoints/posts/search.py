@@ -1,8 +1,8 @@
 from . import router
 from modules import schemas, posts
 from modules.fastapi.dependencies import PermissionManager
-from fastapi import Depends, Query, status
-from fastapi.responses import JSONResponse, Response
+from fastapi import Depends, Query, HTTPException
+from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi_cache.decorator import cache
 
@@ -34,7 +34,7 @@ async def search_posts(
     try:
         searched_posts = await posts.search(query)
     except TimeoutError:
-        return Response("The Search Timed Out", 500)
+        raise HTTPException(500, "The Search Timed Out")
     else:
         return JSONResponse(
             content=jsonable_encoder(searched_posts),
