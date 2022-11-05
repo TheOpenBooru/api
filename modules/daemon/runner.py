@@ -35,7 +35,7 @@ def run_daemon():
         try:
             importer = _class()
         except Exception as e:
-            logging.warning(f"Importer {name} was not functional")
+            logging.warning(f"{name} was not functional")
         else:
             create_background_task(
                 id=f"Importing {name}",
