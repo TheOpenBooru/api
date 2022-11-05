@@ -1,8 +1,8 @@
 from . import router
 from modules import schemas, posts
 from modules.fastapi.dependencies import PermissionManager
-from fastapi import Depends, Query
-from fastapi.responses import JSONResponse
+from fastapi import Depends, Query, status
+from fastapi.responses import JSONResponse, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi_cache.decorator import cache
 
@@ -30,9 +30,13 @@ async def search_posts(
     query.creators = creators
     query.ratings = ratings
     query.media_types = media_types
-    
-    searched_posts = await posts.search(query)
-    return JSONResponse(
-        content=jsonable_encoder(searched_posts),
-        headers={"Cache-Control": "max-age=300, public"},
-    )
+
+    try:
+        searched_posts = await posts.search(query)
+    except TimeoutError:
+        return Response(status_code=status.HTTP_504_GATEWAY_TIMEOUT)
+    else:
+        return JSONResponse(
+            content=jsonable_encoder(searched_posts),
+            headers={"Cache-Control": "max-age=300, public"},
+        )

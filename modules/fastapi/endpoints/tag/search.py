@@ -1,7 +1,7 @@
 from . import router
 from modules import schemas, database, fastapi
-from fastapi import Depends
-from fastapi.responses import JSONResponse
+from fastapi import Depends, status
+from fastapi.responses import JSONResponse, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi_cache.decorator import cache
 
@@ -14,8 +14,12 @@ from fastapi_cache.decorator import cache
 )
 @cache(expire=3600)
 async def search_tags(query:schemas.TagQuery = Depends()):
-    tags = database.Tag.search(query)
-    return JSONResponse(
-        content=jsonable_encoder(tags),
-        headers={"Cache-Control": "max-age=300, public"},
-    )
+    try:
+        tags = database.Tag.search(query)
+    except TimeoutError:
+        return Response(status_code=status.HTTP_504_GATEWAY_TIMEOUT)
+    else:
+        return JSONResponse(
+            content=jsonable_encoder(tags),
+            headers={"Cache-Control": "max-age=300, public"},
+        )

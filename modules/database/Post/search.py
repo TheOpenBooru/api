@@ -1,11 +1,14 @@
 from . import Post, post_collection, parse_docs
 from .. import Tag
 from modules import schemas, settings
+from pymongo.errors import ExecutionTimeout
 
 
 DEFAULT_QUERY = schemas.PostQuery()
 def search(query:schemas.PostQuery = DEFAULT_QUERY) -> list[Post]:
-    "Warning: Not-always consistent, implements caching"
+    """Raises:
+    - TimeoutError
+    """
 
     pipeline = []
 
@@ -16,7 +19,12 @@ def search(query:schemas.PostQuery = DEFAULT_QUERY) -> list[Post]:
     pipeline.append({"$sort":{query.sort: -1 if query.descending else 1}})
     pipeline.append({"$skip": query.index})
     pipeline.append({"$limit": query.limit})
-    cursor = post_collection.aggregate(pipeline=pipeline, maxTimeMS=15000)
+    
+    try:
+        cursor = post_collection.aggregate(pipeline=pipeline, maxTimeMS=10000)
+    except ExecutionTimeout:
+        raise TimeoutError
+    
     return parse_docs(cursor)
 
 

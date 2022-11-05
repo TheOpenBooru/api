@@ -1,6 +1,7 @@
 from . import Tag, tag_collection, parse_docs
 from modules import schemas
 import re
+from pymongo.errors import ExecutionTimeout
 
 def search(query:schemas.TagQuery) -> list[Tag]:
     filters = []
@@ -16,10 +17,15 @@ def search(query:schemas.TagQuery) -> list[Tag]:
     kwargs = {}
     if query.limit:
         kwargs['limit'] = query.limit
+
+    try:
+        docs = tag_collection.find(
+            filter={'$and':filters} if filters else {},
+            sort=[("count",-1)],
+            max_time_ms=2000,
+            **kwargs
+        )
+    except ExecutionTimeout:
+        raise TimeoutError
     
-    docs = tag_collection.find(
-        filter={'$and':filters} if filters else {},
-        sort=[("count",-1)],
-        **kwargs
-    )
     return parse_docs(docs)
