@@ -3,12 +3,21 @@ from modules.fastapi import main_router
 from modules.fastapi.middleware import middlewares
 import uvicorn
 from fastapi import FastAPI, responses
+from fastapi.routing import APIRoute
+
+def custom_generate_unique_id(route: APIRoute):
+    dirs = route.path.split("/")
+    if len(dirs) == 1:
+        return "index"
+    else:
+        return "_".join(dirs[1:])
 
 app = FastAPI(
     title="Open Booru",
-    version="Alpha", 
+    version="Lithium", 
     docs_url='/docs',
     middleware=middlewares,
+    generate_unique_id_function=custom_generate_unique_id,
     responses={
         200: {"description":"Success"},
         401: {"description":"Account Required"},

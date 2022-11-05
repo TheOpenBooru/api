@@ -5,7 +5,6 @@ from fastapi import Depends, HTTPException
 
 
 @router.post("/create",
-    operation_id="create_subscription",
     response_model=schemas.Subscription,
     responses= {
         400:{"description": "Failed To Create Subscription"},

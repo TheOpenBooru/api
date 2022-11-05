@@ -6,7 +6,6 @@ from fastapi.encoders import jsonable_encoder
 
 
 @router.post("/edit",
-    operation_id="edit_tag",
     response_model=schemas.Tag,
     responses={
         400: { "description": "Post Not Found"}

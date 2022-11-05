@@ -5,7 +5,6 @@ from fastapi import Depends
 
 
 @router.post("/search",
-    operation_id="search_subscriptions",
     response_model=list[schemas.Subscription],
     dependencies=[
         Depends(PermissionManager("canSearchSubscriptions")),

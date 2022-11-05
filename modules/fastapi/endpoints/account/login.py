@@ -7,7 +7,6 @@ from fastapi.encoders import jsonable_encoder
 
 
 @router.post("/login",
-    operation_id="login",
     response_model=schemas.Token,
     responses={
         401:{"description":"Invalid Username or Password"},

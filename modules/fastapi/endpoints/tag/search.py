@@ -6,7 +6,6 @@ from fastapi.encoders import jsonable_encoder
 
 
 @router.get("/search",
-    operation_id="search_tags",
     response_model=list[schemas.Tag],
     dependencies=[
         Depends(fastapi.PermissionManager("canSearchTags")),

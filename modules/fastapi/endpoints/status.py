@@ -7,7 +7,6 @@ from fastapi.encoders import jsonable_encoder
 
 
 @router.get('/status',
-    operation_id="status",
     response_model=Status,
     dependencies=[
         Depends(fastapi.RateLimit("1/second")),

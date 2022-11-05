@@ -6,7 +6,6 @@ from fastapi.encoders import jsonable_encoder
 
 
 @router.get("/permissions",
-    operation_id="permissions",
     response_model=schemas.UserPermissions,
     dependencies=[
         Depends(fastapi.RateLimit("1/second")),

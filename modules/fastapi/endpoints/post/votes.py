@@ -20,24 +20,24 @@ def assert_post_exists(post_id:int):
         raise HTTPException(404, "Post Not Found")
 
 
-@votes_router.post("/{id}/upvote/add", operation_id="add_upvote")
+@votes_router.post("/{id}/upvote/add")
 async def add_upvote(id:int, account: DecodeToken = Depends()):
     assert_post_exists(id)
     posts.add_upvote(id, account.id)
 
 
-@votes_router.post("/{id}/upvote/remove", operation_id="remove_upvote")
+@votes_router.post("/{id}/upvote/remove")
 async def remove_upvote(id:int, account: DecodeToken = Depends()):
     assert_post_exists(id)
     posts.remove_upvote(id, account.id)
 
-@votes_router.post("/{id}/downvote/add", operation_id="add_downvote")
+@votes_router.post("/{id}/downvote/add")
 async def add_downvote(id:int, account: DecodeToken = Depends()):
     assert_post_exists(id)
     posts.add_downvote(id, account.id)
 
 
-@votes_router.post("/{id}/downvote/remove", operation_id="remove_downvote")
+@votes_router.post("/{id}/downvote/remove")
 async def remove_downvote(id:int, account: DecodeToken = Depends()):
     assert_post_exists(id)
     posts.remove_downvote(id, account.id)

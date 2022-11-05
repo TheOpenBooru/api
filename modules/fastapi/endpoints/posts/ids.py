@@ -7,7 +7,6 @@ from fastapi.encoders import jsonable_encoder
 
 
 @router.get("/ids",
-    operation_id="ids_posts",
     response_model=list[int],
     dependencies=[
         Depends(PermissionManager("canSearchPosts")),

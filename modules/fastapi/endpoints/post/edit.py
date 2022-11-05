@@ -8,7 +8,6 @@ import logging
 
 
 @router.patch('/{id}',
-    operation_id="edit_post",
     response_model=schemas.Post,
     dependencies=[
         Depends(PermissionManager("canEditPosts")),

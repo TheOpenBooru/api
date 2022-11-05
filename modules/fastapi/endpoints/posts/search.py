@@ -4,11 +4,10 @@ from modules.fastapi.dependencies import PermissionManager
 from fastapi import Depends, Query
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
-from typing import Optional
 
 
-@router.get("/search",
-    operation_id="search_posts",
+@router.get(
+    path="/search",
     response_model=list[schemas.Post],
     dependencies=[
         Depends(PermissionManager("canSearchPosts")),

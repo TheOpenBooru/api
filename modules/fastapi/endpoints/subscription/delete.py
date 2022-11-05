@@ -7,7 +7,6 @@ from fastapi.encoders import jsonable_encoder
 
 
 @router.post("/delete",
-    operation_id="delete_subscription",
     responses= {
         400:{"description": "Failed To Create Subscription"},
     },

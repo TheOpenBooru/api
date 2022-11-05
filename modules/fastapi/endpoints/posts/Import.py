@@ -6,7 +6,6 @@ from fastapi.responses import PlainTextResponse
 
 
 @router.post("/import",
-    operation_id="import_post",
     response_model=list[schemas.Post],
     responses= {
         400:{"description":"Post Creation Failure"},

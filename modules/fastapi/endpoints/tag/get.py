@@ -6,7 +6,6 @@ from fastapi.encoders import jsonable_encoder
 
 
 @router.get("/get",
-    operation_id="get_tag",
     response_model=schemas.Tag,
     responses={
         404: { "description": "Tag Does Not Exist"}

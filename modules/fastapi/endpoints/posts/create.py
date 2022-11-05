@@ -7,7 +7,6 @@ from fastapi.encoders import jsonable_encoder
 
 
 @router.post("/create",
-    operation_id="create_post",
     response_model=schemas.Post,
     responses= {
         400:{"description": "Failed To Create Post From Image"},

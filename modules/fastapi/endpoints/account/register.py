@@ -6,7 +6,6 @@ from fastapi.responses import PlainTextResponse
 
 
 @router.post("/register",
-    operation_id="register",
     response_model=schemas.Token,
     responses={
         400:{
