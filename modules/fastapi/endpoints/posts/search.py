@@ -34,7 +34,7 @@ async def search_posts(
     try:
         searched_posts = await posts.search(query)
     except TimeoutError:
-        return Response(status_code=status.HTTP_504_GATEWAY_TIMEOUT)
+        return Response("The Search Timed Out", 500)
     else:
         return JSONResponse(
             content=jsonable_encoder(searched_posts),
