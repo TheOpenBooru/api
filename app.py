@@ -1,23 +1,15 @@
 from modules import settings, daemon
-from modules.fastapi import main_router
+from modules.fastapi import main_router, cache_init, generate_unique_id
 from modules.fastapi.middleware import middlewares
 import uvicorn
-from fastapi import FastAPI, responses
-from fastapi.routing import APIRoute
-
-def custom_generate_unique_id(route: APIRoute):
-    dirs = route.path.split("/")
-    if len(dirs) == 1:
-        return "index"
-    else:
-        return "_".join(dirs[1:])
+from fastapi import FastAPI
 
 app = FastAPI(
     title="Open Booru",
     version="Lithium", 
     docs_url='/docs',
     middleware=middlewares,
-    generate_unique_id_function=custom_generate_unique_id,
+    generate_unique_id_function=generate_unique_id,
     responses={
         200: {"description":"Success"},
         401: {"description":"Account Required"},
@@ -30,12 +22,8 @@ app.include_router(main_router)
 
 @app.on_event("startup")
 async def startup_event():
+    cache_init()
     daemon.run_daemon()
-
-
-@app.get('/',include_in_schema=False)
-def docs_redirect():
-    return responses.RedirectResponse('/docs')
 
 
 if __name__ == "__main__":

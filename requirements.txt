@@ -1,7 +1,4 @@
 wheel
-fastapi
-uvicorn[standard]
-pydantic
 requests
 requests-futures
 numpy
@@ -15,6 +12,12 @@ pymongo
 jinja2
 boto3
 pickledb
+
+#fastpi
+fastapi
+uvicorn[standard]
+pydantic
+fastapi-cache2[memcache]
 
 # Encoding
 pillow
