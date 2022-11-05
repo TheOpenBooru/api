@@ -3,6 +3,7 @@ from modules import schemas, database, fastapi
 from fastapi import Depends
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
+from fastapi_cache.decorator import cache
 
 
 @router.get("/search",
@@ -11,6 +12,7 @@ from fastapi.encoders import jsonable_encoder
         Depends(fastapi.PermissionManager("canSearchTags")),
     ],
 )
+@cache(expire=3600)
 async def search_tags(query:schemas.TagQuery = Depends()):
     tags = database.Tag.search(query)
     return JSONResponse(

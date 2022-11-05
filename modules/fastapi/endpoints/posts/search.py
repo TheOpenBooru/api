@@ -4,6 +4,7 @@ from modules.fastapi.dependencies import PermissionManager
 from fastapi import Depends, Query
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
+from fastapi_cache.decorator import cache
 
 
 @router.get(
@@ -13,6 +14,7 @@ from fastapi.encoders import jsonable_encoder
         Depends(PermissionManager("canSearchPosts")),
     ]
 )
+@cache(expire=60)
 async def search_posts(
         query: schemas.PostQuery = Depends(),
         media_types: list[schemas.MediaType] = Query(default=[], description="Media Types to include"),
