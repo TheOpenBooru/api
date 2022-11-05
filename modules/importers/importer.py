@@ -7,20 +7,20 @@ import time
 import logging
 
 
-V = TypeVar("V")
+Data = TypeVar("Data")
 async def run_importer(
-        iterable:AsyncIterable[V]|Iterable[V],
+        iterable:AsyncIterable[Data]|Iterable[Data],
         limit: int|None,
-        get_hashes: Callable[[V], schemas.Hashes],
-        get_images: Callable[[V], tuple[GenericMedia, GenericMedia|None, Image]],
-        get_tags: Callable[[V], list[str]] = lambda _:[],
-        get_created_at: Callable[[V], float] = lambda _: time.time(),
-        get_upvotes: Callable[[V], int] = lambda _: 0,
-        get_downvotes: Callable[[V], int] = lambda _: 0,
-        get_sources: Callable[[V], list[str]] = lambda _:[],
-        get_rating: Callable[[V], schemas.Rating] = lambda _:schemas.Rating.unrated,
+        get_hashes: Callable[[Data], schemas.Hashes],
+        get_images: Callable[[Data], tuple[GenericMedia, GenericMedia|None, Image]],
+        get_tags: Callable[[Data], list[str]] = lambda _:[],
+        get_created_at: Callable[[Data], float] = lambda _: time.time(),
+        get_upvotes: Callable[[Data], int] = lambda _: 0,
+        get_downvotes: Callable[[Data], int] = lambda _: 0,
+        get_sources: Callable[[Data], list[str]] = lambda _:[],
+        get_rating: Callable[[Data], schemas.Rating] = lambda _:schemas.Rating.unrated,
     ):
-    async def import_post(data: V):
+    async def import_post(data: Data):
         full,preview,thumbnail = get_images(data)
         post = schemas.Post(
             id=database.Post.generate_id(),
@@ -39,7 +39,7 @@ async def run_importer(
         await posts.insert(post, validate=False)
 
 
-    async def update_post(post:schemas.Post, data: V):
+    async def update_post(post:schemas.Post, data: Data):
         original_post = post.copy()
         post.tags=get_tags(data)
         post.sources=get_sources(data)
@@ -51,7 +51,7 @@ async def run_importer(
             database.Post.update(post.id, original_post)
 
 
-    async def process_post(data: V):
+    async def process_post(data: Data):
         try:
             hashes = get_hashes(data)
             post = database.Post.md5_get(hashes.md5s[0])
@@ -60,20 +60,22 @@ async def run_importer(
         else:
             await update_post(post, data)
 
-
-    counter = [] # Terrible hack for variable scope, need a mutable counter
-    async def handle_post(data: V):
+    
+    counter = 0
+    async def handle_post(data: Data):
+        nonlocal counter
         try:
             await process_post(data)
         except DownloadFailure:
-            pass # Explicit Exception, downloader could not import post
+            pass  # Explicit Exception, downloader could not import post
         except Exception as e:
             logging.exception(e)
         else:
-            counter.append(None)
+            counter += 1
 
-        if limit and len(counter) >= limit:
+        if limit and counter >= limit:
             raise Exception
+
 
     if inspect.isasyncgen(iterable):
         async for post in iterable:
