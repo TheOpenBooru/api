@@ -1,29 +1,38 @@
-from modules import database, posts, schemas
-from modules.importers import utils, DownloadFailure
-from modules.schemas import GenericMedia, Image
-from typing import Callable, TypeVar, AsyncIterable, Iterable
 import inspect
+from modules import database, posts
+from modules.importers import utils, DownloadFailure
+from modules.schemas import Media, Image, Hashes, Rating, Post
+from typing import Callable, TypeVar, AsyncIterable, Iterable
 import time
 import logging
 
 
 Data = TypeVar("Data")
+
+
 async def run_importer(
-        iterable:AsyncIterable[Data]|Iterable[Data],
-        limit: int|None,
-        get_hashes: Callable[[Data], schemas.Hashes],
-        get_images: Callable[[Data], tuple[GenericMedia, GenericMedia|None, Image]],
-        update_existing: bool = True,
-        get_tags: Callable[[Data], list[str]] = lambda _:[],
-        get_created_at: Callable[[Data], float] = lambda _: time.time(),
-        get_upvotes: Callable[[Data], int] = lambda _: 0,
-        get_downvotes: Callable[[Data], int] = lambda _: 0,
-        get_sources: Callable[[Data], list[str]] = lambda _:[],
-        get_rating: Callable[[Data], schemas.Rating] = lambda _:schemas.Rating.unrated,
-    ):
+    iterable: AsyncIterable[Data] | Iterable[Data],
+    limit: int | None,
+    get_hashes: Callable[[Data], Hashes],
+    get_images: Callable[[Data], tuple[Media, Media | None, Image]],
+    update_existing: bool = True,
+    get_tags: Callable[[Data], list[str]] | None = None,
+    get_created_at: Callable[[Data], float] | None = None,
+    get_upvotes: Callable[[Data], int] | None = None,
+    get_downvotes: Callable[[Data], int] | None = None,
+    get_sources: Callable[[Data], list[str]] | None = None,
+    get_rating: Callable[[Data], Rating] | None = None,
+):
+    get_tags = get_tags or default_get_tags
+    get_created_at = get_created_at or default_get_created_at
+    get_upvotes = get_upvotes or default_get_upvotes
+    get_downvotes = get_downvotes or default_get_downvotes
+    get_sources = get_sources or default_get_sources
+    get_rating = get_rating or default_get_rating
+
     async def import_post(data: Data):
-        full,preview,thumbnail = get_images(data)
-        post = schemas.Post(
+        full, preview, thumbnail = get_images(data)
+        post = Post(
             id=database.Post.generate_id(),
             full=full,
             preview=preview,
@@ -39,18 +48,16 @@ async def run_importer(
         )
         await posts.insert(post, validate=False)
 
-
-    async def update_post(post:schemas.Post, data: Data):
+    async def update_post(post: Post, data: Data):
         original_post = post.copy()
-        post.tags=get_tags(data)
-        post.sources=get_sources(data)
-        post.upvotes=get_upvotes(data)
-        post.downvotes=get_downvotes(data)
-        post.rating=get_rating(data)
-        
+        post.tags = get_tags(data)
+        post.sources = get_sources(data)
+        post.upvotes = get_upvotes(data)
+        post.downvotes = get_downvotes(data)
+        post.rating = get_rating(data)
+
         if post != original_post:
             database.Post.update(post.id, original_post)
-
 
     async def process_post(data: Data):
         try:
@@ -62,8 +69,8 @@ async def run_importer(
             if update_existing:
                 await update_post(post, data)
 
-
     counter = 0
+
     async def handle_post(data: Data):
         nonlocal counter
         try:
@@ -78,7 +85,6 @@ async def run_importer(
         if limit and counter >= limit:
             raise Exception
 
-
     if inspect.isasyncgen(iterable):
         async for post in iterable:
             try:
@@ -86,8 +92,32 @@ async def run_importer(
             except Exception:
                 return
     else:
-        for post in iterable:
+        for post in iterable:  # type: ignore
             try:
                 await handle_post(post)
             except Exception:
                 return
+
+
+def default_get_tags(*args):
+    return []
+
+
+def default_get_created_at(*args):
+    return time.time()
+
+
+def default_get_upvotes(*args):
+    return 0
+
+
+def default_get_downvotes(*args):
+    return 0
+
+
+def default_get_sources(*args):
+    return []
+
+
+def default_get_rating(*args):
+    return Rating.unrated
