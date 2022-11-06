@@ -13,6 +13,7 @@ async def run_importer(
         limit: int|None,
         get_hashes: Callable[[Data], schemas.Hashes],
         get_images: Callable[[Data], tuple[GenericMedia, GenericMedia|None, Image]],
+        update_existing: bool = True,
         get_tags: Callable[[Data], list[str]] = lambda _:[],
         get_created_at: Callable[[Data], float] = lambda _: time.time(),
         get_upvotes: Callable[[Data], int] = lambda _: 0,
@@ -58,9 +59,10 @@ async def run_importer(
         except KeyError:
             await import_post(data)
         else:
-            await update_post(post, data)
+            if update_existing:
+                await update_post(post, data)
 
-    
+
     counter = 0
     async def handle_post(data: Data):
         nonlocal counter
