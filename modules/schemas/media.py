@@ -33,4 +33,4 @@ class Video(BaseMedia):
     fps: str|None = Field(default=None, description="The Video's Framerate in frames per second")
     type:MediaType = Field(default=MediaType.video, description="The type of media")
 
-GenericMedia = Union[Image,Animation,Video]
+Media = Union[Image, Animation, Video]

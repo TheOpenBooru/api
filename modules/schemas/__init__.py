@@ -8,7 +8,7 @@ MAX_NUMBER = 2**63
 
 from . import fields
 from .subscription import Subscription, SubscriptionQuery
-from .media import GenericMedia, Animation, Video, Image, MediaType
+from .media import Media, Animation, Video, Image, MediaType
 from .account import Permission, UserPermissions, Token
 from .misc import Author, Comment, Status
 from .tag import Tag, TagQuery

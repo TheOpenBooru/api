@@ -1,4 +1,4 @@
-from . import fields, BaseModel, GenericMedia, Image, MediaType, MAX_NUMBER
+from . import fields, BaseModel, Media, Image, MediaType, MAX_NUMBER
 from modules import settings,validate
 from pydantic import Field
 from typing import Union, Optional
@@ -73,9 +73,9 @@ class Post(BaseModel):
     sources: list[str] = Field(default_factory=list, description="The original source for the post")
     rating: Rating = Field(default=Rating.unrated, description="The default rating for a post")
 
-    full: GenericMedia = Field(..., description="The full scale media for the Post")
-    preview: Union[GenericMedia, None] = Field(default=None,description="A Medium Scale Version for the image, for hi-res posts")
-    media: list[GenericMedia] = Field(default_factory=list, description="All media related to this post")
+    full: Media = Field(..., description="The full scale media for the Post")
+    preview: Union[Media, None] = Field(default=None,description="A Medium Scale Version for the image, for hi-res posts")
+    media: list[Media] = Field(default_factory=list, description="All media related to this post")
     thumbnail: Image = Field(..., description="A low quality image used for thumbnails")
 
     type: MediaType = Field( ..., description="Format of the post")
