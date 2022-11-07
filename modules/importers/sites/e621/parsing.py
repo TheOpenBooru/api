@@ -1,12 +1,12 @@
 from modules import schemas, normalise
-from modules.schemas import GenericMedia, Image, MediaType, Rating
+from modules.schemas import Media, Image, MediaType, Rating
 from modules.importers import utils, DownloadFailure
 from typing import Union
 from time import strptime, mktime
 import e621.models as e621Models
 
 
-def construct_image(media: dict) -> Union[GenericMedia, None]:
+def construct_image(media: dict) -> Union[Media, None]:
     if "url" in media:
         url = media["url"]
     elif 'ext' in media:
@@ -37,12 +37,12 @@ def construct_image(media: dict) -> Union[GenericMedia, None]:
     )
 
 
-def get_images(post: dict) -> tuple[GenericMedia, GenericMedia|None, Image]:
+def get_images(post: dict) -> tuple[Media, Media|None, Image]:
     full = construct_image(post['file'])
     preview = construct_image(post['sample'])
     thumbnail = construct_image(post['preview'])
 
-    if not isinstance(full, GenericMedia):
+    if not isinstance(full, Media):
         raise DownloadFailure("Failed to Generate Images from E621 Post")
     
     if not isinstance(thumbnail,Image):
