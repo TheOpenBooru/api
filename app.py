@@ -1,5 +1,5 @@
-from modules import settings, daemon
-from modules.fastapi import main_router, cache_init, generate_unique_id
+from modules import settings, daemon, database
+from modules.fastapi import main_router, initialise_fastapi_cache, generate_unique_id
 from modules.fastapi.middleware import middlewares
 import uvicorn
 from fastapi import FastAPI
@@ -22,7 +22,7 @@ app.include_router(main_router)
 
 @app.on_event("startup")
 async def startup_event():
-    cache_init()
+    initialise_fastapi_cache()
     daemon.run_daemon()
 
 
