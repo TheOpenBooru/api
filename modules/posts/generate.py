@@ -78,7 +78,7 @@ async def encode_post(data: bytes, filename: str) -> schemas.Post:
     return post
 
 
-def process_file(file:encoding.GenericFile, hashes: schemas.Hashes) -> schemas.GenericMedia:
+def process_file(file:encoding.GenericFile, hashes: schemas.Hashes) -> schemas.Media:
     add_hashes(hashes, file.data)
     filename = _generate_filename(file)
     save_file(file.data,filename)
@@ -106,7 +106,7 @@ def generate_phash(hashes: schemas.Hashes, image:Image):
     p_hash = phash.hash(image)
     hashes.phashes.append(p_hash)
 
-def generate_schema(file:encoding.GenericFile,url:str) -> schemas.GenericMedia:
+def generate_schema(file:encoding.GenericFile,url:str) -> schemas.Media:
     if isinstance(file,encoding.ImageFile):
         return schemas.Image(
             url=url,
