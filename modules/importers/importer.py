@@ -7,6 +7,7 @@ import time
 import logging
 
 
+class ReachedPostLimit(Exception): pass
 Data = TypeVar("Data")
 
 
@@ -30,6 +31,7 @@ async def run_importer(
     get_sources = get_sources or default_get_sources
     get_rating = get_rating or default_get_rating
 
+
     async def import_post(data: Data):
         full, preview, thumbnail = get_images(data)
         post = Post(
@@ -38,7 +40,6 @@ async def run_importer(
             preview=preview,
             thumbnail=thumbnail,
             hashes=get_hashes(data),
-            type=utils.predict_media_type(full.url),
             created_at=get_created_at(data),
             tags=get_tags(data),
             sources=get_sources(data),
@@ -47,6 +48,7 @@ async def run_importer(
             rating=get_rating(data),
         )
         await posts.insert(post, validate=False)
+
 
     async def update_post(post: Post, data: Data):
         original_post = post.copy()
@@ -69,8 +71,8 @@ async def run_importer(
             if update_existing:
                 await update_post(post, data)
 
-    counter = 0
 
+    counter = 0
     async def handle_post(data: Data):
         nonlocal counter
         try:
@@ -83,20 +85,18 @@ async def run_importer(
             counter += 1
 
         if limit and counter >= limit:
-            raise Exception
+            raise ReachedPostLimit
 
-    if inspect.isasyncgen(iterable):
-        async for post in iterable:
-            try:
+
+    try:
+        if inspect.isasyncgen(iterable):
+            async for post in iterable:
                 await handle_post(post)
-            except Exception:
-                return
-    else:
-        for post in iterable:  # type: ignore
-            try:
+        else:
+            for post in iterable: # type: ignore
                 await handle_post(post)
-            except Exception:
-                return
+    except ReachedPostLimit: # Imported required number of posts
+        return
 
 
 def default_get_tags(*args):

@@ -55,6 +55,7 @@ class PostQuery(BaseModel):
     md5:Optional[str] = Field(default=None, regex=validate.MD5_REGEX)
     sha256:Optional[str] = Field(default=None, regex=validate.SHA256_REGEX)
     source:Optional[str] = Field(default=None, regex=validate.URL_REGEX)
+    
     media_types:Optional[list[MediaType]] = Field(default=None, regex=validate.URL_REGEX)
     ratings: Optional[list[Rating]] = Field(default=[], description="Ratings to exlucde from the results")
 
@@ -69,7 +70,6 @@ class Post(BaseModel):
     id: int = Field(..., lt=2**64, description="The Post's Unique Id")
     created_at: float = fields.Created_At
     uploader: Union[int, None] = Field(default=None, description="The user ID of the person who uploaded this post, null means no creator")
-    deleted: bool = Field(default=False, description="Whether the post has been deleted")
     sources: list[str] = Field(default_factory=list, description="The original source for the post")
     rating: Rating = Field(default=Rating.unrated, description="The default rating for a post")
 
@@ -78,11 +78,8 @@ class Post(BaseModel):
     media: list[Media] = Field(default_factory=list, description="All media related to this post")
     thumbnail: Image = Field(..., description="A low quality image used for thumbnails")
 
-    type: MediaType = Field( ..., description="Format of the post")
     hashes: Hashes = Field(default_factory=Hashes, description="A table of all the posts hashes")
-
     tags: list[str] = fields.Tags
-    comments: list[int] = fields.Comments
     edits: list[PostEdit] = Field(default_factory=list, description="The edits made to the post")
 
     upvotes: int = Field(default=0, description="Number of upvotes on the Post")

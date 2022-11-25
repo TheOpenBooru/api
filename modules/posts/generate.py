@@ -72,7 +72,6 @@ async def encode_post(data: bytes, filename: str) -> schemas.Post:
         full=full_schema,
         preview=preview_schema,
         thumbnail=thumbnail_schema, # type: ignore
-        type=media.type,
     )
     post.tags = generate_meta_tags(post)
     return post
