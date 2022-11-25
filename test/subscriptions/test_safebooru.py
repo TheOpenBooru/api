@@ -3,7 +3,7 @@
 # import time
 
 
-# @pytest.mark.asyncio
+# 
 # async def test_safebooru_subscription_since():
 #     safebooru = Safebooru()
 #     search = "https://safebooru.org/index.php?page=post&s=list&tags=id%3a1"
@@ -11,7 +11,7 @@
 #     assert urls == []
 
 
-# @pytest.mark.asyncio
+# 
 # async def test_safebooru_subscription():
 #     safebooru = Safebooru()
 #     search = "https://safebooru.org/index.php?page=post&s=list&tags=id%3a1"

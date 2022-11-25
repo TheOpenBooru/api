@@ -13,16 +13,11 @@ import pytest
 import requests
 
 
-GENERIC_IMPORTERS = (
-    E621Importer,
-    E926Importer,
-    Rule34Importer,
-    SafebooruImporter
-)
+GENERIC_IMPORTERS = (E621Importer, E926Importer, Rule34Importer, SafebooruImporter)
+
 
 @pytest.mark.parametrize("Importer", GENERIC_IMPORTERS)
 @pytest.mark.timeout(10)
-@pytest.mark.asyncio
 async def test_importer(Importer: Type[Importer]):
     database.Post.clear()
     importer = Importer()
@@ -31,13 +26,12 @@ async def test_importer(Importer: Type[Importer]):
 
 
 @pytest.mark.timeout(10)
-@pytest.mark.asyncio
 async def test_Hydrus_Importer():
     try:
         requests.get(settings.IMPORTER_HYDRUS_URL, timeout=2)
     except requests.RequestException:
         pytest.skip("Hydrus Server Doesn't Exist")
-    
+
     database.Post.clear()
     importer = HydrusImporter()
     await importer.load(5)
@@ -45,7 +39,6 @@ async def test_Hydrus_Importer():
 
 
 @pytest.mark.timeout(10)
-@pytest.mark.asyncio
 async def test_Files_Importer():
     database.Post.clear()
     importer = FileImporter("data/images")

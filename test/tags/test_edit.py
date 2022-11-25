@@ -10,19 +10,19 @@ def ExampleTag() -> schemas.Tag:
     return tag
 
 
-@pytest.mark.asyncio
+
 async def test_Invalid_Tag_Raises_Error(ExampleTag: schemas.Tag):
     with pytest.raises(tags.TagEditFailure):
         await tags.edit("Invalid",namespace="meta")
 
 
-@pytest.mark.asyncio
+
 async def test_Empty_Edit_Raises_Error(ExampleTag: schemas.Tag):
     with pytest.raises(tags.TagEditFailure):
         await tags.edit(ExampleTag.name)
 
 
-@pytest.mark.asyncio
+
 async def test_Copied_Edit_Raises_Error(ExampleTag: schemas.Tag):
     with pytest.raises(tags.TagEditFailure):
         await tags.edit(
@@ -33,7 +33,7 @@ async def test_Copied_Edit_Raises_Error(ExampleTag: schemas.Tag):
         )
 
 
-@pytest.mark.asyncio
+
 async def test_Bad_Namespace_Raises_Error(ExampleTag: schemas.Tag):
     with pytest.raises(tags.TagEditFailure):
         await tags.edit(
@@ -42,7 +42,7 @@ async def test_Bad_Namespace_Raises_Error(ExampleTag: schemas.Tag):
         )
 
 
-@pytest.mark.asyncio
+
 async def test_Edit_Returns_Changes(ExampleTag: schemas.Tag):
     tag = ExampleTag
     new_tag = await tags.edit(
@@ -57,7 +57,7 @@ async def test_Edit_Returns_Changes(ExampleTag: schemas.Tag):
     assert new_tag.siblings == ["example_sibling"]
 
 
-@pytest.mark.asyncio
+
 async def test_Edit_Applies_Changes(ExampleTag: schemas.Tag):
     tag = ExampleTag
     await tags.edit(

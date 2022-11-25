@@ -15,7 +15,7 @@ async def test_Rule34_Check_URL(safebooru: SafebooruDownloader):
     assert not safebooru.is_valid_url("https://safebooru.org/index.php?page=pool&s=show&id=21185")
 
 
-@pytest.mark.asyncio
+
 async def test_Importing_Image(safebooru: SafebooruDownloader):
     url = "https://safebooru.org/index.php?page=post&s=view&id=4185046"
     posts = await safebooru.download_url(url)
@@ -27,7 +27,7 @@ async def test_Importing_Image(safebooru: SafebooruDownloader):
     assert len(post.tags) > 10
 
 
-@pytest.mark.asyncio
+
 async def test_Importing_Animation(safebooru: SafebooruDownloader):
     url = "https://safebooru.org/index.php?page=post&s=view&id=4100857"
     posts = await safebooru.download_url(url)

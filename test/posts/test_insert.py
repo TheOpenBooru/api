@@ -2,7 +2,7 @@ from . import ExamplePost
 from modules import posts, schemas, importers, settings, database
 import pytest
 
-@pytest.mark.asyncio
+
 async def test_Posts_Insert_Actually_Inserts(ExamplePost):
     database.clear()
     await posts.insert(ExamplePost)
@@ -10,7 +10,7 @@ async def test_Posts_Insert_Actually_Inserts(ExamplePost):
     assert ExamplePost in _posts
 
 
-@pytest.mark.asyncio
+
 async def test_Double_Insertion_Raises_Error(ExamplePost):
     database.clear()
     await posts.insert(ExamplePost)

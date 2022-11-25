@@ -12,25 +12,25 @@ async def generate_post(file:str) -> schemas.Post:
     return post
 
 
-@pytest.mark.asyncio
+
 async def test_Post_Creation_Adds_Video_Tag():
     post = await generate_post(TEST_VIDEO['file'])
     assert 'video' in post.tags
 
 
-@pytest.mark.asyncio
+
 async def test_Post_Creation_Adds_Image_Tag():
     post = await generate_post(TEST_IMAGE['file'])
     assert 'image' in post.tags
 
 
-@pytest.mark.asyncio
+
 async def test_Post_Creation_Adds_Animation_Tag():
     post = await generate_post(TEST_ANIMATION['file'])
     assert 'animation' in post.tags
 
 
-@pytest.mark.asyncio
+
 async def test_image():
     attrs = TESTDATA["image"]["Complex"]
     data,filepath = load_testdata(attrs)
@@ -42,7 +42,7 @@ async def test_image():
     assert_attributes(post_obj,attrs)
 
 
-@pytest.mark.asyncio
+
 async def test_animation():
     attrs = TESTDATA["animation"]["FractalGIF"]
     data,filepath = load_testdata(attrs)
@@ -54,7 +54,7 @@ async def test_animation():
     assert_attributes(post_obj,attrs)
 
 
-@pytest.mark.asyncio
+
 async def test_video():
     attrs = TESTDATA["video"]["heavy"]
     data,filepath = load_testdata(attrs)
