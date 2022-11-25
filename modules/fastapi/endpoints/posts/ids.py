@@ -12,7 +12,7 @@ from fastapi.encoders import jsonable_encoder
         Depends(PermissionManager("canSearchPosts")),
     ]
 )
-async def search_posts():
+async def get_post_ids():
     ids = database.Post.ids()
     return JSONResponse(
         content=jsonable_encoder(ids),
