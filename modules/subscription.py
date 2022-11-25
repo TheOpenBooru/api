@@ -10,6 +10,7 @@ async def check_subscriptions():
 async def import_subscription(sub: schemas.Subscription):
     urls = await importers.download_subscription(sub.url)
     Subscriptions.addUrls(sub.id, urls)
+    
     for url in urls:
         new_posts = await importers.download_url(url)
         for post in new_posts:
