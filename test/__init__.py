@@ -20,7 +20,6 @@ def ExamplePost() -> schemas.Post:
     )
     post = schemas.Post(
         id=database.Post.generate_id(),
-        type=schemas.MediaType.image,
         full=image,
         thumbnail=image
     )
