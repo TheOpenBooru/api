@@ -1,0 +1,71 @@
+[metadata]
+name = 'openbooru_api'
+version = 'Lithium'
+author = 'Ben Brady'
+author_email = 'benbradybusiness@gmail.com'
+
+[options]
+install_requires = [
+    "wheel",
+    "requests",
+    "requests-futures",
+    "numpy",
+    "tqdm",
+    "anyio",
+    "coloredlogs",
+    "iso639",
+    "python-multipart",
+    "cachetools",
+    "pymongo",
+    "jinja2",
+    "boto3",
+    "pickledb",
+
+    # fastpi
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic",
+    "fastapi-cache2[memcache]",
+
+    # Encoding
+    "pillow",
+    "ffmpeg-python",
+    "python-magic",
+    "imagehash",
+
+    # Cryptography
+    "cryptography",
+    "pyotp",
+    "pyjwt",
+    "passlib[argon2]>=1.7.4",
+    "zxcvbn",
+    "argon2-cffi",
+    "password-strength",
+
+    # Parsing
+    "python-box",
+    "ujson",
+    "ijson",
+    "bs4",
+    "lxml",
+    "hydrus_api",
+    "pytumblr",
+    "tweepy>=4.10.0",
+    "e621==0.0.6",
+    # 0.0.7 causes errors
+    "pytube",
+]
+
+[options.extras_require]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "pytest-cov",
+    "pytest-timeout",
+]
+
+[tool.black]
+line-length = 80
+target-version = ['py310']
+include = '\.pyi?$'
+exclude-files = '__init__.py'
