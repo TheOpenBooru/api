@@ -11,7 +11,7 @@ class BadTokenError(Exception):
 SECRET_KEY = secrets.get_secret("jwt")
 
 
-def create(data:dict, expiration:Union[int, None] = settings.DEFAULT_TOKEN_EXPIRATION) -> str:
+def create(data:dict, expiration: int|None = settings.DEFAULT_TOKEN_EXPIRATION) -> str:
     """Raises:
     - ValueError: Data cannot contain the reserved field
     """
@@ -19,7 +19,7 @@ def create(data:dict, expiration:Union[int, None] = settings.DEFAULT_TOKEN_EXPIR
         raise ValueError(f"Data cannot contain a rerved field: 'exp'")
     
     payload = data
-    if expiration != None:
+    if isinstance(expiration, int):
         payload = data | {"exp": time.time() + expiration}
     return jwt.encode(payload, SECRET_KEY, algorithm="HS256")
 
