@@ -9,7 +9,6 @@ from pathlib import Path
 from PIL import Image as PILImage
 
 
-
 with open('data/test/sample_data.json') as f:
     _json = json.load(f)
     box_data = Box(_json['image'])

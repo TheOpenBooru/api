@@ -4,63 +4,67 @@ import pytest
 from pathlib import Path
 
 
+@pytest.mark.asyncio
 async def generate_post(file:str) -> schemas.Post:
     path = Path(file)
     data = path.read_bytes()
     filename = path.name
-    post = await posts.generate(data,filename)
+    post = await posts.generate(data, filename)
     return post
 
 
 
+@pytest.mark.asyncio
 async def test_Post_Creation_Adds_Video_Tag():
     post = await generate_post(TEST_VIDEO['file'])
-    assert 'video' in post.tags
+    assert 'video' in post.protected_tags
 
 
 
+@pytest.mark.asyncio
 async def test_Post_Creation_Adds_Image_Tag():
     post = await generate_post(TEST_IMAGE['file'])
-    assert 'image' in post.tags
+    assert 'image' in post.protected_tags
 
 
 
+@pytest.mark.asyncio
 async def test_Post_Creation_Adds_Animation_Tag():
     post = await generate_post(TEST_ANIMATION['file'])
-    assert 'animation' in post.tags
+    assert 'animation' in post.protected_tags
 
 
 
+@pytest.mark.asyncio
 async def test_image():
     attrs = TESTDATA["image"]["Complex"]
     data,filepath = load_testdata(attrs)
     post_obj = await posts.generate(data,filepath)
     
-    assert post_obj.type == "image"
     assert isinstance(post_obj.full,schemas.Image)
     assert isinstance(post_obj.thumbnail,schemas.Image)
     assert_attributes(post_obj,attrs)
 
 
 
+@pytest.mark.asyncio
 async def test_animation():
     attrs = TESTDATA["animation"]["FractalGIF"]
     data,filepath = load_testdata(attrs)
     post_obj = await posts.generate(data,filepath)
     
-    assert post_obj.type == "animation"
-    assert isinstance(post_obj.full,schemas.Animation)
-    assert isinstance(post_obj.thumbnail,schemas.Image)
+    assert isinstance(post_obj.full, schemas.Animation)
+    assert isinstance(post_obj.thumbnail, schemas.Image)
     assert_attributes(post_obj,attrs)
 
 
 
+@pytest.mark.asyncio
 async def test_video():
     attrs = TESTDATA["video"]["heavy"]
     data,filepath = load_testdata(attrs)
     post_obj = await posts.generate(data,filepath)
     
-    assert post_obj.type == "video"
     assert isinstance(post_obj.full,schemas.Video)
     assert isinstance(post_obj.thumbnail,schemas.Image)
     assert_attributes(post_obj,attrs)

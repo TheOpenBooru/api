@@ -4,6 +4,7 @@ from modules import posts, schemas
 import pytest
 
 
+@pytest.mark.asyncio
 async def test_post_200(ExamplePost):
     await posts.insert(ExamplePost, validate=False)
     post_id = ExamplePost.id

@@ -20,8 +20,14 @@ def generate_post(id:Optional[int] = None) -> schemas.Post:
     )
     id = id or Post.generate_id()
     return schemas.Post(
-        id=id,uploader=0,
-        type=schemas.MediaType.image,
+        id=id,
+        uploader=0,
         thumbnail=EXAMPLE_IMAGE,
         full=EXAMPLE_IMAGE,
     )
+
+
+def create_post(id:Optional[int] = None) -> schemas.Post:
+    post = generate_post(id)
+    Post.insert(post)
+    return post

@@ -3,6 +3,7 @@ from modules import posts, schemas, importers, settings, database
 import pytest
 
 
+@pytest.mark.asyncio
 async def test_Posts_Imports_Inserts_Posts(ExamplePost):
     database.clear()
     url = "https://twitter.com/OpenBooru/status/1541087046856474624/photo/3"
@@ -14,6 +15,7 @@ async def test_Posts_Imports_Inserts_Posts(ExamplePost):
 
 
 
+@pytest.mark.asyncio
 async def test_Double_Insertion_Raises_Error(ExamplePost):
     database.clear()
     await posts.insert(ExamplePost)

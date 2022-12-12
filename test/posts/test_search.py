@@ -1,6 +1,7 @@
 from modules import posts, schemas, importers, settings, database
 import unittest
 
+
 class test_Posts_Search(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
         database.Post.clear()
