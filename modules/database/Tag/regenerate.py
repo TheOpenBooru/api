@@ -28,20 +28,21 @@ def regenerate_count(min_count:int = settings.TAGS_MINIMUM_COUNT):
     logging.info(f"Tag Regeneration: tags:{len(tag_data)} time:{duration_ms:.3f}s")
 
 
-tag, count = str, int
+tag = str
+count = int
 def getTagData(min_count: int) -> list[tuple[tag, count]]:
     pipeline=[
-            {
-                "$unwind":{
-                    "path" : "$tags"
-                },
+        {
+            "$unwind":{
+                "path" : "$tags"
             },
-            {
-                "$group": {
-                    "_id": "$tags",
-                    "count": { "$sum": 1 }
-                }
-            },
+        },
+        {
+            "$group": {
+                "_id": "$tags",
+                "count": { "$sum": 1 }
+            }
+        },
     ]
 
     if min_count:

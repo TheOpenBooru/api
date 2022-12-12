@@ -1,10 +1,10 @@
 from . import Tag
-from typing import Union
+from typing import Union, Any
 from pymongo.cursor import Cursor
 from modules.schemas import Post
 
 
-def parse_doc(doc:dict) -> Tag:
+def parse_doc(doc: dict[str, Any]) -> Tag:
     return Tag.parse_obj(doc)
 
 

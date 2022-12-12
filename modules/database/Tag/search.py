@@ -8,11 +8,11 @@ def search(query:schemas.TagQuery) -> list[Tag]:
     if query.name_like:
         filters.append({'name':re.compile(query.name_like)})
     if query.namespace:
-        filters.append({'namespace':query.namespace})
+        filters.append({'namespace': query.namespace})
     if query.count_lt:
-        filters.append({'count':{"$lt":query.count_lt}})
+        filters.append({'count':{"$lt": query.count_lt}})
     if query.count_gt:
-        filters.append({'count':{"$gt":query.count_gt}})
+        filters.append({'count':{"$gt": query.count_gt}})
 
     kwargs = {}
     if query.limit:
@@ -23,6 +23,7 @@ def search(query:schemas.TagQuery) -> list[Tag]:
             filter={'$and':filters} if filters else {},
             sort=[("count",-1)],
             max_time_ms=2000,
+            let=query.dict(),
             **kwargs
         )
     except ExecutionTimeout:
