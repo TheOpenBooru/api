@@ -74,12 +74,12 @@ PIPELINE_COMBINE_PROTECTED_TAGS = [
         "$set": {
             'tags': {
                 '$setUnion': [
-                'tags',
-                'protected_tags'
-                ]
+                    '$tags',
+                    '$protected_tags',
+                ],
             }
         }
-    }
+    },
 ]
 
 PIPELINE_TAG_SIBLINGS_AND_PARENTS = [
