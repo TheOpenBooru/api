@@ -42,9 +42,11 @@ class SafebooruImporter(GelbooruImporter):
     _hostname = "safebooru.org"
     enabled = settings.IMPORTER_SAFEBOORU_ENABLED
     time_between_runs = settings.IMPORTER_SAFEBOORU_RETRY_AFTER
+    limit = settings.IMPORTER_SAFEBOORU_LIMIT
 
 
 class Rule34Importer(GelbooruImporter):
     _hostname = "api.rule34.xxx"
     enabled = settings.IMPORTER_RULE34_ENABLED
     time_between_runs = settings.IMPORTER_RULE34_RETRY_AFTER
+    limit = settings.IMPORTER_RULE34_LIMIT
