@@ -1,9 +1,10 @@
-from typing import Union
+from typing import Iterable
 from modules import validate
 from functools import cache
 import string
 
-def normalise_tags(tags: list[str]) -> list[str]:
+
+def normalise_tags(tags: Iterable[str]) -> list[str]:
     tags = [normalise_tag(tag) for tag in tags]
     filter_iterable = filter(validate.tag, tags)
     tags = list(set(list(filter_iterable)))
@@ -13,12 +14,7 @@ def normalise_tags(tags: list[str]) -> list[str]:
 _VALID_TAG_CHARS = set(string.ascii_lowercase + string.digits + '_()')
 
 @cache
-def normalise_tag(tag:str, *, possibly_namespaced:bool = False) -> str:
-    if possibly_namespaced:
-        sections = tag.split(':')
-        if len(sections) == 2:
-            _,tag = sections
-
+def normalise_tag(tag:str) -> str:
     tag = (
         tag
         .lower()
