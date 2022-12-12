@@ -13,8 +13,9 @@ def search(query:schemas.PostQuery = DEFAULT_QUERY) -> list[Post]:
     pipeline = []
 
     if settings.POSTS_SEARCH_USE_SIBLINGS_AND_PARENTS:
-        pipeline.extend(APPEND_TAG_SIBLINGS_AND_PARENTS)
+        pipeline.extend(PIPELINE_TAG_SIBLINGS_AND_PARENTS)
 
+    pipeline.extend(PIPELINE_COMBINE_PROTECTED_TAGS)
     pipeline.extend(build_pipeline(query))
     pipeline.append({"$sort":{query.sort: -1 if query.descending else 1}})
     pipeline.append({"$skip": query.index})
@@ -29,7 +30,7 @@ def search(query:schemas.PostQuery = DEFAULT_QUERY) -> list[Post]:
 
 
 def build_pipeline(query:schemas.PostQuery) -> list[dict]:
-    filters = []
+    filters: list[dict] = []
     
     if query.media_types:
         filters.append({'media_type':{'$in': query.media_types}})
@@ -68,7 +69,20 @@ def build_pipeline(query:schemas.PostQuery) -> list[dict]:
     return [{"$match": filter} for filter in filters]
 
 
-APPEND_TAG_SIBLINGS_AND_PARENTS = [
+PIPELINE_COMBINE_PROTECTED_TAGS = [
+    {
+        "$set": {
+            'tags': {
+                '$setUnion': [
+                'tags',
+                'protected_tags'
+                ]
+            }
+        }
+    }
+]
+
+PIPELINE_TAG_SIBLINGS_AND_PARENTS = [
     {
         '$lookup': {
             'from': 'tags', 
