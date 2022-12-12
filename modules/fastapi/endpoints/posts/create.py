@@ -16,11 +16,11 @@ from fastapi.encoders import jsonable_encoder
         Depends(PermissionManager("canCreatePosts")),
     ],
 )
-async def create_post(image:UploadFile, account:DecodeToken = Depends()):
+async def create_post(image: UploadFile, account: DecodeToken = Depends()):
     try:
         data = await image.read()
         filename = image.filename
-        post = await posts.create(data,filename,uploader_id=account.user_id)
+        post = await posts.create(data, filename, uploader_id=account.user_id)
     except posts.PostExistsException:
         raise HTTPException(409, "Post Already Exists")
     except Exception as e:
