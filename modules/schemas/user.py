@@ -4,8 +4,8 @@ from pydantic import Field
 from typing import Union
 
 class UserPublic(BaseModel):
-    id: int = fields.Item_ID
-    created_at: float = fields.Created_At
+    id: int = fields.item_id
+    created_at: float = fields.created_at
 
     username: str = Field(..., description="The User's Name", regex=validate.USERNAME_REGEX)
     level: str = Field(default_factory=lambda:"user", description="The User's Level")

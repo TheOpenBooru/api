@@ -6,7 +6,7 @@ from typing import Union
 
 class Tag(BaseModel):
     name: str = Field(...,description="The Tag Name", regex=validate.TAG_REGEX)
-    created_at:float = fields.Created_At
+    created_at:float = fields.created_at
     namespace: str = Field(default="generic", description="The Tag Namespace")
     count: int = Field(default=0, description="The number of times the tag has been used")
     siblings: list[str] = Field(default_factory=list, description="All the tag siblings for this tag")

@@ -22,7 +22,6 @@ class Image(BaseMedia):
 
 
 class Animation(BaseMedia):
-    duration: float|None = Field(default=None, description="The Animation's Duration in framerate")
     frame_count: int|None = Field(default=None, description="The Animation's Number of frames")
     duration: float|None = Field(default=None, description="The Animation's Duration")
     type:MediaType = Field(default=MediaType.animation, description="The type of media")

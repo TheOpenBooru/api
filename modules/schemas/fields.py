@@ -2,27 +2,27 @@ from pydantic import Field as _Field
 from modules import validate as _validate
 import time as _time
 
-Created_At:float = _Field(
+created_at:float = _Field(
     default_factory=_time.time,
     description="The Unix timestamp for when this was created",
 )
-Tags:list[str] = _Field(
+tags:list[str] = _Field(
     default_factory=list,
     description="Tags on the post",
     unique_items=True,
     regex=_validate.TAG_REGEX
 )
-Comments = _Field(
+comments = _Field(
     default_factory=list,
     description="Comments on the post",
 )
 
-Mimetype:str = _Field(
+mimetype:str = _Field(
     ...,
     description="The MIME type for the File",
     regex="^[a-zA-Z0-9-_]+/[a-zA-Z0-9-_]+$",
 )
-Item_ID = _Field(
+item_id = _Field(
     ...,
     description="The Unique ID for this Item",
 )

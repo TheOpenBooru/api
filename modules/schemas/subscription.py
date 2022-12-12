@@ -3,7 +3,7 @@ from pydantic import Field
 
 
 class Subscription(BaseModel):
-    created_at: float = fields.Created_At
+    created_at: float = fields.created_at
     id: int = Field(..., description="The subscription's ID")
     creator: int|None = Field(..., description="The creator's ID")
     

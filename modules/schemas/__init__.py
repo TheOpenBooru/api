@@ -4,7 +4,7 @@ class BaseModel(_PydanticBaseModel):
         smart_union = True
         json_encoders = { bytes: lambda _bytes: _bytes.hex() }
 
-MAX_NUMBER = 2**63
+MAX_NUMBER = 9_223_372_036_854_775_808
 
 from . import fields
 from .subscription import Subscription, SubscriptionQuery
