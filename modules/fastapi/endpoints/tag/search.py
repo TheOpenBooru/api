@@ -1,6 +1,6 @@
 from . import router
 from modules import schemas, database, fastapi
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi_cache.decorator import cache
