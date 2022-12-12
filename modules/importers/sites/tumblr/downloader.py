@@ -80,12 +80,12 @@ async def post_from_data(data:dict[str,Any]) -> list[schemas.Post]:
         raise DownloadFailure("Could Not Import Post")
 
 
-async def import_post_from_data(file_url:str,source:str,tags:list[str]) -> schemas.Post:
+async def import_post_from_data(file_url:str, source:str, tags:list[str]) -> schemas.Post:
     data, filepath = await utils.download_url(file_url)
-    post = await posts.generate(
-        data,
-        filepath,
-        additional_tags=tags,
-        source=source
+    post = await posts.generate(data, filepath)
+    post = posts.apply_edit(
+        post=post,
+        tags=tags,
+        sources=[source]
     )
     return post

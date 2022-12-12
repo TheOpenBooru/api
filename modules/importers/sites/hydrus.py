@@ -49,36 +49,40 @@ class HydrusImporter(Importer):
         else:
             return
         
-        raw_tags = await self._extract_tags(metadata)
-        source = ""
-        if metadata['known_urls']:
-            source = metadata['known_urls'][0]
-            # Prevent tweet importer linking to the twitter image
-            if source.startswith("https://pbs.twimg.com/"): 
-                source = metadata['known_urls'][1]
         
-        tags = normalise.normalise_tags(raw_tags)
+        tags = set()
+        for tag in extract_tags(metadata):
+            sections = tag.split(':')
+            if len(sections) == 2:
+                _, tag = sections
+            tags.update(tag)
+        
+        tags = normalise.normalise_tags(tags)
+        sources = metadata['known_urls']
         
         r = self.client.get_file(file_id=post_id)
-        data = r.content
-        filename = "example" + metadata['ext']
         try:
-            await posts.create(
-                data,
-                filename,
-                additional_tags=tags,
-                source=source,
+            post = await posts.create(
+                data=r.content,
+                filename="example" + metadata['ext'],
             )
         except posts.PostExistsException:
-            pass
+            return
+        else:
+            posts.edit(
+                post_id=post.id,
+                editter_id=None,
+                tags=tags,
+                sources=sources,
+            )
 
 
-    async def _extract_tags(self,metadata:dict) -> list[str]:
-        try:
-            tag_lists = metadata['service_names_to_statuses_to_tags']['all known tags']
-            all_tags = []
-            for tags in tag_lists.values():
-                all_tags.extend(tags)
-            return all_tags
-        except Exception:
-            return []
+def extract_tags(metadata:dict) -> list[str]:
+    try:
+        tag_lists = metadata['service_names_to_statuses_to_tags']['all known tags']
+        all_tags = []
+        for tags in tag_lists.values():
+            all_tags.extend(tags)
+        return all_tags
+    except Exception:
+        return []

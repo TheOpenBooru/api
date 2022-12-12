@@ -21,18 +21,13 @@ class Rating(str, Enum):
 
 
 class PostEdit(BaseModel):
-    created_at: float = fields.Created_At
+    created_at: float = fields.created_at
     post_id: int = Field(..., description="The ID of the post the edit was performed on")
     editter_id: Union[int,None] = Field(default=None, description="The ID of the user who submitted this edit, None for system edits")
     
-    old_tags: list[str] = Field(default=None, description="The tags for the post before edit", regex=validate.TAG_REGEX, unique_items=True)
-    new_tags: list[str] = Field(default=None, description="The Tags added in this edit", regex=validate.TAG_REGEX, unique_items=True)
-    
-    old_source: str = Field(default="", description="The source for the post before edit")
-    new_source: str = Field(default="", description="The new source for the post")
-     
-    old_rating: str = Field(default="", description="The rating for the post before edit")
-    new_rating: str = Field(default="", description="The new rating for the post")
+    tags: list[str] = Field(description="The tags for the post", regex=validate.TAG_REGEX, unique_items=True)
+    sources: list[str] = Field(description="The sources for the post", regex=validate.URL_REGEX, unique_items=True)
+    rating: Rating = Field(description="The rating for the post")
 
 
 class PostQuery(BaseModel):
@@ -68,7 +63,7 @@ class Hashes(BaseModel):
 
 class Post(BaseModel):
     id: int = Field(..., lt=2**64, description="The Post's Unique Id")
-    created_at: float = fields.Created_At
+    created_at: float = fields.created_at
     uploader: Union[int, None] = Field(default=None, description="The user ID of the person who uploaded this post, null means no creator")
     sources: list[str] = Field(default_factory=list, description="The original source for the post")
     rating: Rating = Field(default=Rating.unrated, description="The default rating for a post")
@@ -79,7 +74,8 @@ class Post(BaseModel):
     thumbnail: Image = Field(..., description="A low quality image used for thumbnails")
 
     hashes: Hashes = Field(default_factory=Hashes, description="A table of all the posts hashes")
-    tags: list[str] = fields.Tags
+    protected_tags: list[str] = fields.tags
+    tags: list[str] = fields.tags
     edits: list[PostEdit] = Field(default_factory=list, description="The edits made to the post")
 
     upvotes: int = Field(default=0, description="Number of upvotes on the Post")

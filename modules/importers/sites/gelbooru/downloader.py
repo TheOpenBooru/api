@@ -10,7 +10,7 @@ class GelbooruDownloader(Downloader):
     _hostname: str
     _api_hostname: str
     def __init__(self):
-        requests.get("https://" + self._hostname,timeout=2)
+        requests.get("https://" + self._hostname, timeout=2)
 
 
     def is_valid_url(self, url: str) -> bool:
@@ -23,10 +23,10 @@ class GelbooruDownloader(Downloader):
         
         file_url = post_data["file_url"]
         data, filename = await utils.download_url(file_url)
-        post = await posts.generate(
-            data=data,
-            filename=filename,
-            additional_tags=parsing.get_tags(post_data),
+        post = await posts.generate(data,filename)
+        post = posts.apply_edit(
+            post=post,
+            tags=parsing.get_tags(post_data),
             sources=parsing.get_sources(post_data),
             rating=parsing.get_rating(post_data),
         )
@@ -50,7 +50,7 @@ class GelbooruDownloader(Downloader):
         try:
             r = requests.get(url,params={'id': id})
         except Exception:
-            raise DownloadFailure("")
+            raise DownloadFailure("Gelbooru API Error")
         
         soup = bs4.BeautifulSoup(r.text, 'xml')
         tag = soup.find('post')

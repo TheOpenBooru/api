@@ -33,37 +33,39 @@ class YoutubeDownloader(Downloader):
             raise DownloadFailure("Could not download Video")
 
         try:
-            post = await posts.generate(data, filename,
-                additional_tags=await getTags(video),
-                sources=[video.watch_url],
-            )
+            post = await posts.generate(data, filename)
+            tags = get_tags(video)
         except Exception:
             raise DownloadFailure("Could not generate post from video")
         
-        
+        post = posts.apply_edit(
+            post=post,
+            tags=tags,
+            sources=[video.watch_url],
+        )
         return [post]
 
 
 
-async def getTags(video: pytube.YouTube) -> list[str]:
+def get_tags(video: pytube.YouTube) -> list[str]:
     tags = set()
     keywords = video.vid_info['videoDetails']['keywords']
     keywords = normalise.normalise_tags(keywords)
     tags.update(keywords)
     
-    author = await getAuthorName(video)
+    author = get_author_name(video)
     if author:
         tags.add(author)
     
     return list(tags)
 
 
-async def getAuthorName(video:pytube.YouTube) -> Union[str,None]:
+def get_author_name(video:pytube.YouTube) -> Union[str,None]:
     channel = pytube.Channel(video.channel_url)
     try:
         name = channel.initial_data['header']['c4TabbedHeaderRenderer']['title'] #type: ignore
     except Exception:
         return None
     else:
-        author = normalise.normalise_tag(name,possibly_namespaced=False)
+        author = normalise.normalise_tag(name)
         return author

@@ -52,8 +52,5 @@ async def import_file(data_file:Path, tag_file:Union[Path,None]):
         tags = normalise.normalise_tags(tags)
 
     data = data_file.read_bytes()
-    await posts.create(
-        data,
-        data_file.name,
-        additional_tags=tags
-    )
+    post = await posts.create(data, data_file.name)
+    posts.edit(post.id, tags=tags)

@@ -18,17 +18,17 @@ import logging
 )
 async def edit_post(
         id:int,
-        tags:Union[None,list[str]] = Body(default=None,description="The new tags for the post"),
-        source:Union[None,str] = Body(default=None,description="The new source to update the post with"),
-        rating:Union[None,Rating] = Body(default=None,description="The new rating for the post"),
+        tags: None|list[str] = Body(default=None, description="The new tags for the post"),
+        sources: None|list[str] = Body(default=None, description="The new sources for the post"),
+        rating: None|Rating = Body(default=None, description="The new rating for the post"),
         account:DecodeToken = Depends()
         ):
     try:
-        posts.edit_post(
+        posts.edit(
             post_id=id,
             editter_id=account.user_id,
             tags=tags,
-            source=source,
+            sources=sources,
             rating=rating
         )
     except posts.PostEditFailure as e:
