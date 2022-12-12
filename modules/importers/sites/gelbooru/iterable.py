@@ -27,7 +27,6 @@ def iter_over_posts(hostname:str):
 
         for req in reqs:
             try:
-                req:Future
                 r = req.result()
             except Exception:
                 logging.warning(f"{hostname}, Failed to Retrieved Posts")
@@ -58,11 +57,10 @@ def guess_post_count(hostname: str) -> int:
     return count_estimate
 
 
-def download_page(index: int, hostname:str, session: requests.Session|None = None):
+def download_page(index: int, hostname:str, session: FuturesSession|None = None) -> Future[requests.Response]:
     start = PAGE_LIMIT * index
     end = PAGE_LIMIT * (index + 1)
-    if session == None:
-        session = requests.Session()
+    session = session or FuturesSession()
     
     return session.get(
         f"https://{hostname}/index.php?page=dapi&s=post&q=index",
@@ -70,7 +68,7 @@ def download_page(index: int, hostname:str, session: requests.Session|None = Non
             "tags":f"id:>{start} id:<{end}",
             "limit":PAGE_LIMIT,
         },
-    )
+    ) #type: ignore
 
 
 def parse_page(page: str) -> list[dict]:
