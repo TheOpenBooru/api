@@ -1,6 +1,6 @@
 import inspect
-from modules import database, posts
-from modules.importers import utils, DownloadFailure
+from modules import database, posts, schemas
+from modules.importers import DownloadFailure
 from modules.schemas import Media, Image, Hashes, Rating, Post
 from typing import Callable, TypeVar, AsyncIterable, Iterable
 import time
@@ -59,7 +59,7 @@ async def run_importer(
         post.rating = get_rating(data)
 
         if post != original_post:
-            database.Post.update(post.id, original_post)
+            database.Post.update(post.id, post)
 
     async def process_post(data: Data):
         try:
