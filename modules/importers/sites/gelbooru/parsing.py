@@ -72,14 +72,8 @@ def get_sources(post:dict) -> list[str]:
 
 
 def get_tags(post:dict):
-    tag_string:str = post["tags"]
-    tags = tag_string.split(" ")
+    tags = post["tags"].split(" ")
     tags.append("rule34")
-    
-    url = post["file_url"]
-    media_type = utils.predict_media_type(url)
-    tags.append(media_type)
-    
     return normalise.normalise_tags(tags)
 
 
