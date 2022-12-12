@@ -6,8 +6,6 @@ def get(id:int) -> Post:
     """Raises
     - KeyError: Could not find post
     """
-    if (id) > 2**63:
-        raise KeyError("Post ID Too Large")
     return _get_by_filter({'id':id})
 
 
