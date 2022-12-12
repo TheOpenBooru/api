@@ -6,16 +6,10 @@ import mimetypes
 from typing import Union
 
 
-async def create(data:bytes,filename:str,
-        use_ai_tags:bool=settings.TAGS_TAGGING_SERVICE_ENABLED,
-        uploader_id:Union[int,None] = None,
-        additional_tags:Union[list[str],None] = None,
-        source:Union[str,None] = None,
-        rating:Union[str,None] = None,
-        ):
+async def create(data:bytes, filename:str, uploader_id: None|int = None):
     if exists_data(data):
         raise PostExistsException
     
-    post = await generate(data,filename,use_ai_tags,uploader_id,additional_tags,source,rating)
+    post = await generate(data, filename, uploader_id)
     await insert(post, validate=True)
     return post

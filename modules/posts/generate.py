@@ -17,39 +17,7 @@ import hashlib
 from typing import Union
 
 
-async def generate(
-        data :bytes,
-        filename :str,
-        use_ai_tags :bool=settings.TAGS_TAGGING_SERVICE_ENABLED,
-        uploader_id :Union[int, None] = None,
-        additional_tags :Union[list[str], None] = None,
-        sources :Union[list[str], None] = None,
-        rating :Union[str, None] = None,
-        ) -> schemas.Post:
-    post = await encode_post(data,filename)
-    
-    
-    if additional_tags:
-        additional_tags = normalise.normalise_tags(additional_tags)
-        tags = set(post.tags + additional_tags)
-        post.tags = list(tags)
-    if uploader_id:
-        post.uploader = uploader_id
-    if sources:
-        post.sources = sources
-    if rating:
-        post.rating = rating # type: ignore
-
-    if use_ai_tags:
-        mimetype,_ = mimetypes.guess_type(filename)
-        if mimetype != None:
-            tags = generate_ai_tags(data,filename, mimetype)
-            post.tags = list(set(post.tags + tags))
-    
-    return post
-
-
-async def encode_post(data: bytes, filename: str) -> schemas.Post:
+async def generate(data: bytes, filename: str, uploader_id: int|None = None) -> schemas.Post:
     hashes = schemas.Hashes()
     
     with await encoding.generate_media(data,filename) as media:
@@ -68,12 +36,13 @@ async def encode_post(data: bytes, filename: str) -> schemas.Post:
     
     post = schemas.Post(
         id=database.Post.generate_id(),
+        uploader=uploader_id,
         hashes=hashes,
         full=full_schema,
         preview=preview_schema,
         thumbnail=thumbnail_schema, # type: ignore
     )
-    post.tags = generate_meta_tags(post)
+    post.protected_tags = generate_meta_tags(post)
     return post
 
 

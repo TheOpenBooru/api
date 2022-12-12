@@ -12,7 +12,11 @@ async def insert(post: schemas.Post, validate=True):
     if validate and exists_post(post):
         raise PostExistsException
 
-    database.Post.insert(post)
+    try:
+        database.Post.insert(post)
+    except:
+        raise PostExistsException
+    
     if post.uploader:
         database.User.create_post(post.uploader, post.id)
 
