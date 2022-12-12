@@ -8,5 +8,6 @@ from .get import get, get as get_id, md5_get, sha256_get, phash_get
 from .insert import insert, insertMany
 from .delete import delete
 from .search import search
+from .edit import edit
 from .update import update
 from .votes import add_upvote, remove_upvote, add_downvote, remove_downvote
