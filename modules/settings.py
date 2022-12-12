@@ -34,6 +34,7 @@ def get(setting: str) -> Any:
 SITE_NAME:str = get("config.site.display_name")
 HOSTNAME:str = get("config.site.hostname")
 PORT:int = get("config.site.port")
+DISABLE_PERMISSIONS: bool = False
 
 # SSL
 SSL_ENABLED:bool = get("config.ssl.enabled")

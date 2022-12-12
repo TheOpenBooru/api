@@ -16,6 +16,9 @@ class PermissionManager:
 
 
     def __call__(self, request: Request, account:DecodeToken = Depends()):
+        if settings.DISABLE_PERMISSIONS:
+            return
+        
         self.check_permission(account.permissions)
         self.check_captcha(request, account.permissions)
         self.check_ratelimit(account)
