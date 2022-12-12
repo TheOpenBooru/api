@@ -14,7 +14,7 @@ url = TEMPLATE_URL.format(
     user=settings.MONGODB_USERNAME,
     _pass=settings.MONGODB_PASSWORD,
 )
-db_client = _MongoClient(url)
+db_client: _MongoClient = _MongoClient(url)
 
 if settings.WIPE_ON_STARTUP:
     db_client.drop_database(settings.MONGODB_DB_NAME)
