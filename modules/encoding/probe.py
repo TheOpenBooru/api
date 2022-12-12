@@ -50,10 +50,9 @@ class VideoProbe:
     @cached_property
     def extention(self) -> str:
         ext = mimetypes.guess_extension(self.mimetype)
-        if ext != None:
-            return ext
-        else:
+        if ext == None:
             raise Exception("Couldn't Guess File Extention")
+        return ext
 
     @cached_property
     def audio(self) -> bool:

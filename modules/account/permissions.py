@@ -1,5 +1,5 @@
 from typing import Union
-from typing_extensions import Self, ClassVar
+from typing_extensions import Self
 from modules.schemas import Permission, UserPermissions
 import yaml as _yaml
 

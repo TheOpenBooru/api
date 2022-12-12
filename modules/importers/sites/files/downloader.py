@@ -4,7 +4,7 @@ import os
 from urllib.parse import urlparse
 
 class FileDownloader(Downloader):
-    def is_valid_url(self,url:str) -> bool:
+    def is_valid_url(self, url:str) -> bool:
         url_struct = urlparse(url)
         _, ext = os.path.splitext(url_struct.path)
         is_file_valid = ext in encoding.ACCEPTED_FILE_EXTENTIONS

@@ -1,5 +1,5 @@
 from . import parsing, USER_AGENT
-from modules import settings, schemas, posts
+from modules import schemas, posts
 from modules.importers import Downloader, utils, DownloadFailure
 import re
 import requests
@@ -26,13 +26,13 @@ class E621Downloader(Downloader):
 
         file_url = post_data["file"]["url"] # type: ignore
         data, filename = await utils.download_url(file_url)
-        post = await posts.generate(
-            data=data,
-            filename=filename,
-            additional_tags=parsing.get_tags(post_data),
+        post = await posts.generate(data,filename)
+        post = posts.apply_edit(
+            post=post,
+            tags=parsing.get_tags(post_data),
+            sources=parsing.get_sources(post_data),
+            rating=parsing.get_rating(post_data)
         )
-        post.sources=parsing.get_sources(post_data)
-        post.rating=parsing.get_rating(post_data)
         return [post]
 
 
