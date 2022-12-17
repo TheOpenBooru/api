@@ -1,9 +1,10 @@
-from modules import settings, schemas, database
+from modules import settings, schemas
 import pytest
 
 settings.MONGODB_DB_NAME = "openbooru_test"
 settings.STORAGE_METHOD = "local"
 
+from modules import database
 
 @pytest.fixture
 def ExampleTag() -> schemas.Tag:
