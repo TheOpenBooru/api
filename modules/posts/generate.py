@@ -14,7 +14,6 @@ from PIL.Image import Image
 import base64
 import mimetypes
 import hashlib
-from typing import Union
 
 
 async def generate(data: bytes, filename: str, uploader_id: int|None = None) -> schemas.Post:

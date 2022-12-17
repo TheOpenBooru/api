@@ -1,5 +1,4 @@
 from . import Post, post_collection, parse_docs
-from .. import Tag
 from modules import schemas, settings
 from pymongo.errors import ExecutionTimeout
 
