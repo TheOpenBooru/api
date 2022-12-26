@@ -1,18 +1,17 @@
 from . import oauth2_scheme
-import zlib
-from typing import Optional, Union
 from modules import account
 from modules.account import Permissions, Account
+import zlib
 from fastapi import HTTPException, Depends, Request
 
 
 class DecodeToken:
     id: int
-    user_id: Optional[int]
+    user_id: int|None
     username: str
     permissions: Permissions
     
-    def __init__(self, request: Request, token:Union[str, None] = Depends(oauth2_scheme)):
+    def __init__(self, request: Request, token: str|None = Depends(oauth2_scheme)):
         if token == None:
             self._generate_annonomous_account(request)
         else:
