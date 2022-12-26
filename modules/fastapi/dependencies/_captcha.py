@@ -3,13 +3,10 @@ from modules import account, settings, captcha
 from fastapi import HTTPException, Query, status
 
 
-if settings.HCAPTCHA_ENABLE:
-    async def RequireCaptcha(captcha_response:str = Query(...,alias="h-captcha-response")): # type: ignore
-        if settings.DISABLE_PERMISSIONS:
-            return
-        
-        if captcha.verify(captcha_response) == False:
+if settings.HCAPTCHA_ENABLE and not settings.DISABLE_PERMISSIONS:
+    async def RequireCaptcha(captcha_response: str = Query(...,alias="h-captcha-response")):
+        if not captcha.verify(captcha_response):
             raise HTTPException(status.HTTP_400_BAD_REQUEST, "Invalid Captcha Response")
 else:
-    async def RequireCaptcha():
+    async def RequireCaptcha(captcha_response: str = Query(default="", alias="h-captcha-response")):
         pass
