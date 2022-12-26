@@ -40,7 +40,7 @@ class PermissionManager:
             return
         
         response = request.query_params.get("h-captcha-response", default=None)
-        if response == None:
+        if response is None:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"H-Captcha Required",
