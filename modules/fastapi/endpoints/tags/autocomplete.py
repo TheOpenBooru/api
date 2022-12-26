@@ -13,7 +13,7 @@ from fastapi_cache.decorator import cache
     ],
 )
 @cache(expire=3600,)
-async def search_tags(
+async def autocomplete_tags(
         text: str = Query(description="The start of a tag"),
         limit: int = Query(default=10, gt=0, le=100)
         ):
