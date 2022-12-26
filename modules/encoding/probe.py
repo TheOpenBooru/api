@@ -8,14 +8,14 @@ import io
 
 
 class VideoProbe:
-    filepath:str
-    data:bytes
-    def __init__(self,filepath):
-        with open(filepath,'rb') as f:
+    filepath: str
+    data: bytes
+
+    def __init__(self, filepath):
+        with open(filepath, 'rb') as f:
             self.data = f.read()
         self.filepath = filepath
         self.probe_data = ffmpeg.probe(self.filepath)
-
 
     @cached_property
     def video_stream(self) -> dict:
@@ -25,11 +25,11 @@ class VideoProbe:
             return video_streams[0]
         else:
             raise Exception('No or Multiple Video Streams Found')
-    
+
     @cached_property
     def height(self) -> int:
         return int(self.video_stream['height'])
-    
+
     @cached_property
     def width(self) -> int:
         return int(self.video_stream['width'])
@@ -66,14 +66,19 @@ class VideoProbe:
         return float(self.probe_data['format']['duration'])
 
     @cached_property
-    def frame_count(self) -> Union[float,None]:
+    def frame_count(self) -> Union[float, None]:
         if 'nb_frames' in self.video_stream:
             return float(self.video_stream['nb_frames'])
         else:
             return None
 
 
-def isAnimatedSequence(data:bytes) -> bool:
+def is_animated_sequence(data: bytes) -> bool:
     buf = io.BytesIO(data)
-    pil_img = PILImage.open(buf,formats=None)
+    pil_img = PILImage.open(buf, formats=None)
     return pil_img.is_animated
+
+
+def guess_mimetype(data: bytes) -> str:
+    magic = Magic(mime=True)
+    return magic.from_buffer(data)
