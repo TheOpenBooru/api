@@ -32,7 +32,7 @@ class E621Importer(Importer):
             get_upvotes=parsing.get_upvotes,
             get_downvotes=parsing.get_downvotes,
             get_rating=parsing.get_rating,
-            get_sources=parsing.get_sources,
+            get_sources=parsing.get_sources(self._hostname),
             get_tags=parsing.get_tags,
         )
 

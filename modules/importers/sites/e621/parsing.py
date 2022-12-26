@@ -1,7 +1,7 @@
 from modules import schemas, normalise
 from modules.schemas import Media, Image, MediaType, Rating
 from modules.importers import utils, DownloadFailure
-from typing import Union
+from typing import Union, Callable
 from time import strptime, mktime
 import e621.models as e621Models
 
@@ -51,10 +51,13 @@ def get_images(post: dict) -> tuple[Media, Media|None, Image]:
     return full, preview, thumbnail
 
 
-def get_sources(post: dict) -> list[str]:
-    sources = [f"https://e621.net/posts/{post['id']}"]
-    sources.extend(post['sources'])
-    return sources
+def get_sources(hostname: str) -> Callable[[dict],list[str]]:
+    def inner(post: dict) -> list[str]:
+        sources = [f"https://{hostname}/posts/{post['id']}"]
+        sources.extend(post['sources'])
+        return sources
+    
+    return inner
 
 
 def get_hashes(data: dict) -> schemas.Hashes:

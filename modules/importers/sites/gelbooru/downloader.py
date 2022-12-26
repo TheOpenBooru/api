@@ -8,7 +8,6 @@ import requests
 
 class GelbooruDownloader(Downloader):
     _hostname: str
-    _api_hostname: str
     def __init__(self):
         requests.get("https://" + self._hostname, timeout=2)
 
@@ -27,7 +26,7 @@ class GelbooruDownloader(Downloader):
         post = posts.apply_edit(
             post=post,
             tags=parsing.get_tags(post_data),
-            sources=parsing.get_sources(post_data),
+            sources=parsing.get_sources(self._hostname)(post_data),
             rating=parsing.get_rating(post_data),
         )
         return [post]
@@ -46,7 +45,7 @@ class GelbooruDownloader(Downloader):
 
 
     async def download_post(self, id: int) -> dict:
-        url = f"https://{self._api_hostname}/index.php?page=dapi&s=post&q=index"
+        url = f"https://{self._hostname}/index.php?page=dapi&s=post&q=index"
         try:
             r = requests.get(url,params={'id': id})
         except Exception:
@@ -64,11 +63,10 @@ class GelbooruDownloader(Downloader):
         
         return data
 
+
 class SafebooruDownloader(GelbooruDownloader):
     _hostname = "safebooru.org"
-    _api_hostname = "safebooru.org"
 
 
 class Rule34Downloader(GelbooruDownloader):
     _hostname = "rule34.xxx"
-    _api_hostname = "api.rule34.xxx"

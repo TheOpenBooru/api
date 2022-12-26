@@ -29,7 +29,7 @@ class GelbooruImporter(Importer):
             iterable=progress,
             limit=limit,
             get_tags=parsing.get_tags,
-            get_sources=parsing.get_sources,
+            get_sources=parsing.get_sources(self._hostname),
             get_upvotes=parsing.get_score,
             get_rating=parsing.get_rating,
             get_hashes=parsing.get_hashes,
@@ -46,7 +46,7 @@ class SafebooruImporter(GelbooruImporter):
 
 
 class Rule34Importer(GelbooruImporter):
-    _hostname = "api.rule34.xxx"
+    _hostname = "rule34.xxx"
     enabled = settings.IMPORTER_RULE34_ENABLED
     time_between_runs = settings.IMPORTER_RULE34_RETRY_AFTER
     limit = settings.IMPORTER_RULE34_LIMIT

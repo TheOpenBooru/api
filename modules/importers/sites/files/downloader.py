@@ -15,6 +15,7 @@ class FileDownloader(Downloader):
         try:
             data, filename = await utils.download_url(url,timeout=10)
             post = await posts.generate(data, filename)
+            post.sources = [url]
         except Exception:
             raise DownloadFailure("Could Not Generate Post")
         

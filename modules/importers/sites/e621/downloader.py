@@ -30,7 +30,7 @@ class E621Downloader(Downloader):
         post = posts.apply_edit(
             post=post,
             tags=parsing.get_tags(post_data),
-            sources=parsing.get_sources(post_data),
+            sources=parsing.get_sources(self._hostname)(post_data),
             rating=parsing.get_rating(post_data)
         )
         return [post]

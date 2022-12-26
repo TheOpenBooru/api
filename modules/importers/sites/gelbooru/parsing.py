@@ -1,8 +1,7 @@
-from typing import Union
 from modules.importers import utils
-from modules import schemas, settings, normalise
+from modules import schemas, normalise
+from typing import Callable
 from datetime import datetime
-from functools import cache
 
 def construct_image(url:str, width:str, height:str):
     return schemas.Image(
@@ -62,13 +61,16 @@ def get_hashes(post:dict) -> schemas.Hashes:
     )
 
 
-def get_sources(post:dict) -> list[str]:
-    sources = []
-    sources.append(f"https://rule34.xxx/index.php?page=post&s=view&id={post['id']}")
-    if post["source"]:
-        sources.append(post["source"])
+def get_sources(hostname: str) -> Callable[[dict],list[str]]:
+    def inner(post: dict) -> list[str]:
+        sources = []
+        sources.append(f"https://{hostname}/index.php?page=post&s=view&id={post['id']}")
+        if post["source"]:
+            sources.append(post["source"])
+        
+        return sources
     
-    return sources
+    return inner
 
 
 def get_tags(post:dict):
