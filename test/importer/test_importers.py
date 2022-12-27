@@ -18,7 +18,7 @@ GENERIC_IMPORTERS = (E621Importer, E926Importer, Rule34Importer, SafebooruImport
 
 @pytest.mark.parametrize("Importer", GENERIC_IMPORTERS)
 @pytest.mark.timeout(10)
-async def test_importer(Importer: Type[Importer]):
+async def test_Generic_Importer(Importer: Type[Importer]):
     database.Post.clear()
     importer = Importer()
     await importer.load(100)

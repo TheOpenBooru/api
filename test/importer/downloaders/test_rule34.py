@@ -9,15 +9,6 @@ def r34():
 
 
 @pytest.mark.asyncio
-async def test_Rule34_Check_URL(r34: Rule34Downloader):
-    assert r34.is_valid_url("https://rule34.xxx/index.php?page=post&s=view&id=5198120")
-    assert r34.is_valid_url("https://rule34.xxx/index.php?page=post&s=view&id=5198120&test=1")
-    assert not r34.is_valid_url("https://rule34.xxx/index.php?page=post&s=view")
-    assert not r34.is_valid_url("https://rule34.xxx/index.php?page=post&s=list")
-    assert not r34.is_valid_url("https://rule34.xxx/index.php?page=pool&s=show&id=21185")
-
-
-@pytest.mark.asyncio
 async def test_Importing_Image(r34: Rule34Downloader):
     url = "https://rule34.xxx/index.php?page=post&s=view&id=5198120"
     posts = await r34.download_url(url)

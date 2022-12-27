@@ -7,13 +7,6 @@ def e621():
     return importers.E621Downloader()
 
 
-def test_E621_is_valid_url(e621: importers.E621Downloader):
-    assert e621.is_valid_url("https://e621.net/posts/2294957")
-    assert e621.is_valid_url("https://e621.net/posts/2294957?q=test")
-    assert not e621.is_valid_url("https://e621.pics/posts/2294957")
-    assert not e621.is_valid_url("http://e621.net/posts/2294957")
-
-
 @pytest.mark.asyncio
 async def test_Nonexistant_Post_Raises_DownloadFailure(e621: importers.E621Downloader):
     with pytest.raises(importers.DownloadFailure):
