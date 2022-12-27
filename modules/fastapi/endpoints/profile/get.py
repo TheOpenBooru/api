@@ -13,7 +13,7 @@ from fastapi.encoders import jsonable_encoder
         Depends(RequireAccount),
     ],
 )
-async def get_profile(account: fastapi.DecodeToken = Depends()):
+async def get_profile(account: fastapi.GetAccount = Depends()):
     if account.user_id == None or database.User.exists(account.user_id) == False:
         raise HTTPException(status_code=401)
     else:

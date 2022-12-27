@@ -11,6 +11,6 @@ from fastapi.encoders import jsonable_encoder
         Depends(fastapi.RateLimit("1/second")),
     ],
 )
-async def get_permissions(account: fastapi.DecodeToken = Depends()):
+async def get_permissions(account: fastapi.GetAccount = Depends()):
     perms = account.permissions.schema
     return JSONResponse(content=jsonable_encoder(perms))

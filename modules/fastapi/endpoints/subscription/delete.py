@@ -1,6 +1,6 @@
 from . import router
 from modules import schemas, database
-from modules.fastapi.dependencies import DecodeToken, PermissionManager
+from modules.fastapi.dependencies import GetAccount, PermissionManager
 from fastapi import UploadFile, Depends, HTTPException
 from fastapi.responses import JSONResponse, PlainTextResponse
 from fastapi.encoders import jsonable_encoder

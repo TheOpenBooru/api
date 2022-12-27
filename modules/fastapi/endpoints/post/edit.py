@@ -1,6 +1,6 @@
 from . import router
 from modules import schemas, posts
-from modules.fastapi import DecodeToken, PermissionManager
+from modules.fastapi import GetAccount, PermissionManager
 from modules.schemas import Rating
 from fastapi import Depends, Body, HTTPException, Response
 from typing import Union
@@ -21,7 +21,7 @@ async def edit_post(
         tags: None|list[str] = Body(default=None, description="The new tags for the post"),
         sources: None|list[str] = Body(default=None, description="The new sources for the post"),
         rating: None|Rating = Body(default=None, description="The new rating for the post"),
-        account:DecodeToken = Depends()
+        account:GetAccount = Depends()
         ):
     try:
         posts.edit(

@@ -1,6 +1,6 @@
 from . import router
 from modules import schemas,posts
-from modules.fastapi.dependencies import DecodeToken, PermissionManager
+from modules.fastapi.dependencies import GetAccount, PermissionManager
 from fastapi import Depends, Body, HTTPException
 from fastapi.responses import PlainTextResponse
 
@@ -15,7 +15,7 @@ from fastapi.responses import PlainTextResponse
         Depends(PermissionManager("canCreatePosts")),
     ],
 )
-async def import_url(url:str = Body(...), account:DecodeToken = Depends()):
+async def import_url(url:str = Body(...), account:GetAccount = Depends()):
     try:
         new_posts = await posts.Import(url, account.user_id)
     except posts.PostImportFailure as e:

@@ -1,6 +1,6 @@
 from . import router
 from modules import schemas, posts
-from modules.fastapi.dependencies import DecodeToken, PermissionManager
+from modules.fastapi.dependencies import GetAccount, PermissionManager
 from fastapi import UploadFile, Depends, HTTPException
 from fastapi.responses import JSONResponse, PlainTextResponse
 from fastapi.encoders import jsonable_encoder
@@ -16,7 +16,7 @@ from fastapi.encoders import jsonable_encoder
         Depends(PermissionManager("canCreatePosts")),
     ],
 )
-async def create_post(image: UploadFile, account: DecodeToken = Depends()):
+async def create_post(image: UploadFile, account: GetAccount = Depends()):
     try:
         data = await image.read()
         filename = image.filename

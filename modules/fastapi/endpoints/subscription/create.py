@@ -1,6 +1,6 @@
 from . import router
 from modules import schemas, database
-from modules.fastapi.dependencies import DecodeToken, PermissionManager
+from modules.fastapi.dependencies import GetAccount, PermissionManager
 from fastapi import Depends, HTTPException
 
 
@@ -14,7 +14,7 @@ from fastapi import Depends, HTTPException
         Depends(PermissionManager("canCreateSubscriptions")),
     ],
 )
-async def create_subscription(url: str, account: DecodeToken = Depends()):
+async def create_subscription(url: str, account: GetAccount = Depends()):
     subscription = schemas.Subscription(
         id=database.Subscriptions.get_unique_id(),
         creator=account.user_id,

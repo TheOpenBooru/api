@@ -1,6 +1,6 @@
 from . import router
 from modules import database, posts
-from modules.fastapi.dependencies import DecodeToken, PermissionManager, RequireAccount
+from modules.fastapi.dependencies import GetAccount, PermissionManager, RequireAccount
 from fastapi import Response, Depends, HTTPException, APIRouter
 
 
@@ -21,23 +21,23 @@ def assert_post_exists(post_id:int):
 
 
 @votes_router.post("/{id}/upvote/add")
-async def add_upvote(id:int, account: DecodeToken = Depends()):
+async def add_upvote(id:int, account: GetAccount = Depends()):
     assert_post_exists(id)
     posts.add_upvote(id, account.id)
 
 
 @votes_router.post("/{id}/upvote/remove")
-async def remove_upvote(id:int, account: DecodeToken = Depends()):
+async def remove_upvote(id:int, account: GetAccount = Depends()):
     assert_post_exists(id)
     posts.remove_upvote(id, account.id)
 
 @votes_router.post("/{id}/downvote/add")
-async def add_downvote(id:int, account: DecodeToken = Depends()):
+async def add_downvote(id:int, account: GetAccount = Depends()):
     assert_post_exists(id)
     posts.add_downvote(id, account.id)
 
 
 @votes_router.post("/{id}/downvote/remove")
-async def remove_downvote(id:int, account: DecodeToken = Depends()):
+async def remove_downvote(id:int, account: GetAccount = Depends()):
     assert_post_exists(id)
     posts.remove_downvote(id, account.id)
