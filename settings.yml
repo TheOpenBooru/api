@@ -22,18 +22,7 @@ config:
     name: openbooru
     username: ""
     password: ""
-  smtp:
-    email: ""
-    password: ""
-    hostname: ""
-    port: 25
   wipe_on_startup: false
-
-
-email:
-  template_paths:
-    email_verification: ./data/emails/email_verification.html
-    password_reset: ./data/emails/password_reset.html
 
 
 posts:
@@ -71,9 +60,11 @@ importers:
   e621:
     enabled: false
     run_every: 259200
+    limit: 500
   e926:
     enabled: false
     run_every: 259200
+    limit: 500
   rule34:
     enabled: false
     run_every: 259200
