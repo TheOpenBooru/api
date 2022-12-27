@@ -51,3 +51,5 @@ pytest
 pytest-asyncio
 pytest-cov
 pytest-timeout
+httpx
+schemathesis
