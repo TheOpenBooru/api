@@ -6,9 +6,6 @@ def decode(token: str) -> Account:
     - InvalidToken: Invalid Token
     """
     try:
-        if token.startswith("Bearer "):
-            token = token[len("Bearer "):]
-        
         account = _generate_account(token)
     except Exception:
         raise InvalidToken
