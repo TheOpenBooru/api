@@ -10,3 +10,10 @@ def insert(post:Post):
         post_collection.insert_one(document=document)
     except pymongo.errors.DuplicateKeyError:
         raise KeyError("Post already exists")
+
+def insertMany(posts: list[Post]):
+    documents = [encode_post(post) for post in posts]
+    try:
+        post_collection.insert_many(documents, ordered=False)
+    except pymongo.errors.BulkWriteError:
+        pass

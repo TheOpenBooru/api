@@ -8,6 +8,4 @@ router = APIRouter(
     }
 )
 
-from . import edit, get, delete, downvote, upvote
-router.include_router(downvote.router)
-router.include_router(upvote.router)
+from . import edit, get, delete, votes

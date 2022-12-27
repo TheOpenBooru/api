@@ -10,12 +10,13 @@ from fastapi import Response, Depends, Body, status
         401:{"description":"Not Logged In"},
     },
     dependencies=[
-        Depends(fastapi.RequirePermission("canUpdateSettings")),
+        Depends(fastapi.PermissionManager("canUpdateSettings")),
+        Depends(fastapi.RequireAccount),
     ],
 )
 async def update_settings(
         settings:str = Body(description="Settings to be stored on the user's profile, 4096 characters max"),
-        account:account.Account = Depends(fastapi.DecodeToken)
+        account:account.Account = Depends(fastapi.GetAccount)
         ):
     if len(settings) > 4096:
         return Response(status_code=400)

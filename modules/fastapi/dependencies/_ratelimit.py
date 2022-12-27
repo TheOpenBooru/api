@@ -1,6 +1,6 @@
-from modules.account import decode
+from . import GetAccount
 import time
-from fastapi import Request, HTTPException, status, Header
+from fastapi import Request, HTTPException, status, Depends
 
 TIMEUNIT_LOOKUP = {
     "second":1,
@@ -10,7 +10,7 @@ TIMEUNIT_LOOKUP = {
 }
 
 class RateLimit:
-    events:dict[str,list[float]]
+    events:dict[int, list[float]]
     limit:int
     per:int
 
@@ -43,12 +43,8 @@ class RateLimit:
         self.events = {}
 
 
-    def __call__(self, request: Request, token:str|None = Header(default=None, alias="Authorization")):
-        if token:
-            account = decode(token)
-            id = str(account.id)
-        else:
-            id = str(request.client.host) #type: ignore
+    def __call__(self, request: Request, account: GetAccount = Depends()):
+        id = account.id
 
         if id not in self.events:
             self.events[id] = []
@@ -64,13 +60,13 @@ class RateLimit:
             self.events[id].append(time.time())
         
 
-    def isBlocked(self,ip:str):
+    def isBlocked(self, id: int):
         since = time.time() - self.per
 
         accesses = 0
-        for event in self.events[ip]:
+        for event in self.events[id]:
             if event < since:
-                self.events[ip].remove(event)
+                self.events[id].remove(event)
             else:
                 accesses += 1
 

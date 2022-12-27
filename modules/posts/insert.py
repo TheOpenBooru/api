@@ -1,28 +1,23 @@
-from modules.schemas.post import Post_Query
-from . import PostExistsException
+from . import PostExistsException, exists_post
+from modules.schemas.post import PostQuery
 from modules import database, schemas
 
-def insert(post: schemas.Post, validate=True):
-    """Insert post into the database, but check it exists
-    Warning: Extremely slow compared to direct insert
+async def insert(post: schemas.Post, validate=True):
+    """Insert post into the database
+    Warning: Slow compared to direct insert
+    
+    Raises:
+        - PostExistsException
     """
-    if validate:
-        _validate_post(post)
+    if validate and exists_post(post):
+        raise PostExistsException
 
-    database.Post.insert(post)
+    try:
+        database.Post.insert(post)
+    except:
+        raise PostExistsException
+    
     if post.uploader:
         database.User.create_post(post.uploader, post.id)
 
 
-def _validate_post(post: schemas.Post):
-    for md5 in post.hashes.md5s:
-        if database.Post.md5_exists(md5):
-            raise PostExistsException
-
-    for sha256 in post.hashes.sha256s:
-        if database.Post.sha256_exists(sha256):
-            raise PostExistsException
-    
-    for phash in post.hashes.phashes:
-        if database.Post.phash_exists(phash):
-            raise PostExistsException

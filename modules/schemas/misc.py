@@ -14,8 +14,8 @@ class Status(BaseModel):
 
 
 class Author(BaseModel):
-    id: int = fields.Item_ID
-    created_at:float = fields.Created_At
+    id: int = fields.item_id
+    created_at:float = fields.created_at
     name: str = Field(..., description="The Author's Name")
     avatar: Image = Field(..., description="The Author's Avatar")
     aliases: list[str] = Field(default_factory=list, description="Other Names for the Author")
@@ -23,8 +23,8 @@ class Author(BaseModel):
 
 
 class Comment(BaseModel):
-    id: int = fields.Item_ID
-    created_at:float = fields.Created_At
+    id: int = fields.item_id
+    created_at:float = fields.created_at
     creator: int = Field(..., description="The User ID of the Comment Creator")
     text: str = Field(..., description="The Comment's text")
     post: int = Field(..., description="The Post ID the Comment is on")

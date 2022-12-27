@@ -26,14 +26,27 @@ clear = method.clear
 if _settings.WIPE_ON_STARTUP:
     clear()
 
+
 def generate_generic_url(filename:str) -> str:
-    hostname = _settings.HOSTNAME
-    port = _settings.PORT
-    if port == 80:
-        return f"http://{hostname}/media/{filename}"
-    elif port == 443:
-        return f"https://{hostname}/media/{filename}"
-    elif _settings.SSL_ENABLED:
-        return f"https://{hostname}:{port}/media/{filename}"
+    return f"/media/{filename}"
+
+
+def to_absolute_url(url: str) -> str:
+    if not url.startswith("/"):
+        return url
     else:
-        return f"http://{hostname}:{port}/media/{filename}"
+        return get_hostname() + url
+
+
+def get_hostname():
+    hostname, port = _settings.HOSTNAME, _settings.PORT
+    if not _settings.SSL_ENABLED:
+        if port == 80:
+            return f"http://{hostname}"
+        else:
+            return f"http://{hostname}:{port}"
+    else:
+        if port == 443:
+            return f"https://{hostname}"
+        else:
+            return f"https://{hostname}:{port}"

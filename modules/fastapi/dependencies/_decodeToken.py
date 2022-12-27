@@ -1,22 +1,21 @@
 from . import oauth2_scheme
-import zlib
-from typing import Optional, Union
 from modules import account
 from modules.account import Permissions, Account
+import zlib
 from fastapi import HTTPException, Depends, Request
 
 
-class DecodeToken:
+class GetAccount:
     id: int
-    user_id: Optional[int]
+    user_id: int|None
     username: str
     permissions: Permissions
     
-    def __init__(self, request: Request, token:Union[str, None] = Depends(oauth2_scheme)):
+    def __init__(self, request: Request, token: str|None = Depends(oauth2_scheme)):
         if token == None:
             self._generate_annonomous_account(request)
         else:
-            self._genetae_account(token)
+            self._generate_account(token)
 
 
     def _generate_annonomous_account(self, request:Request):
@@ -27,7 +26,10 @@ class DecodeToken:
         self.permissions = Permissions.from_level("annonymous")
 
     
-    def _genetae_account(self, token:str):
+    def _generate_account(self, token:str):
+        if token.startswith("Bearer "):
+            token = token[len("Bearer "):]
+        
         try:
             login = account.decode(token)
         except account.InvalidToken:

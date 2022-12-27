@@ -1,7 +1,4 @@
 wheel
-fastapi
-uvicorn[standard]
-pydantic
 requests
 requests-futures
 numpy
@@ -16,10 +13,17 @@ jinja2
 boto3
 pickledb
 
+#fastpi
+fastapi
+uvicorn[standard]
+pydantic
+fastapi-cache2[memcache]
+
 # Encoding
 pillow
 ffmpeg-python
 python-magic
+imagehash
 
 # Cryptography
 cryptography
@@ -45,3 +49,7 @@ pytube
 # Testing
 pytest
 pytest-asyncio
+pytest-cov
+pytest-timeout
+httpx
+schemathesis

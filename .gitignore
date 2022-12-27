@@ -238,7 +238,7 @@ data/cert.pem
 data/key.pem
 data/log.txt
 data/auth.db
-data/tokensecret.key
+*.key
 data/mongo
 scripts
 e621_pages
@@ -247,3 +247,4 @@ data/urls.txt
 data/namespace_data.json
 *.prof
 settings.yml
+data/tasks.json

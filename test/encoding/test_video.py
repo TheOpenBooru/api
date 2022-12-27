@@ -1,5 +1,4 @@
-from modules.encoding.types import ImageFile
-from modules.encoding import Video
+from modules.encoding import VideoEncoder, ImageFile
 import unittest
 import json
 from pathlib import Path
@@ -9,30 +8,28 @@ with open('data/test/sample_data.json') as f:
     _json = json.load(f)
     test_data = Box(_json['video'])
 
+
 class OutputLocation:
     full = Path("./data/storage/video_full.mp4")
     thumbnail = Path("./data/storage/video_thumbnail.webp")
 
+
 class test_Heavy(unittest.TestCase):
     def setUp(self):
         self.info = test_data.heavy
-        with open(self.info.file,'rb') as f:
+        with open(self.info.file, 'rb') as f:
             data = f.read()
-        with Video(data) as vid:
-            self.full = vid.full()
+        with VideoEncoder(data) as vid:
+            self.full = vid.original()
             self.preview = vid.preview()
             self.thumbnail = vid.thumbnail()
 
-    
     def test_Preview_Isnt_Generated(self):
         assert self.preview == None
 
-    
     def test_Thumbnail_is_Image(self):
         assert type(self.thumbnail) == ImageFile
 
-
-    
     def test_Video_Metadata_Is_Correct(self):
         full = self.full
         assert full.height == self.info.height, full.height
@@ -43,13 +40,13 @@ class test_Heavy(unittest.TestCase):
         assert full.hasAudio == self.info.hasAudio, full.hasAudio
 
     def test_Thumbnail_Visual_Test(self):
-        with open(OutputLocation.thumbnail,'wb') as f:
+        with open(OutputLocation.thumbnail, 'wb') as f:
             f.write(self.thumbnail.data)
 
     def test_Thumbnail_is_generated_at_correct_point(self):
-        with open(OutputLocation.thumbnail,'wb') as f:
+        with open(OutputLocation.thumbnail, 'wb') as f:
             f.write(self.thumbnail.data)
 
     def test_Full_Visual_Test(self):
-        with open(OutputLocation.full,'wb') as f:
+        with open(OutputLocation.full, 'wb') as f:
             f.write(self.full.data)

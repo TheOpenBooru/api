@@ -1,0 +1,2 @@
+import os
+CONFIG_SITE_DISPLAY_NAME = "FOO_BAR"

@@ -1,8 +1,7 @@
 from . import router
-from modules import schemas, account, fastapi
-from modules.fastapi import RequirePermission
-from modules.database import User
-from fastapi import Depends, HTTPException, status
+from modules import schemas, fastapi, database
+from modules.fastapi import PermissionManager, RequireAccount
+from fastapi import Depends, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
@@ -10,16 +9,16 @@ from fastapi.encoders import jsonable_encoder
 @router.get("",
     response_model=schemas.User,
     dependencies=[
-        Depends(RequirePermission("canViewProfile")),
+        Depends(PermissionManager("canViewProfile")),
+        Depends(RequireAccount),
     ],
 )
-async def get_profile(account: fastapi.DecodeToken = Depends()):
-    if account.user_id == None or User.exists(account.user_id) == False:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+async def get_profile(account: fastapi.GetAccount = Depends()):
+    if account.user_id == None or database.User.exists(account.user_id) == False:
+        raise HTTPException(status_code=401)
     else:
-        user = User.get(account.user_id)
-        payload = jsonable_encoder(user)
+        user = database.User.get(account.user_id)
         return JSONResponse(
-            content=payload,
-            status_code=200
+            status_code=200,
+            content=jsonable_encoder(user),
         )

@@ -7,14 +7,13 @@ from fastapi.encoders import jsonable_encoder
 
 
 @router.post("/login",
-    operation_id="login",
     response_model=schemas.Token,
     responses={
         401:{"description":"Invalid Username or Password"},
         406:{"description":"User's Password Was Reset"},
     },
     dependencies=[
-        Depends(fastapi.RequirePermission("canLogin")),
+        Depends(fastapi.PermissionManager("canLogin")),
     ]
 )
 async def login(oauth:OAuth2PasswordRequestForm = Depends()):

@@ -5,7 +5,7 @@ class BaseStore:
     def __init__(self):
         ...
     
-    def put(self, data:str, filename:str):
+    def put(self, data: bytes, filename:str):
         """Store a file as the specified filename
         
         Raises:

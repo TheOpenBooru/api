@@ -1,11 +1,11 @@
 from . import oauth2_scheme
-from modules import account, schemas, captcha, ratelimit
-from modules.fastapi.dependencies import DecodeToken
+from modules import schemas, captcha, ratelimit, settings
+from modules.fastapi.dependencies import GetAccount
 from modules.account.permissions import Permissions
 from fastapi import HTTPException, Depends, status, Header, Request
 
 VALID_PERMISSION = set(schemas.UserPermissions().dict().keys())
-class RequirePermission:
+class PermissionManager:
     action:str
 
     def __init__(self, permission:str):
@@ -15,7 +15,10 @@ class RequirePermission:
         self.action = permission
 
 
-    def __call__(self, request: Request, account:DecodeToken = Depends()):
+    def __call__(self, request: Request, account:GetAccount = Depends()):
+        if settings.DISABLE_PERMISSIONS:
+            return
+        
         self.check_permission(account.permissions)
         self.check_captcha(request, account.permissions)
         self.check_ratelimit(account)
@@ -30,22 +33,27 @@ class RequirePermission:
 
 
     def check_captcha(self, request: Request, permissions: Permissions):
-        if permissions.isCaptchaRequired(self.action):
-            response = request.query_params.get("h-captcha-response", default=None)
-            if response == None:
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail=f"H-Captcha Required",
-                )
-            
-            if captcha.verify(response) == False:
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail=f"Bad H-Captcha Response",
-                )
+        if not settings.HCAPTCHA_ENABLE:
+            return
+        
+        if not permissions.isCaptchaRequired(self.action):
+            return
+        
+        response = request.query_params.get("h-captcha-response", default=None)
+        if response is None:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"H-Captcha Required",
+            )
+        
+        if captcha.verify(response) == False:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Bad H-Captcha Response",
+            )
 
     
-    def check_ratelimit(self, account: DecodeToken):
+    def check_ratelimit(self, account: GetAccount):
         ratelimtString = account.permissions.getRateLimit(self.action)
         if ratelimtString:
             try:

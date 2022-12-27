@@ -1,28 +1,30 @@
 from . import post_collection
 
 
-def exists(id:int) -> bool:
-    return _exists_by_filter({'id':id})
+def exists(*,
+        id: int|None = None,
+        sources: list[str]|None = [],
+        md5s: list[bytes] |None= [],
+        sha256s:list[bytes]|None = [],
+        phashes: list[bytes]|None = [],
+    ):
+    filters = []
+    if id:
+        filters.append({"id":{"$eq":id}})
+    if sources:
+        filters.append({"hashes.sources":{'$elemMatch':{"$in":sources}}})
+    if md5s:
+        filters.append({"hashes.md5s":{'$elemMatch':{"$in":md5s}}})
+    if sha256s:
+        filters.append({"hashes.sha256s":{'$elemMatch':{"$in":sha256s}}})
+    if phashes:
+        filters.append({"hashes.phashes":{'$elemMatch':{"$in":phashes}}})
 
 
-def md5_exists(md5:bytes) -> bool:
-    return _exists_by_filter({"hashes.md5s":{'$elemMatch':{"$eq":md5}}})
-
-
-def sha256_exists(sha256:bytes) -> bool:
-    return _exists_by_filter({"hashes.sha256s":{'$elemMatch':{"$eq":sha256}}})
-
-
-def source_exists(source:str) -> bool:
-    # return _exists_by_filter({"source":{'$elemMatch':{"$eq":source}}})
-    return _exists_by_filter({"source": source})
-
-
-def phash_exists(phash:bytes) -> bool:
-    """Raises
-    - KeyError: Could not find post
-    """
-    return _exists_by_filter({"hashes.phashes":{'$elemMatch':{"$eq":phash}}})
+    if filters:
+        return _exists_by_filter({"$or": filters})
+    else:
+        raise ValueError("No Filters Specified")
 
 
 def _exists_by_filter(filter: dict) -> bool:

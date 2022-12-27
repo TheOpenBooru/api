@@ -1,3 +1,4 @@
+from .. import ExamplePost
 import unittest
 from typing import Optional
 from modules import schemas
@@ -10,6 +11,7 @@ class TestCase(unittest.TestCase):
     def tearDown(self):
         Post.clear()
 
+
 def generate_post(id:Optional[int] = None) -> schemas.Post:
     EXAMPLE_IMAGE = schemas.Image(
         url="https://example.com/image.png",
@@ -18,8 +20,14 @@ def generate_post(id:Optional[int] = None) -> schemas.Post:
     )
     id = id or Post.generate_id()
     return schemas.Post(
-        id=id,uploader=0,
-        media_type="image",
+        id=id,
+        uploader=0,
         thumbnail=EXAMPLE_IMAGE,
         full=EXAMPLE_IMAGE,
     )
+
+
+def create_post(id:Optional[int] = None) -> schemas.Post:
+    post = generate_post(id)
+    Post.insert(post)
+    return post

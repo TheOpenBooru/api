@@ -1,102 +1,116 @@
-from . import BaseMedia,ImageFile,Dimensions
-from modules import settings, schemas
-from typing_extensions import Self
+from . import BaseEncoder, ImageFile, probe
 from dataclasses import dataclass
+from modules import settings, schemas
+from pydantic import BaseModel
 from PIL import Image as PILImage
 import io
 
 
 @dataclass
-class Image(BaseMedia):
+class Dimensions:
+    x: int
+    y: int
+
+
+class ImageEncodingConfig(BaseModel):
+    width: int
+    height: int
+    quality: int = 100
+    lossless: bool = False
+
+
+class ImageEncoder(BaseEncoder):
+    data: bytes
     type = schemas.MediaType.image
-    pillow:PILImage.Image
-    _dimensions:Dimensions
+    pillow: PILImage.Image
 
-
-    def __init__(self,data:bytes):
-        self._data = data
-
-    def __enter__(self) -> Self:
+    def __init__(self, data: bytes):
         """Raises:
         - ValueError: Image is too big to process
         - ValueError: Could not Load Image
         """
         # Set max acceptable image size to prevent DOS
-        PILImage.MAX_IMAGE_PIXELS = (settings.IMAGE_FULL_HEIGHT * settings.IMAGE_FULL_HEIGHT)
-        
-        buf = io.BytesIO(self._data)
+        PILImage.MAX_IMAGE_PIXELS = (
+            settings.IMAGE_FULL_HEIGHT * settings.IMAGE_FULL_HEIGHT)
+
+        buf = io.BytesIO(data)
         try:
             # formats=None means attempt to load all formats
-            pil_img = PILImage.open(buf,formats=None)
+            pil_img = PILImage.open(buf, formats=None)
         except PILImage.DecompressionBombError:
             raise ValueError("Image is too big to process")
         except Exception as e:
             raise ValueError(str(e))
-        
-        self._dimensions = Dimensions(pil_img.width,pil_img.height)
+
         self.pillow = pil_img
-        return self
+        self.data = data
 
-
-    def __exit__(self, exception_type, exception_value, traceback):
-        ...
-
-
-    def full(self) -> ImageFile:
-        return self._process(
-            Dimensions(settings.IMAGE_FULL_WIDTH,settings.IMAGE_FULL_HEIGHT),
-            settings.IMAGE_FULL_QUALITY,
-            settings.IMAGE_FULL_LOSSLESS,
+    def original(self) -> ImageFile:
+        probe.guess_mimetype(self.data)
+        return self.process(
+            ImageEncodingConfig(
+                width=settings.IMAGE_FULL_WIDTH,
+                height=settings.IMAGE_FULL_HEIGHT,
+                quality=settings.IMAGE_FULL_QUALITY,
+                lossless=settings.IMAGE_FULL_LOSSLESS,
+            )
         )
-
 
     def preview(self) -> ImageFile:
-        return self._process(
-            Dimensions(settings.IMAGE_PREVIEW_WIDTH,settings.IMAGE_PREVIEW_HEIGHT),
-            settings.IMAGE_PREVIEW_QUALITY,
-            settings.IMAGE_PREVIEW_LOSSLESS,
+        return self.process(
+            ImageEncodingConfig(
+                width=settings.IMAGE_PREVIEW_HEIGHT,
+                height=settings.IMAGE_PREVIEW_HEIGHT,
+                quality=settings.IMAGE_PREVIEW_QUALITY,
+                lossless=settings.IMAGE_PREVIEW_LOSSLESS,
+            )
         )
-
-
+    
     def thumbnail(self) -> ImageFile:
-        return self._process(
-            Dimensions(settings.THUMBNAIL_WIDTH,settings.THUMBNAIL_HEIGHT),
-            settings.THUMBNAIL_QUALITY,
-            settings.THUMBNAIL_LOSSLESS,
+        return self.process(
+            ImageEncodingConfig(
+                width=settings.THUMBNAIL_WIDTH,
+                height=settings.THUMBNAIL_HEIGHT,
+                quality=settings.THUMBNAIL_QUALITY,
+                lossless=settings.THUMBNAIL_LOSSLESS,
+            )
         )
 
+    def process(self, config: ImageEncodingConfig) -> ImageFile:
+        actual_size = Dimensions(self.pillow.width, self.pillow.height)
+        target_size = Dimensions(config.width, config.height)
+        size = calculate_downscale(actual_size, target_size)
 
-    def _process_using_config(self,config:dict) -> ImageFile:
-        dimensions = Dimensions(config['max_width'],config['max_height'])
-        return self._process(
-            dimensions,
-            config['quality'],
-            config['lossless'],
-        )
-
-
-    def _process(self,target:Dimensions,quality:int,lossless:bool=False) -> ImageFile:
-        output_buf = io.BytesIO()
-        res = _calculate_downscale(self._dimensions,target)
+        buf = io.BytesIO()
         (
             self.pillow
-            .resize((res.width,res.height),PILImage.LANCZOS)
-            .save(output_buf,format='webp',quality=quality,lossless=lossless)
+            .resize((size.x, size.y), PILImage.LANCZOS)
+            .save(
+                fp=buf,
+                format='webp',
+                quality=config.quality,
+                lossless=config.lossless
+            )
         )
+        data = buf.getvalue()
+
         return ImageFile(
-            data=output_buf.getvalue(),
+            data=data,
             mimetype='image/webp',
-            width=res.width,
-            height=res.height
+            width=size.x,
+            height=size.y,
         )
 
-def _calculate_downscale(resolution:Dimensions,target:Dimensions) -> Dimensions:
-    downscale_factors = (
-        1.0,
-        resolution.width / target.width,
-        resolution.height / target.height,
+
+
+def calculate_downscale(resolution: Dimensions, target: Dimensions) -> Dimensions:
+    biggest_factor = max(
+        1,
+        resolution.x / target.x,
+        resolution.y / target.y,
     )
-    limiting_factor = max(downscale_factors)
-    output_width = int(resolution.width / limiting_factor)
-    output_height = int(resolution.height / limiting_factor)
-    return Dimensions(output_width,output_height)
+
+    output_width = int(resolution.x / biggest_factor)
+    output_height = int(resolution.y / biggest_factor)
+
+    return Dimensions(output_width, output_height)

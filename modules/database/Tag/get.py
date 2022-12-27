@@ -7,6 +7,6 @@ def get(name:str) -> Tag:
     document = tag_collection.find_one({'name':name})
     if document == None:
         raise KeyError(f'Tag does not exist')
-    else:
-        tag = parse_doc(document)
-        return tag
+    
+    tag = parse_doc(document)
+    return tag

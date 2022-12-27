@@ -1,4 +1,4 @@
-from . import BaseMedia,ImageFile,VideoFile,Image
+from . import BaseEncoder, ImageFile, VideoFile, ImageEncoder
 from .probe import VideoProbe
 from modules import settings, schemas
 import os
@@ -8,79 +8,78 @@ import ffmpeg
 from typing import Union
 
 
-class Video(BaseMedia):
+class VideoEncoder(BaseEncoder):
     type = schemas.MediaType.video
-    _filepath: Union[str,None] = None
-    _probe: VideoProbe
-    
-    def __init__(self,data:bytes):
+    filepath: Union[str, None] = None
+    probe: VideoProbe
+
+    def __init__(self, data: bytes):
         self._data = data
 
-
     def __enter__(self):
-        self._rand_id = random.randint(0,2**32)
-        self._filepath = f"/tmp/{self._rand_id}"
-        with open(self._filepath,'wb') as f:
+        rand_id = random.randint(0, 2**32)
+        path = self.filepath = f"/tmp/{rand_id}"
+
+        with open(path, 'wb') as f:
             f.write(self._data)
-        self._probe = VideoProbe(self._filepath)
-        new_path = self._filepath
-        shutil.move(self._filepath,new_path)
-        self._filepath = new_path
+        self.probe = VideoProbe(path)
+
         return self
 
+    def __exit__(self, *args):
+        if self.filepath:
+            os.remove(self.filepath)
 
-    def __exit__(self, type, value, tb):
-        os.remove(self._filepath)
-
-
-    def full(self) -> VideoFile:
+    def original(self) -> VideoFile:
         """Raises:
         - FileNotFoundError: Didn't use `with` statement to create file
         """
-        if (self._filepath == None):
-            raise FileNotFoundError("Didn't use `with` statement to create file")
-            
-        probe = self._probe
+        if self.filepath == None:
+            raise FileNotFoundError(
+                "Didn't use `with` statement to create file")
+
+        probe = self.probe
         return VideoFile(
-            self._data,probe.mimetype,
-            probe.height,probe.width,
-            probe.duration,probe.framerate,
-            probe.audio
+            self._data,
+            mimetype=probe.mimetype,
+            height=probe.height,
+            width=probe.width,
+            duration=probe.duration,
+            framerate=probe.framerate,
+            hasAudio=probe.audio,
         )
-
-
 
     def preview(self) -> None:
         """Raises:
         - FileNotFoundError: Didn't use `with` statement to create file
         """
-        if (self._filepath == None):
-            raise FileNotFoundError("Didn't use `with` statement to create file")
+        if self.filepath == None:
+            raise FileNotFoundError(
+                "Didn't use `with` statement to create file")
 
         return None
-
-
 
     def thumbnail(self) -> ImageFile:
         """Raises:
         - FileNotFoundError: Didn't use `with` statement to create file
         """
-        if (self._filepath == None):
-            raise FileNotFoundError("Didn't use `with` statement to create file")
-        
+        if self.filepath == None:
+            raise FileNotFoundError(
+                "Didn't use `with` statement to create file")
+
         offset_percentage = 0.01 * settings.VIDEO_THUMBNAIL_OFFSET
-        offset_time = float(offset_percentage * self._probe.duration)
-        offset_time = min(self._probe.duration, offset_time)
-        
+        offset_time = float(offset_percentage * self.probe.duration)
+        thumbnail_offset = min(self.probe.duration, offset_time)
+
         try:
-            data,err = (
+            data, err = (
                 ffmpeg
-                .input(self._filepath)
+                .input(self.filepath)
                 .output(
                     "pipe:",
                     f='image2',
                     vframes=1,
-                    ss=offset_time,
+                    ss=thumbnail_offset,
                 )
                 .run(
                     input=self._data,
@@ -91,5 +90,5 @@ class Video(BaseMedia):
         except ffmpeg.Error as e:
             raise ValueError(e.stderr)
         else:
-            with Image(data) as img:
+            with ImageEncoder(data) as img:
                 return img.thumbnail()
