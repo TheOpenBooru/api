@@ -1,29 +1,8 @@
 from . import BaseModel
-from modules import settings
+from modules import store
 from typing import Union
 from pydantic import Field
 from enum import Enum
-
-
-def encode_url(url: str) -> str:
-    if not url.startswith("/"):
-        return url
-    else:
-        return get_hostname() + url
-
-
-def get_hostname():
-    hostname, port = settings.HOSTNAME, settings.PORT
-    if not settings.SSL_ENABLED:
-        if port == 80:
-            return f"http://{hostname}"
-        else:
-            return f"http://{hostname}:{port}"
-    else:
-        if port == 443:
-            return f"https://{hostname}"
-        else:
-            return f"https://{hostname}:{port}"
 
 
 class MediaType(str, Enum):
@@ -40,7 +19,7 @@ class BaseMedia(BaseModel):
     type: MediaType
 
     def __init__(self, *, url: str, **kwargs):
-        kwargs["url"] = encode_url(url)
+        kwargs["url"] = store.to_absolute_url(url)
         return super().__init__(**kwargs)
 
 class Image(BaseMedia):
