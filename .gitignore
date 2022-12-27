@@ -248,3 +248,4 @@ data/namespace_data.json
 *.prof
 settings.yml
 data/tasks.json
+data/blacklist.json
