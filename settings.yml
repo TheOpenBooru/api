@@ -45,6 +45,50 @@ tags:
     url: ""
 
 
+storage:
+  method: local
+  local:
+    path: ./data/storage
+  s3:
+    bucket-name: ""
+
+
+security:
+  use_honeypot: true
+  token_expiration: null
+  password_policy:
+    min_length: 8
+    max_length: 128
+    score: 3
+
+encoding:
+  thumbnail:
+    lossless: false
+    quality: 80
+    max_width: 160
+    max_height: 240
+
+  image:
+    full:
+      lossless: false
+      quality: 90
+      max_width: 4000
+      max_height: 3000
+    preview:
+      lossless: false
+      quality: 85
+      max_width: 1000
+      max_height: 750
+
+  animation:
+    lossless: true
+    quality: 100
+    max_width: 4000
+    max_height: 3000
+
+  video:
+    thumbnail_offset: 2
+
 importers:
   local:
     enabled: false
@@ -81,52 +125,6 @@ downloaders:
   tumblr:
     consumer_key: ""
     consumer_secret: ""
-
-
-storage:
-  method: local
-  local:
-    path: ./data/storage
-  s3:
-    bucket-name: ""
-
-
-authentication:
-  token_expiration: null
-  password_policy:
-    min_length: 8
-    max_length: 128
-    score: 3
-
-
-encoding:
-  thumbnail:
-    lossless: false
-    quality: 80
-    max_width: 160
-    max_height: 240
-
-  image:
-    full:
-      lossless: false
-      quality: 90
-      max_width: 4000
-      max_height: 3000
-    preview:
-      lossless: false
-      quality: 85
-      max_width: 1000
-      max_height: 750
-
-  animation:
-    lossless: true
-    quality: 100
-    max_width: 4000
-    max_height: 3000
-
-  video:
-    thumbnail_offset: 2
-
 
 permissions:
   annonymous:

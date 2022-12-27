@@ -107,8 +107,7 @@ IMPORTER_RULE34_RETRY_AFTER: int | None = get("importers.rule34.run_every")
 IMPORTER_RULE34_LIMIT: int | None = get("importers.rule34.limit")
 
 IMPORTER_SAFEBOORU_ENABLED: bool = get("importers.safebooru.enabled")
-IMPORTER_SAFEBOORU_RETRY_AFTER: int | None = get(
-    "importers.safebooru.run_every")
+IMPORTER_SAFEBOORU_RETRY_AFTER: int | None = get("importers.safebooru.run_every")
 IMPORTER_SAFEBOORU_LIMIT: int | None = get("importers.safebooru.limit")
 
 # Downloader
@@ -118,10 +117,11 @@ DOWNLOADER_TUMBLR_SECRET: str = get("downloaders.tumblr.consumer_secret")
 DOWNLOADER_TWITTER_KEY: str = get("downloaders.twitter.bearer_token")
 
 # Passwords
-DEFAULT_TOKEN_EXPIRATION: int = get("authentication.token_expiration")
-PASSWORD_MIN_LENGTH: int = get("authentication.password_policy.min_length")
-PASSWORD_MAX_LENGTH: int = get("authentication.password_policy.max_length")
-PASSWORD_REQUIRED_SCORE: int = get("authentication.password_policy.score")
+USE_HONEYPOT: bool = get("security.use_honeypot")
+DEFAULT_TOKEN_EXPIRATION: int = get("security.token_expiration")
+PASSWORD_MIN_LENGTH: int = get("security.password_policy.min_length")
+PASSWORD_MAX_LENGTH: int = get("security.password_policy.max_length")
+PASSWORD_REQUIRED_SCORE: int = get("security.password_policy.score")
 
 # Encoding
 THUMBNAIL_LOSSLESS: bool = get("encoding.thumbnail.lossless")
