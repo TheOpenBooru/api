@@ -42,12 +42,12 @@ class Permissions:
         return permission.captcha
 
 
-    def getRateLimit(self, action:str) -> Union[str, None]:
+    def getRateLimit(self, action:str) -> str|None:
         permission = getattr(self.schema,action)
         return permission.ratelimit
 
 
-def construct_permission(attributes:Union[dict,None]) -> Permission:
+def construct_permission(attributes: dict|None) -> Permission:
     if attributes == None:
         permission = Permission()
     else:
