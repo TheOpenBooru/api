@@ -49,16 +49,6 @@ HCAPTCHA_ENABLE: bool = get("config.hcaptcha.enabled")
 HCAPTCHA_SITEKEY: str = get("config.hcaptcha.sitekey")
 HCAPTCHA_SECRET: str = get("config.hcaptcha.secret")
 
-# Email
-SMTP_EMAIL: str = get("config.smtp.email")
-SMTP_PASSWORD: str = get("config.smtp.password")
-SMTP_HOSTNAME: str = get("config.smtp.hostname")
-SMTP_PORT: int = get("config.smtp.port")
-EMAIL_TEMPLATE_VERIFICATION_PATH: str = get(
-    "email.template_paths.email_verification")
-EMAIL_TEMPLATE_PASSWORD_RESET_PATH: str = get(
-    "email.template_paths.password_reset")
-
 # AWS
 AWS_ID: str = get("config.aws.id")
 AWS_SECRET: str = get("config.aws.secret")
@@ -70,9 +60,8 @@ STORAGE_LOCAL_PATH: str = get("storage.local.path")
 STORAGE_S3_BUCKET: str = get("storage.s3.bucket-name")
 
 # Tags
-TAGS_REGEN_COUNT_EVERY: Union[int, None] = get("tags.time_between_count_regen")
-TAGS_IMPORT_TAG_DATA_EVERY: Union[int, None] = get(
-    "tags.time_between_data_import")
+TAGS_REGEN_COUNT_EVERY: int | None = get("tags.time_between_count_regen")
+TAGS_IMPORT_TAG_DATA_EVERY: int | None = get("tags.time_between_data_import")
 TAGS_MINIMUM_COUNT: int = get("tags.minimum_count")
 TAGS_NAMESPACES: list[str] = get("tags.valid_namespaces")
 TAGS_TAGGING_SERVICE_ENABLED: bool = get("tags.tagging_service.enabled")
@@ -96,33 +85,31 @@ MONGODB_PASSWORD: str = get("config.mongodb.password")
 
 # Importers
 IMPORTER_FILES_ENABLED: bool = get("importers.local.enabled")
-IMPORTER_FILES_RETRY_AFTER: Union[int, None] = get("importers.local.run_every")
+IMPORTER_FILES_RETRY_AFTER: int | None = get("importers.local.run_every")
 IMPORTER_FILES_BASEPATH: str = get("importers.local.local_path")
 
 IMPORTER_HYDRUS_ENABLED: bool = get("importers.hydrus.enabled")
-IMPORTER_HYDRUS_RETRY_AFTER: Union[int, None] = get(
-    "importers.hydrus.run_every")
+IMPORTER_HYDRUS_RETRY_AFTER: int | None = get("importers.hydrus.run_every")
 IMPORTER_HYDRUS_KEY: str = get("importers.hydrus.access_key")
 IMPORTER_HYDRUS_URL: str = get("importers.hydrus.url")
 IMPORTER_HYDRUS_TAGS: str = get("importers.hydrus.tags")
 
 IMPORTER_E621_ENABLED: bool = get("importers.e621.enabled")
-IMPORTER_E621_RETRY_AFTER: Union[int, None] = get("importers.e621.run_every")
-IMPORTER_E621_LIMIT: Union[int, None] = get("importers.rule34.limit")
+IMPORTER_E621_RETRY_AFTER: int | None = get("importers.e621.run_every")
+IMPORTER_E621_LIMIT: int | None = get("importers.e621.limit")
 
 IMPORTER_E926_ENABLED: bool = get("importers.e926.enabled")
-IMPORTER_E926_RETRY_AFTER: Union[int, None] = get("importers.e926.run_every")
-IMPORTER_E926_LIMIT: Union[int, None] = get("importers.rule34.limit")
+IMPORTER_E926_RETRY_AFTER: int | None = get("importers.e926.run_every")
+IMPORTER_E926_LIMIT: int | None = get("importers.e926.limit")
 
 IMPORTER_RULE34_ENABLED: bool = get("importers.rule34.enabled")
-IMPORTER_RULE34_RETRY_AFTER: Union[int, None] = get(
-    "importers.rule34.run_every")
-IMPORTER_RULE34_LIMIT: Union[int, None] = get("importers.rule34.limit")
+IMPORTER_RULE34_RETRY_AFTER: int | None = get("importers.rule34.run_every")
+IMPORTER_RULE34_LIMIT: int | None = get("importers.rule34.limit")
 
 IMPORTER_SAFEBOORU_ENABLED: bool = get("importers.safebooru.enabled")
-IMPORTER_SAFEBOORU_RETRY_AFTER: Union[int, None] = get(
+IMPORTER_SAFEBOORU_RETRY_AFTER: int | None = get(
     "importers.safebooru.run_every")
-IMPORTER_SAFEBOORU_LIMIT: Union[int, None] = get("importers.safebooru.limit")
+IMPORTER_SAFEBOORU_LIMIT: int | None = get("importers.safebooru.limit")
 
 # Downloader
 DOWNLOADER_TUMBLR_KEY: str = get("downloaders.tumblr.consumer_key")
