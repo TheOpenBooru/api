@@ -1,7 +1,7 @@
 from . import Tag
 from typing import Union, Any
 from pymongo.cursor import Cursor
-from modules.schemas import Post
+import logging
 
 
 def parse_doc(doc: dict[str, Any]) -> Tag:
@@ -14,7 +14,7 @@ def parse_docs(docs:Union[list[dict], Cursor]) -> list[Tag]:
         try:
             post = Tag.parse_obj(doc)
         except Exception:
-            pass
+            logging.warning(f"Could not parse tag in database: ID {doc.get('id', 'No ID')}")
         else:
             tags.append(post)
     return tags

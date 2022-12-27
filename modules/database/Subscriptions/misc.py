@@ -1,6 +1,7 @@
 from . import collection, Subscription
 from typing import Any, Iterable
 import random
+import logging
 
 def get_unique_id() -> int:
     id = random.randint(0,2**32)
@@ -22,7 +23,7 @@ def parse_docs(docs: Iterable[dict]) -> list[Subscription]:
         try:
             post = parse_doc(doc)
         except Exception:
-            pass
+            logging.warning(f"Could not parse subscription in database: ID {doc.get('id', 'No ID')}")
         else:
             posts.append(post)
     return posts

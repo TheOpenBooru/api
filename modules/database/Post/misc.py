@@ -1,7 +1,7 @@
 from . import Post, post_collection
 from typing import Any, Union
-from modules.schemas import Post
 import random
+import logging
 
 
 def all() -> list[Post]:
@@ -45,8 +45,8 @@ def parse_docs(docs:Union[list[dict], Any]) -> list[Post]:
     for doc in docs:
         try:
             post = parse_doc(doc)
-        except Exception:
-            pass
+        except Exception as e:
+            logging.warning(f"Could not parse post in database: ID {doc.get('id', 'No ID')}")
         else:
             posts.append(post)
     return posts
