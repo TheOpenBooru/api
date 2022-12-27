@@ -45,7 +45,7 @@ SSL_KEY_STORE: str = get("config.ssl.key")
 SSL_CERT_STORE: str = get("config.ssl.cert")
 
 # Hcaptcha
-HCAPTCHA_ENABLE: bool = get("config.hcaptcha.enabled")
+HCAPTCHA_ENABLED: bool = get("config.hcaptcha.enabled")
 HCAPTCHA_SITEKEY: str = get("config.hcaptcha.sitekey")
 HCAPTCHA_SECRET: str = get("config.hcaptcha.secret")
 

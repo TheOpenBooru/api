@@ -1,6 +1,6 @@
-from typing import Union
-from typing_extensions import Self
+from modules import settings
 from modules.schemas import Permission, UserPermissions
+from typing_extensions import Self
 import yaml as _yaml
 
 
@@ -55,6 +55,9 @@ def construct_permission(attributes:Union[dict,None]) -> Permission:
             permission = Permission.parse_obj(attributes)
         except Exception:
             raise RuntimeError(f"Invalid Permission Specified in settings.yml\n{attributes}")
+
+    if not settings.HCAPTCHA_ENABLED:
+        permission.captcha = False
     
     permission.has_permission = True
     return permission

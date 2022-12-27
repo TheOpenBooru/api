@@ -33,7 +33,7 @@ class PermissionManager:
 
 
     def check_captcha(self, request: Request, permissions: Permissions):
-        if not settings.HCAPTCHA_ENABLE:
+        if not settings.HCAPTCHA_ENABLED:
             return
         
         if not permissions.isCaptchaRequired(self.action):
