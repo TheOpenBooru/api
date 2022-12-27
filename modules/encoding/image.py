@@ -1,7 +1,22 @@
-from . import BaseEncoder, ImageFile, Dimensions, probe
+from . import BaseEncoder, ImageFile, probe
+from dataclasses import dataclass
 from modules import settings, schemas
+from pydantic import BaseModel
 from PIL import Image as PILImage
 import io
+
+
+@dataclass
+class Dimensions:
+    x: int
+    y: int
+
+
+class ImageEncodingConfig(BaseModel):
+    width: int
+    height: int
+    quality: int = 100
+    lossless: bool = False
 
 
 class ImageEncoder(BaseEncoder):
@@ -32,61 +47,70 @@ class ImageEncoder(BaseEncoder):
 
     def original(self) -> ImageFile:
         probe.guess_mimetype(self.data)
-        return process(
-            self.pillow,
-            Dimensions(settings.IMAGE_FULL_WIDTH, settings.IMAGE_FULL_HEIGHT),
-            settings.IMAGE_FULL_QUALITY,
-            settings.IMAGE_FULL_LOSSLESS,
+        return self.process(
+            ImageEncodingConfig(
+                width=settings.IMAGE_FULL_WIDTH,
+                height=settings.IMAGE_FULL_HEIGHT,
+                quality=settings.IMAGE_FULL_QUALITY,
+                lossless=settings.IMAGE_FULL_LOSSLESS,
+            )
         )
 
     def preview(self) -> ImageFile:
-        return process(
-            self.pillow,
-            Dimensions(settings.IMAGE_PREVIEW_WIDTH,
-                       settings.IMAGE_PREVIEW_HEIGHT),
-            settings.IMAGE_PREVIEW_QUALITY,
-            settings.IMAGE_PREVIEW_LOSSLESS,
+        return self.process(
+            ImageEncodingConfig(
+                width=settings.IMAGE_PREVIEW_HEIGHT,
+                height=settings.IMAGE_PREVIEW_HEIGHT,
+                quality=settings.IMAGE_PREVIEW_QUALITY,
+                lossless=settings.IMAGE_PREVIEW_LOSSLESS,
+            )
         )
-
+    
     def thumbnail(self) -> ImageFile:
-        return process(
-            self.pillow,
-            Dimensions(settings.THUMBNAIL_WIDTH, settings.THUMBNAIL_HEIGHT),
-            settings.THUMBNAIL_QUALITY,
-            settings.THUMBNAIL_LOSSLESS,
+        return self.process(
+            ImageEncodingConfig(
+                width=settings.THUMBNAIL_WIDTH,
+                height=settings.THUMBNAIL_HEIGHT,
+                quality=settings.THUMBNAIL_QUALITY,
+                lossless=settings.THUMBNAIL_LOSSLESS,
+            )
         )
 
+    def process(self, config: ImageEncodingConfig) -> ImageFile:
+        actual_size = Dimensions(self.pillow.width, self.pillow.height)
+        target_size = Dimensions(config.width, config.height)
+        size = calculate_downscale(actual_size, target_size)
 
-def process(pillow: PILImage.Image, target: Dimensions, quality: int, lossless: bool = False) -> ImageFile:
-    output_buf = io.BytesIO()
-    dimensions = Dimensions(pillow.width, pillow.height)
-    output_res = calculate_downscale(dimensions, target)
-    (
-        pillow
-        .resize(output_res, PILImage.LANCZOS)
-        .save(output_buf,
-              format='webp',
-              quality=quality,
-              lossless=lossless
-              )
-    )
-    return ImageFile(
-        data=output_buf.getvalue(),
-        mimetype='image/webp',
-        width=output_res.x,
-        height=output_res.y,
-    )
+        buf = io.BytesIO()
+        (
+            self.pillow
+            .resize((size.x, size.y), PILImage.LANCZOS)
+            .save(
+                fp=buf,
+                format='webp',
+                quality=config.quality,
+                lossless=config.lossless
+            )
+        )
+        data = buf.getvalue()
+
+        return ImageFile(
+            data=data,
+            mimetype='image/webp',
+            width=size.x,
+            height=size.y,
+        )
+
 
 
 def calculate_downscale(resolution: Dimensions, target: Dimensions) -> Dimensions:
-    downscale_factors = (
-        1.0,
+    biggest_factor = max(
+        1,
         resolution.x / target.x,
         resolution.y / target.y,
     )
-    limiting_factor = max(downscale_factors)
 
-    output_width = int(resolution.x / limiting_factor)
-    output_height = int(resolution.y / limiting_factor)
+    output_width = int(resolution.x / biggest_factor)
+    output_height = int(resolution.y / biggest_factor)
 
     return Dimensions(output_width, output_height)

@@ -1,4 +1,4 @@
-from .types import GenericFile, Dimensions, AnimationFile, ImageFile, VideoFile
+from ._types import GenericFile, AnimationFile, ImageFile, VideoFile
 from .probe import VideoProbe
 from . import probe
 from .encoder import BaseEncoder

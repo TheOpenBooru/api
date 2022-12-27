@@ -12,7 +12,7 @@ PILImage.MAX_IMAGE_PIXELS = (5000 * 5000) * 2
 
 class AnimationEncoder(BaseEncoder):
     type = schemas.MediaType.animation
-    pillow: PILImage.Image
+    _pillow: PILImage.Image
     _data: bytes
     _height: int
     _width: int
@@ -37,18 +37,18 @@ class AnimationEncoder(BaseEncoder):
         if pillow.n_frames == 1:
             raise ValueError("Animation Only Has 1 Frame")
 
-        frame_durations = _get_frame_durations(pillow)
+        frame_durations = get_frame_durations(pillow)
         duration = sum(frame_durations) / 1000
 
         self._data = data
-        self.pillow = pillow
+        self._pillow = pillow
         self._height = pillow.height
         self._width = pillow.width
         self._frame_count = pillow.n_frames
         self._duration = duration
 
     def original(self) -> AnimationFile:
-        data = _pillow_animation_to_bytes(self.pillow)
+        data = encode_pillow_animation(self._pillow)
         return AnimationFile(
             data=data,
             mimetype='image/webp',
@@ -60,8 +60,8 @@ class AnimationEncoder(BaseEncoder):
 
     def preview(self) -> ImageFile:
         buf = io.BytesIO()
-        self.pillow.seek(0)
-        self.pillow.save(
+        self._pillow.seek(0)
+        self._pillow.save(
             buf,
             format='webp',
             quality=100,
@@ -70,8 +70,8 @@ class AnimationEncoder(BaseEncoder):
         return ImageFile(
             data=buf.read(),
             mimetype="image/webp",
-            height=self.pillow.height,
-            width=self.pillow.width,
+            height=self._pillow.height,
+            width=self._pillow.width,
         )
 
     def thumbnail(self) -> ImageFile:
@@ -79,9 +79,9 @@ class AnimationEncoder(BaseEncoder):
             return img.thumbnail()
 
 
-def _pillow_animation_to_bytes(pillow: PILImage.Image) -> bytes:
+def encode_pillow_animation(pillow: PILImage.Image) -> bytes:
     buf = io.BytesIO()
-    frame_durations = _get_frame_durations(pillow)
+    frame_durations = get_frame_durations(pillow)
     pillow.save(
         buf,
         'WEBP',
@@ -94,10 +94,11 @@ def _pillow_animation_to_bytes(pillow: PILImage.Image) -> bytes:
     return buf.getvalue()
 
 
-def _get_frame_durations(pillow: PILImage.Image) -> list:
+def get_frame_durations(pillow: PILImage.Image) -> list[int]:
     frame_durations = []
     for x in range(pillow.n_frames):
         pillow.seek(x)
         duration = int(pillow.info['duration'])
         frame_durations.append(duration)
+    
     return frame_durations

@@ -1,5 +1,4 @@
-from modules.encoding.types import ImageFile
-from modules.encoding import VideoEncoder
+from modules.encoding import VideoEncoder, ImageFile
 import unittest
 import json
 from pathlib import Path

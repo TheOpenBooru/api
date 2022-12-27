@@ -1,11 +1,4 @@
-from collections import namedtuple
-from modules import schemas
 from dataclasses import dataclass
-from functools import cache, cached_property
-from typing import Union
-
-
-Dimensions = namedtuple("Dimensions", ["x", "y"])
 
 
 @dataclass(frozen=True)
@@ -37,4 +30,4 @@ class VideoFile:
     hasAudio: bool
 
 
-GenericFile = ImageFile|AnimationFile|VideoFile
+GenericFile = ImageFile | AnimationFile | VideoFile
