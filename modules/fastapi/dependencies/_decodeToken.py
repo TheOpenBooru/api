@@ -5,7 +5,7 @@ import zlib
 from fastapi import HTTPException, Depends, Request
 
 
-class DecodeToken:
+class GetAccount:
     id: int
     user_id: int|None
     username: str
@@ -27,6 +27,9 @@ class DecodeToken:
 
     
     def _generate_account(self, token:str):
+        if token.startswith("Bearer "):
+            token = token[len("Bearer "):]
+        
         try:
             login = account.decode(token)
         except account.InvalidToken:

@@ -1,6 +1,6 @@
 from . import oauth2_scheme
 from modules import schemas, captcha, ratelimit, settings
-from modules.fastapi.dependencies import DecodeToken
+from modules.fastapi.dependencies import GetAccount
 from modules.account.permissions import Permissions
 from fastapi import HTTPException, Depends, status, Header, Request
 
@@ -15,7 +15,7 @@ class PermissionManager:
         self.action = permission
 
 
-    def __call__(self, request: Request, account:DecodeToken = Depends()):
+    def __call__(self, request: Request, account:GetAccount = Depends()):
         if settings.DISABLE_PERMISSIONS:
             return
         
@@ -53,7 +53,7 @@ class PermissionManager:
             )
 
     
-    def check_ratelimit(self, account: DecodeToken):
+    def check_ratelimit(self, account: GetAccount):
         ratelimtString = account.permissions.getRateLimit(self.action)
         if ratelimtString:
             try:

@@ -1,6 +1,6 @@
 from . import oauth2_scheme
 from modules import account, schemas, settings
-from modules.fastapi.dependencies import DecodeToken
+from modules.fastapi.dependencies import GetAccount
 from modules.account.permissions import Permissions
 from fastapi import HTTPException, Depends, status, Header
 from typing import Union
@@ -15,7 +15,7 @@ class hasPermission:
 
         self.action = permission
 
-    def __call__(self, account: DecodeToken = Depends()):
+    def __call__(self, account: GetAccount = Depends()):
         if settings.DISABLE_PERMISSIONS:
             return
         
