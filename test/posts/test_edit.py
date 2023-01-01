@@ -1,4 +1,4 @@
-from modules import posts, schemas, database
+from openbooru.modules import posts, schemas, database
 from . import ExamplePost
 import pytest
 

@@ -1,11 +1,16 @@
-[metadata]
-name = 'openbooru_api'
-version = 'Lithium'
-author = 'Ben Brady'
-author_email = 'benbradybusiness@gmail.com'
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[options]
-install_requires = [
+[project]
+name = "openbooru"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "GPL-2.0"
+authors = [
+    { name = "Ben Brady", email = "benbradybusiness@gmail.com" },
+]
+dependencies = [
     "wheel",
     "requests",
     "requests-futures",
@@ -55,6 +60,33 @@ install_requires = [
     # 0.0.7 causes errors
     "pytube",
 ]
+classifiers = [
+    "Operating System :: OS Independent",
+    "Topic :: Internet",
+    "Topic :: Software Development",
+    "Development Status :: 4 - Beta",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Topic :: Internet :: WWW/HTTP",
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/TheOpenBooru/api"
+
+[tool.hatch.version]
+path = "openbooru/__init__.py"
+
+
+[project.scripts]
+openbooru = "openbooru.app:run"
+
 
 [options.extras_require]
 dev = [
@@ -68,9 +100,9 @@ dev = [
 
 [tool.black]
 line-length = 80
-target-version = ['py310']
+target-version = ["py310"]
 include = '\.pyi?$'
-exclude-files = '__init__.py'
+exclude-files = "__init__.py"
 
 [tool.mypy]
 ignore_missing_imports = true

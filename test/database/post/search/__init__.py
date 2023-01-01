@@ -1,5 +1,5 @@
 import pytest
-from modules import database, schemas, settings
+from openbooru.modules import database, schemas, settings
 settings.POSTS_SEARCH_USE_SIBLINGS_AND_PARENTS = True
 
 @pytest.fixture

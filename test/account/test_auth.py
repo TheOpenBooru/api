@@ -1,5 +1,5 @@
 from . import VALID_PASSWORD
-from modules.account import auth
+from openbooru.modules.account import auth
 import unittest
 
 

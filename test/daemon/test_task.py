@@ -1,4 +1,4 @@
-from modules.daemon.task import Task
+from openbooru.modules.daemon.task import Task
 import pytest
 import time
 

@@ -1,5 +1,5 @@
 from . import ExamplePost
-from modules import posts, schemas, database
+from openbooru.modules import posts, schemas, database
 
 def test_Index_Offsets_Post_Search(ExamplePost: schemas.Post):
     database.clear()

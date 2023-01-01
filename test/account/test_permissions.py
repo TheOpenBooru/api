@@ -1,4 +1,4 @@
-from modules.account import Permissions
+from openbooru.modules.account import Permissions
 import pytest
 
 

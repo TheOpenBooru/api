@@ -1,4 +1,4 @@
-from modules import importers, schemas
+from openbooru.modules import importers, schemas
 import pytest
 
 

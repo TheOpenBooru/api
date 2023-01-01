@@ -2,8 +2,8 @@ import json
 import asyncio
 import unittest
 from box import Box
-from modules import schemas
-from modules.encoding import generate_encoder, AnimationEncoder, ImageEncoder, VideoEncoder, BaseEncoder
+from openbooru.modules import schemas
+from openbooru.modules.encoding import generate_encoder, AnimationEncoder, ImageEncoder, VideoEncoder, BaseEncoder
 
 with open('data/test/sample_data.json') as f:
     _json = json.load(f)

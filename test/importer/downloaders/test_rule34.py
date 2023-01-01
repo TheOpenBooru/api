@@ -1,5 +1,5 @@
-from modules.importers import Rule34Downloader
-from modules import schemas
+from openbooru.modules.importers import Rule34Downloader
+from openbooru.modules import schemas
 import pytest
 
 

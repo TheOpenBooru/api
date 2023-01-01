@@ -1,5 +1,5 @@
 from . import TEST_ANIMATION, TEST_IMAGE, TEST_VIDEO, TESTDATA
-from modules import schemas, posts
+from openbooru.modules import schemas, posts
 import pytest
 from pathlib import Path
 

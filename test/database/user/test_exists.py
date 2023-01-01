@@ -1,7 +1,7 @@
 from . import ExampleUser
-from modules import schemas
-from modules.database import User
-from modules.database.User import exists, existsByEmail, existsByUsername
+from openbooru.modules import schemas
+from openbooru.modules.database import User
+from openbooru.modules.database.User import exists, existsByEmail, existsByUsername
 import unittest
 
 

@@ -1,5 +1,5 @@
-from modules import schemas
-from modules.importers import SafebooruDownloader
+from openbooru.modules import schemas
+from openbooru.modules.importers import SafebooruDownloader
 import pytest
 
 

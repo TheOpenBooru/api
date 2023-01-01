@@ -1,6 +1,6 @@
 import unittest
 
-from modules import validate
+from openbooru.modules import validate
 
 
 class test_md5(unittest.TestCase):

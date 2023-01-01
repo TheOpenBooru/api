@@ -1,4 +1,4 @@
-from modules import database, settings
+from openbooru.modules import database, settings
 from unittest import IsolatedAsyncioTestCase as AsyncTestCase
 settings.TAGS_TAGGING_SERVICE_ENABLED = False
 

@@ -1,4 +1,4 @@
-from modules import posts, schemas, importers, settings, database
+from openbooru.modules import posts, schemas, importers, settings, database
 import unittest
 
 

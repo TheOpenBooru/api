@@ -1,5 +1,5 @@
 from . import VALID_PASSWORD
-from modules import account
+from openbooru.modules import account
 import pytest
 
 def test_Login_Raises_AccountDoesNotExist():

@@ -1,5 +1,5 @@
 from . import generate_post
-from modules import database, schemas
+from openbooru.modules import database, schemas
 import pytest
 
 

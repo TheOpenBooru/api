@@ -1,8 +1,8 @@
 from .. import ExamplePost
 import unittest
 from typing import Optional
-from modules import schemas
-from modules.database import Post
+from openbooru.modules import schemas
+from openbooru.modules.database import Post
 
 
 class TestCase(unittest.TestCase):

@@ -1,4 +1,4 @@
-from modules.database import User
+from openbooru.modules.database import User
 import unittest
 
 generate_user = lambda:User.User(id=User.get_unique_id(),username="test")

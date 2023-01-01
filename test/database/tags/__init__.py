@@ -1,5 +1,5 @@
 import pytest
-from modules import database, schemas
+from openbooru.modules import database, schemas
 
 
 @pytest.fixture

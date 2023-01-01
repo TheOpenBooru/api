@@ -1,4 +1,4 @@
-# from modules.importers import Safebooru
+# from openbooru.modules.importers import Safebooru
 # import pytest
 # import time
 

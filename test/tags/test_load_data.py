@@ -1,4 +1,4 @@
-from modules import tags, database, schemas
+from openbooru.modules import tags, database, schemas
 
 def test_Load_Tag_Data():
     database.clear()

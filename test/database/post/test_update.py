@@ -1,6 +1,6 @@
 from . import TestCase, create_post
-from modules import schemas
-from modules.database import Post
+from openbooru.modules import schemas
+from openbooru.modules.database import Post
 import pytest
 
 

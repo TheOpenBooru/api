@@ -1,4 +1,4 @@
-from modules.encoding import VideoEncoder, ImageFile
+from openbooru.modules.encoding import VideoEncoder, ImageFile
 import unittest
 import json
 from pathlib import Path

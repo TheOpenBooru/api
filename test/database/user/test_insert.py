@@ -1,6 +1,6 @@
 import unittest
-from modules import schemas
-from modules.database import User
+from openbooru.modules import schemas
+from openbooru.modules.database import User
 
 class test_Users_can_be_Created(unittest.TestCase):
     def tearDown(self) -> None:

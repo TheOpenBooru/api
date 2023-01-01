@@ -1,6 +1,6 @@
 from . import ExamplePost
-from modules import schemas
-from modules.database import Post
+from openbooru.modules import schemas
+from openbooru.modules.database import Post
 from . import TestCase, generate_post
 
 

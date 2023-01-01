@@ -1,5 +1,5 @@
 from . import TestCase, generate_post
-from modules.database import Post
+from openbooru.modules.database import Post
 
 class test_Create(TestCase):
     def test_Created_Posts_can_be_retrieved(self):

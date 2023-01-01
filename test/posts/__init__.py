@@ -1,7 +1,7 @@
 from .. import ExamplePost, ExampleTag
 import json
 import pytest
-from modules import schemas, database
+from openbooru.modules import schemas, database
 
 with open('data/test/sample_data.json','r') as f:
     TESTDATA = json.load(f)

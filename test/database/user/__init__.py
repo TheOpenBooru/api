@@ -1,5 +1,5 @@
 import pytest
-from modules import schemas, database
+from openbooru.modules import schemas, database
 
 @pytest.fixture
 def ExampleUser() -> schemas.User:

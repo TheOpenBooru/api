@@ -1,6 +1,6 @@
 from .. import client
-from modules import database, settings
-from modules.schemas import Post
+from openbooru.modules import database, settings
+from openbooru.modules.schemas import Post
 
 settings.DISABLE_PERMISSIONS = True
 

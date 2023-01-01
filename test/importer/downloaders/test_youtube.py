@@ -1,5 +1,5 @@
-from modules import schemas
-from modules.importers import YoutubeDownloader
+from openbooru.modules import schemas
+from openbooru.modules.importers import YoutubeDownloader
 import pytest
 
 

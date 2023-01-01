@@ -1,5 +1,5 @@
-from modules import importers
-from modules.schemas import MediaType, Rating
+from openbooru.modules import importers
+from openbooru.modules.schemas import MediaType, Rating
 from dataclasses import dataclass
 import pytest
 

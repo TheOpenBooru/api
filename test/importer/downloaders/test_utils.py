@@ -1,4 +1,4 @@
-from modules.importers import utils
+from openbooru.modules.importers import utils
 import pytest
 
 
