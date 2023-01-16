@@ -1,4 +1,4 @@
-from openbooru.modules import store
+from modules import store
 import unittest
 import random
 from pathlib import Path

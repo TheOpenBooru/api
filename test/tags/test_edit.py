@@ -1,4 +1,4 @@
-from openbooru.modules import tags, database, schemas
+from modules import tags, database, schemas
 import pytest
 
 

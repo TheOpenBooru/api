@@ -1,5 +1,5 @@
-from openbooru.modules import database, settings
-from openbooru.modules.importers import (
+from modules import database, settings
+from modules.importers import (
     Importer,
     E621Importer,
     E926Importer,

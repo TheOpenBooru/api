@@ -1,4 +1,4 @@
-from openbooru.modules import account
+from modules import account
 import pytest
 
 

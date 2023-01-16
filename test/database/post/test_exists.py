@@ -1,5 +1,5 @@
 from . import TestCase, generate_post
-from openbooru.modules.database import Post
+from modules.database import Post
 
 
 class test_exists(TestCase):

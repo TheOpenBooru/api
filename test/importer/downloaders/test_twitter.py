@@ -1,5 +1,5 @@
-from openbooru.modules import schemas, settings
-from openbooru.modules.importers import TwitterDownloader, DownloadFailure
+from modules import schemas, settings
+from modules.importers import TwitterDownloader, DownloadFailure
 import pytest
 
 

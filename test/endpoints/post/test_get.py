@@ -1,6 +1,6 @@
 from .. import client
 from ... import ExamplePost
-from openbooru.modules import posts, schemas
+from modules import posts, schemas
 import pytest
 
 

@@ -1,5 +1,5 @@
-from openbooru.modules import settings
-from openbooru.modules.encoding import ImageEncoder, ImageFile
+from modules import settings
+from modules.encoding import ImageEncoder, ImageFile
 import io
 import json
 import unittest

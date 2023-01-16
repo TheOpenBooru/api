@@ -1,5 +1,5 @@
-from openbooru.modules import settings
-from openbooru.modules.encoding import AnimationEncoder, AnimationFile, ImageFile
+from modules import settings
+from modules.encoding import AnimationEncoder, AnimationFile, ImageFile
 import io
 import json
 from box import Box

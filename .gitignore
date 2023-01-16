@@ -231,20 +231,21 @@ cython_debug/
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,flask
 .vscode
-scripts
+data/files/*
+data/import/*
+data/storage/*
+data/cert.pem
+data/key.pem
+data/log.txt
+data/auth.db
 *.key
-*.prof
 data/mongo
-openbooru/
-openbooru/data/files/*
-openbooru/data/import/*
-openbooru/data/storage/*
-openbooru/data/cert.pem
-openbooru/data/key.pem
-openbooru/data/log.txt
-openbooru/data/auth.db
-openbooru/data/urls.txt
-openbooru/data/namespace_data.json
-openbooru/settings.yml
-openbooru/data/tasks.json
-openbooru/data/blacklist.json
+scripts
+e621_pages
+r34_pages
+data/urls.txt
+data/namespace_data.json
+*.prof
+settings.yml
+data/tasks.json
+data/blacklist.json

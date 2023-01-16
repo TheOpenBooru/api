@@ -1,5 +1,5 @@
 from . import ExamplePost, assertPostInSearch
-from openbooru.modules import database, schemas, posts
+from modules import database, schemas, posts
 
 
 def test_Empty_Query_Returns_All_Posts(ExamplePost: schemas.Post):

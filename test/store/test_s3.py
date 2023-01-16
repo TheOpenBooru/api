@@ -1,5 +1,5 @@
-from openbooru.modules.store.s3 import S3Store
-from openbooru.modules import settings
+from modules.store.s3 import S3Store
+from modules import settings
 import unittest
 import random
 import requests

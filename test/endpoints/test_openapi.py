@@ -1,4 +1,4 @@
-from src.app import app
+from app import app
 from schemathesis.specs.openapi.loaders import from_asgi
 
 schema = from_asgi("/openapi.json", app)

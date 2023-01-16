@@ -1,5 +1,5 @@
 import pytest
-from openbooru.modules import users
+from modules import users
 
 VALID_PASSWORD = r"MZR}tmL{,#:vmC'__\BTw#x2aVq+\Q{)"
 

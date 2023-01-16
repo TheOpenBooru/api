@@ -1,4 +1,4 @@
-from openbooru.modules import captcha,settings
+from modules import captcha,settings
 import unittest
 import requests
 

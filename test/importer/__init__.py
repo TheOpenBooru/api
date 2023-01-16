@@ -1,4 +1,4 @@
-from openbooru.modules import database
+from modules import database
 from unittest import IsolatedAsyncioTestCase as AsyncTestCase
 
 class TestCase(AsyncTestCase):

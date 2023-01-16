@@ -1,4 +1,4 @@
-from openbooru.modules import phash
+from modules import phash
 from PIL import Image
 import pytest
 

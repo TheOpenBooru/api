@@ -1,4 +1,4 @@
-from openbooru.modules import jwt
+from modules import jwt
 import time
 import pytest
 

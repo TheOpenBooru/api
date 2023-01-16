@@ -1,5 +1,5 @@
 from . import ExamplePost, assertPostInSearch
-from openbooru.modules import database, schemas
+from modules import database, schemas
 import pytest
 
 

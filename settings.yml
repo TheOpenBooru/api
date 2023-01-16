@@ -1,0 +1,209 @@
+# Read the Documentation: https://github.com/TheOpenBooru/api/blob/main/settings.md
+config:
+  site:
+    display_name: Open Booru
+    hostname: localhost
+    port: 8443
+  ssl:
+    enabled: false
+    key: ./data/server.key
+    cert: ./data/server.crt
+  hcaptcha:
+    enabled: false
+    sitekey: 10000000-ffff-ffff-ffff-000000000001
+    secret: "0x0000000000000000000000000000000000000000"
+  aws:
+    id: ""
+    secret: ""
+    region: eu-west-2
+  mongodb:
+    hostname: localhost
+    port: 27017
+    name: openbooru
+    username: ""
+    password: ""
+  wipe_on_startup: false
+
+
+posts:
+  search:
+    default_sort: created_at
+    max_limit: 250
+
+tags:
+  time_between_count_regen: 7200
+  time_between_data_import: null
+  minimum_count: 0
+  valid_namespaces:
+    - generic
+    - character
+    - creator
+    - copyright
+    - meta
+  tagging_service:
+    enabled: false
+    url: ""
+
+
+storage:
+  method: local
+  local:
+    path: ./data/storage
+  s3:
+    bucket-name: ""
+
+
+security:
+  use_honeypot: true
+  token_expiration: null
+  password_policy:
+    min_length: 8
+    max_length: 128
+    score: 3
+
+encoding:
+  thumbnail:
+    lossless: false
+    quality: 80
+    max_width: 160
+    max_height: 240
+
+  image:
+    full:
+      lossless: false
+      quality: 90
+      max_width: 4000
+      max_height: 3000
+    preview:
+      lossless: false
+      quality: 85
+      max_width: 1000
+      max_height: 750
+
+  animation:
+    lossless: true
+    quality: 100
+    max_width: 4000
+    max_height: 3000
+
+  video:
+    thumbnail_offset: 2
+
+importers:
+  local:
+    enabled: false
+    run_every: null
+    local_path: ./data/import
+  hydrus:
+    enabled: false
+    run_every: null
+    access_key: null
+    url: null
+    tags:
+      - system:everything
+  e621:
+    enabled: false
+    run_every: 259200
+    limit: 500
+  e926:
+    enabled: false
+    run_every: 259200
+    limit: 500
+  rule34:
+    enabled: false
+    run_every: 259200
+    limit: 500
+  safebooru:
+    enabled: false
+    run_every: 259200
+    limit: 500
+
+
+downloaders:
+  twitter:
+    bearer_token: ""
+  tumblr:
+    consumer_key: ""
+    consumer_secret: ""
+
+permissions:
+  annonymous:
+    canViewPosts:
+      ratelimit: "2/second"
+    canSearchPosts:
+      ratelimit: "2/second"
+    
+    canLogin:
+      ratelimit: "5/second"
+
+    canRegister:
+      ratelimit: "1/second"
+      captcha: true
+    
+    canRecieveAllTags:
+      ratelimit: "1/minute"
+    canSearchTags:
+      ratelimit: "30/minute"
+
+  user:
+    canCreatePosts:
+      ratelimit: "4/minute"
+      captcha: true
+    canEditPosts:
+      ratelimit: "4/minute"
+      captcha: true
+    canVotePosts:
+      ratelimit: "1/second"
+    canViewPosts:
+      ratelimit: "1/second"
+    canSearchPosts:
+      ratelimit: "1/second"
+
+    canRecieveAllTags:
+      ratelimit: "4/minute"
+    canSearchTags:
+      ratelimit: "30/minute"
+    canEditTags:
+      ratelimit: "10/minute"
+    
+    canViewProfile:
+      ratelimit: "1/second"
+    canUpdateSettings:
+      ratelimit: "5/minute"
+
+  server:
+    canViewUsers:
+      ratelimit: null
+    canSearchUsers:
+      ratelimit: null
+    canViewPosts:
+      ratelimit: null
+    canSearchPosts:
+      ratelimit: null
+
+  admin:
+    canLogin:
+    canRegister:
+    
+    canCreatePosts:
+    canViewPosts:
+    canSearchPosts:
+    canEditPosts:
+    canDeletePosts:
+    
+    canRecieveAllTags:
+    canSearchTags:
+    canEditTags:
+    
+    canViewUsers:
+    canSearchUsers:
+    canEditUsers:
+    canDeleteUsers: 
+    canVotePosts:
+    
+    canViewProfile:
+    canUpdateSettings:
+    
+    canCreateSubscriptions:
+    canSearchSubscriptions:
+    canDeleteSubscriptions:

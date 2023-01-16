@@ -1,5 +1,5 @@
 from . import ExamplePost, ExampleTag
-from openbooru.modules import database, schemas
+from modules import database, schemas
 
 
 def test_Add_Parent(ExampleTag:schemas.Tag):
