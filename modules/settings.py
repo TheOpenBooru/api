@@ -92,7 +92,7 @@ IMPORTER_HYDRUS_ENABLED: bool = get("importers.hydrus.enabled")
 IMPORTER_HYDRUS_RETRY_AFTER: int | None = get("importers.hydrus.run_every")
 IMPORTER_HYDRUS_KEY: str = get("importers.hydrus.access_key")
 IMPORTER_HYDRUS_URL: str = get("importers.hydrus.url")
-IMPORTER_HYDRUS_TAGS: str = get("importers.hydrus.tags")
+IMPORTER_HYDRUS_TAGS: list[str] = get("importers.hydrus.tags")
 
 IMPORTER_E621_ENABLED: bool = get("importers.e621.enabled")
 IMPORTER_E621_RETRY_AFTER: int | None = get("importers.e621.run_every")

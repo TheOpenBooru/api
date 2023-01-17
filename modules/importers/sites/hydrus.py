@@ -20,20 +20,27 @@ class HydrusImporter(Importer):
 
     async def load(self, limit: int|None = None):
         tags = settings.IMPORTER_HYDRUS_TAGS
-        if type(limit) == int:
-            tags += f" system:limit is {limit}"
         
-        ids = self.client.search_files(
+        if type(limit) == int:
+            tags.append(f"system:limit is {limit}")
+        
+        post_ids = self.client.search_files(
             tags,
             file_sort_type=hydrus_api.FileSortType.IMPORT_TIME,
         )
-        ids = [int(id) for id in ids]
-
-        metadatas = self.client.get_file_metadata(file_ids=ids) # type: ignore
-        ids.reverse()
-        metadatas.reverse()
+        post_ids = [int(id) for id in post_ids]
         
-        zipped = list(zip(ids,metadatas))
+        post_metadata = []
+        for x in range(int(len(post_ids) / 100)):
+            start = x * 100
+            end = start + 100
+            metadata = self.client.get_file_metadata(file_ids=post_ids[start:end])
+            post_metadata.extend(metadata)
+        
+        post_ids.reverse()
+        post_metadata.reverse()
+        
+        zipped = list(zip(post_ids,post_metadata))
         for id,metadata in tqdm(zipped, desc="Importing From Hydrus"):
             try:
                 await self._import_post(id,metadata)
