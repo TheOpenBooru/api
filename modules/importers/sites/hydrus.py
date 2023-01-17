@@ -40,7 +40,7 @@ class HydrusImporter(Importer):
         post_ids.reverse()
         post_metadata.reverse()
         
-        zipped = zip(post_ids, post_metadata)
+        zipped = list(zip(post_ids, post_metadata))
         for id,metadata in tqdm(zipped, desc="Importing From Hydrus"):
             try:
                 await self._import_post(id,metadata)
