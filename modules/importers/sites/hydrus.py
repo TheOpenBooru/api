@@ -31,7 +31,7 @@ class HydrusImporter(Importer):
         post_ids = [int(id) for id in post_ids]
         
         post_metadata = []
-        for x in range(int(len(post_ids) / 100)):
+        for x in range(int(len(post_ids) // 100) + 1):
             start = x * 100
             end = start + 100
             metadata = self.client.get_file_metadata(file_ids=post_ids[start:end])
@@ -40,7 +40,7 @@ class HydrusImporter(Importer):
         post_ids.reverse()
         post_metadata.reverse()
         
-        zipped = list(zip(post_ids,post_metadata))
+        zipped = zip(post_ids, post_metadata)
         for id,metadata in tqdm(zipped, desc="Importing From Hydrus"):
             try:
                 await self._import_post(id,metadata)
